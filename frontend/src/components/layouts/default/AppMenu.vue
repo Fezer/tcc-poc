@@ -1,39 +1,38 @@
-<script lang="ts">
-import AppSubmenu from './AppSubmenu.vue';
-
+<script>
 export default {
-  components: {
-    AppSubmenu
-  },
-  props: {
-    model: {
-      type: Array,
-      default: () => ([])
-    }
-  },
-  emits: ['menuitem-click'],
-  computed: {
-    darkTheme() {
-      return this.$appState.darkTheme;
-    }
-  },
-  methods: {
-    onMenuItemClick(event) {
-      this.$emit('menuitem-click', event);
-    },
-    bannerImage() {
-      return this.$appState.darkTheme ? '/images/banner-primeblocks-dark.png' : '/images/banner-primeblocks.png';
-    }
+  data() {
+    return {
+      menu: [
+        {
+          label: 'Processo',
+          link: '/',
+          icon: 'pi-file'
+        },
+        {
+          label: 'Pendências',
+          link: '/',
+          icon: 'pi-envelope'
+        }
+      ]
+    };
   }
 };
 </script>
 
 <template>
-  <div class="layout-menu-container">
-    <AppSubmenu :items="model" class="layout-menu" :root="true" @menuitem-click="onMenuItemClick" />
+  <div>
+    <strong class="text-white">MENU</strong>
+    <div v-for="item in menu" :key="item.label">
+      <div class="mb-4 mt-3">
+        <i :class="`${item.icon} pi pi-fw text-white mr-2 text-lg`" style="vertical-align:center;" />
+        <NuxtLink :to="item.link" class="text-white text-lg">
+          {{ item.label }}
+        </NuxtLink>
+      </div>
+    </div>
   </div>
 </template>
 
-<style scoped>
+<style>
 
 </style>

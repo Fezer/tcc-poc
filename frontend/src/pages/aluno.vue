@@ -6,7 +6,7 @@ export default {
 
 <template>
   <div class="card">
-    <h4>Dados do aluno</h4>
+    <h5>Dados do aluno</h5>
 
     <div class="grid">
       <div class="col-4">
