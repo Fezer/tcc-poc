@@ -1,4 +1,4 @@
-package br.ufpr.estagio.poc;
+package br.ufpr.estagio.poc.model;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

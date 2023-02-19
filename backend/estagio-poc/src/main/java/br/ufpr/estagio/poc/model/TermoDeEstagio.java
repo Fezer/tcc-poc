@@ -1,4 +1,4 @@
-package br.ufpr.estagio.poc;
+package br.ufpr.estagio.poc.model;
 
 import java.sql.Date;
 

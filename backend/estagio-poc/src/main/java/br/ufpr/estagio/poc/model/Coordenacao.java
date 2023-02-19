@@ -1,6 +1,6 @@
-package br.ufpr.estagio.poc;
+package br.ufpr.estagio.poc.model;
 
-import br.ufpr.estagio.poc.TermoDeEstagio;
+import br.ufpr.estagio.poc.model.TermoDeEstagio;
 
 public class Coordenacao {
 	private int id;
