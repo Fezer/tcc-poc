@@ -8,7 +8,7 @@ public class TermoDeEstagio {
 	
 	private String seguradora;
 	private String agenteIntegrador;
-	private Estagio estagio;
+//	private Estagio estagio;
 	private String coordenadorCurso;
 	private Date dataInicio;
 	private Date dataTermino;
@@ -32,7 +32,7 @@ public class TermoDeEstagio {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoDeEstagio(int id, String seguradora, String agenteIntegrador, Estagio estagio, String coordenadorCurso,
+	public TermoDeEstagio(int id, String seguradora, String agenteIntegrador, String coordenadorCurso,
 			Date dataInicio, Date dataTermino, int jornadaDiaria, int jornadaSemanal, float valorBolsa,
 			float valorTransporte, Date dataFimSuspensao, Date dataInicioRetomada, Date dataCriacao,
 			String motivoIndeferimento, String descricaoAjustes, String orientador, String supervisor,
@@ -41,7 +41,7 @@ public class TermoDeEstagio {
 		this.id = id;
 		this.seguradora = seguradora;
 		this.agenteIntegrador = agenteIntegrador;
-		this.estagio = estagio;
+		//this.estagio = estagio;
 		this.coordenadorCurso = coordenadorCurso;
 		this.dataInicio = dataInicio;
 		this.dataTermino = dataTermino;
@@ -82,14 +82,6 @@ public class TermoDeEstagio {
 
 	public void setAgenteIntegrador(String agenteIntegrador) {
 		this.agenteIntegrador = agenteIntegrador;
-	}
-
-	public Estagio getEstagio() {
-		return estagio;
-	}
-
-	public void setEstagio(Estagio estagio) {
-		this.estagio = estagio;
 	}
 
 	public String getCoordenadorCurso() {
