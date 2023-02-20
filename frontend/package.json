@@ -62,10 +62,15 @@
   },
   "homepage": "https://github.com/who-jonson/sakai-nuxt#readme",
   "repository": {
-    "url": "https://github.com/who-jonson/sakai-nuxt",
+    "url": "git+https://github.com/who-jonson/sakai-nuxt.git",
     "type": "git"
   },
   "bugs": {
     "url": "https://github.com/who-jonson/sakai-nuxt/issues"
-  }
+  },
+  "description": "> #### You should consider using [Sakai Nuxt Theme](https://github.com/who-jonson/sakai-nuxt-theme).",
+  "version": "1.0.0",
+  "main": ".eslintrc.js",
+  "author": "",
+  "license": "ISC"
 }
