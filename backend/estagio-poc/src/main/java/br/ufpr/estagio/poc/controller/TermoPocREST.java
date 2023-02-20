@@ -52,6 +52,8 @@ public class TermoPocREST {
 			} else {
 				return ResponseEntity.status(HttpStatus.OK).body(lista.stream().map(e -> mapper.map(e, TermoPocDTO.class)).collect(Collectors.toList()));
 			}
+		}catch(PocException e) {
+			throw e;
 		}catch(Exception e) {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
@@ -66,6 +68,8 @@ public class TermoPocREST {
 		} else {
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termo, TermoPocDTO.class));
 		}
+		}catch(PocException e) {
+			throw e;
 		}catch(Exception e) {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
@@ -78,10 +82,12 @@ public class TermoPocREST {
 		if(termofind.isEmpty()) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
 		} else {
-			repo.save(mapper.map(termo, TermoPoc.class));
+			repo.save(mapper.map(termofind, TermoPoc.class));
 			termofind = repo.findById(id);
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
 		}
+		}catch(PocException e) {
+			throw e;
 		}catch(Exception e) {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
@@ -94,9 +100,11 @@ public class TermoPocREST {
 		if(termofind.isEmpty()) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
 		} else {
-			repo.delete(mapper.map(termofind, TermoPoc.class));
+			repo.deleteById(id);
 			return ResponseEntity.status(HttpStatus.OK).body(null);
 		}
+		}catch(PocException e) {
+			throw e;
 		}catch(Exception e) {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
