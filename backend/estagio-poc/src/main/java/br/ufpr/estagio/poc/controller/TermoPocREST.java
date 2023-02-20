@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.poc.model.TermoPocDTO;
 import br.ufpr.estagio.poc.exception.PocException;
+import br.ufpr.estagio.poc.model.JustificativaDTO;
 import br.ufpr.estagio.poc.model.TermoPoc;
 import br.ufpr.estagio.poc.repository.TermoPocRepository;
 
@@ -135,21 +136,26 @@ public class TermoPocREST {
 	}
 	
 	@PutMapping("/termo/reprovar/coafe/{id}")
-	public ResponseEntity<TermoPocDTO> reprovarCoafe(@PathVariable Long id, @RequestParam String justificativa){
+	public ResponseEntity<TermoPocDTO> reprovarCoafe(@PathVariable Long id, @RequestBody JustificativaDTO requestBody){
 		try {
+			String justificativa = requestBody.getJustificativa();
 			Optional<TermoPoc> termofind = repo.findById(id);
 			if(termofind.isEmpty()) {
 				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
 			} else {
-				TermoPoc termo = new TermoPoc();
-				termo = termofind.get();
-				termo.setStatusTermo("Reprovado");
-				termo.setStatusEstagio("Reprovado");
-				termo.setParecerCOAFE("Reprovado");
-				termo.setMotivoIndeferimento(justificativa);
-				repo.save(mapper.map(termo, TermoPoc.class));
-				termofind = repo.findById(id);
-				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
+				if (justificativa.isBlank() || justificativa.isEmpty()){
+					throw new PocException(HttpStatus.BAD_REQUEST, "O motivo do indeferimento deve ser informado!");
+				} else {
+					TermoPoc termo = new TermoPoc();
+					termo = termofind.get();
+					termo.setStatusTermo("Reprovado");
+					termo.setStatusEstagio("Reprovado");
+					termo.setParecerCOAFE("Reprovado");
+					termo.setMotivoIndeferimento(justificativa);
+					repo.save(mapper.map(termo, TermoPoc.class));
+					termofind = repo.findById(id);
+					return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
+				}
 			}
 		}catch(PocException e) {
 			throw e;
