@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "72bf69e9-c2a9-494e-83a3-a8427d1e979c",
+		"name": "TCC-PoC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18567474"
+	},
+	"item": [
+		{
+			"name": "Termo",
+			"item": [
+				{
+					"name": "listTermos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createTermo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"statusTermo\": \"Em Aprovacao\",\r\n    \"etapaFluxo\": \"COAFE\",\r\n    \"grrAluno\": \"grr20201212\",\r\n    \"tipoEstagio\": \"Obrigatorio\",\r\n    \"estagioUfpr\": \"false\",\r\n    \"jornadaDiaria\": 8,\r\n    \"jornadaSemanal\": 40,\r\n    \"dataInicio\": \"\",\r\n    \"dataTermino\": \"\", \r\n    \"valorBolsa\": 2000,\r\n    \"valorTransporte\": 200,\r\n    \"nomeSupervisor\": \"Fulano\",\r\n    \"telefoneSupervisor\": \"041999919999\",\r\n    \"formacaoSupervisor\": \"Analista de Sistemas\",\r\n    \"nomeOrientador\": \"Ciclano\",\r\n    \"departamentoOrientador\": \"SEPT\",\r\n    \"atividadesEstagio\": \"Muitas atividades\",\r\n    \"nomeContratante\": \"Contratante\",\r\n    \"tipoContratante\": \"PJ\",\r\n    \"cnpjContratente\": \"134918231124\",\r\n    \"telefoneContratante\": \"041999919999\",\r\n    \"numeroApolice\": \"1234\",\r\n    \"enderecoContratente\": \"Rua das flores, 123\",\r\n    \"cidadeContratante\": \"Curitiba\",\r\n    \"estadoContratante\": \"PR\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateTermo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"statusTermo\": \"Em Aprovacao\",\r\n    \"etapaFluxo\": \"COAFE\",\r\n    \"grrAluno\": \"grr20201212\",\r\n    \"tipoEstagio\": \"Obrigatorio\",\r\n    \"estagioUfpr\": \"false\",\r\n    \"jornadaDiaria\": 8,\r\n    \"jornadaSemanal\": 40,\r\n    \"dataInicio\": \"\",\r\n    \"dataTermino\": \"\", \r\n    \"valorBolsa\": 2000,\r\n    \"valorTransporte\": 200,\r\n    \"nomeSupervisor\": \"Fulano\",\r\n    \"telefoneSupervisor\": \"041999919999\",\r\n    \"formacaoSupervisor\": \"Analista de Sistemas\",\r\n    \"nomeOrientador\": \"Ciclano\",\r\n    \"departamentoOrientador\": \"SEPT\",\r\n    \"atividadesEstagio\": \"Muitas atividades\",\r\n    \"nomeContratante\": \"Contratante\",\r\n    \"tipoContratante\": \"PJ\",\r\n    \"cnpjContratente\": \"134918231124\",\r\n    \"telefoneContratante\": \"041999919999\",\r\n    \"numeroApolice\": \"1234\",\r\n    \"enderecoContratente\": \"Rua das flores, 123\",\r\n    \"cidadeContratante\": \"Curitiba\",\r\n    \"estadoContratante\": \"PR\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTermo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
