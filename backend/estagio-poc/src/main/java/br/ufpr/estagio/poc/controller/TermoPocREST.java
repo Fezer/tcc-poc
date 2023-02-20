@@ -109,4 +109,25 @@ public class TermoPocREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
+	
+	// begin 001
+	@PutMapping("/status/{id}")
+	public ResponseEntity<TermoPocDTO> deferir(@PathVariable Long id, @RequestBody TermoPocDTO termo){
+		try {
+			Optional<TermoPoc> termofind = repo.findById(id);
+		if(termofind.isEmpty()) {
+			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+		} else {
+			termo.setStatusTermo("Aprovado");
+			repo.save(mapper.map(termofind, TermoPoc.class));
+			termofind = repo.findById(id);
+			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
+		}
+		}catch(PocException e) {
+			throw e;
+		}catch(Exception e) {
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	// end 001
 }
