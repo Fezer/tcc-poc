@@ -17,16 +17,30 @@ public class TermoPoc implements Serializable{
 	
 	@Column(name = "id")
 	private long id;
+	@Column(name = "tipoEstagio")
+	private String tipoEstagio;
+	@Column(name = "statusEstagio")
+	private String statusEstagio;
+	@Column(name = "estagioUfpr")
+	private boolean estagioUfpr;
+	@Column(name = "grrAluno")
+	private String grrAluno;
+	@Column(name = "tipoTermoDeEstagio")
+	private String tipoTermoDeEstagio;
 	@Column(name = "statusTermo")
 	private String statusTermo;
 	@Column(name = "etapaFluxo")
 	private String etapaFluxo;
-	@Column(name = "grrAluno")
-	private String grrAluno;
-	@Column(name = "tipoEstagio")
-	private String tipoEstagio;
-	@Column(name = "estagioUfpr")
-	private boolean estagioUfpr;
+	@Column(name = "parecerCOE")
+	private String parecerCOE;
+	@Column(name = "parecerCOAFE")
+	private String parecerCOAFE;
+	@Column(name = "parecerCoordenacao")
+	private String parecerCoordenacao;
+	@Column(name = "motivoIndeferimento")
+	private String motivoIndeferimento;
+	@Column(name = "descricaoAjustes")
+	private String descricaoAjustes;
 	@Column(name = "jornadaDiaria")
 	private int jornadaDiaria;
 	@Column(name = "jornadaSemanal")
@@ -73,19 +87,28 @@ public class TermoPoc implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoPoc(long id, String statusTermo, String etapaFluxo, String grrAluno, String tipoEstagio,
-			boolean estagioUfpr, int jornadaDiaria, int jornadaSemanal, Date dataInicio, Date dataTermino,
-			float valorBolsa, float valorTransporte, String nomeSupervisor, String telefoneSupervisor,
-			String formacaoSupervisor, String nomeOrientador, String departamentoOrientador, String atividadesEstagio,
-			String nomeContratante, String tipoContratante, String cnpjContratente, String telefoneContratante,
-			String numeroApolice, String enderecoContratente, String cidadeContratante, String estadoContratante) {
+	public TermoPoc(long id, String tipoEstagio, String statusEstagio, boolean estagioUfpr, String grrAluno,
+			String tipoTermoDeEstagio, String statusTermo, String etapaFluxo, String parecerCOE, String parecerCOAFE,
+			String parecerCoordenacao, String motivoIndeferimento, String descricaoAjustes, int jornadaDiaria,
+			int jornadaSemanal, Date dataInicio, Date dataTermino, float valorBolsa, float valorTransporte,
+			String nomeSupervisor, String telefoneSupervisor, String formacaoSupervisor, String nomeOrientador,
+			String departamentoOrientador, String atividadesEstagio, String nomeContratante, String tipoContratante,
+			String cnpjContratente, String telefoneContratante, String numeroApolice, String enderecoContratente,
+			String cidadeContratante, String estadoContratante) {
 		super();
 		this.id = id;
+		this.tipoEstagio = tipoEstagio;
+		this.statusEstagio = statusEstagio;
+		this.estagioUfpr = estagioUfpr;
+		this.grrAluno = grrAluno;
+		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
 		this.statusTermo = statusTermo;
 		this.etapaFluxo = etapaFluxo;
-		this.grrAluno = grrAluno;
-		this.tipoEstagio = tipoEstagio;
-		this.estagioUfpr = estagioUfpr;
+		this.parecerCOE = parecerCOE;
+		this.parecerCOAFE = parecerCOAFE;
+		this.parecerCoordenacao = parecerCoordenacao;
+		this.motivoIndeferimento = motivoIndeferimento;
+		this.descricaoAjustes = descricaoAjustes;
 		this.jornadaDiaria = jornadaDiaria;
 		this.jornadaSemanal = jornadaSemanal;
 		this.dataInicio = dataInicio;
@@ -116,6 +139,46 @@ public class TermoPoc implements Serializable{
 		this.id = id;
 	}
 
+	public String getTipoEstagio() {
+		return tipoEstagio;
+	}
+
+	public void setTipoEstagio(String tipoEstagio) {
+		this.tipoEstagio = tipoEstagio;
+	}
+
+	public String getStatusEstagio() {
+		return statusEstagio;
+	}
+
+	public void setStatusEstagio(String statusEstagio) {
+		this.statusEstagio = statusEstagio;
+	}
+
+	public boolean isEstagioUfpr() {
+		return estagioUfpr;
+	}
+
+	public void setEstagioUfpr(boolean estagioUfpr) {
+		this.estagioUfpr = estagioUfpr;
+	}
+
+	public String getGrrAluno() {
+		return grrAluno;
+	}
+
+	public void setGrrAluno(String grrAluno) {
+		this.grrAluno = grrAluno;
+	}
+
+	public String getTipoTermoDeEstagio() {
+		return tipoTermoDeEstagio;
+	}
+
+	public void setTipoTermoDeEstagio(String tipoTermoDeEstagio) {
+		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
+	}
+
 	public String getStatusTermo() {
 		return statusTermo;
 	}
@@ -132,28 +195,44 @@ public class TermoPoc implements Serializable{
 		this.etapaFluxo = etapaFluxo;
 	}
 
-	public String getGrrAluno() {
-		return grrAluno;
+	public String getParecerCOE() {
+		return parecerCOE;
 	}
 
-	public void setGrrAluno(String grrAluno) {
-		this.grrAluno = grrAluno;
+	public void setParecerCOE(String parecerCOE) {
+		this.parecerCOE = parecerCOE;
 	}
 
-	public String getTipoEstagio() {
-		return tipoEstagio;
+	public String getParecerCOAFE() {
+		return parecerCOAFE;
 	}
 
-	public void setTipoEstagio(String tipoEstagio) {
-		this.tipoEstagio = tipoEstagio;
+	public void setParecerCOAFE(String parecerCOAFE) {
+		this.parecerCOAFE = parecerCOAFE;
 	}
 
-	public boolean isEstagioUfpr() {
-		return estagioUfpr;
+	public String getParecerCoordenacao() {
+		return parecerCoordenacao;
 	}
 
-	public void setEstagioUfpr(boolean estagioUfpr) {
-		this.estagioUfpr = estagioUfpr;
+	public void setParecerCoordenacao(String parecerCoordenacao) {
+		this.parecerCoordenacao = parecerCoordenacao;
+	}
+
+	public String getMotivoIndeferimento() {
+		return motivoIndeferimento;
+	}
+
+	public void setMotivoIndeferimento(String motivoIndeferimento) {
+		this.motivoIndeferimento = motivoIndeferimento;
+	}
+
+	public String getDescricaoAjustes() {
+		return descricaoAjustes;
+	}
+
+	public void setDescricaoAjustes(String descricaoAjustes) {
+		this.descricaoAjustes = descricaoAjustes;
 	}
 
 	public int getJornadaDiaria() {
