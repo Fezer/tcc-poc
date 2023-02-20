@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.poc.model.TermoPocDTO;
@@ -110,24 +111,50 @@ public class TermoPocREST {
 		}
 	}
 	
-	// begin 001
-	@PutMapping("/status/{id}")
-	public ResponseEntity<TermoPocDTO> deferir(@PathVariable Long id, @RequestBody TermoPocDTO termo){
+	@PutMapping("/termo/aprovar/coafe/{id}")
+	public ResponseEntity<TermoPocDTO> aprovarCoafe(@PathVariable Long id){
 		try {
 			Optional<TermoPoc> termofind = repo.findById(id);
-		if(termofind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
-		} else {
-			termo.setStatusTermo("Aprovado");
-			repo.save(mapper.map(termofind, TermoPoc.class));
-			termofind = repo.findById(id);
-			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
-		}
+			if(termofind.isEmpty()) {
+				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+			} else {
+				TermoPoc termo = new TermoPoc();
+				termo = termofind.get();
+				termo.setStatusTermo("Aprovado");
+				termo.setStatusEstagio("Aprovado");
+				termo.setParecerCOAFE("Aprovado");
+				repo.save(mapper.map(termo, TermoPoc.class));
+				termofind = repo.findById(id);
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
+			}
 		}catch(PocException e) {
 			throw e;
 		}catch(Exception e) {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-	// end 001
+	
+	@PutMapping("/termo/reprovar/coafe/{id}")
+	public ResponseEntity<TermoPocDTO> reprovarCoafe(@PathVariable Long id, @RequestParam String justificativa){
+		try {
+			Optional<TermoPoc> termofind = repo.findById(id);
+			if(termofind.isEmpty()) {
+				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+			} else {
+				TermoPoc termo = new TermoPoc();
+				termo = termofind.get();
+				termo.setStatusTermo("Reprovado");
+				termo.setStatusEstagio("Reprovado");
+				termo.setParecerCOAFE("Reprovado");
+				termo.setMotivoIndeferimento(justificativa);
+				repo.save(mapper.map(termo, TermoPoc.class));
+				termofind = repo.findById(id);
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
+			}
+		}catch(PocException e) {
+			throw e;
+		}catch(Exception e) {
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
 }
