@@ -65,4 +65,10 @@ export default defineNuxtConfig({
     clearScreen: true,
     logLevel: "info",
   },
+
+  runtimeConfig: {
+    public: {
+      baseURL: "http://localhost:5000",
+    },
+  },
 });

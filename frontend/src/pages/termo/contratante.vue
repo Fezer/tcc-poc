@@ -1,6 +1,11 @@
 <script>
 export default {
-
+  props: {
+    termo: {
+      type: Object,
+      required: true
+    }
+  }
 };
 </script>
 
@@ -11,35 +16,35 @@ export default {
     <div class="grid">
       <div class="col-4">
         <strong>Nome do Contratante</strong>
-        <p>Padaria João Leopoldo</p>
+        <p>{{ termo?.nomeContratante }}</p>
       </div>
       <div class="col-4">
         <strong>Tipo do Contratante</strong>
-        <p>Pessoa Jurídica</p>
+        <p>{{ termo?.tipoContratante }}</p>
       </div>
       <div class="col-4">
         <strong>CNPJ</strong>
-        <p>XX.XXX.XXX/0001-XX</p>
+        <p>{{ termo?.cnpjContratente }}</p>
       </div>
       <div class="col-4">
         <strong>Telefone do Contratante</strong>
-        <p>Seguradora de Seguros</p>
+        <p>{{ termo?.telefoneContratante }}</p>
       </div>
       <div class="col-4">
         <strong>Número da Apólice</strong>
-        <p>12490-12</p>
+        <p>{{ termo?.numeroApolice }}</p>
       </div>
       <div class="col-4">
-        <strong>Rua</strong>
-        <p>Avenida Senador Salgado Filho, 1244</p>
+        <strong>Endereço</strong>
+        <p>{{ termo?.enderecoContratente }}</p>
       </div>
       <div class="col-4">
         <strong>Cidade</strong>
-        <p>Curitiba</p>
+        <p>{{ termo?.cidadeContratante }}</p>
       </div>
       <div class="col-4">
         <strong>Estado</strong>
-        <p>PR</p>
+        <p>{{ termo?.estadoContratante }}</p>
       </div>
     </div>
   </div>

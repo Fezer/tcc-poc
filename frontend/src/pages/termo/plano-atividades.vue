@@ -1,0 +1,47 @@
+<script>
+export default {
+  props: {
+    termo: {
+      type: Object,
+      required: true
+    }
+  }
+};
+</script>
+
+<template>
+  <div class="card">
+    <h5>Plano de Atividades</h5>
+
+    <div class="grid">
+      <div class="col-4">
+        <strong>Nome do Supervisor no Local de Estágio</strong>
+        <p>{{ termo?.nomeSupervisor }}</p>
+      </div>
+      <div class="col-4">
+        <strong>Telefone do Supervisor</strong>
+        <p>{{ termo?.telefoneSupervisor }}</p>
+      </div>
+      <div class="col-4">
+        <strong>Formação do Supervisor</strong>
+        <p>{{ termo?.formacaoSupervisor }}o</p>
+      </div>
+      <div class="col-4">
+        <strong>Nome Professor Orientador UFPR</strong>
+        <p>Prof. {{ termo?.nomeOrientador }}</p>
+      </div>
+      <div class="col-4">
+        <strong>Departamento do Orientador</strong>
+        <p>{{ termo?.departamentoOrientador }}</p>
+      </div>
+      <div class="col-12">
+        <strong>Atividades a serem desenvolvidas</strong>
+        <p>{{ termo?.atividadesEstagio }}</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style>
+
+</style>

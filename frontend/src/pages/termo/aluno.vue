@@ -1,7 +1,15 @@
 <script>
 export default {
-
+  props: {
+    aluno: {
+      type: Object,
+      default: () => ({})
+    }
+  }
 };
+</script>
+
+<script scoped>
 </script>
 
 <template>
@@ -11,45 +19,41 @@ export default {
     <div class="grid">
       <div class="col-4">
         <strong>Nome completo</strong>
-        <p>João Ferreira Souza</p>
+        <p>{{ aluno?.nome }}</p>
       </div>
       <div class="col-4">
         <strong>PcD</strong>
-        <p>Não</p>
+        <p>{{ aluno?.isPcD ? "Sim" : "Não" }}</p>
       </div>
       <div class="col-4">
         <strong>Data de Nascimento</strong>
-        <p>31/05/2000</p>
+        <p>{{ aluno?.dataNascimento }}</p>
       </div>
-      <div class="col-4">
+      <!-- <div class="col-4">
         <strong>CPF</strong>
         <p>111.111.111-11</p>
-      </div>
+      </div> -->
       <div class="col-4">
         <strong>RG</strong>
-        <p>1.111.111-1</p>
+        <p>{{ aluno?.rg }}</p>
       </div>
       <div class="col-4">
         <strong>GRR</strong>
-        <p>GRR20230000</p>
+        <p>{{ aluno?.grr }}</p>
       </div>
 
       <div class="col-4">
         <strong>Email</strong>
-        <p>joaosouza@ufpr.br</p>
-      </div>
-      <div class="col-4">
-        <strong>Email</strong>
-        <p>joaosouza@ufpr.br</p>
+        <p>{{ aluno?.email }}</p>
       </div>
 
       <div class="col-4">
         <strong>Período Atual</strong>
-        <p>6</p>
+        <p>{{ aluno?.periodoAtual }}</p>
       </div>
       <div class="col-6">
         <strong>Curso</strong>
-        <p>Tecnologia em Análise e Desenvolvimento de Sistemas</p>
+        <p>{{ aluno?.curso }}</p>
       </div>
     </div>
   </div>
