@@ -41,6 +41,7 @@ public class TermoPocREST {
 		Optional<TermoPoc> newTermo = repo.findByGrrAluno(termo.getGrrAluno());
 		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newTermo, TermoPocDTO.class));
 		}catch(Exception e) {
+			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
@@ -55,8 +56,10 @@ public class TermoPocREST {
 				return ResponseEntity.status(HttpStatus.OK).body(lista.stream().map(e -> mapper.map(e, TermoPocDTO.class)).collect(Collectors.toList()));
 			}
 		}catch(PocException e) {
+			e.printStackTrace();
 			throw e;
 		}catch(Exception e) {
+			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
@@ -71,8 +74,10 @@ public class TermoPocREST {
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termo, TermoPocDTO.class));
 		}
 		}catch(PocException e) {
+			e.printStackTrace();
 			throw e;
 		}catch(Exception e) {
+			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
@@ -89,8 +94,10 @@ public class TermoPocREST {
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
 		}
 		}catch(PocException e) {
+			e.printStackTrace();
 			throw e;
 		}catch(Exception e) {
+			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
@@ -106,8 +113,10 @@ public class TermoPocREST {
 			return ResponseEntity.status(HttpStatus.OK).body(null);
 		}
 		}catch(PocException e) {
+			e.printStackTrace();
 			throw e;
 		}catch(Exception e) {
+			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
@@ -129,8 +138,10 @@ public class TermoPocREST {
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
 			}
 		}catch(PocException e) {
+			e.printStackTrace();
 			throw e;
 		}catch(Exception e) {
+			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
@@ -158,8 +169,10 @@ public class TermoPocREST {
 				}
 			}
 		}catch(PocException e) {
+			e.printStackTrace();
 			throw e;
 		}catch(Exception e) {
+			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
