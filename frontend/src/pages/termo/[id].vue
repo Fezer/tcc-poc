@@ -3,15 +3,25 @@ import aluno from './aluno.vue';
 import Contratante from './contratante.vue';
 import estagio from './estagio.vue';
 import planoAtividades from './plano-atividades.vue';
+import Status from './status.vue';
 export default {
-  components: { Aluno: aluno, Estagio: estagio, PlanoAtividades: planoAtividades, Contratante },
+  components: { Aluno: aluno, Estagio: estagio, PlanoAtividades: planoAtividades, Contratante, Status },
+  data() {
+    return {
+      displayConfirmation: false,
+      justificativa: ''
+    };
+  },
   methods: {
     async responderTermo(resposta) {
+      this.displayConfirmation = false;
       const respostaFormated = resposta === 'aprovar' ? 'aprovado' : 'reprovado';
 
       await fetch(`http://localhost:5000/termo/${resposta}/coafe/${useRoute().params.id}`, {
         method: 'PUT',
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          justificativa: this.justificativa
+        }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -20,7 +30,7 @@ export default {
         this.$toast.add({ severity: 'success', summary: `${respostaFormated.toUpperCase()}`, detail: `Termo ${respostaFormated} com sucesso`, life: 3000 });
       }).catch((err) => {
         console.error(err);
-        this.$toast.add({ severity: 'error', summary: 'Ops!', detail: `Tivemos um problema para ${respostaFormated} o termo`, life: 3000 });
+        this.$toast.add({ severity: 'error', summary: 'Ops!', detail: 'Tivemos um problema ao efetivar a análise do termo.', life: 3000 });
       });
     }
   }
@@ -33,9 +43,13 @@ const route = useRoute();
 
 const { id } = route.params;
 
-const { data: termo } = await useFetch(`http://localhost:5000/termo/${id}`);
+const { data: termo, refresh } = await useFetch(`http://localhost:5000/termo/${id}`);
 
-const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
+// const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
+
+function refreshData() {
+  refresh();
+}
 </script>
 
 <template>
@@ -44,30 +58,7 @@ const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo
     <small>Processos > Ver processo</small>
     <h2>Termo de Compromisso</h2>
 
-    <div class="card">
-      <h4>Andamento do processo</h4>
-
-      <ProgressBar :value="50" :show-value="false" style="height:15px;" class="mb-3" />
-
-      <div>
-        <div class="grid">
-          <div class="text-box col-6">
-            <strong>Status</strong>
-            <span class="text-blue-500">
-              ANÁLISE {{ termo?.etapaFluxo }}
-            </span>
-          </div>
-          <!-- <div class="text-box col-6">
-            <strong>Data de Início do processo</strong>
-            <span>01/01/2021</span>
-          </div> -->
-        </div>
-        <div>
-          <strong>Detalhes</strong>
-          <p>Ut hendrerit nisl a varius euismod. Morbi tincidunt sodales augue, vel ullamcorper diam tincidunt ut. Quisque convallis dolor elit, eu porta odio iaculis et. Vivamus tincidunt fermentum egestas. Nam eu imperdiet elit. Sed lorem massa, rutrum quis feugiat ut, porta quis nibh. Morbi tempus magna at risus pellentesque sodales. Donec quis neque ac tellus mollis eleifend. Mauris nisi eros, congue nec imperdiet porta, accumsan vel orci. Curabitur elementum eleifend felis nec egestas. Vivamus sed dolor vitae turpis aliquet placerat. Vestibulum bibendum tellus eros, sed elementum neque venenatis et. Quisque sit amet venenatis ante, eu fringilla tellus. </p>
-        </div>
-      </div>
-    </div>
+    <Status :etapa="termo?.etapaFluxo" :status="termo?.statusTermo" :motivo="termo?.motivoIndeferimento" />
 
     <Aluno :aluno="dadosAluno" />
 
@@ -77,14 +68,32 @@ const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo
 
     <Contratante :termo="termo" />
 
-    <div class="flex align-items-end justify-content-end gap-2">
-      <Button class="   p-button-success" @click="() => responderTermo('aprovar')">
+    <div v-if="termo?.statusTermo === 'EmAprovacao'" class="flex align-items-end justify-content-end gap-2">
+      <Button class="   p-button-success" @click="() => responderTermo('aprovar').then(() => refresh())">
         Aprovar
       </Button>
-      <Button class="p-button-danger" @click="() => responderTermo('reprovar')">
+      <Button class="p-button-danger" @click="() => displayConfirmation = true">
         Indeferir
       </Button>
     </div>
+    <Dialog :visible="displayConfirmation" header="Justificativa indeferimento" style="min-width: 500px;" :modal="true">
+      <div class="flex align-items-center justify-content-center flex-column">
+        <Textarea
+          id="justificativa"
+          v-model="justificativa" style="min-width: 100%;" name="justificativa"
+          cols="30"
+          rows="10"
+        />
+      </div>
+      <template #footer>
+        <Button label="Cancelar" icon="pi pi-times" class="p-button-secondary" @click="displayConfirmation = false" />
+        <Button
+          label="Indeferir" icon="pi pi-check" class="p-button-danger"
+          autofocus
+          @click=" responderTermo('reprovar').then(() => refresh())"
+        />
+      </template>
+    </Dialog>
   </div>
 </template>
 
