@@ -37,8 +37,7 @@ public class TermoPocREST {
 	@PostMapping("/termo")
 	public ResponseEntity<TermoPocDTO> inserir(@RequestBody TermoPocDTO termo){
 		try {
-		repo.save(mapper.map(termo, TermoPoc.class));
-		Optional<TermoPoc> newTermo = repo.findByGrrAluno(termo.getGrrAluno());
+		TermoPoc newTermo = repo.save(mapper.map(termo, TermoPoc.class));
 		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newTermo, TermoPocDTO.class));
 		}catch(Exception e) {
 			e.printStackTrace();
