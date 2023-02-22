@@ -27,16 +27,16 @@ public class AlunoPocREST {
 	@GetMapping("/aluno/{grr}")
 	public ResponseEntity<AlunoPocDTO> listarTermo(@PathVariable String grr){
 		try {
-		if(grr.isBlank() || grr.isEmpty()) {
-			throw new PocException(HttpStatus.BAD_REQUEST, "GRR não informado!");
-		} else {
-			RestTemplate restTemplate = new RestTemplate();
-			URI uri = UriComponentsBuilder.fromUriString("https://siga.ufpr.br:8380/siga/api/graduacao/discentes").queryParam("grr", grr).build().toUri();
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", "AquiVaiOToken");
-			AlunoPocDTO aluno = restTemplate.getForEntity(uri, AlunoPocDTO.class).getBody();
-			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(aluno, AlunoPocDTO.class));
-		}
+			if(grr.isBlank() || grr.isEmpty()) {
+				throw new PocException(HttpStatus.BAD_REQUEST, "GRR não informado!");
+			} else {
+				RestTemplate restTemplate = new RestTemplate();
+				URI uri = UriComponentsBuilder.fromUriString("https://siga.ufpr.br:8380/siga/api/graduacao/discentes").queryParam("grr", grr).build().toUri();
+	            HttpHeaders headers = new HttpHeaders();
+	            headers.set("Authorization", "AquiVaiOToken");
+				AlunoPocDTO aluno = restTemplate.getForEntity(uri, AlunoPocDTO.class).getBody();
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(aluno, AlunoPocDTO.class));
+			}
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;
