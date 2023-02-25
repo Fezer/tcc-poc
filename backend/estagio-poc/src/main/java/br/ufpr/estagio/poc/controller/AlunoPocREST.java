@@ -18,11 +18,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.ufpr.estagio.poc.exception.PocException;
-import br.ufpr.estagio.poc.model.AlunoPocDTO;
 import br.ufpr.estagio.poc.model.Discente;
 import br.ufpr.estagio.poc.model.TermoPoc;
 import br.ufpr.estagio.poc.repository.TermoPocRepository;
-import br.ufpr.estagio.poc.wrapper.DiscenteWrapper;
+import br.ufpr.estagio.poc.wrapper.DataWrapper;
 
 @CrossOrigin
 @RestController
@@ -49,10 +48,10 @@ public class AlunoPocREST {
 					URI uri = UriComponentsBuilder.fromUriString("https://siga.ufpr.br:8380/siga/api/graduacao/discentes").queryParam("grr", grr).build().toUri();
 		            RestTemplate restTemplate = new RestTemplate();
 					HttpHeaders headers = new HttpHeaders();
-		            headers.set("Authorization", "tokenaqui");
-		            HttpEntity<String> entity = new HttpEntity<>(headers);
-		            ResponseEntity<DiscenteWrapper> discenteWrapper = restTemplate.exchange(uri, HttpMethod.GET, entity, DiscenteWrapper.class);
-		            Discente discente = discenteWrapper.getBody().getData().getDiscente();
+		            headers.set("Authorization", "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoX3JoMTdNUG1rOWlZalZQMElHTnJwSzdsVlczN25GZ1J4TmFPMEcwZkk0In0.eyJleHAiOjE2NzczNDkxNDAsImlhdCI6MTY3NzM0NTU0MCwiYXV0aF90aW1lIjoxNjc3MzQ1NTQwLCJqdGkiOiI0NTYzMTM4Yi0wYzUzLTQ4MDAtYmJmNi0zNmU2ZjkwYTU2YmYiLCJpc3MiOiJodHRwczovL2xvZ2luLnVmcHIuYnIvcmVhbG1zL21hc3RlciIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJmOjRhNTgyMGJjLWQ2MzMtNGMxZS1hYzhjLWRhOWRlNmRkY2I3OTptb3JhZXMxIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZXN0YWdpb3MiLCJzZXNzaW9uX3N0YXRlIjoiNzM2OGZlMWEtOGQ4YS00Y2VlLTk5NzAtNmQ4ZGI0MjExMDY5IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjMwMDAiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtbWFzdGVyIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUiLCJzaWQiOiI3MzY4ZmUxYS04ZDhhLTRjZWUtOTk3MC02ZDhkYjQyMTEwNjkiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJMZW9uYXJkbyBNb3JhZXMiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtb3JhZXMxIiwiZ2l2ZW5fbmFtZSI6Ikxlb25hcmRvIiwiZmFtaWx5X25hbWUiOiJNb3JhZXMiLCJlbWFpbCI6Im1vcmFlczFAdWZwci5iciJ9.lG8Ox7B9CDXHKd8r0exFmRyTQp5AebVDdvx_HsBuvJuO_MlM9oQZxZ2oJMsXIvNaBlJdEmXyeOelDN5VjfXZb1OmW7b8gBj8occWUeJrmn9kenMJ-6WNj3XswHgQL4I5wrYvkblGt7in66EXglwLaMtq2DsEXa87VWvDwDZkYYgUWVvwddadN2df-Y8BUtoGJw99WieN-PeCcox3e3ZzsAKUlg3fvRNOUqZy0inZWQPXSS-VhOLj4gxAZ9MywwQ_kSqX5zOf4DWhZsgKciZbMSLJ-un7x68tEwX2eoFjMKY79kxXyl-SE65hyH8VAfx97yS8YcW_-ZFAhmge_2I8cA");
+		            HttpEntity<String> header = new HttpEntity<>(headers);
+		            ResponseEntity<DataWrapper> response = restTemplate.exchange(uri, HttpMethod.GET, header, DataWrapper.class);
+		            Discente discente = response.getBody().getData().getDiscente();
 					return ResponseEntity.status(HttpStatus.OK).body(mapper.map(discente, Discente.class));
 				}
 			}
