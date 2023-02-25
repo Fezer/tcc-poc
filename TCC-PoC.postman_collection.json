@@ -46,7 +46,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo/152",
+							"raw": "http://localhost:5000/termo/352",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -54,7 +54,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"152"
+								"352"
 							]
 						}
 					},
@@ -167,7 +167,7 @@
 							"raw": "{\r\n    \"justificativa\": \"Não pode fazer estágio\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/reprovar/coafe/102",
+							"raw": "http://localhost:5000/termo/reprovar/coafe/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -177,7 +177,7 @@
 								"termo",
 								"reprovar",
 								"coafe",
-								"102"
+								"1"
 							]
 						}
 					},
@@ -230,7 +230,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212",
+							"raw": "http://localhost:5000/aluno/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -238,7 +238,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20201212"
+								"1"
 							]
 						}
 					},
@@ -252,17 +252,26 @@
 				{
 					"name": "listAluno",
 					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "AquiVaiOToken",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "https://siga.ufpr.br:8380/siga/api/graduacao/discentes?grr=GRR20201212",
-							"protocol": "https",
+							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/discentes?grr=GRR20201212",
+							"protocol": "http",
 							"host": [
 								"siga",
 								"ufpr",
@@ -286,6 +295,76 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "clientSecret",
+				"value": "2xWHPudAW4hmAsnOYzW9eg4oUUKUHTLu",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://login.ufpr.br/realms/master/protocol/openid-connect/token",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "https://login.ufpr.br/realms/master/protocol/openid-connect/auth",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "estagios",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "body",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "openid",
+				"type": "string"
+			},
+			{
+				"key": "redirect_uri",
+				"value": "http://localhost:3000/api/auth/callback",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "token",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
