@@ -10,4 +10,5 @@ import br.ufpr.estagio.poc.model.TermoPoc;
 public interface TermoPocRepository extends JpaRepository<TermoPoc, Long>{
 	
 	Optional<TermoPoc> findByGrrAluno(String grr);
+	
 }
