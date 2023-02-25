@@ -6,7 +6,7 @@ public class Discente {
 
 	private long idDiscente;
 	private String nome;
-	private boolean isPcd;
+	private boolean isPcD;
 	private Date dataNascimento;
 	private String documento;
 	private String grr;
@@ -21,12 +21,12 @@ public class Discente {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Discente(long idDiscente, String nome, boolean isPcd, Date dataNascimento, String documento, String grr,
+	public Discente(long idDiscente, String nome, boolean isPcD, Date dataNascimento, String documento, String grr,
 			int periodoAtual, String email, String rg, String curso, String turno) {
 		super();
 		this.idDiscente = idDiscente;
 		this.nome = nome;
-		this.isPcd = isPcd;
+		this.isPcD = isPcD;
 		this.dataNascimento = dataNascimento;
 		this.documento = documento;
 		this.grr = grr;
@@ -53,12 +53,12 @@ public class Discente {
 		this.nome = nome;
 	}
 
-	public boolean isPcd() {
-		return isPcd;
+	public boolean isPcD() {
+		return isPcD;
 	}
 
-	public void setPcd(boolean isPcd) {
-		this.isPcd = isPcd;
+	public void setPcD(boolean isPcD) {
+		this.isPcD = isPcD;
 	}
 
 	public Date getDataNascimento() {
