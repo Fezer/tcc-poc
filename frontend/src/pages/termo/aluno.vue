@@ -1,15 +1,17 @@
 <script>
-export default {
-  props: {
-    aluno: {
-      type: Object,
-      default: () => ({})
-    }
-  }
-};
+import dayjs from 'dayjs';
+
+export default {};
 </script>
 
-<script scoped>
+<script setup>
+const route = useRoute();
+
+const { id } = route.params;
+
+const { data: aluno } = await useFetch(`http://localhost:5000/aluno/${id}`);
+
+// console.log(aluno)
 </script>
 
 <template>
@@ -27,7 +29,8 @@ export default {
       </div>
       <div class="col-4">
         <strong>Data de Nascimento</strong>
-        <p>{{ aluno?.dataNascimento }}</p>
+        <!-- get age -->
+        <p>{{ dayjs(new Date(aluno?.dataNascimento || 0)).format("DD/MM/YYYY") }} ({{ dayjs(new Date()).diff(new Date(aluno?.dataNascimento), "year") }} anos)</p>
       </div>
       <!-- <div class="col-4">
         <strong>CPF</strong>

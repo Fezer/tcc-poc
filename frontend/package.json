@@ -12,6 +12,7 @@
     "lint:fix": "npm run lint --fix"
   },
   "dependencies": {
+    "dayjs": "^1.11.7",
     "pinia": "^2.0.30"
   },
   "devDependencies": {

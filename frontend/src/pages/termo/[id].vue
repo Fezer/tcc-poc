@@ -60,7 +60,7 @@ function refreshData() {
 
     <Status :etapa="termo?.etapaFluxo" :status="termo?.statusTermo" :motivo="termo?.motivoIndeferimento" />
 
-    <Aluno :aluno="dadosAluno" />
+    <Aluno />
 
     <Estagio :termo="termo" />
 
