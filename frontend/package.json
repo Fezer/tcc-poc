@@ -14,6 +14,7 @@
   "dependencies": {
     "dayjs": "^1.11.7",
     "pinia": "^2.0.30",
+    "vue-the-mask": "^0.11.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {
@@ -25,6 +26,7 @@
     "@testing-library/vue": "latest",
     "@types/node": "^18.11.18",
     "@types/serialize-javascript": "^5.0.2",
+    "@types/vue-the-mask": "^0.11.1",
     "@vue/compiler-sfc": "^3.2.47",
     "@vueuse/components": "^9.12.0",
     "@vueuse/core": "^9.12.0",
