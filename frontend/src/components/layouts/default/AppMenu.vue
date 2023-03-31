@@ -3,16 +3,16 @@ export default {
   data() {
     return {
       menu: [
-        {
-          label: 'Processo',
+      {
+          label: 'PoC',
           link: '/',
           icon: 'pi-file'
         },
         {
-          label: 'Pendências',
-          link: '/',
-          icon: 'pi-envelope'
-        }
+          label: 'Aluno',
+          link: '/aluno',
+          icon: 'pi-user'
+        },
       ]
     };
   }

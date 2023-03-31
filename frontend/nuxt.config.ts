@@ -50,7 +50,12 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@pinia/nuxt", "@vueuse/nuxt", "~/modules/primevue"],
+  modules: [
+    "@pinia/nuxt",
+    "@vueuse/nuxt",
+    "~/modules/primevue",
+    "@nuxtjs/tailwindcss",
+  ],
 
   nitro: {
     preset: "vercel",
