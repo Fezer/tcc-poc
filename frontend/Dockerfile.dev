@@ -1,0 +1,20 @@
+FROM node:18.12-alpine3.15
+
+# Diretório de trabalho
+WORKDIR /app
+
+# Copia o package.json e o arquivo package-lock.json (se existir) para o diretório de trabalho
+COPY package*.json ./
+
+# Instala as dependências
+RUN npm install
+
+# Copia todos os arquivos da aplicação para o diretório de trabalho
+COPY . .
+
+
+# Expor a porta 3000
+EXPOSE 3000
+
+# Inicia a aplicação em modo de desenvolvimento
+CMD ["npm", "run", "dev", "--", "--watch"]
