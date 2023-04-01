@@ -2,7 +2,7 @@ package br.ufpr.estagio.modulo.dto;
 
 import java.util.Date;
 
-public class AlunoPocDTO {
+public class AlunoDTO {
 
 	private long idDiscente;
 	private String nome;
@@ -15,12 +15,12 @@ public class AlunoPocDTO {
 	private String rg;
 	private String turno;
 	
-	public AlunoPocDTO() {
+	public AlunoDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public AlunoPocDTO(long idDiscente, String nome, boolean isPcD, Date dataNascimento, String documento, String grr,
+	public AlunoDTO(long idDiscente, String nome, boolean isPcD, Date dataNascimento, String documento, String grr,
 			int periodoAtual, String email, String rg, String turno) {
 		super();
 		this.idDiscente = idDiscente;

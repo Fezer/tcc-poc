@@ -1,4 +1,4 @@
-package br.ufpr.estagio.modulo.model;
+package br.ufpr.estagio.modulo.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6,14 +6,14 @@ import java.util.Date;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 
-public class Estagio {
+public class EstagioDTO {
 	
 	private long id;
 	private EnumTipoEstagio tipoEstagio;
 	private EnumStatusEstagio statusEstagio;
 	private boolean estagioUfpr;
-	private Aluno aluno;
-	private Contratante contratante;
+	private AlunoDTO aluno;
+	private ContratanteDTO contratante;
 	private Seguradora seguradora;
 	private AgenteIntegrador agenteIntegrador;
 	private Orientador orientador;
@@ -32,12 +32,12 @@ public class Estagio {
 	private FichaDeAvaliacao fichaDeAvaliacao;
 	private CertificadoDeEstagio certificadoDeEstagio;
 	
-	public Estagio() {
+	public EstagioDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Estagio(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr, Aluno aluno,
+	public EstagioDTO(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr, Aluno aluno,
 			Contratante contratante, Seguradora seguradora, AgenteIntegrador agenteIntegrador, Orientador orientador,
 			Supervisor supervisor, PlanoDeAtividades planoDeAtividades, Date dataInicio, Date dataTermino,
 			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte,
