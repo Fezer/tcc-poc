@@ -11,9 +11,6 @@ dependencies:
   pinia:
     specifier: ^2.0.30
     version: 2.0.30(typescript@4.9.5)(vue@3.2.47)
-  vue-the-mask:
-    specifier: ^0.11.1
-    version: 0.11.1
   zod:
     specifier: ^3.21.4
     version: 3.21.4
@@ -8173,10 +8170,6 @@ packages:
       '@vue/devtools-api': 6.5.0
       vue: 3.2.47
     dev: true
-
-  /vue-the-mask@0.11.1:
-    resolution: {integrity: sha512-UquSfnSWejD0zAfcD+3jJ1chUAkOAyoxya9Lxh9acCRtrlmGcAIvd0cQYraWqKenbuZJUdum+S174atv2AuEHQ==}
-    dev: false
 
   /vue@2.7.14:
     resolution: {integrity: sha512-b2qkFyOM0kwqWFuQmgd4o+uHGU7T+2z3T+WQp8UBjADfEv2n4FEMffzBmCKNP0IGzOEEfYjvtcC62xaSKeQDrQ==}

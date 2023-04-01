@@ -1,3 +1,44 @@
+<script setup>
+import { vMaska } from "maska";
+
+// parse money to BRL currency and R$ prefix
+const moneyMask = {
+  preProcess: (value) => {
+    return value.replace(/\D/g, "");
+  },
+  postProcess: (value) => {
+    if (!value) return "";
+
+    return "R$ " + value.replace(/(\d{1,2})$/, ",$1");
+  },
+};
+</script>
+
+<script>
+export default {
+  data() {
+    return {
+      errors: { dataInicio: "Data inválida" },
+
+      dataInicio: "",
+      dataFinal: "",
+      jornadaDiaria: "",
+      jornadaSemanal: "",
+      bolsaAuxilio: "",
+      auxilioTransporte: "",
+      coordenador: "",
+      orientador: "",
+      departamentoOrientador: "",
+      nomeSupervisor: "",
+      telefoneSupervisor: "",
+      atividades: "",
+    };
+  },
+};
+</script>
+
+<style></style>
+
 <template>
   <div class="grid mt-2">
     <h5 class="mb-0 p-2 mt-4">Dados do Estágio</h5>
@@ -5,22 +46,53 @@
     <div class="col-12">
       <div class="card p-fluid col-12">
         <h5>Periodo de Estágio</h5>
+
         <div class="formgrid grid">
           <div class="field col">
-            <label for="dataInicio">Data de Início</label>
-            <InputText id="dataInicio" type="text" />
+            <label for="dataInicio">Data de Início {{ dataInicio }}</label>
+            <InputText
+              id="dataInicio"
+              type="text"
+              v-maska
+              data-maska="##/##/####"
+              v-model="dataInicio"
+              required
+              :class="errors['dataInicio'] && 'p-invalid'"
+            />
+            <small class="text-rose-500">{{ errors["dataInicio"] }}</small>
           </div>
           <div class="field col">
             <label for="dataFinal">Data de Termino</label>
-            <InputText id="dataFinal" type="text" />
+            <InputText
+              id="dataFinal"
+              type="text"
+              v-maska
+              data-maska="##/##/####"
+              v-model="dataFinal"
+              :class="errors['dataFinal'] && 'p-invalid'"
+            />
+            <small class="text-rose-500">{{ errors["dataFinal"] }}</small>
           </div>
           <div class="field col">
             <label for="jornadaDiaria">Jornada Diária (em horas)</label>
-            <InputText id="jornadaDiaria" type="number" maxlength="2" />
+            <InputText
+              id="jornadaDiaria"
+              type="number"
+              v-maska
+              data-maska="##"
+              v-model="jornadaDiaria"
+            />
           </div>
           <div class="field col">
             <label for="jornadaSemanal">Jornada Semanal (em horas)</label>
-            <InputText id="jornadaSemanal" type="number" maxlength="2" />
+            <InputText
+              id="jornadaSemanal"
+              type="number"
+              maxlength="2"
+              v-maska
+              data-maska="##"
+              v-model="jornadaSemanal"
+            />
           </div>
         </div>
       </div>
@@ -28,14 +100,28 @@
         <h5>Valores da Bolsa Auxílio</h5>
         <div class="formgrid grid">
           <div class="field col">
-            <label for="dataInicio">Valor bolsa auxílio</label>
-            <InputText id="dataInicio" type="text" />
+            <label for="bolsaAuxilio"
+              >Valor bolsa auxílio {{ bolsaAuxilio }}</label
+            >
+            <InputText
+              id="bolsaAuxilio"
+              v-maska:[moneyMask]
+              data-maska="0.99"
+              data-maska-tokens="0:\d:multiple|9:\d:optional"
+              v-model="bolsaAuxilio"
+            />
           </div>
           <div class="field col">
-            <label for="jornadaSemanal"
+            <label for="auxilioTransporte"
               >Valor auxílio transporte (R$/diário)</label
             >
-            <InputText id="jornadaSemanal" type="text" maxlength="2" />
+            <InputText
+              id="auxilioTransporte"
+              v-maska:[moneyMask]
+              data-maska="0.99"
+              data-maska-tokens="0:\d:multiple|9:\d:optional"
+              v-model="auxilioTransporte"
+            />
           </div>
         </div>
       </div>
@@ -49,19 +135,24 @@
               type="text"
               disabled
               value="Prof. Dr. Professor Professor"
+              v-model="coordenador"
             />
           </div>
         </div>
         <div class="formgrid grid">
           <div class="field col">
             <label for="orientador">Professor Orientador na UFPR</label>
-            <InputText id="orientador" type="text" />
+            <InputText id="orientador" type="text" v-model="orientador" />
           </div>
           <div class="field col">
             <label for="departamentoOrientador"
               >Lotação/Departamento do Orientador</label
             >
-            <InputText id="departamentoOrientador" type="text" />
+            <InputText
+              id="departamentoOrientador"
+              type="text"
+              v-model="departamentoOrientador"
+            />
           </div>
         </div>
         <div class="formgrid grid">
@@ -69,26 +160,31 @@
             <label for="nomeSupervisor"
               >Nome do Supervisor no Local de Estágio</label
             >
-            <InputText id="nomeSupervisor" type="text" />
+            <InputText
+              id="nomeSupervisor"
+              type="text"
+              v-model="nomeSupervisor"
+            />
           </div>
           <div class="field col">
             <label for="telefoneSupervisor">Telefone do Supervisor</label>
-            <InputText id="telefoneSupervisor" type="text" />
+            <InputText
+              id="telefoneSupervisor"
+              type="text"
+              v-maska
+              data-maska="(##) #####-####"
+              v-model="telefoneSupervisor"
+            />
           </div>
         </div>
         <div class="formgrid grid">
           <div class="field col">
-            <label for="nomeSupervisor">Atividades a Serem Desenvolvidas</label>
-            <Textarea id="nomeSupervisor" type="text" />
+            <label for="atividades">Atividades a Serem Desenvolvidas</label>
+            <Textarea id="atividades" type="text" v-model="atividades" />
           </div>
         </div>
       </div>
+      <Button label="print"></Button>
     </div>
   </div>
 </template>
-
-<script>
-export default {};
-</script>
-
-<style></style>

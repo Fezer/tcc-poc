@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "dayjs": "^1.11.7",
+    "maska": "^2.1.7",
     "pinia": "^2.0.30",
-    "vue-the-mask": "^0.11.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {

@@ -175,7 +175,12 @@
 
           <div class="field col">
             <label for="numConta">Número da Conta</label>
-            <InputText id="numConta" type="text" />
+            <InputText
+              id="numConta"
+              type="text"
+              v-maska
+              data-maska="###.###-#"
+            />
           </div>
         </div>
 
@@ -228,6 +233,10 @@
     </div>
   </div>
 </template>
+
+<script setup>
+import { vMaska } from "maska";
+</script>
 
 <script>
 export default {};
