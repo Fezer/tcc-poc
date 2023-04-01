@@ -2,18 +2,18 @@ package br.ufpr.estagio.modulo.model;
 
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 
-public class Coordenacao {
+public class Coordenador {
 	private int id;
 	private String cpf;
 	private String curso; // Estou satisfeito só com o nome do curso
 	private TermoDeEstagio termoDeEstagio;
 
-	public Coordenacao() {
+	public Coordenador() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Coordenacao(int id, String cpf, String curso, TermoDeEstagio termoDeEstagio) {
+	public Coordenador(int id, String cpf, String curso, TermoDeEstagio termoDeEstagio) {
 		super();
 		this.id = id;
 		this.cpf = cpf;

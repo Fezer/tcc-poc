@@ -2,14 +2,22 @@ package br.ufpr.estagio.modulo.model;
 
 import java.sql.Date;
 
+import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
+import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
+import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
+import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
+
 public class TermoDeEstagio {
 	private int id;
-	private static final String tipoTermoDeEstagio = "TermoDeCompromisso";
-	
-	private String seguradora;
-	private String agenteIntegrador;
-//	private Estagio estagio;
-	private String coordenadorCurso;
+	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
+	private Estagio estagio;
+	private Seguradora seguradora;
+	private Apolice apolice;
+	private AgenteIntegrador agenteIntegrador;
+	private Orientador orientador;
+	private Supervisor supervisor;
+	private Coordenador coordenadorCurso;
+	private PlanoDeAtividades planoAtividades;
 	private Date dataInicio;
 	private Date dataTermino;
 	private int jornadaDiaria;
@@ -19,30 +27,39 @@ public class TermoDeEstagio {
 	private Date dataFimSuspensao;
 	private Date dataInicioRetomada;
 	private Date dataCriacao;
+	private EnumStatusTermo statusTermo;
+	private EnumEtapaFluxo etapaFluxo;
+	private CienciaCoordenacao cienciaCoordenacao;
+	private EnumParecerAprovadores parecerCOE;
+	private EnumParecerAprovadores parecerCOAFE;
+	private EnumParecerAprovadores parecerCoordenacao;
 	private String motivoIndeferimento;
 	private String descricaoAjustes;
-	private String orientador;
-	private String supervisor;
-	private String coordenador;
-//	private String planoDeAtividade;
-	private boolean cienciaCoordenacao;
-
+	
 	public TermoDeEstagio() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoDeEstagio(int id, String seguradora, String agenteIntegrador, String coordenadorCurso,
-			Date dataInicio, Date dataTermino, int jornadaDiaria, int jornadaSemanal, float valorBolsa,
-			float valorTransporte, Date dataFimSuspensao, Date dataInicioRetomada, Date dataCriacao,
-			String motivoIndeferimento, String descricaoAjustes, String orientador, String supervisor,
-			String coordenador, boolean cienciaCoordenacao) {
+	public TermoDeEstagio(int id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
+			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
+			Coordenador coordenadorCurso, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
+			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte, Date dataFimSuspensao,
+			Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo, EnumEtapaFluxo etapaFluxo,
+			CienciaCoordenacao cienciaCoordenacao, EnumParecerAprovadores parecerCOE,
+			EnumParecerAprovadores parecerCOAFE, EnumParecerAprovadores parecerCoordenacao, String motivoIndeferimento,
+			String descricaoAjustes) {
 		super();
 		this.id = id;
+		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
+		this.estagio = estagio;
 		this.seguradora = seguradora;
+		this.apolice = apolice;
 		this.agenteIntegrador = agenteIntegrador;
-		//this.estagio = estagio;
+		this.orientador = orientador;
+		this.supervisor = supervisor;
 		this.coordenadorCurso = coordenadorCurso;
+		this.planoAtividades = planoAtividades;
 		this.dataInicio = dataInicio;
 		this.dataTermino = dataTermino;
 		this.jornadaDiaria = jornadaDiaria;
@@ -52,12 +69,14 @@ public class TermoDeEstagio {
 		this.dataFimSuspensao = dataFimSuspensao;
 		this.dataInicioRetomada = dataInicioRetomada;
 		this.dataCriacao = dataCriacao;
+		this.statusTermo = statusTermo;
+		this.etapaFluxo = etapaFluxo;
+		this.cienciaCoordenacao = cienciaCoordenacao;
+		this.parecerCOE = parecerCOE;
+		this.parecerCOAFE = parecerCOAFE;
+		this.parecerCoordenacao = parecerCoordenacao;
 		this.motivoIndeferimento = motivoIndeferimento;
 		this.descricaoAjustes = descricaoAjustes;
-		this.orientador = orientador;
-		this.supervisor = supervisor;
-		this.coordenador = coordenador;
-		this.cienciaCoordenacao = cienciaCoordenacao;
 	}
 
 	public int getId() {
@@ -68,28 +87,76 @@ public class TermoDeEstagio {
 		this.id = id;
 	}
 
-	public String getSeguradora() {
+	public EnumTipoTermoDeEstagio getTipoTermoDeEstagio() {
+		return tipoTermoDeEstagio;
+	}
+
+	public void setTipoTermoDeEstagio(EnumTipoTermoDeEstagio tipoTermoDeEstagio) {
+		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
+	}
+
+	public Estagio getEstagio() {
+		return estagio;
+	}
+
+	public void setEstagio(Estagio estagio) {
+		this.estagio = estagio;
+	}
+
+	public Seguradora getSeguradora() {
 		return seguradora;
 	}
 
-	public void setSeguradora(String seguradora) {
+	public void setSeguradora(Seguradora seguradora) {
 		this.seguradora = seguradora;
 	}
 
-	public String getAgenteIntegrador() {
+	public Apolice getApolice() {
+		return apolice;
+	}
+
+	public void setApolice(Apolice apolice) {
+		this.apolice = apolice;
+	}
+
+	public AgenteIntegrador getAgenteIntegrador() {
 		return agenteIntegrador;
 	}
 
-	public void setAgenteIntegrador(String agenteIntegrador) {
+	public void setAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
 		this.agenteIntegrador = agenteIntegrador;
 	}
 
-	public String getCoordenadorCurso() {
+	public Orientador getOrientador() {
+		return orientador;
+	}
+
+	public void setOrientador(Orientador orientador) {
+		this.orientador = orientador;
+	}
+
+	public Supervisor getSupervisor() {
+		return supervisor;
+	}
+
+	public void setSupervisor(Supervisor supervisor) {
+		this.supervisor = supervisor;
+	}
+
+	public Coordenador getCoordenadorCurso() {
 		return coordenadorCurso;
 	}
 
-	public void setCoordenadorCurso(String coordenadorCurso) {
+	public void setCoordenadorCurso(Coordenador coordenadorCurso) {
 		this.coordenadorCurso = coordenadorCurso;
+	}
+
+	public PlanoDeAtividades getPlanoAtividades() {
+		return planoAtividades;
+	}
+
+	public void setPlanoAtividades(PlanoDeAtividades planoAtividades) {
+		this.planoAtividades = planoAtividades;
 	}
 
 	public Date getDataInicio() {
@@ -164,6 +231,54 @@ public class TermoDeEstagio {
 		this.dataCriacao = dataCriacao;
 	}
 
+	public EnumStatusTermo getStatusTermo() {
+		return statusTermo;
+	}
+
+	public void setStatusTermo(EnumStatusTermo statusTermo) {
+		this.statusTermo = statusTermo;
+	}
+
+	public EnumEtapaFluxo getEtapaFluxo() {
+		return etapaFluxo;
+	}
+
+	public void setEtapaFluxo(EnumEtapaFluxo etapaFluxo) {
+		this.etapaFluxo = etapaFluxo;
+	}
+
+	public CienciaCoordenacao getCienciaCoordenacao() {
+		return cienciaCoordenacao;
+	}
+
+	public void setCienciaCoordenacao(CienciaCoordenacao cienciaCoordenacao) {
+		this.cienciaCoordenacao = cienciaCoordenacao;
+	}
+
+	public EnumParecerAprovadores getParecerCOE() {
+		return parecerCOE;
+	}
+
+	public void setParecerCOE(EnumParecerAprovadores parecerCOE) {
+		this.parecerCOE = parecerCOE;
+	}
+
+	public EnumParecerAprovadores getParecerCOAFE() {
+		return parecerCOAFE;
+	}
+
+	public void setParecerCOAFE(EnumParecerAprovadores parecerCOAFE) {
+		this.parecerCOAFE = parecerCOAFE;
+	}
+
+	public EnumParecerAprovadores getParecerCoordenacao() {
+		return parecerCoordenacao;
+	}
+
+	public void setParecerCoordenacao(EnumParecerAprovadores parecerCoordenacao) {
+		this.parecerCoordenacao = parecerCoordenacao;
+	}
+
 	public String getMotivoIndeferimento() {
 		return motivoIndeferimento;
 	}
@@ -179,43 +294,5 @@ public class TermoDeEstagio {
 	public void setDescricaoAjustes(String descricaoAjustes) {
 		this.descricaoAjustes = descricaoAjustes;
 	}
-
-	public String getOrientador() {
-		return orientador;
-	}
-
-	public void setOrientador(String orientador) {
-		this.orientador = orientador;
-	}
-
-	public String getSupervisor() {
-		return supervisor;
-	}
-
-	public void setSupervisor(String supervisor) {
-		this.supervisor = supervisor;
-	}
-
-	public String getCoordenador() {
-		return coordenador;
-	}
-
-	public void setCoordenador(String coordenador) {
-		this.coordenador = coordenador;
-	}
-
-	public boolean isCienciaCoordenacao() {
-		return cienciaCoordenacao;
-	}
-
-	public void setCienciaCoordenacao(boolean cienciaCoordenacao) {
-		this.cienciaCoordenacao = cienciaCoordenacao;
-	}
-
-	public static String getTipotermodeestagio() {
-		return tipoTermoDeEstagio;
-	}
-
-	
 
 }

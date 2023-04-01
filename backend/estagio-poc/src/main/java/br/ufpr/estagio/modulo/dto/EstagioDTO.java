@@ -14,36 +14,36 @@ public class EstagioDTO {
 	private boolean estagioUfpr;
 	private AlunoDTO aluno;
 	private ContratanteDTO contratante;
-	private Seguradora seguradora;
-	private AgenteIntegrador agenteIntegrador;
-	private Orientador orientador;
-	private Supervisor supervisor;
-	private PlanoDeAtividades planoDeAtividades;
+	private SeguradoraDTO seguradora;
+	private AgenteIntegradorDTO agenteIntegrador;
+	private OrientadorDTO orientador;
+	private SupervisorDTO supervisor;
+	private PlanoDeAtividadesDTO planoDeAtividades;
 	private Date dataInicio;
 	private Date dataTermino;
 	private int jornadaDiaria;
 	private int jornadaSemanal;
 	private float valorBolsa;
 	private float valorTransporte;
-	private TermoDeEstagio termoDeCompromisso;
-	private ArrayList<TermoDeEstagio> termoAdivito;
-	private TermoDeRescisao termoDeRescisao;
-	private ArrayList<RelatorioDeEstagio> relatorioDeEstagio;
-	private FichaDeAvaliacao fichaDeAvaliacao;
-	private CertificadoDeEstagio certificadoDeEstagio;
+	private TermoDeEstagioDTO termoDeCompromisso;
+	private ArrayList<TermoDeEstagioDTO> termoAdivito;
+	private TermoDeRescisaoDTO termoDeRescisao;
+	private ArrayList<RelatorioDeEstagioDTO> relatorioDeEstagio;
+	private FichaDeAvaliacaoDTO fichaDeAvaliacao;
+	private CertificadoDeEstagioDTO certificadoDeEstagio;
 	
 	public EstagioDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public EstagioDTO(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr, Aluno aluno,
-			Contratante contratante, Seguradora seguradora, AgenteIntegrador agenteIntegrador, Orientador orientador,
-			Supervisor supervisor, PlanoDeAtividades planoDeAtividades, Date dataInicio, Date dataTermino,
-			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte,
-			TermoDeEstagio termoDeCompromisso, ArrayList<TermoDeEstagio> termoAdivito, TermoDeRescisao termoDeRescisao,
-			ArrayList<RelatorioDeEstagio> relatorioDeEstagio, FichaDeAvaliacao fichaDeAvaliacao,
-			CertificadoDeEstagio certificadoDeEstagio) {
+	public EstagioDTO(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr,
+			AlunoDTO aluno, ContratanteDTO contratante, SeguradoraDTO seguradora, AgenteIntegradorDTO agenteIntegrador,
+			OrientadorDTO orientador, SupervisorDTO supervisor, PlanoDeAtividadesDTO planoDeAtividades, Date dataInicio,
+			Date dataTermino, int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte,
+			TermoDeEstagioDTO termoDeCompromisso, ArrayList<TermoDeEstagioDTO> termoAdivito,
+			TermoDeRescisaoDTO termoDeRescisao, ArrayList<RelatorioDeEstagioDTO> relatorioDeEstagio,
+			FichaDeAvaliacaoDTO fichaDeAvaliacao, CertificadoDeEstagioDTO certificadoDeEstagio) {
 		super();
 		this.id = id;
 		this.tipoEstagio = tipoEstagio;
@@ -102,59 +102,59 @@ public class EstagioDTO {
 		this.estagioUfpr = estagioUfpr;
 	}
 
-	public Aluno getAluno() {
+	public AlunoDTO getAluno() {
 		return aluno;
 	}
 
-	public void setAluno(Aluno aluno) {
+	public void setAluno(AlunoDTO aluno) {
 		this.aluno = aluno;
 	}
 
-	public Contratante getContratante() {
+	public ContratanteDTO getContratante() {
 		return contratante;
 	}
 
-	public void setContratante(Contratante contratante) {
+	public void setContratante(ContratanteDTO contratante) {
 		this.contratante = contratante;
 	}
 
-	public Seguradora getSeguradora() {
+	public SeguradoraDTO getSeguradora() {
 		return seguradora;
 	}
 
-	public void setSeguradora(Seguradora seguradora) {
+	public void setSeguradora(SeguradoraDTO seguradora) {
 		this.seguradora = seguradora;
 	}
 
-	public AgenteIntegrador getAgenteIntegrador() {
+	public AgenteIntegradorDTO getAgenteIntegrador() {
 		return agenteIntegrador;
 	}
 
-	public void setAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
+	public void setAgenteIntegrador(AgenteIntegradorDTO agenteIntegrador) {
 		this.agenteIntegrador = agenteIntegrador;
 	}
 
-	public Orientador getOrientador() {
+	public OrientadorDTO getOrientador() {
 		return orientador;
 	}
 
-	public void setOrientador(Orientador orientador) {
+	public void setOrientador(OrientadorDTO orientador) {
 		this.orientador = orientador;
 	}
 
-	public Supervisor getSupervisor() {
+	public SupervisorDTO getSupervisor() {
 		return supervisor;
 	}
 
-	public void setSupervisor(Supervisor supervisor) {
+	public void setSupervisor(SupervisorDTO supervisor) {
 		this.supervisor = supervisor;
 	}
 
-	public PlanoDeAtividades getPlanoDeAtividades() {
+	public PlanoDeAtividadesDTO getPlanoDeAtividades() {
 		return planoDeAtividades;
 	}
 
-	public void setPlanoDeAtividades(PlanoDeAtividades planoDeAtividades) {
+	public void setPlanoDeAtividades(PlanoDeAtividadesDTO planoDeAtividades) {
 		this.planoDeAtividades = planoDeAtividades;
 	}
 
@@ -206,54 +206,52 @@ public class EstagioDTO {
 		this.valorTransporte = valorTransporte;
 	}
 
-	public TermoDeEstagio getTermoDeCompromisso() {
+	public TermoDeEstagioDTO getTermoDeCompromisso() {
 		return termoDeCompromisso;
 	}
 
-	public void setTermoDeCompromisso(TermoDeEstagio termoDeCompromisso) {
+	public void setTermoDeCompromisso(TermoDeEstagioDTO termoDeCompromisso) {
 		this.termoDeCompromisso = termoDeCompromisso;
 	}
 
-	public ArrayList<TermoDeEstagio> getTermoAdivito() {
+	public ArrayList<TermoDeEstagioDTO> getTermoAdivito() {
 		return termoAdivito;
 	}
 
-	public void setTermoAdivito(ArrayList<TermoDeEstagio> termoAdivito) {
+	public void setTermoAdivito(ArrayList<TermoDeEstagioDTO> termoAdivito) {
 		this.termoAdivito = termoAdivito;
 	}
 
-	public TermoDeRescisao getTermoDeRescisao() {
+	public TermoDeRescisaoDTO getTermoDeRescisao() {
 		return termoDeRescisao;
 	}
 
-	public void setTermoDeRescisao(TermoDeRescisao termoDeRescisao) {
+	public void setTermoDeRescisao(TermoDeRescisaoDTO termoDeRescisao) {
 		this.termoDeRescisao = termoDeRescisao;
 	}
 
-	public ArrayList<RelatorioDeEstagio> getRelatorioDeEstagio() {
+	public ArrayList<RelatorioDeEstagioDTO> getRelatorioDeEstagio() {
 		return relatorioDeEstagio;
 	}
 
-	public void setRelatorioDeEstagio(ArrayList<RelatorioDeEstagio> relatorioDeEstagio) {
+	public void setRelatorioDeEstagio(ArrayList<RelatorioDeEstagioDTO> relatorioDeEstagio) {
 		this.relatorioDeEstagio = relatorioDeEstagio;
 	}
 
-	public FichaDeAvaliacao getFichaDeAvaliacao() {
+	public FichaDeAvaliacaoDTO getFichaDeAvaliacao() {
 		return fichaDeAvaliacao;
 	}
 
-	public void setFichaDeAvaliacao(FichaDeAvaliacao fichaDeAvaliacao) {
+	public void setFichaDeAvaliacao(FichaDeAvaliacaoDTO fichaDeAvaliacao) {
 		this.fichaDeAvaliacao = fichaDeAvaliacao;
 	}
 
-	public CertificadoDeEstagio getCertificadoDeEstagio() {
+	public CertificadoDeEstagioDTO getCertificadoDeEstagio() {
 		return certificadoDeEstagio;
 	}
 
-	public void setCertificadoDeEstagio(CertificadoDeEstagio certificadoDeEstagio) {
+	public void setCertificadoDeEstagio(CertificadoDeEstagioDTO certificadoDeEstagio) {
 		this.certificadoDeEstagio = certificadoDeEstagio;
 	}
-	
-	
 	
 }
