@@ -1,4 +1,4 @@
-package br.ufpr.estagio.modulo.dto;
+package br.ufpr.estagio.modulo.model;
 
 import java.sql.Date;
 
