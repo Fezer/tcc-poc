@@ -1,6 +1,6 @@
 package br.ufpr.estagio.modulo.enums;
 
-public enum EtapaFluxo {
+public enum EnumEtapaFluxo {
 	Aluno,
 	Coordenacao,
 	COE,

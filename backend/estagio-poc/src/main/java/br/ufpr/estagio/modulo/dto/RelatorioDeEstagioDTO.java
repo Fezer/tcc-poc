@@ -1,10 +1,11 @@
-package br.ufpr.estagio.modulo.model;
+package br.ufpr.estagio.modulo.dto;
 
 import br.ufpr.estagio.modulo.enums.EnumAvaliacao;
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAtividades;
 import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
+import br.ufpr.estagio.modulo.model.Estagio;
 
-public class RelatorioDeEstagio {
+public class RelatorioDeEstagioDTO {
 	
 	private long id;
 	private Estagio estagio;
@@ -18,12 +19,12 @@ public class RelatorioDeEstagio {
 	private EnumAvaliacao avalEfetivacao;
 	private String consideracoes;
 	
-	public RelatorioDeEstagio() {
+	public RelatorioDeEstagioDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public RelatorioDeEstagio(long id, Estagio estagio, boolean cienciaOrientador, EnumTipoRelatorio tipoRelatorio,
+	public RelatorioDeEstagioDTO(long id, Estagio estagio, boolean cienciaOrientador, EnumTipoRelatorio tipoRelatorio,
 			EnumAvaliacaoAtividades avalAtividades, EnumAvaliacao avalFormacaoProfissional, EnumAvaliacao avalRelacoesInterpessoais,
 			EnumAvaliacao avalDesenvolvimentoAtividades, EnumAvaliacao avalContribuicaoEstagio, EnumAvaliacao avalEfetivacao,
 			String consideracoes) {

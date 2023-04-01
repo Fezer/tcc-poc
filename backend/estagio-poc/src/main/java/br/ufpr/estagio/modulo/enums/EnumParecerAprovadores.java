@@ -1,6 +1,6 @@
 package br.ufpr.estagio.modulo.enums;
 
-public enum ParecerAprovadores {
+public enum EnumParecerAprovadores {
 	Aprovado,
 	Reprovado,
 	Ajustar

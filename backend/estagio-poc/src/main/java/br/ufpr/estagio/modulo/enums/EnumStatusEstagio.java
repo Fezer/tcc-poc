@@ -1,6 +1,6 @@
 package br.ufpr.estagio.modulo.enums;
 
-public enum StatusEstagio {
+public enum EnumStatusEstagio {
 	EmPreenchimento,
 	EmAprovacao,
 	Aprovado,

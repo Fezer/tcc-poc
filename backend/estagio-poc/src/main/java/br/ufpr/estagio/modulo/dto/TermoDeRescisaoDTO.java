@@ -1,27 +1,29 @@
-package br.ufpr.estagio.modulo.model;
+package br.ufpr.estagio.modulo.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TermoDeRescisao {
+import br.ufpr.estagio.modulo.model.Estagio;
+
+public class TermoDeRescisaoDTO {
 
 	private long id;
 	private Estagio estagio;
 	private Date dataTermino;
 	private int periodoTotalRecesso;
-	private ArrayList<PeriodoRecesso> periodoRecesso;
+	private ArrayList<PeriodoRecessoDTO> periodoRecesso;
 	private boolean cienciaOrientador;
 	private boolean cienciaCoordenador;
 	private boolean cienciaCOE;
 	private boolean cienciaCOAFE;
 	
-	public TermoDeRescisao() {
+	public TermoDeRescisaoDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoDeRescisao(long id, Estagio estagio, Date dataTermino, int periodoTotalRecesso,
-			ArrayList<PeriodoRecesso> periodoRecesso, boolean cienciaOrientador, boolean cienciaCoordenador,
+	public TermoDeRescisaoDTO(long id, Estagio estagio, Date dataTermino, int periodoTotalRecesso,
+			ArrayList<PeriodoRecessoDTO> periodoRecesso, boolean cienciaOrientador, boolean cienciaCoordenador,
 			boolean cienciaCOE, boolean cienciaCOAFE) {
 		super();
 		this.id = id;
@@ -67,11 +69,11 @@ public class TermoDeRescisao {
 		this.periodoTotalRecesso = periodoTotalRecesso;
 	}
 
-	public ArrayList<PeriodoRecesso> getPeriodoRecesso() {
+	public ArrayList<PeriodoRecessoDTO> getPeriodoRecesso() {
 		return periodoRecesso;
 	}
 
-	public void setPeriodoRecesso(ArrayList<PeriodoRecesso> periodoRecesso) {
+	public void setPeriodoRecesso(ArrayList<PeriodoRecessoDTO> periodoRecesso) {
 		this.periodoRecesso = periodoRecesso;
 	}
 

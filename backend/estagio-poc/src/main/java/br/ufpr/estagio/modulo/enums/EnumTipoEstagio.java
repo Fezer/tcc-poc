@@ -1,6 +1,6 @@
 package br.ufpr.estagio.modulo.enums;
 
-public enum TipoEstagio {
+public enum EnumTipoEstagio {
 	EstagioObrigatorio,
 	EstagioNaoObrigatorio
 

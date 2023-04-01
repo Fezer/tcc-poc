@@ -1,6 +1,6 @@
 package br.ufpr.estagio.modulo.enums;
 
-public enum TipoTermoDeEstagio {
+public enum EnumTipoTermoDeEstagio {
 	TermoDeCompromisso,
 	TermoAditivo
 

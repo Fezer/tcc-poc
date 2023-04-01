@@ -6,8 +6,17 @@ import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
+import br.ufpr.estagio.modulo.model.AgenteIntegrador;
+import br.ufpr.estagio.modulo.model.Apolice;
+import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
+import br.ufpr.estagio.modulo.model.Coordenador;
+import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.Orientador;
+import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
+import br.ufpr.estagio.modulo.model.Seguradora;
+import br.ufpr.estagio.modulo.model.Supervisor;
 
-public class TermoDeEstagio {
+public class TermoDeEstagioDTO {
 	private int id;
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
 	private Estagio estagio;
@@ -36,12 +45,12 @@ public class TermoDeEstagio {
 	private String motivoIndeferimento;
 	private String descricaoAjustes;
 	
-	public TermoDeEstagio() {
+	public TermoDeEstagioDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoDeEstagio(int id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
+	public TermoDeEstagioDTO(int id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
 			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
 			Coordenador coordenadorCurso, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
 			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte, Date dataFimSuspensao,

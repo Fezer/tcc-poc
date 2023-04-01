@@ -1,5 +1,5 @@
 package br.ufpr.estagio.modulo.model;
 
-public class PlanoDeAtividade {
+public class PlanoDeAtividades {
 
 }

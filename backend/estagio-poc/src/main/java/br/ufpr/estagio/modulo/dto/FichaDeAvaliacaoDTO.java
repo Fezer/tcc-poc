@@ -1,8 +1,9 @@
-package br.ufpr.estagio.modulo.model;
+package br.ufpr.estagio.modulo.dto;
 
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAcomp;
+import br.ufpr.estagio.modulo.model.Estagio;
 
-public class FichaDeAvaliacao {
+public class FichaDeAvaliacaoDTO {
 	
 	private long id;
 	private Estagio estagio;
@@ -23,12 +24,12 @@ public class FichaDeAvaliacao {
 	private EnumAvaliacaoAcomp avalHabilidades;
 	private EnumAvaliacaoAcomp avalEfetivacao;
 	
-	public FichaDeAvaliacao() {
+	public FichaDeAvaliacaoDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public FichaDeAvaliacao(long id, Estagio estagio, int totalHorasEstagioEfetivamenteRealizadas,
+	public FichaDeAvaliacaoDTO(long id, Estagio estagio, int totalHorasEstagioEfetivamenteRealizadas,
 			boolean atividadesForamRealizadas, String atividadesRealizadasConsideracoes,
 			EnumAvaliacaoAcomp acompanhamentoOrientador, String acompanhamentoOrientadorComentario,
 			EnumAvaliacaoAcomp acompanhamentoCoordenador, String acompanhamentoCoordenadorComentario,
