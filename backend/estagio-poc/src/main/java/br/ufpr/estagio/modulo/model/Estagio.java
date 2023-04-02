@@ -3,6 +3,9 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+
+import org.springframework.hateoas.RepresentationModel;
+
 import jakarta.persistence.*;
 
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
@@ -10,7 +13,7 @@ import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 
 @Entity
 @Table(name = "estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
-public class Estagio implements Serializable{
+public class Estagio extends RepresentationModel<Estagio> implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,7 +70,8 @@ public class Estagio implements Serializable{
 	@Column(name = "valorTransporte")
 	private float valorTransporte;
 	
-	@Column(name = "termoDeCompromisso")
+	@PrimaryKeyJoinColumn(name = "termoDeCompromisso")
+	@OneToOne(mappedBy = "estagio")
 	private TermoDeEstagio termoDeCompromisso;
 	
 	@Column(name = "termoAdivito")

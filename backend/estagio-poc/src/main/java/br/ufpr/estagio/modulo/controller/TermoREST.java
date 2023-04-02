@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.TermoPocDTO;
@@ -25,6 +29,7 @@ import br.ufpr.estagio.modulo.repository.TermoPocRepository;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/termo")
 public class TermoREST {
 	
 	@Autowired
@@ -33,7 +38,7 @@ public class TermoREST {
 	@Autowired
 	private ModelMapper mapper;
 	
-	@PostMapping("/termo")
+	@PostMapping("")
 	public ResponseEntity<TermoPocDTO> inserir(@RequestBody TermoPocDTO termo){
 		try {
 		TermoPoc newTermo = repo.save(mapper.map(termo, TermoPoc.class));
@@ -44,7 +49,7 @@ public class TermoREST {
 		}
 	}
 	
-	@GetMapping("/termo")
+	@GetMapping("")
 	public ResponseEntity<List<TermoPocDTO>> listarTodos(){
 		try {
 			List<TermoPoc> lista = repo.findAll();
@@ -62,14 +67,18 @@ public class TermoREST {
 		}
 	}
 	
-	@GetMapping("/termo/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<TermoPocDTO> listarTermo(@PathVariable Long id){
 		try {
-			Optional<TermoPoc> termo = repo.findById(id);
-		if(termo.isEmpty()) {
+			Optional<TermoPoc> termoOptional = repo.findById(id);
+		if(termoOptional.isEmpty()) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
 		} else {
-			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termo, TermoPocDTO.class));
+			TermoPoc termo = termoOptional.get();
+			TermoPocDTO termoDTO = mapper.map(termo, TermoPocDTO.class);
+			termo.add(linkTo(methodOn(TermoREST.class).listarTermo(id)).withSelfRel());
+			//return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termo, TermoPocDTO.class));
+			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
 		}catch(PocException e) {
 			e.printStackTrace();
@@ -80,7 +89,7 @@ public class TermoREST {
 		}
 	}
 	
-	@PutMapping("/termo/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<TermoPocDTO> atualizar(@PathVariable Long id, @RequestBody TermoPocDTO termo){
 		try {
 			Optional<TermoPoc> termofind = repo.findById(id);
@@ -100,7 +109,7 @@ public class TermoREST {
 		}
 	}
 	
-	@DeleteMapping("/termo/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<TermoPocDTO> delete(@PathVariable Long id){
 		try {
 			Optional<TermoPoc> termofind = repo.findById(id);
@@ -119,7 +128,7 @@ public class TermoREST {
 		}
 	}
 	
-	@PutMapping("/termo/aprovar/coafe/{id}")
+	@PutMapping("/aprovar/coafe/{id}")
 	public ResponseEntity<TermoPocDTO> aprovarCoafe(@PathVariable Long id){
 		try {
 			Optional<TermoPoc> termofind = repo.findById(id);
@@ -144,7 +153,7 @@ public class TermoREST {
 		}
 	}
 	
-	@PutMapping("/termo/reprovar/coafe/{id}")
+	@PutMapping("/reprovar/coafe/{id}")
 	public ResponseEntity<TermoPocDTO> reprovarCoafe(@PathVariable Long id, @RequestBody JustificativaDTO requestBody){
 		try {
 			String justificativa = requestBody.getJustificativa();

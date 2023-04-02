@@ -3,38 +3,99 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.sql.Date;
 
+import org.springframework.hateoas.RepresentationModel;
+
+import jakarta.persistence.*;
+
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 
-public class TermoDeEstagio implements Serializable{
+@Entity
+@Table(name = "TermoDeEstagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implements Serializable{
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@Column(name = "tipoTermoDeEstagio")
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
+	
+	@OneToOne
 	private Estagio estagio;
+	
+	@Column(name = "seguradora")
 	private Seguradora seguradora;
+	
+	@Column(name = "apolice")
 	private Apolice apolice;
+	
+	@Column(name = "agenteIntegrador")
 	private AgenteIntegrador agenteIntegrador;
+	
+	@Column(name = "orientador")
 	private Orientador orientador;
+	
+	@Column(name = "supervisor")
 	private Supervisor supervisor;
+	
+	@Column(name = "coordenadorCurso")
 	private Coordenador coordenadorCurso;
+	
+	@Column(name = "planoAtividades")
 	private PlanoDeAtividades planoAtividades;
+	
+	@Column(name = "dataInicio")
 	private Date dataInicio;
+	
+	@Column(name = "dataTermino")
 	private Date dataTermino;
+	
+	@Column(name = "jornadaDiaria")
 	private int jornadaDiaria;
+	
+	@Column(name = "jornadaSemanal")
 	private int jornadaSemanal;
+	
+	@Column(name = "valorBolsa")
 	private float valorBolsa;
+	
+	@Column(name = "valorTransporte")
 	private float valorTransporte;
+	
+	@Column(name = "dataFimSuspensao")
 	private Date dataFimSuspensao;
+	
+	@Column(name = "dataInicioRetomada")
 	private Date dataInicioRetomada;
+
+	@Column(name = "dataCriacao")
 	private Date dataCriacao;
+	
+	@Column(name = "statusTermo")
 	private EnumStatusTermo statusTermo;
+	
+	@Column(name = "etapaFluxo")
 	private EnumEtapaFluxo etapaFluxo;
+	
+	@Column(name = "cienciaCoordenacao")
 	private CienciaCoordenacao cienciaCoordenacao;
+	
+	@Column(name = "parecerCOE")
 	private EnumParecerAprovadores parecerCOE;
+	
+	@Column(name = "parecerCOAFE")
 	private EnumParecerAprovadores parecerCOAFE;
+	
+	@Column(name = "parecerCoordenacao")
 	private EnumParecerAprovadores parecerCoordenacao;
+
+	@Column(name = "motivoIndeferimento")
 	private String motivoIndeferimento;
+	
+	@Column(name = "descricaoAjustes")
 	private String descricaoAjustes;
 	
 	public TermoDeEstagio() {
