@@ -22,26 +22,37 @@ export default {
   },
   data() {
     return {
-      step: "DADOS_ESTAGIO" as Steps,
-      progressValue: 60,
+      step: "DADOS_ALUNO" as Steps,
+      progressValue: 40,
+
+      estagioUfpr: null as Boolean | null,
+
+      dadosEstagio: null,
+      dadosTipoEstagio: null,
     };
   },
   methods: {
-    handleAdvanceStep() {
+    handleAdvanceStep(step: Steps, stepData: any) {
       switch (this.step) {
         case "DADOS_ALUNO":
           this.step = "TIPO_ESTAGIO";
           this.progressValue = 40;
           break;
         case "TIPO_ESTAGIO":
+          this.estagioUfpr = stepData.localEstagio === "UFPR";
+          this.dadosTipoEstagio = stepData;
+
           this.step = "TIPO_CONTRATANTE";
           this.progressValue = 60;
           break;
         case "TIPO_CONTRATANTE":
           this.step = "DADOS_ESTAGIO";
-          this.progressValue = 80;
+          this.progressValue = this.estagioUfpr ? 80 : 100;
           break;
         case "DADOS_ESTAGIO":
+          if (!this.estagioUfpr) {
+            return alert("process ended");
+          }
           this.step = "DADOS_AUXILIARES";
           this.progressValue = 100;
           break;
@@ -82,7 +93,10 @@ export default {
     />
 
     <DadosAluno v-if="step === 'DADOS_ALUNO'" />
-    <TipoEstagio v-if="step === 'TIPO_ESTAGIO'" />
+    <TipoEstagio
+      v-if="step === 'TIPO_ESTAGIO'"
+      :advanceStep="handleAdvanceStep"
+    />
     <TipoContratante v-if="step === 'TIPO_CONTRATANTE'" />
     <DadosEstagio v-if="step === 'DADOS_ESTAGIO'" />
     <DadosAuxiliares v-if="step === 'DADOS_AUXILIARES'" />

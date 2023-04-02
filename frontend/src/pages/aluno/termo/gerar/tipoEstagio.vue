@@ -1,7 +1,27 @@
 <script lang="ts">
 export default {
+  props: {
+    advanceStep: {
+      type: Function,
+      required: true,
+    },
+  },
+
+  methods: {
+    handleValidateAndAdvanceStep() {
+      if (this.tipoEstagio && this.localEstagio) {
+        this.advanceStep("TIPO_ESTAGIO", {
+          tipoEstagio: this.tipoEstagio,
+          localEstagio: this.localEstagio,
+        });
+      } else {
+        this.error = "Este campo é obrigatório";
+      }
+    },
+  },
   data() {
     return {
+      error: null as string | null,
       tipoEstagio: null,
       tipos: [
         { label: "Obrigatório", value: "OBRIGATORIO" },
@@ -29,7 +49,10 @@ export default {
           :options="tipos"
           optionLabel="label"
           optionValue="value"
+          :class="{ 'p-invalid': error }"
         />
+
+        <small class="text-rose-600">{{ error }}</small>
       </div>
       <div class="card p-fluid col-12">
         <h5>Local do Estágio</h5>
@@ -38,9 +61,17 @@ export default {
           :options="locais"
           optionLabel="label"
           optionValue="value"
+          :class="{ 'p-invalid': error }"
         />
+        <small class="text-rose-600">{{ error }}</small>
       </div>
     </div>
+    <Button
+      @click="handleValidateAndAdvanceStep"
+      label="Avançar"
+      class="p-button-success"
+      icon="pi pi-arrow-right"
+    />
   </div>
 </template>
 
