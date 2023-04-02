@@ -96,11 +96,40 @@
         </div>
       </div>
     </div>
+    <div class="w-full flex justify-end gap-2">
+      <Button
+        @click="backStep"
+        label="Voltar"
+        class="p-button-secondary"
+        icon="pi pi-arrow-left"
+      />
+      <Button
+        @click="advanceStep"
+        :label="finalStep ? 'Gerar termo' : 'Avançar'"
+        class="p-button-success"
+        icon="pi pi-arrow-right"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    advanceStep: {
+      type: Function,
+      required: true,
+    },
+    backStep: {
+      type: Function,
+      required: true,
+    },
+    finalStep: {
+      type: Boolean,
+      required: true,
+    },
+  },
+};
 </script>
 
 <style></style>

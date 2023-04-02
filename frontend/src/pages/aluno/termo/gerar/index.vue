@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       step: "DADOS_ALUNO" as Steps,
-      progressValue: 40,
+      progressValue: 20,
 
       estagioUfpr: null as Boolean | null,
 
@@ -32,6 +32,10 @@ export default {
     };
   },
   methods: {
+    handleGenerateTerm() {
+      console.log("generate term");
+    },
+
     handleAdvanceStep(step: Steps, stepData: any) {
       switch (this.step) {
         case "DADOS_ALUNO":
@@ -92,15 +96,33 @@ export default {
       :show-value="false"
     />
 
-    <DadosAluno v-if="step === 'DADOS_ALUNO'" />
-    <TipoEstagio
-      v-if="step === 'TIPO_ESTAGIO'"
+    <DadosAluno
+      v-if="step === 'DADOS_ALUNO'"
+      :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
     />
-    <TipoContratante v-if="step === 'TIPO_CONTRATANTE'" />
-    <DadosEstagio v-if="step === 'DADOS_ESTAGIO'" />
-    <DadosAuxiliares v-if="step === 'DADOS_AUXILIARES'" />
-
+    <TipoEstagio
+      v-if="step === 'TIPO_ESTAGIO'"
+      :backStep="handleBackStep"
+      :advanceStep="handleAdvanceStep"
+    />
+    <TipoContratante
+      v-if="step === 'TIPO_CONTRATANTE'"
+      :backStep="handleBackStep"
+      :advanceStep="handleAdvanceStep"
+    />
+    <DadosEstagio
+      v-if="step === 'DADOS_ESTAGIO'"
+      :backStep="handleBackStep"
+      :advanceStep="handleAdvanceStep"
+      :finalStep="!estagioUfpr"
+    />
+    <DadosAuxiliares
+      v-if="step === 'DADOS_AUXILIARES'"
+      :backStep="handleBackStep"
+      :advanceStep="handleGenerateTerm"
+    />
+    <!--
     <div class="w-full flex justify-end gap-2">
       <a
         icon="pi pi-external-link"
@@ -124,7 +146,7 @@ export default {
         class="p-button-success"
         icon="pi pi-arrow-right"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 

@@ -5,6 +5,10 @@ export default {
       type: Function,
       required: true,
     },
+    backStep: {
+      type: Function,
+      required: true,
+    },
   },
 
   methods: {
@@ -66,12 +70,20 @@ export default {
         <small class="text-rose-600">{{ error }}</small>
       </div>
     </div>
-    <Button
-      @click="handleValidateAndAdvanceStep"
-      label="Avançar"
-      class="p-button-success"
-      icon="pi pi-arrow-right"
-    />
+    <div class="w-full flex justify-end gap-2">
+      <Button
+        @click="backStep()"
+        label="Voltar"
+        class="p-button-secondary"
+        icon="pi pi-arrow-left"
+      />
+      <Button
+        @click="handleValidateAndAdvanceStep"
+        label="Avançar"
+        class="p-button-success"
+        icon="pi pi-arrow-right"
+      />
+    </div>
   </div>
 </template>
 

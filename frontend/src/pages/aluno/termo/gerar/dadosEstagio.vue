@@ -16,6 +16,16 @@ const moneyMask = {
 
 <script>
 export default {
+  props: {
+    advanceStep: {
+      type: Function,
+      required: true,
+    },
+    backStep: {
+      type: Function,
+      required: true,
+    },
+  },
   data() {
     return {
       errors: { dataInicio: "Data inválida" },
@@ -184,7 +194,20 @@ export default {
           </div>
         </div>
       </div>
-      <Button label="print"></Button>
+      <div class="w-full flex justify-end gap-2">
+        <Button
+          @click="backStep"
+          label="Voltar"
+          class="p-button-secondary"
+          icon="pi pi-arrow-left"
+        />
+        <Button
+          @click="advanceStep"
+          :label="finalStep ? 'Gerar termo' : 'Avançar'"
+          class="p-button-success"
+          icon="pi pi-arrow-right"
+        />
+      </div>
     </div>
   </div>
 </template>
