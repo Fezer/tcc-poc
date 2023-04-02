@@ -1,8 +1,9 @@
 package br.ufpr.estagio.modulo.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class DadosAuxiliares {
+public class DadosAuxiliares implements Serializable{
 	private long id;
 	private String nomeDoPai;
 	private String estadoCivil;

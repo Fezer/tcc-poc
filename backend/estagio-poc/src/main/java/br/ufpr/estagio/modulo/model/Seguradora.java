@@ -1,8 +1,9 @@
 package br.ufpr.estagio.modulo.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Seguradora {
+public class Seguradora implements Serializable{
 	
 	private long id;
 	private String nome;

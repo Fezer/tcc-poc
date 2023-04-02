@@ -1,8 +1,10 @@
 package br.ufpr.estagio.modulo.model;
 
+import java.io.Serializable;
+
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAcomp;
 
-public class FichaDeAvaliacao {
+public class FichaDeAvaliacao implements Serializable{
 	
 	private long id;
 	private Estagio estagio;

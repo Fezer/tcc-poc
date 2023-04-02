@@ -1,9 +1,10 @@
 package br.ufpr.estagio.modulo.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TermoDeRescisao {
+public class TermoDeRescisao implements Serializable{
 
 	private long id;
 	private Estagio estagio;

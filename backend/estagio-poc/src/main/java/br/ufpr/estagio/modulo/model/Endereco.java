@@ -1,6 +1,8 @@
 package br.ufpr.estagio.modulo.model;
 
-public class Endereco {
+import java.io.Serializable;
+
+public class Endereco implements Serializable{
 	private long id;
 	private String tipoLogradouro;
 	private String nomeLogradouro;

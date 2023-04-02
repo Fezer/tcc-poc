@@ -1,8 +1,9 @@
 package br.ufpr.estagio.modulo.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Curso {
+public class Curso implements Serializable{
 	
 	private long id;
 	private String nome;

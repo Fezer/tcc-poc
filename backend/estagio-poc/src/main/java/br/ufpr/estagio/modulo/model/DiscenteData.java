@@ -1,6 +1,8 @@
 package br.ufpr.estagio.modulo.model;
 
-public class DiscenteData {
+import java.io.Serializable;
+
+public class DiscenteData implements Serializable{
     private Discente discente;
 
     public Discente getDiscente() {

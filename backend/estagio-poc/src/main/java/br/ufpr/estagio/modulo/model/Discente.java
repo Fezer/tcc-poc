@@ -1,8 +1,9 @@
 package br.ufpr.estagio.modulo.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Discente {
+public class Discente implements Serializable{
 
 	private long idDiscente;
 	private String nome;

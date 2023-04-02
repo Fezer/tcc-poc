@@ -1,12 +1,13 @@
 package br.ufpr.estagio.modulo.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 
-public class Estagio {
+public class Estagio implements Serializable{
 	
 	private long id;
 	private EnumTipoEstagio tipoEstagio;

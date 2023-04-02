@@ -1,5 +1,6 @@
 package br.ufpr.estagio.modulo.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
@@ -16,7 +17,7 @@ import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.Supervisor;
 
-public class TermoDeEstagioDTO {
+public class TermoDeEstagioDTO implements Serializable{
 	private int id;
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
 	private Estagio estagio;

@@ -1,8 +1,9 @@
 package br.ufpr.estagio.modulo.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PeriodoRecesso {
+public class PeriodoRecesso implements Serializable{
 
 	private long id;
 	private Date dataInicio;
