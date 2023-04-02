@@ -25,7 +25,7 @@ import br.ufpr.estagio.modulo.repository.TermoPocRepository;
 
 @CrossOrigin
 @RestController
-public class TermoPocREST {
+public class TermoREST {
 	
 	@Autowired
 	private TermoPocRepository repo;

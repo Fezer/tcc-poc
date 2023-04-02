@@ -25,7 +25,7 @@ import br.ufpr.estagio.modulo.wrapper.DiscenteWrapper;
 
 @CrossOrigin
 @RestController
-public class AlunoPocREST {
+public class AlunoREST {
 	
 	@Autowired
 	private ModelMapper mapper;
