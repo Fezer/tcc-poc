@@ -13,17 +13,19 @@ import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 
 @Entity
-@Table(name = "TermoDeEstagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "termo_de_estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
+	private long id;
 	
-	@Column(name = "tipoTermoDeEstagio")
+	@Column(name = "tipo_termo_de_estagio")
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
 	
-	@OneToOne
+	@ManyToOne
+	@JoinColumn(name="estagio_id", nullable=false)
 	private Estagio estagio;
 	
 	@Column(name = "seguradora")
@@ -32,7 +34,7 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@Column(name = "apolice")
 	private Apolice apolice;
 	
-	@Column(name = "agenteIntegrador")
+	@Column(name = "agente_integrador")
 	private AgenteIntegrador agenteIntegrador;
 	
 	@Column(name = "orientador")
@@ -41,61 +43,61 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@Column(name = "supervisor")
 	private Supervisor supervisor;
 	
-	@Column(name = "coordenadorCurso")
+	@Column(name = "coordenador_curso")
 	private Coordenador coordenadorCurso;
 	
-	@Column(name = "planoAtividades")
+	@Column(name = "plano_atividades")
 	private PlanoDeAtividades planoAtividades;
 	
-	@Column(name = "dataInicio")
+	@Column(name = "data_inicio")
 	private Date dataInicio;
 	
-	@Column(name = "dataTermino")
+	@Column(name = "data_termino")
 	private Date dataTermino;
 	
-	@Column(name = "jornadaDiaria")
+	@Column(name = "jornada_diaria")
 	private int jornadaDiaria;
 	
-	@Column(name = "jornadaSemanal")
+	@Column(name = "jornada_semanal")
 	private int jornadaSemanal;
 	
-	@Column(name = "valorBolsa")
+	@Column(name = "valor_bolsa")
 	private float valorBolsa;
 	
-	@Column(name = "valorTransporte")
+	@Column(name = "valor_transporte")
 	private float valorTransporte;
 	
-	@Column(name = "dataFimSuspensao")
+	@Column(name = "data_fim_suspensao")
 	private Date dataFimSuspensao;
 	
-	@Column(name = "dataInicioRetomada")
+	@Column(name = "data_inicio_retomada")
 	private Date dataInicioRetomada;
 
-	@Column(name = "dataCriacao")
+	@Column(name = "data_criacao")
 	private Date dataCriacao;
 	
-	@Column(name = "statusTermo")
+	@Column(name = "status_termo")
 	private EnumStatusTermo statusTermo;
 	
-	@Column(name = "etapaFluxo")
+	@Column(name = "etapa_fluxo")
 	private EnumEtapaFluxo etapaFluxo;
 	
-	@Column(name = "cienciaCoordenacao")
+	@Column(name = "ciencia_coordenacao")
 	private CienciaCoordenacao cienciaCoordenacao;
 	
-	@Column(name = "parecerCOE")
+	@Column(name = "parecer_coe")
 	private EnumParecerAprovadores parecerCOE;
 	
-	@Column(name = "parecerCOAFE")
+	@Column(name = "parecer_coafe")
 	private EnumParecerAprovadores parecerCOAFE;
 	
-	@Column(name = "parecerCoordenacao")
+	@Column(name = "parecer_coordenacao")
 	private EnumParecerAprovadores parecerCoordenacao;
 
-	@Column(name = "motivoIndeferimento")
+	@Column(name = "motivo_indeferimento")
 	private String motivoIndeferimento;
 	
-	@Column(name = "descricaoAjustes")
+	@Column(name = "descricao_ajustes")
 	private String descricaoAjustes;
 	
 	public TermoDeEstagio() {
@@ -103,7 +105,7 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoDeEstagio(int id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
+	public TermoDeEstagio(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
 			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
 			Coordenador coordenadorCurso, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
 			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte, Date dataFimSuspensao,
@@ -141,11 +143,11 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 		this.descricaoAjustes = descricaoAjustes;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

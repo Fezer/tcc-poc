@@ -5,19 +5,46 @@ import java.io.Serializable;
 import br.ufpr.estagio.modulo.enums.EnumAvaliacao;
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAtividades;
 import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "relatorio_de_estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class RelatorioDeEstagio implements Serializable{
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+	
+	@ManyToOne
+	@JoinColumn(name="estagio_id", nullable=false)
 	private Estagio estagio;
+	
+	@Column(name = "ciencia_orientador")
 	private boolean cienciaOrientador;
+	
+	@Column(name = "tipo_relatorio")
 	private EnumTipoRelatorio tipoRelatorio;
+	
+	@Column(name = "aval_atividades")
 	private EnumAvaliacaoAtividades avalAtividades;
+	
+	@Column(name = "aval_formacao_profissional")
 	private EnumAvaliacao avalFormacaoProfissional;
+	
+	@Column(name = "aval_relacoes_interpessoais")
 	private EnumAvaliacao avalRelacoesInterpessoais;
+	
+	@Column(name = "aval_desenvolvimento_atividades")
 	private EnumAvaliacao avalDesenvolvimentoAtividades;
+	
+	@Column(name = "aval_contribuicao_estagio")
 	private EnumAvaliacao avalContribuicaoEstagio;
+	
+	@Column(name = "aval_efetivacao")
 	private EnumAvaliacao avalEfetivacao;
+	
+	@Column(name = "consideracoes")
 	private String consideracoes;
 	
 	public RelatorioDeEstagio() {

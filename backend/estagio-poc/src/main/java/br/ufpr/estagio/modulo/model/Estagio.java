@@ -16,16 +16,17 @@ import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 public class Estagio extends RepresentationModel<Estagio> implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
 	
-	@Column(name = "tipoEstagio")
+	@Column(name = "tipo_estagio")
 	private EnumTipoEstagio tipoEstagio;
 	
-	@Column(name = "statusEstagio")
+	@Column(name = "status_estagio")
 	private EnumStatusEstagio statusEstagio;
 	
-	@Column(name = "estagioUfpr")
+	@Column(name = "estagio_ufpr")
 	private boolean estagioUfpr;
 	
 	@Column(name = "aluno")
@@ -40,7 +41,7 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@Column(name = "apolice")
 	private Apolice apolice;
 	
-	@Column(name = "agenteIntegrador")
+	@Column(name = "agente_integrador")
 	private AgenteIntegrador agenteIntegrador;
 	
 	@Column(name = "orientador")
@@ -49,49 +50,50 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@Column(name = "supervisor")
 	private Supervisor supervisor;
 	
-	@Column(name = "planoDeAtividades")
+	@Column(name = "plano_de_atividades")
 	private PlanoDeAtividades planoDeAtividades;
 	
-	@Column(name = "dataInicio")
+	@Column(name = "data_inicio")
 	private Date dataInicio;
 	
-	@Column(name = "dataTermino")
+	@Column(name = "data_termino")
 	private Date dataTermino;
 	
-	@Column(name = "jornadaDiaria")
+	@Column(name = "jornada_diaria")
 	private int jornadaDiaria;
 	
-	@Column(name = "jornadaSemanal")
+	@Column(name = "jornada_semanal")
 	private int jornadaSemanal;
 	
-	@Column(name = "valorBolsa")
+	@Column(name = "valor_bolsa")
 	private float valorBolsa;
 	
-	@Column(name = "valorTransporte")
+	@Column(name = "valor_transporte")
 	private float valorTransporte;
 	
-	@PrimaryKeyJoinColumn(name = "termoDeCompromisso")
-	@OneToOne(mappedBy = "estagio")
+	//@OneToOne
+	//@JoinColumn(name="termo_de_compromisso_id")
+	@OneToOne(mappedBy="estagio")
 	private TermoDeEstagio termoDeCompromisso;
 	
-	@Column(name = "termoAdivito")
-	@ElementCollection
+	//@Column(name = "termo_adivito")
+	@OneToMany(mappedBy="estagio")
 	private ArrayList<TermoDeEstagio> termoAdivito;
 	
-	@Column(name = "termoDeRescisao")
+	@Column(name = "termo_de_rescisao")
 	private TermoDeRescisao termoDeRescisao;
 	
-	@Column(name = "relatorioDeEstagio")
-	@ElementCollection
+	//@Column(name = "relatorio_de_estagio")
+	@OneToMany(mappedBy="estagio")
 	private ArrayList<RelatorioDeEstagio> relatorioDeEstagio;
 	
-	@Column(name = "fichaDeAvaliacao")
+	@Column(name = "ficha_de_avaliacao")
 	private FichaDeAvaliacao fichaDeAvaliacao;
 	
-	@Column(name = "certificadoDeEstagio")
+	@Column(name = "certificado_de_estagio")
 	private CertificadoDeEstagio certificadoDeEstagio;
 	
-	@Column(name = "dataCriacao")
+	@Column(name = "data_criacao")
 	private Date dataCriacao;
 	
 	public Estagio() {
