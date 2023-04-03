@@ -22,13 +22,15 @@ export default {
   },
   data() {
     return {
-      step: "DADOS_AUXILIARES" as Steps,
+      step: "DADOS_ALUNO" as Steps,
       progressValue: 20,
 
       estagioUfpr: null as Boolean | null,
 
       dadosEstagio: null,
       dadosTipoEstagio: null,
+      tipoContratante: null,
+      dadosAuxiliares: null,
     };
   },
   methods: {
@@ -38,9 +40,19 @@ export default {
         summary: "Termo gerado com sucesso",
         life: 3000,
       });
+
+      const termo = {
+        ...this.dadosAluno,
+        ...this.dadosTipoEstagio,
+        ...this.tipoContratante,
+        ...this.dadosEstagio,
+        ...this.dadosAuxiliares,
+      };
+
+      console.log(termo);
     },
 
-    handleAdvanceStep(step: Steps, stepData: any) {
+    handleAdvanceStep(stepData: any) {
       switch (this.step) {
         case "DADOS_ALUNO":
           this.step = "TIPO_ESTAGIO";
@@ -56,15 +68,21 @@ export default {
         case "TIPO_CONTRATANTE":
           this.step = "DADOS_ESTAGIO";
           this.progressValue = this.estagioUfpr ? 80 : 100;
+
+          this.tipoContratante = stepData;
           break;
         case "DADOS_ESTAGIO":
+          this.dadosEstagio = stepData;
+
           if (!this.estagioUfpr) {
             return this.handleGenerateTerm();
           }
           this.step = "DADOS_AUXILIARES";
           this.progressValue = 100;
+
           break;
         case "DADOS_AUXILIARES":
+          this.dadosAuxiliares = stepData;
           return this.handleGenerateTerm();
       }
     },
@@ -127,7 +145,7 @@ export default {
     <DadosAuxiliares
       v-if="step === 'DADOS_AUXILIARES'"
       :backStep="handleBackStep"
-      :advanceStep="handleGenerateTerm"
+      :advanceStep="handleAdvanceStep"
     />
     <!--
     <div class="w-full flex justify-end gap-2">

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { vMaska } from "maska";
-
 // parse money to BRL currency and R$ prefix
 const moneyMask = {
   preProcess: (value: string) => {
@@ -36,33 +34,35 @@ export default {
   },
   methods: {
     validateAndAdvance() {
-      return this.advanceStep();
+      // return this.advanceStep();
       this.errors = {};
       const validator = z.object({
-        dataInicio: z.custom(validateStringDate, { message: "Data inválida" }),
+        dataInicio: z.custom(validateStringDate, {
+          message: "Data inválida",
+        }),
         dataFinal: z.custom(validateStringDate, { message: "Data inválida" }),
-        jornadaDiaria: z
-          .string()
-          .regex(/^\d{2}$/)
-          .max(24),
-        jornadaSemanal: z
-          .string()
-          .regex(/^\d{2}$/)
-          .max(99),
-        bolsaAuxilio: z.string().regex(/^\d{2}$/),
-        auxilioTransporte: z.string().regex(/^\d{2}$/),
-        coordenador: z.number(),
+        jornadaDiaria: z.number().min(1).max(24),
+        jornadaSemanal: z.number().min(1).max(99),
+        bolsaAuxilio: z.number(),
+        auxilioTransporte: z.number(),
+        // coordenador: z.number(),
         // orientador: z.number(),
         departamentoOrientador: z.string().min(2),
         nomeSupervisor: z.string().min(2),
         telefoneSupervisor: z.string().min(2),
-        atividades: z.string().min(20),
+        atividades: z.string().min(50).max(700),
       });
 
       const result = validator.safeParse({ ...this.$data });
 
       if (!result.success) {
         console.log(result.error.issues);
+        this.$toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Preencha todos os campos",
+          life: 3000,
+        });
         this.errors = result.error.issues.reduce((acc, issue) => {
           acc[issue.path[0]] = this.zodErrors[issue.code] || issue.message;
           return acc;
@@ -70,7 +70,11 @@ export default {
         return;
       }
 
-      this.advanceStep();
+      this.advanceStep({
+        ...this.$data,
+        errors: undefined,
+        zodErrors: undefined,
+      });
     },
   },
   zodErrorsService: null as ZodErrorsService | null,
@@ -79,7 +83,7 @@ export default {
   },
   mounted() {
     this.zodErrorsService
-      .getCountries()
+      .getTranslatedErrors()
       .then((data: Record<string, string>) => (this.zodErrors = data));
   },
   data() {
@@ -91,8 +95,8 @@ export default {
       dataFinal: "",
       jornadaDiaria: "",
       jornadaSemanal: "",
-      bolsaAuxilio: "",
-      auxilioTransporte: "",
+      bolsaAuxilio: null as null | number,
+      auxilioTransporte: null as null | number,
       coordenador: "",
       orientador: "",
       departamentoOrientador: "",
@@ -117,11 +121,10 @@ export default {
         <div class="formgrid grid">
           <div class="field col">
             <label for="dataInicio">Data de Início {{ dataInicio }}</label>
-            <InputText
+            <InputMask
               id="dataInicio"
               type="text"
-              v-maska
-              data-maska="##/##/####"
+              mask="99/99/9999"
               v-model="dataInicio"
               required
               :class="errors['dataInicio'] && 'p-invalid'"
@@ -130,36 +133,37 @@ export default {
           </div>
           <div class="field col">
             <label for="dataFinal">Data de Termino</label>
-            <InputText
+            <InputMask
               id="dataFinal"
               type="text"
-              v-maska
-              data-maska="##/##/####"
+              mask="99/99/9999"
               v-model="dataFinal"
               :class="errors['dataFinal'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{ errors["dataFinal"] }}</small>
           </div>
           <div class="field col">
-            <label for="jornadaDiaria">Jornada Diária (em horas)</label>
-            <InputText
+            <label for="jornadaDiaria">Jornada Diária</label>
+            <InputNumber
               id="jornadaDiaria"
               type="number"
-              v-maska
-              data-maska="##"
+              :max="24"
+              :min="1"
+              suffix="h"
               v-model="jornadaDiaria"
               :class="errors['jornadaDiaria'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{ errors["jornadaDiaria"] }}</small>
           </div>
           <div class="field col">
-            <label for="jornadaSemanal">Jornada Semanal (em horas)</label>
-            <InputText
+            <label for="jornadaSemanal">Jornada Semanal</label>
+            <InputNumber
               id="jornadaSemanal"
               type="number"
               maxlength="2"
-              v-maska
-              data-maska="##"
+              :max="99"
+              :min="1"
+              suffix="h"
               v-model="jornadaSemanal"
               :class="errors['jornadaSemanal'] && 'p-invalid'"
             />
@@ -174,11 +178,10 @@ export default {
             <label for="bolsaAuxilio"
               >Valor bolsa auxílio {{ bolsaAuxilio }}</label
             >
-            <InputText
+            <InputNumber
+              mode="currency"
+              currency="BRL"
               id="bolsaAuxilio"
-              v-maska:[moneyMask]
-              data-maska="0.99"
-              data-maska-tokens="0:\d:multiple|9:\d:optional"
               v-model="bolsaAuxilio"
               :class="errors['bolsaAuxilio'] && 'p-invalid'"
             />
@@ -188,11 +191,10 @@ export default {
             <label for="auxilioTransporte"
               >Valor auxílio transporte (R$/diário)</label
             >
-            <InputText
+            <InputNumber
+              mode="currency"
+              currency="BRL"
               id="auxilioTransporte"
-              v-maska:[moneyMask]
-              data-maska="0.99"
-              data-maska-tokens="0:\d:multiple|9:\d:optional"
               v-model="auxilioTransporte"
               :class="errors['auxilioTransporte'] && 'p-invalid'"
             />
@@ -259,11 +261,10 @@ export default {
           </div>
           <div class="field col">
             <label for="telefoneSupervisor">Telefone do Supervisor</label>
-            <InputText
+            <InputMask
               id="telefoneSupervisor"
               type="text"
-              v-maska
-              data-maska="(##) #####-####"
+              mask="(99) 99999-9999"
               v-model="telefoneSupervisor"
               :class="errors['telefoneSupervisor'] && 'p-invalid'"
             />
@@ -274,12 +275,19 @@ export default {
         </div>
         <div class="formgrid grid">
           <div class="field col">
-            <label for="atividades">Atividades a Serem Desenvolvidas</label>
+            <span>
+              <label for="atividades">Atividades a Serem Desenvolvidas</label>
+              <small class="ml-2"
+                >50 - 700 caracteres ({{ atividades.trim().length }})</small
+              >
+            </span>
             <Textarea
               id="atividades"
               type="text"
               v-model="atividades"
               :class="errors['atividades'] && 'p-invalid'"
+              maxlength="700"
+              class="h-32"
             />
             <small class="text-rose-500">{{ errors["atividades"] }}</small>
           </div>

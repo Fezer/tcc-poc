@@ -1,5 +1,5 @@
 export default class ZodErrorsService {
-  getCountries() {
+  getTranslatedErrors() {
     return fetch("/data/zodErrors.json").then((res) => res.json());
   }
 }

@@ -14,7 +14,7 @@ export default {
   methods: {
     handleValidateAndAdvanceStep() {
       if (this.tipoEstagio && this.localEstagio) {
-        this.advanceStep("TIPO_ESTAGIO", {
+        this.advanceStep({
           tipoEstagio: this.tipoEstagio,
           localEstagio: this.localEstagio,
         });
