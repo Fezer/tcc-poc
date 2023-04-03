@@ -3,38 +3,101 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.sql.Date;
 
+import org.springframework.hateoas.RepresentationModel;
+
+import jakarta.persistence.*;
+
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 
-public class TermoDeEstagio implements Serializable{
-	private int id;
+@Entity
+@Table(name = "termo_de_estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implements Serializable{
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
+	private long id;
+	
+	@Column(name = "tipo_termo_de_estagio")
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
+	
+	@ManyToOne
+	@JoinColumn(name="estagio_id", nullable=false)
 	private Estagio estagio;
+	
+	@Column(name = "seguradora")
 	private Seguradora seguradora;
+	
+	@Column(name = "apolice")
 	private Apolice apolice;
+	
+	@Column(name = "agente_integrador")
 	private AgenteIntegrador agenteIntegrador;
+	
+	@Column(name = "orientador")
 	private Orientador orientador;
+	
+	@Column(name = "supervisor")
 	private Supervisor supervisor;
+	
+	@Column(name = "coordenador_curso")
 	private Coordenador coordenadorCurso;
+	
+	@Column(name = "plano_atividades")
 	private PlanoDeAtividades planoAtividades;
+	
+	@Column(name = "data_inicio")
 	private Date dataInicio;
+	
+	@Column(name = "data_termino")
 	private Date dataTermino;
+	
+	@Column(name = "jornada_diaria")
 	private int jornadaDiaria;
+	
+	@Column(name = "jornada_semanal")
 	private int jornadaSemanal;
+	
+	@Column(name = "valor_bolsa")
 	private float valorBolsa;
+	
+	@Column(name = "valor_transporte")
 	private float valorTransporte;
+	
+	@Column(name = "data_fim_suspensao")
 	private Date dataFimSuspensao;
+	
+	@Column(name = "data_inicio_retomada")
 	private Date dataInicioRetomada;
+
+	@Column(name = "data_criacao")
 	private Date dataCriacao;
+	
+	@Column(name = "status_termo")
 	private EnumStatusTermo statusTermo;
+	
+	@Column(name = "etapa_fluxo")
 	private EnumEtapaFluxo etapaFluxo;
+	
+	@Column(name = "ciencia_coordenacao")
 	private CienciaCoordenacao cienciaCoordenacao;
+	
+	@Column(name = "parecer_coe")
 	private EnumParecerAprovadores parecerCOE;
+	
+	@Column(name = "parecer_coafe")
 	private EnumParecerAprovadores parecerCOAFE;
+	
+	@Column(name = "parecer_coordenacao")
 	private EnumParecerAprovadores parecerCoordenacao;
+
+	@Column(name = "motivo_indeferimento")
 	private String motivoIndeferimento;
+	
+	@Column(name = "descricao_ajustes")
 	private String descricaoAjustes;
 	
 	public TermoDeEstagio() {
@@ -42,7 +105,7 @@ public class TermoDeEstagio implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoDeEstagio(int id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
+	public TermoDeEstagio(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
 			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
 			Coordenador coordenadorCurso, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
 			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte, Date dataFimSuspensao,
@@ -80,11 +143,11 @@ public class TermoDeEstagio implements Serializable{
 		this.descricaoAjustes = descricaoAjustes;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

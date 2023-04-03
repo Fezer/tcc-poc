@@ -1,8 +1,11 @@
 package br.ufpr.estagio.modulo.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 
-public class TermoPocDTO {
+import org.springframework.hateoas.RepresentationModel;
+
+public class TermoPocDTO extends RepresentationModel<TermoPocDTO>{
 	private long id;
 	private String tipoEstagio;
 	private String statusEstagio;
@@ -36,6 +39,7 @@ public class TermoPocDTO {
 	private String enderecoContratente;
 	private String cidadeContratante;
 	private String estadoContratante;
+	private ArrayList<String> _links;
 	
 	public TermoPocDTO() {
 		super();
@@ -49,7 +53,7 @@ public class TermoPocDTO {
 			String nomeSupervisor, String telefoneSupervisor, String formacaoSupervisor, String nomeOrientador,
 			String departamentoOrientador, String atividadesEstagio, String nomeContratante, String tipoContratante,
 			String cnpjContratente, String telefoneContratante, String numeroApolice, String enderecoContratente,
-			String cidadeContratante, String estadoContratante) {
+			String cidadeContratante, String estadoContratante, ArrayList<String> _links) {
 		super();
 		this.id = id;
 		this.tipoEstagio = tipoEstagio;
@@ -84,6 +88,7 @@ public class TermoPocDTO {
 		this.enderecoContratente = enderecoContratente;
 		this.cidadeContratante = cidadeContratante;
 		this.estadoContratante = estadoContratante;
+		this._links = _links;
 	}
 
 	public long getId() {
@@ -349,5 +354,15 @@ public class TermoPocDTO {
 	public void setEstadoContratante(String estadoContratante) {
 		this.estadoContratante = estadoContratante;
 	}
+
+	public ArrayList<String> get_links() {
+		return _links;
+	}
+
+	public void set_links(ArrayList<String> _links) {
+		this._links = _links;
+	}
+
+
 	
 }

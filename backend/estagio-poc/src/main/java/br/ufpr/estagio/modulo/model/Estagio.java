@@ -4,47 +4,111 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.springframework.hateoas.RepresentationModel;
+
+import jakarta.persistence.*;
+
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 
-public class Estagio implements Serializable{
+@Entity
+@Table(name = "estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+public class Estagio extends RepresentationModel<Estagio> implements Serializable{
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+	
+	@Column(name = "tipo_estagio")
 	private EnumTipoEstagio tipoEstagio;
+	
+	@Column(name = "status_estagio")
 	private EnumStatusEstagio statusEstagio;
+	
+	@Column(name = "estagio_ufpr")
 	private boolean estagioUfpr;
+	
+	@Column(name = "aluno")
 	private Aluno aluno;
+	
+	@Column(name = "contratante")
 	private Contratante contratante;
+	
+	@Column(name = "seguradora")
 	private Seguradora seguradora;
+	
+	@Column(name = "apolice")
+	private Apolice apolice;
+	
+	@Column(name = "agente_integrador")
 	private AgenteIntegrador agenteIntegrador;
+	
+	@Column(name = "orientador")
 	private Orientador orientador;
+	
+	@Column(name = "supervisor")
 	private Supervisor supervisor;
+	
+	@Column(name = "plano_de_atividades")
 	private PlanoDeAtividades planoDeAtividades;
+	
+	@Column(name = "data_inicio")
 	private Date dataInicio;
+	
+	@Column(name = "data_termino")
 	private Date dataTermino;
+	
+	@Column(name = "jornada_diaria")
 	private int jornadaDiaria;
+	
+	@Column(name = "jornada_semanal")
 	private int jornadaSemanal;
+	
+	@Column(name = "valor_bolsa")
 	private float valorBolsa;
+	
+	@Column(name = "valor_transporte")
 	private float valorTransporte;
+	
+	//@OneToOne
+	//@JoinColumn(name="termo_de_compromisso_id")
+	@OneToOne(mappedBy="estagio")
 	private TermoDeEstagio termoDeCompromisso;
+	
+	//@Column(name = "termo_adivito")
+	@OneToMany(mappedBy="estagio")
 	private ArrayList<TermoDeEstagio> termoAdivito;
+	
+	@Column(name = "termo_de_rescisao")
 	private TermoDeRescisao termoDeRescisao;
+	
+	//@Column(name = "relatorio_de_estagio")
+	@OneToMany(mappedBy="estagio")
 	private ArrayList<RelatorioDeEstagio> relatorioDeEstagio;
+	
+	@Column(name = "ficha_de_avaliacao")
 	private FichaDeAvaliacao fichaDeAvaliacao;
+	
+	@Column(name = "certificado_de_estagio")
 	private CertificadoDeEstagio certificadoDeEstagio;
+	
+	@Column(name = "data_criacao")
+	private Date dataCriacao;
 	
 	public Estagio() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Estagio(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr, Aluno aluno,
-			Contratante contratante, Seguradora seguradora, AgenteIntegrador agenteIntegrador, Orientador orientador,
-			Supervisor supervisor, PlanoDeAtividades planoDeAtividades, Date dataInicio, Date dataTermino,
-			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte,
-			TermoDeEstagio termoDeCompromisso, ArrayList<TermoDeEstagio> termoAdivito, TermoDeRescisao termoDeRescisao,
+	public Estagio(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr,
+			Aluno aluno, Contratante contratante, Seguradora seguradora, Apolice apolice,
+			AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
+			PlanoDeAtividades planoDeAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria,
+			int jornadaSemanal, float valorBolsa, float valorTransporte, TermoDeEstagio termoDeCompromisso,
+			ArrayList<TermoDeEstagio> termoAdivito, TermoDeRescisao termoDeRescisao,
 			ArrayList<RelatorioDeEstagio> relatorioDeEstagio, FichaDeAvaliacao fichaDeAvaliacao,
-			CertificadoDeEstagio certificadoDeEstagio) {
+			CertificadoDeEstagio certificadoDeEstagio, Date dataCriacao) {
 		super();
 		this.id = id;
 		this.tipoEstagio = tipoEstagio;
@@ -53,6 +117,7 @@ public class Estagio implements Serializable{
 		this.aluno = aluno;
 		this.contratante = contratante;
 		this.seguradora = seguradora;
+		this.apolice = apolice;
 		this.agenteIntegrador = agenteIntegrador;
 		this.orientador = orientador;
 		this.supervisor = supervisor;
@@ -69,6 +134,7 @@ public class Estagio implements Serializable{
 		this.relatorioDeEstagio = relatorioDeEstagio;
 		this.fichaDeAvaliacao = fichaDeAvaliacao;
 		this.certificadoDeEstagio = certificadoDeEstagio;
+		this.dataCriacao = dataCriacao;
 	}
 
 	public long getId() {
@@ -125,6 +191,14 @@ public class Estagio implements Serializable{
 
 	public void setSeguradora(Seguradora seguradora) {
 		this.seguradora = seguradora;
+	}
+
+	public Apolice getApolice() {
+		return apolice;
+	}
+
+	public void setApolice(Apolice apolice) {
+		this.apolice = apolice;
 	}
 
 	public AgenteIntegrador getAgenteIntegrador() {
@@ -254,7 +328,13 @@ public class Estagio implements Serializable{
 	public void setCertificadoDeEstagio(CertificadoDeEstagio certificadoDeEstagio) {
 		this.certificadoDeEstagio = certificadoDeEstagio;
 	}
-	
-	
-	
+
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+
 }

@@ -2,6 +2,8 @@ package br.ufpr.estagio.modulo.model;
 
 import java.util.Date;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -10,7 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "termopoc")
 
-public class TermoPoc implements Serializable{
+public class TermoPoc extends RepresentationModel<TermoPoc> implements Serializable {
 	private static final Long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue

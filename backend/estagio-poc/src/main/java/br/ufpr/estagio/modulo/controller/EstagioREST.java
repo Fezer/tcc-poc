@@ -1,5 +1,9 @@
 package br.ufpr.estagio.modulo.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,17 +19,39 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.TermoPocDTO;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
+import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoPoc;
 import br.ufpr.estagio.modulo.repository.TermoPocRepository;
+import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
+import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
 @RestController
-public class TermoPocREST {
+@RequestMapping("/estagio")
+public class EstagioREST {
+	
+    private EstagioService estagioService;
+    private TermoDeEstagioService termoDeEstagioService;
+    private RelatorioDeEstagioService relatorioDeEstagioService;
+    
+    public EstagioREST(EstagioService estagioService, 
+    		TermoDeEstagioService termoDeEstagioService, 
+    		RelatorioDeEstagioService relatorioDeEstagioService) {
+        this.estagioService = estagioService;
+        this.termoDeEstagioService = termoDeEstagioService;
+        this.relatorioDeEstagioService = relatorioDeEstagioService;
+    }
+    
 	
 	@Autowired
 	private TermoPocRepository repo;
@@ -33,25 +59,46 @@ public class TermoPocREST {
 	@Autowired
 	private ModelMapper mapper;
 	
-	@PostMapping("/termo")
-	public ResponseEntity<TermoPocDTO> inserir(@RequestBody TermoPocDTO termo){
+	@PostMapping("/novo")
+	public ResponseEntity<EstagioDTO> novoEstagio(){
 		try {
-		TermoPoc newTermo = repo.save(mapper.map(termo, TermoPoc.class));
-		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newTermo, TermoPocDTO.class));
+			Estagio estagio = new Estagio();
+			estagio = estagioService.novoEstagio(estagio);
+			
+			TermoDeEstagio termoDeCompromisso = new TermoDeEstagio();
+			termoDeCompromisso = termoDeEstagioService.novo(termoDeCompromisso);
+			estagio.setTermoDeCompromisso(termoDeCompromisso);
+			
+			RelatorioDeEstagio relatorioDeEstagio = new RelatorioDeEstagio();
+			relatorioDeEstagio = relatorioDeEstagioService.novo(relatorioDeEstagio);
+			ArrayList<RelatorioDeEstagio> listRelatorio = new ArrayList<RelatorioDeEstagio>();
+			listRelatorio.add(relatorioDeEstagio);
+			estagio.setRelatorioDeEstagio(listRelatorio);
+			
+					
+			
+			EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
+			
+			estagioDTO.add(linkTo(methodOn(EstagioREST.class).listarEstagio(estagio.getId())).withSelfRel());
+			return new ResponseEntity<>(estagioDTO, HttpStatus.CREATED);			
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 	
-	@GetMapping("/termo")
-	public ResponseEntity<List<TermoPocDTO>> listarTodos(){
+	@GetMapping("/")
+	public ResponseEntity<List<EstagioDTO>> listarTodos(){
 		try {
-			List<TermoPoc> lista = repo.findAll();
+			List<Estagio> lista = estagioService.listAllEstagios();
 			if(lista.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Nenhum termo encontrado!");
+				throw new PocException(HttpStatus.NOT_FOUND, "Nenhum estágio encontrado!");
 			} else {
-				return ResponseEntity.status(HttpStatus.OK).body(lista.stream().map(e -> mapper.map(e, TermoPocDTO.class)).collect(Collectors.toList()));
+				List<EstagioDTO> listaDTO = new ArrayList<EstagioDTO>();
+				for(Estagio l : lista) {
+					listaDTO.add(estagioService.toEstagioDTO(l).add(linkTo(methodOn(EstagioREST.class).listarEstagio(l.getId())).withSelfRel()));
+				}
+				return new ResponseEntity<>(listaDTO, HttpStatus.OK);
 			}
 		}catch(PocException e) {
 			e.printStackTrace();
@@ -62,8 +109,8 @@ public class TermoPocREST {
 		}
 	}
 	
-	@GetMapping("/termo/{id}")
-	public ResponseEntity<TermoPocDTO> listarTermo(@PathVariable Long id){
+	@GetMapping("{id}")
+	public ResponseEntity<TermoPocDTO> listarEstagio(@PathVariable Long id){
 		try {
 			Optional<TermoPoc> termo = repo.findById(id);
 		if(termo.isEmpty()) {
