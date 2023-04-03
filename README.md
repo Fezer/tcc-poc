@@ -4,6 +4,14 @@
 
 ---
 
+### Bibliotecas importantes
+
+- [Sakai](https://github.com/who-jonson/sakai-nuxt) - Template de componentes e estilização
+- [Tailwind](https://tailwindcss.com/docs) - Biblioteca de estilos
+- [dayjs](https://day.js.org/) - Biblioteca de manipulação de datas
+- [maska](https://beholdr.github.io/maska/#/) - Biblioteca de máscaras de inputs
+- [zod](https://github.com/colinhacks/zod) - Biblioteca de validação de dados
+
 ### Requisitos
 
 - Docker
