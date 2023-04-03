@@ -8,11 +8,14 @@
         <div class="formgrid grid">
           <div class="field col">
             <label for="tipoVaga">Tipo de Vaga</label>
-            <InputText id="tipoVaga" type="text" />
-          </div>
-          <div class="field col">
-            <label for="nivelVaga">Nível</label>
-            <InputText id="nivelVaga" type="text" />
+            <Dropdown
+              id="tipoVaga"
+              type="text"
+              :options="tiposDeVaga"
+              optionLabel="name"
+              placeholder="Selecione o tipo da vaga"
+              v-model="tipoVaga"
+            />
           </div>
         </div>
       </div>
@@ -251,6 +254,23 @@
 
 <script setup>
 import { vMaska } from "maska";
+import Dropdown from "primevue/dropdown";
+import { ref } from "vue";
+
+const tiposDeVaga = ref([
+  {
+    name: "Ampla Concorrência",
+    code: "amplaConcorrencia",
+  },
+  {
+    name: "Negros",
+    code: "negros",
+  },
+  {
+    name: "PCD",
+    code: "pcd",
+  },
+]);
 </script>
 
 <script>
@@ -264,6 +284,12 @@ export default {
       type: Function,
       required: true,
     },
+  },
+  components: { Dropdown },
+  data() {
+    return {
+      tipoVaga: null,
+    };
   },
 };
 </script>

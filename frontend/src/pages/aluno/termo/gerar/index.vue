@@ -22,7 +22,7 @@ export default {
   },
   data() {
     return {
-      step: "DADOS_ALUNO" as Steps,
+      step: "DADOS_AUXILIARES" as Steps,
       progressValue: 20,
 
       estagioUfpr: null as Boolean | null,
@@ -33,7 +33,11 @@ export default {
   },
   methods: {
     handleGenerateTerm() {
-      console.log("generate term");
+      this.$toast.add({
+        severity: "success",
+        summary: "Termo gerado com sucesso",
+        life: 3000,
+      });
     },
 
     handleAdvanceStep(step: Steps, stepData: any) {
@@ -55,11 +59,13 @@ export default {
           break;
         case "DADOS_ESTAGIO":
           if (!this.estagioUfpr) {
-            return alert("process ended");
+            return this.handleGenerateTerm();
           }
           this.step = "DADOS_AUXILIARES";
           this.progressValue = 100;
           break;
+        case "DADOS_AUXILIARES":
+          return this.handleGenerateTerm();
       }
     },
     handleBackStep() {
@@ -88,6 +94,7 @@ export default {
 
 <template>
   <div>
+    <Toast />
     <small>Processos > Iniciar novo estágio</small>
     <h3>Novo termo de compromisso</h3>
     <ProgressBar

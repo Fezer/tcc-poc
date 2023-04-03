@@ -22,7 +22,7 @@
 docker-compose up
 ```
 
-Se for preciso instalar alguma depencia, é preciso buildar novamente a imagem do docker, logo:
+Se for preciso instalar alguma dependência, é preciso buildar novamente a imagem do docker, logo:
 
 ```bash
 docker-compose build --no-cache

@@ -91,6 +91,7 @@
           </div>
           <div class="field col">
             <label for="email2">Nível</label>
+
             <InputText disabled id="email2" type="text" value="teste" />
           </div>
         </div>
@@ -105,7 +106,7 @@
       />
       <Button
         @click="advanceStep"
-        :label="finalStep ? 'Gerar termo' : 'Avançar'"
+        label="Avançar"
         class="p-button-success"
         icon="pi pi-arrow-right"
       />
@@ -122,10 +123,6 @@ export default {
     },
     backStep: {
       type: Function,
-      required: true,
-    },
-    finalStep: {
-      type: Boolean,
       required: true,
     },
   },
