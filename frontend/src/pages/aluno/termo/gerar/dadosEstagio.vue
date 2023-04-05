@@ -31,6 +31,9 @@ export default {
       type: Boolean,
       required: true,
     },
+    dados: {
+      type: Object,
+    },
   },
   methods: {
     validateAndAdvance() {
@@ -85,6 +88,40 @@ export default {
     this.zodErrorsService
       .getTranslatedErrors()
       .then((data: Record<string, string>) => (this.zodErrors = data));
+  },
+
+  focus() {
+    if (this.dados) {
+      // get data from props and set to data
+      const {
+        dataInicio,
+        dataFinal,
+        jornadaDiaria,
+        jornadaSemanal,
+        bolsaAuxilio,
+        auxilioTransporte,
+        coordenador,
+        orientador,
+        departamentoOrientador,
+        nomeSupervisor,
+        telefoneSupervisor,
+        atividades,
+      } = this.dados;
+
+      this.dataInicio = dataInicio;
+      this.dataFinal = dataFinal;
+      this.jornadaDiaria = jornadaDiaria;
+      this.jornadaSemanal = jornadaSemanal;
+      this.bolsaAuxilio = bolsaAuxilio;
+
+      this.auxilioTransporte = auxilioTransporte;
+      this.coordenador = coordenador;
+      this.orientador = orientador;
+      this.departamentoOrientador = departamentoOrientador;
+      this.nomeSupervisor = nomeSupervisor;
+      this.telefoneSupervisor = telefoneSupervisor;
+      this.atividades = atividades;
+    }
   },
   data() {
     return {
@@ -295,7 +332,7 @@ export default {
       </div>
       <div class="w-full flex justify-end gap-2">
         <Button
-          @click="() => backStep()"
+          @click="() => backStep({ ...$data })"
           label="Voltar"
           class="p-button-secondary"
           icon="pi pi-arrow-left"

@@ -92,13 +92,16 @@ export default {
           return this.handleGenerateTerm();
       }
     },
-    handleBackStep() {
+    handleBackStep(stepData: any) {
       switch (this.step) {
         case "DADOS_AUXILIARES":
           this.step = "DADOS_ESTAGIO";
           this.progressValue = 100;
+
+          this.dadosAuxiliares = stepData;
           break;
         case "DADOS_ESTAGIO":
+          this.dadosEstagio = stepData;
           if (this.estagioUfpr) {
             this.step = "TIPO_ESTAGIO";
             this.progressValue = 40;
@@ -106,14 +109,19 @@ export default {
           }
           this.step = "TIPO_CONTRATANTE";
           this.progressValue = 60;
+
           break;
         case "TIPO_CONTRATANTE":
           this.step = "TIPO_ESTAGIO";
           this.progressValue = 40;
+
+          this.tipoContratante = stepData;
           break;
         case "TIPO_ESTAGIO":
           this.step = "DADOS_ALUNO";
           this.progressValue = 20;
+
+          this.dadosTipoEstagio = stepData;
           break;
       }
     },
@@ -141,22 +149,26 @@ export default {
       v-if="step === 'TIPO_ESTAGIO'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
+      :dados="dadosTipoEstagio"
     />
     <TipoContratante
       v-if="step === 'TIPO_CONTRATANTE'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
+      :dados="tipoContratante"
     />
     <DadosEstagio
       v-if="step === 'DADOS_ESTAGIO'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
       :finalStep="!estagioUfpr"
+      :dados="dadosEstagio"
     />
     <DadosAuxiliares
       v-if="step === 'DADOS_AUXILIARES'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
+      :dados="dadosAuxiliares"
     />
     <!--
     <div class="w-full flex justify-end gap-2">

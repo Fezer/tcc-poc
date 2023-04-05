@@ -76,6 +76,9 @@ export default {
       type: Function,
       required: true,
     },
+    dados: {
+      type: Object,
+    },
   },
   components: { Dropdown },
   data() {
@@ -106,6 +109,22 @@ export default {
     this.zodErrorsService
       .getTranslatedErrors()
       .then((data: Record<string, string>) => (this.zodErrors = data));
+
+    if (this.dados) {
+      this.tipoVaga = this.dados.tipoVaga;
+      this.banco = this.dados.banco;
+      this.numAgencia = this.dados.numAgencia;
+      this.numConta = this.dados.numConta;
+      this.nomeAgencia = this.dados.nomeAgencia;
+      this.cidadeAgencia = this.dados.cidadeAgencia;
+      this.enderecoAgencia = this.dados.enderecoAgencia;
+      this.bairroAgencia = this.dados.bairroAgencia;
+      this.tipoVaga = this.dados.tipoVaga;
+      this.grupoSanguineo = this.dados.grupoSanguineo;
+      this.certificadoMilitar = this.dados.certificadoMilitar;
+      this.orgaoExpedicaoCertMilitar = this.dados.orgaoExpedicaoCertMilitar;
+      this.serieCertMilitar = this.dados.serieCertMilitar;
+    }
   },
   methods: {
     handleValidateAndAdvance() {
@@ -468,7 +487,7 @@ export default {
 
     <div class="w-full flex justify-end gap-2">
       <Button
-        @click="() => backStep()"
+        @click="() => backStep({ ...$data })"
         label="Voltar"
         class="p-button-secondary"
         icon="pi pi-arrow-left"

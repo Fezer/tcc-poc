@@ -12,6 +12,9 @@ export default {
       type: Function,
       required: true,
     },
+    dados: {
+      type: Object,
+    },
   },
   methods: {
     validateAndAdvanceStep() {
@@ -65,6 +68,34 @@ export default {
     this.zodErrorsService = new ZodErrorsService();
   },
   mounted() {
+    console.log("mounted");
+    if (this.dados) {
+      const {
+        tipoContratante,
+        nomeContratante,
+        telefoneContratante,
+        cpfContratante,
+        cnpjContratante,
+        enderecoContratante,
+        cepContratante,
+        cidadeContratante,
+        estadoContratante,
+        nomeSeguradora,
+        apoliceSeguradora,
+      } = this.dados;
+
+      this.tipoContratante = tipoContratante;
+      this.nomeContratante = nomeContratante;
+      this.telefoneContratante = telefoneContratante;
+      this.cpfContratante = cpfContratante;
+      this.cnpjContratante = cnpjContratante;
+      this.enderecoContratante = enderecoContratante;
+      this.cepContratante = cepContratante;
+      this.cidadeContratante = cidadeContratante;
+      this.estadoContratante = estadoContratante;
+      this.nomeSeguradora = nomeSeguradora;
+      this.apoliceSeguradora = apoliceSeguradora;
+    }
     this.zodErrorsService
       .getTranslatedErrors()
       .then((data: Record<string, string>) => (this.zodErrors = data));
@@ -270,7 +301,7 @@ export default {
 
     <div class="w-full flex justify-end gap-2">
       <Button
-        @click="backStep()"
+        @click="backStep({ ...$data })"
         label="Voltar"
         class="p-button-secondary"
         icon="pi pi-arrow-left"
