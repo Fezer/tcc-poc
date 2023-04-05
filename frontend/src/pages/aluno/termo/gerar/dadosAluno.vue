@@ -98,12 +98,14 @@
       </div>
     </div>
     <div class="w-full flex justify-end gap-2">
-      <Button
-        @click="backStep"
-        label="Voltar"
-        class="p-button-secondary"
-        icon="pi pi-arrow-left"
-      />
+      <a href="https://www.prppg.ufpr.br/siga/" target="_blank">
+        <Button
+          @click="() => {}"
+          label="Acessar SIGA"
+          class="p-button-secondary"
+          icon="pi pi-external-link"
+        />
+      </a>
       <Button
         @click="advanceStep"
         label="Avançar"

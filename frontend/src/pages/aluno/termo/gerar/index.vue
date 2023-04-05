@@ -62,6 +62,12 @@ export default {
           this.estagioUfpr = stepData.localEstagio === "UFPR";
           this.dadosTipoEstagio = stepData;
 
+          if (this.estagioUfpr) {
+            this.step = "DADOS_ESTAGIO";
+            this.progressValue = 80;
+            return;
+          }
+
           this.step = "TIPO_CONTRATANTE";
           this.progressValue = 60;
           break;
@@ -93,6 +99,11 @@ export default {
           this.progressValue = 100;
           break;
         case "DADOS_ESTAGIO":
+          if (this.estagioUfpr) {
+            this.step = "TIPO_ESTAGIO";
+            this.progressValue = 40;
+            return;
+          }
           this.step = "TIPO_CONTRATANTE";
           this.progressValue = 60;
           break;
