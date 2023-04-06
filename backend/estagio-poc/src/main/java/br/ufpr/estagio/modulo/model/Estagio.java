@@ -76,15 +76,15 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@OneToOne(mappedBy="estagio")
 	private TermoDeEstagio termoDeCompromisso;
 	
-	//@Column(name = "termo_adivito")
-	@OneToMany(mappedBy="estagio")
+	@Column(name = "termo_adivito")
+	//@OneToMany(mappedBy="estagio")
 	private ArrayList<TermoDeEstagio> termoAdivito;
 	
 	@Column(name = "termo_de_rescisao")
 	private TermoDeRescisao termoDeRescisao;
 	
-	//@Column(name = "relatorio_de_estagio")
-	@OneToMany(mappedBy="estagio")
+	@Column(name = "relatorio_de_estagio")
+	//@OneToMany(mappedBy="estagio")
 	private ArrayList<RelatorioDeEstagio> relatorioDeEstagio;
 	
 	@Column(name = "ficha_de_avaliacao")

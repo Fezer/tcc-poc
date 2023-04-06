@@ -3,14 +3,48 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
+@Entity
+@Table(name = "apolice", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Apolice implements Serializable {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+	
+	@Column(name = "numero")
 	private int numero;
+	
+	@Column(name = "dataInicio")
 	private Date dataInicio;
+	
+	@Column(name = "dataFim")
 	private Date dataFim;
+	
+	//@OneToOne
+	//@JoinColumn(name="id_seguradora")
+	@OneToOne(mappedBy="apolice")
 	private Seguradora seguradora;
+	
+	// REVER DIAGRAMA
+	//@OneToOne
+	//@JoinColumn(name="id_termo_de_estagio")
+	@OneToOne(mappedBy="apolice")
 	private TermoDeEstagio termoDeEstagio;
+	
+	// REVER DIAGRAMA + o que eh apolicecol (ou algo assim)?
+	//@OneToOne
+	//@JoinColumn(name="id_estagio")
+	@OneToOne(mappedBy="apolice")
 	private Estagio estagio;
 	
 	public Apolice() {

@@ -3,11 +3,30 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
+@Entity
+@Table(name = "periodo_recesso", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class PeriodoRecesso implements Serializable{
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+
+	@Column(name = "dataInicio")
 	private Date dataInicio;
+	
+	@Column(name = "dataFim")
 	private Date dataFim;
+	
+	@Column(name = "termo_de_rescisao")
 	private TermoDeRescisao termoRescisao;
 	
 	public PeriodoRecesso() {

@@ -4,16 +4,49 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
+@Entity
+@Table(name = "termo_de_rescisao", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class TermoDeRescisao implements Serializable{
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+
+	//@OneToOne
+	//@JoinColumn(name="estagio")
+	@OneToOne(mappedBy="termo_de_rescisao")
 	private Estagio estagio;
+	
+	@Column(name = "data_termino")
 	private Date dataTermino;
+	
+	@Column(name = "periodo_total_recesso")
 	private int periodoTotalRecesso;
+	
+	@Column(name = "periodo_recesso")
+	//@OneToMany(mappedBy="termo_de_rescisao")
 	private ArrayList<PeriodoRecesso> periodoRecesso;
+	
+	@Column(name = "ciencia_orientador")
 	private boolean cienciaOrientador;
+	
+	@Column(name = "ciencia_coordenador")
 	private boolean cienciaCoordenador;
+	
+	@Column(name = "ciencia_coe")
 	private boolean cienciaCOE;
+	
+	@Column(name = "ciencia_coafe")
 	private boolean cienciaCOAFE;
 	
 	public TermoDeRescisao() {

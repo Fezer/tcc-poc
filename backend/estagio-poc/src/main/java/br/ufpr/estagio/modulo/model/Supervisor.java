@@ -3,12 +3,35 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
+@Entity
+@Table(name = "supervisor", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Supervisor extends Pessoa implements Serializable{
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+
+	@Column(name = "cpf")
 	private String cpf;
+	
+	@Column(name = "formacao")
 	private String formacao;
+	
+	@Column(name = "termo_de_estagio")
+	//@OneToMany(mappedBy="supervisor")
 	private ArrayList<TermoDeEstagio> termoDeEstagio;
+	
+	@Column(name = "estagio")
+	//@OneToMany(mappedBy="supervisor")
 	private ArrayList<Estagio> estagio;
 	
 	public Supervisor() {

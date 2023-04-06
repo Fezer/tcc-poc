@@ -2,10 +2,28 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
+@Entity
+@Table(name = "certificado_de_estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class CertificadoDeEstagio implements Serializable {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+	
+	@Column(name = "id_estagio")
 	private Estagio estagio;
+	
+	// nao tem a coluna no diagrama
+	@Column(name = "aprovado_coe")
 	private boolean aprovadoCOE;
 	
 	public CertificadoDeEstagio() {

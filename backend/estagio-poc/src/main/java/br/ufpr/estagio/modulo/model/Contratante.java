@@ -4,14 +4,38 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
+@Entity
+@Table(name = "contratante", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Contratante extends Pessoa implements Serializable {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+	
+	@Column(name = "tipo")
 	private EnumTipoContratante tipo;
+	
+	@Column(name = "cnpj")
 	private String cnpj;
+	
+	@Column(name = "cpf")
 	private String cpf;
+	
+	@Column(name = "representanteEmpresa")
 	private String representanteEmpresa;
+	
+	// nao consta no diagrama
+	@Column(name = "estagio")
+	//@OneToMany(mappedBy="contratante")
 	private ArrayList<Estagio> estagio;
 	
 	public Contratante() {

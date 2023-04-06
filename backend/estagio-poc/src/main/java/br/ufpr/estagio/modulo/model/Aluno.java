@@ -4,17 +4,67 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
+@Entity
+@Table(name = "aluno", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Aluno extends Pessoa implements Serializable {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+	
+	@Column(name = "matricula")
 	private String matricula;
+	
+	@Column(name = "rg")
 	private String rg;
+	
+	@Column(name = "cpf")
 	private String cpf;
+	
+	@Column(name = "email")
 	private String email;
+	
+	@Column(name = "dataNascimento")
 	private Date dataNascimento;
+	
+	//@OneToOne
+	//@JoinColumn(name="id_curso")
+	@OneToOne(mappedBy="aluno")
 	private Curso curso;
+	
+	//@OneToOne
+	//@JoinColumn(name="id_dadosAuxiliares")
+	@OneToOne(mappedBy="aluno")
 	private DadosAuxiliares dadosAuxiliares;
+	
+	//@OneToOne
+	//@JoinColumn(name="id_dadosBancarios")
+	@OneToOne(mappedBy="aluno")
 	private DadosBancarios dadosBancarios;
+	
+	// Nao existe o relacionamento aluno-disciplina no diagrama
+	@Column(name = "disciplina")
+	//@OneToMany(mappedBy="aluno")
 	private ArrayList<Disciplina> disciplina;
+	
+	//Faltou o relacionamento aluno-pessoa:
+	
+	//@OneToOne
+	//@JoinColumn(name="id_dadosBancarios")
+	@OneToOne(mappedBy="aluno")
+	private Pessoa pessoa;
 	
 	public Aluno() {
 		super();
@@ -22,7 +72,7 @@ public class Aluno extends Pessoa implements Serializable {
 	}
 
 	public Aluno(long id, String matricula, String rg, String cpf, String email, Date dataNascimento, Curso curso,
-			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, ArrayList<Disciplina> disciplina) {
+			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, ArrayList<Disciplina> disciplina, Pessoa pessoa) {
 		super();
 		this.id = id;
 		this.matricula = matricula;
@@ -34,6 +84,7 @@ public class Aluno extends Pessoa implements Serializable {
 		this.dadosAuxiliares = dadosAuxiliares;
 		this.dadosBancarios = dadosBancarios;
 		this.disciplina = disciplina;
+		this.pessoa = pessoa;
 	}
 
 	public long getId() {
@@ -114,6 +165,14 @@ public class Aluno extends Pessoa implements Serializable {
 
 	public void setDisciplina(ArrayList<Disciplina> disciplina) {
 		this.disciplina = disciplina;
+	}
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 	
 }

@@ -2,13 +2,43 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
+@Entity
+@Table(name = "plano_de_atividades", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class PlanoDeAtividades implements Serializable{
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+
+	@Column(name = "local")
 	private String local;
+	
+	//@OneToOne
+	//@JoinColumn(name="supervisor")
+	@OneToOne(mappedBy="plano_de_atividades")
 	private Supervisor supervisor;
+	
+	@Column(name = "descricaoAtividades")
 	private String descricaoAtividades;
+	
+	//@OneToOne
+	//@JoinColumn(name="estagio")
+	@OneToOne(mappedBy="plano_de_atividades")
 	private Estagio estagio;
+	
+	//@OneToOne
+	//@JoinColumn(name="termo_de_estagio")
+	@OneToOne(mappedBy="plano_de_atividades")
 	private TermoDeEstagio termoDeEstagio;
 	
 	public PlanoDeAtividades() {
