@@ -8,13 +8,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "convenio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Convenio implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -35,7 +38,8 @@ public class Convenio implements Serializable{
 	
 	//@OneToOne
 	//@JoinColumn(name="id_agenteIntegrador")
-	@OneToOne(mappedBy="convenio")
+	@ManyToOne
+	@JoinColumn(name="agente_integrador_id", referencedColumnName="id", nullable=true)
 	private AgenteIntegrador agenteIntegrador;
 
 	public Convenio() {

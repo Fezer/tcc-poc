@@ -12,8 +12,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "discente", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "discente", uniqueConstraints = { @UniqueConstraint(columnNames = { "id_discente" }) })
 public class Discente implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

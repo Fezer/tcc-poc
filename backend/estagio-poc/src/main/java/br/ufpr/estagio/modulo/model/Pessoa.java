@@ -2,11 +2,13 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -14,6 +16,8 @@ import jakarta.persistence.UniqueConstraint;
 @Entity
 @Table(name = "pessoa", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Pessoa implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -26,8 +30,8 @@ public class Pessoa implements Serializable{
 	@Column(name = "telefone")
 	private String telefone;
 	
-	//@OneToOne
-	//@JoinColumn(name="endereco")
-	@OneToOne(mappedBy="pessoa")
+	//@Column(name = "endereco")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="endereco_id", referencedColumnName="id",nullable=true)
 	private Endereco endereco;
 }

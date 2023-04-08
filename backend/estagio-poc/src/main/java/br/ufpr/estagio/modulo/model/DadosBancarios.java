@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -14,6 +15,9 @@ import jakarta.persistence.UniqueConstraint;
 @Entity
 @Table(name = "dados_bancarios", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class DadosBancarios implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -40,9 +44,8 @@ public class DadosBancarios implements Serializable{
 	@Column(name = "bairroDaAgencia")
 	private String bairroDaAgencia;
 	
-	//@OneToOne
-	//@JoinColumn(name="id_aluno")
-	@OneToOne(mappedBy="dados_bancarios")
+	@OneToOne
+	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=false)
 	private Aluno aluno;
 
 	public DadosBancarios() {

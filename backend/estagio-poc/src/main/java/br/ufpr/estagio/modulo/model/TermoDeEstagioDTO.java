@@ -7,17 +7,11 @@ import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
-import br.ufpr.estagio.modulo.model.AgenteIntegrador;
-import br.ufpr.estagio.modulo.model.Apolice;
-import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
-import br.ufpr.estagio.modulo.model.Coordenador;
-import br.ufpr.estagio.modulo.model.Estagio;
-import br.ufpr.estagio.modulo.model.Orientador;
-import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
-import br.ufpr.estagio.modulo.model.Seguradora;
-import br.ufpr.estagio.modulo.model.Supervisor;
 
 public class TermoDeEstagioDTO implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	private int id;
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
 	private Estagio estagio;

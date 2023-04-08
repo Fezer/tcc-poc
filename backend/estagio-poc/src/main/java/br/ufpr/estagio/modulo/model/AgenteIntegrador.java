@@ -3,18 +3,21 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "agente_integrador", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class AgenteIntegrador extends Pessoa implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -24,16 +27,19 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 	@Column(name = "cnpj")
 	private String cnpj;
 	
-	@Column(name = "id_convenio")
+	//@Column(name = "id_convenio")
 	//@OneToMany(mappedBy="agente_integrador")
+	@OneToMany(mappedBy="agenteIntegrador", cascade=CascadeType.ALL)
 	private ArrayList<Convenio> convenio;
 	
-	@Column(name = "TermoDeEstagio_id")
+	//@Column(name = "TermoDeEstagio_id")
 	//@OneToMany(mappedBy="agente_integrador")
+	@OneToMany(mappedBy="agenteIntegrador", cascade=CascadeType.ALL)
 	private ArrayList<TermoDeEstagio> termoDeEstagio;
 	
-	@Column(name = "Estagio_id")
+	//@Column(name = "Estagio_id")
 	//@OneToMany(mappedBy="agente_integrador")
+	@OneToMany(mappedBy="agenteIntegrador", cascade=CascadeType.ALL)
 	private ArrayList<Estagio> estagio;
 	
 	public AgenteIntegrador() {
