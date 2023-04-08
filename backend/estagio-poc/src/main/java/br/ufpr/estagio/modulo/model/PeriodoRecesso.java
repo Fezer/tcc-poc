@@ -8,12 +8,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "periodo_recesso", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class PeriodoRecesso implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -26,7 +29,8 @@ public class PeriodoRecesso implements Serializable{
 	@Column(name = "dataFim")
 	private Date dataFim;
 	
-	@Column(name = "termo_de_rescisao")
+	//@Column(name = "termo_de_rescisao")
+	@JoinColumn(name="termo_de_rescisao_id", referencedColumnName="id", nullable=false)
 	private TermoDeRescisao termoRescisao;
 	
 	public PeriodoRecesso() {

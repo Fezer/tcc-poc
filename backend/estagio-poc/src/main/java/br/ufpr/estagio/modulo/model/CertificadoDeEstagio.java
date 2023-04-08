@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -14,12 +16,16 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "certificado_de_estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class CertificadoDeEstagio implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private long id;
 	
-	@Column(name = "id_estagio")
+	//@Column(name = "id_estagio")
+	@OneToOne
+	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=false)
 	private Estagio estagio;
 	
 	// nao tem a coluna no diagrama

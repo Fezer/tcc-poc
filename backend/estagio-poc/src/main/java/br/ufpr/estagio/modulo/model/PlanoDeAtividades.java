@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -14,6 +16,8 @@ import jakarta.persistence.UniqueConstraint;
 @Entity
 @Table(name = "plano_de_atividades", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class PlanoDeAtividades implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -23,9 +27,8 @@ public class PlanoDeAtividades implements Serializable{
 	@Column(name = "local")
 	private String local;
 	
-	//@OneToOne
-	//@JoinColumn(name="supervisor")
-	@OneToOne(mappedBy="plano_de_atividades")
+	@ManyToOne
+	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
 	private Supervisor supervisor;
 	
 	@Column(name = "descricaoAtividades")
@@ -33,12 +36,14 @@ public class PlanoDeAtividades implements Serializable{
 	
 	//@OneToOne
 	//@JoinColumn(name="estagio")
-	@OneToOne(mappedBy="plano_de_atividades")
+	@OneToOne
+	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=false)
 	private Estagio estagio;
 	
 	//@OneToOne
 	//@JoinColumn(name="termo_de_estagio")
-	@OneToOne(mappedBy="plano_de_atividades")
+	@OneToOne
+	@JoinColumn(name="termo_de_estagio_id", referencedColumnName="id", nullable=false)
 	private TermoDeEstagio termoDeEstagio;
 	
 	public PlanoDeAtividades() {

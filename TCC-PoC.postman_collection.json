@@ -323,6 +323,39 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Estagio",
+			"item": [
+				{
+					"name": "newEstagio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/estagio/novo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"estagio",
+								"novo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listEstagios",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {

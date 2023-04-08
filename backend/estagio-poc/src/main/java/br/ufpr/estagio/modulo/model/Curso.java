@@ -3,17 +3,24 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "curso", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Curso implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -32,20 +39,25 @@ public class Curso implements Serializable{
 	@Column(name = "peridiocidade")
 	private int peridiocidade;
 	
-	@Column(name = "coordenador")
-	//@OneToMany(mappedBy="curso")
+	//@Column(name = "coordenador")
+	@OneToMany(mappedBy="curso", cascade=CascadeType.ALL)
 	private ArrayList<Coordenador> coordenador;
 	
-	@Column(name = "orientador")
+	//@Column(name = "orientador")
 	//@OneToMany(mappedBy="curso")
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(
+	    name = "curso_orientador",
+	    joinColumns = {@JoinColumn(name="orientador_id")},
+	    inverseJoinColumns = {@JoinColumn(name="curso_id")})
 	private ArrayList<Orientador> orientador;
 	
-	@Column(name = "disciplina")
-	//@OneToMany(mappedBy="curso")
+	//@Column(name = "disciplina")
+	@OneToMany(mappedBy="curso", cascade=CascadeType.ALL)
 	private ArrayList<Disciplina> disciplina;
 	
-	@Column(name = "relatorio_de_estagio")
-	//@OneToMany(mappedBy="estagio")
+	//@Column(name = "aluno")
+	@OneToMany(mappedBy="curso", cascade=CascadeType.ALL)
 	private ArrayList<Aluno> aluno;
 
 	public Curso() {

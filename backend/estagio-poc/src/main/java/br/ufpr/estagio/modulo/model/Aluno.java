@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -18,6 +21,8 @@ import jakarta.persistence.UniqueConstraint;
 @Entity
 @Table(name = "aluno", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Aluno extends Pessoa implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -40,31 +45,32 @@ public class Aluno extends Pessoa implements Serializable {
 	private Date dataNascimento;
 	
 	//@OneToOne
-	//@JoinColumn(name="id_curso")
-	@OneToOne(mappedBy="aluno")
+	@ManyToOne
+	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
 	
 	//@OneToOne
-	//@JoinColumn(name="id_dadosAuxiliares")
-	@OneToOne(mappedBy="aluno")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="dados_auxiliares_id", referencedColumnName="id",nullable=true)
 	private DadosAuxiliares dadosAuxiliares;
 	
-	//@OneToOne
-	//@JoinColumn(name="id_dadosBancarios")
-	@OneToOne(mappedBy="aluno")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="dados_bancarios_id", referencedColumnName="id",nullable=true)
 	private DadosBancarios dadosBancarios;
 	
-	// Nao existe o relacionamento aluno-disciplina no diagrama
-	@Column(name = "disciplina")
-	//@OneToMany(mappedBy="aluno")
+	//@Column(name = "disciplina")
+	@ManyToMany(mappedBy = "aluno")
 	private ArrayList<Disciplina> disciplina;
 	
 	//Faltou o relacionamento aluno-pessoa:
 	
 	//@OneToOne
 	//@JoinColumn(name="id_dadosBancarios")
-	@OneToOne(mappedBy="aluno")
-	private Pessoa pessoa;
+	//@OneToOne(mappedBy="aluno")
+	//private Pessoa pessoa;
+	
+	@OneToMany(mappedBy="aluno", cascade=CascadeType.ALL)
+	private ArrayList<Estagio> estagio;
 	
 	public Aluno() {
 		super();
@@ -72,7 +78,8 @@ public class Aluno extends Pessoa implements Serializable {
 	}
 
 	public Aluno(long id, String matricula, String rg, String cpf, String email, Date dataNascimento, Curso curso,
-			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, ArrayList<Disciplina> disciplina, Pessoa pessoa) {
+			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, ArrayList<Disciplina> disciplina,
+			Pessoa pessoa, ArrayList<Estagio> estagio) {
 		super();
 		this.id = id;
 		this.matricula = matricula;
@@ -84,7 +91,7 @@ public class Aluno extends Pessoa implements Serializable {
 		this.dadosAuxiliares = dadosAuxiliares;
 		this.dadosBancarios = dadosBancarios;
 		this.disciplina = disciplina;
-		this.pessoa = pessoa;
+		this.estagio = estagio;
 	}
 
 	public long getId() {
@@ -167,12 +174,12 @@ public class Aluno extends Pessoa implements Serializable {
 		this.disciplina = disciplina;
 	}
 
-	public Pessoa getPessoa() {
-		return pessoa;
+	public ArrayList<Estagio> getEstagio() {
+		return estagio;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
+	public void setEstagio(ArrayList<Estagio> estagio) {
+		this.estagio = estagio;
 	}
-	
+
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -14,6 +15,9 @@ import jakarta.persistence.UniqueConstraint;
 @Entity
 @Table(name = "endereco", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Endereco implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -40,9 +44,9 @@ public class Endereco implements Serializable{
 	@Column(name = "cep")
 	private String cep;
 	
-	//@OneToOne
-	//@JoinColumn(name="pessoa")
-	@OneToOne(mappedBy="endereco")
+	//@Column(name = "pessoa")
+	@OneToOne
+	@JoinColumn(name="pessoa_id", referencedColumnName="id", nullable=false)
 	private Pessoa pessoa;
 
 	public Endereco() {

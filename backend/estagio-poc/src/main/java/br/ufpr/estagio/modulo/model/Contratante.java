@@ -4,17 +4,21 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "contratante", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Contratante extends Pessoa implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,8 +38,8 @@ public class Contratante extends Pessoa implements Serializable {
 	private String representanteEmpresa;
 	
 	// nao consta no diagrama
-	@Column(name = "estagio")
-	//@OneToMany(mappedBy="contratante")
+	//@Column(name = "estagio")
+	@OneToMany(mappedBy="contratante", cascade=CascadeType.ALL)
 	private ArrayList<Estagio> estagio;
 	
 	public Contratante() {

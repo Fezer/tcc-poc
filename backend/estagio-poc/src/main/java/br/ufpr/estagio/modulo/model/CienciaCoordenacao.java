@@ -13,16 +13,14 @@ import jakarta.persistence.UniqueConstraint;
 @Entity
 @Table(name = "ciencia_coordenacao", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class CienciaCoordenacao implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private long id;
-	
-	// adicionei parecer pq consta no diagrama. vamos manter aqui?
-	@Column(name = "parecer")
-	private String parecer;
-	
+		
 	@Column(name = "cienciaIRA")
 	private boolean cienciaIRA;
 	
@@ -37,11 +35,10 @@ public class CienciaCoordenacao implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CienciaCoordenacao(long id, String parecer, boolean cienciaIRA, boolean cienciaPlanoAtividades,
+	public CienciaCoordenacao(long id, boolean cienciaIRA, boolean cienciaPlanoAtividades,
 			boolean cienciaFormacaoSupervisor) {
 		super();
 		this.id = id;
-		this.parecer = parecer;
 		this.cienciaIRA = cienciaIRA;
 		this.cienciaPlanoAtividades = cienciaPlanoAtividades;
 		this.cienciaFormacaoSupervisor = cienciaFormacaoSupervisor;
@@ -53,14 +50,6 @@ public class CienciaCoordenacao implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getParecer() {
-		return parecer;
-	}
-
-	public void setParecer(String parecer) {
-		this.parecer = parecer;
 	}
 
 	public boolean isCienciaIRA() {

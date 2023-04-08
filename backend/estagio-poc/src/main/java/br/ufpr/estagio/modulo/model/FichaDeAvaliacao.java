@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -15,11 +17,15 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "ficha_de_avaliacao", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class FichaDeAvaliacao implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private long id;
 
+	@OneToOne
+	@JoinColumn(name="estagio_id", referencedColumnName="id")
 	private Estagio estagio;
 	
 	private int totalHorasEstagioEfetivamenteRealizadas;

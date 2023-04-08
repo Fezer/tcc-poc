@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -16,6 +18,8 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "apolice", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Apolice implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -30,21 +34,22 @@ public class Apolice implements Serializable {
 	@Column(name = "dataFim")
 	private Date dataFim;
 	
-	//@OneToOne
-	//@JoinColumn(name="id_seguradora")
-	@OneToOne(mappedBy="apolice")
+	@ManyToOne
+	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
 	
 	// REVER DIAGRAMA
 	//@OneToOne
 	//@JoinColumn(name="id_termo_de_estagio")
-	@OneToOne(mappedBy="apolice")
+	@OneToOne
+	@JoinColumn(name="termo_de_estagio_id", referencedColumnName="id", nullable=true)
 	private TermoDeEstagio termoDeEstagio;
 	
 	// REVER DIAGRAMA + o que eh apolicecol (ou algo assim)?
 	//@OneToOne
 	//@JoinColumn(name="id_estagio")
-	@OneToOne(mappedBy="apolice")
+	@OneToOne
+	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=true)
 	private Estagio estagio;
 	
 	public Apolice() {

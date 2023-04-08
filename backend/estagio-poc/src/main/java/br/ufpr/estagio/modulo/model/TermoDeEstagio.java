@@ -16,6 +16,8 @@ import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 @Table(name = "termo_de_estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -25,28 +27,43 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
 	
 	@ManyToOne
-	@JoinColumn(name="estagio_id", nullable=false)
+	@JoinColumn(name="estagio_id", referencedColumnName="id",nullable=false)
 	private Estagio estagio;
 	
-	@Column(name = "seguradora")
+	//@Column(name = "seguradora")
+	@ManyToOne
+	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
 	
-	@Column(name = "apolice")
+	
+	//@Column(name = "apolice")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="apolice_id", referencedColumnName="id",nullable=true)
 	private Apolice apolice;
 	
-	@Column(name = "agente_integrador")
+	//@Column(name = "agente_integrador")
+	@ManyToOne
+	@JoinColumn(name="agente_integrador_id", referencedColumnName="id", nullable=true)
 	private AgenteIntegrador agenteIntegrador;
 	
-	@Column(name = "orientador")
+	//@Column(name = "orientador")
+	@ManyToOne
+	@JoinColumn(name="orientador_id", referencedColumnName="id", nullable=true)
 	private Orientador orientador;
 	
-	@Column(name = "supervisor")
+	//@Column(name = "supervisor")
+	@ManyToOne
+	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
 	private Supervisor supervisor;
 	
-	@Column(name = "coordenador_curso")
-	private Coordenador coordenadorCurso;
+	//@Column(name = "coordenador_curso")
+	@ManyToOne
+	@JoinColumn(name="coordenador_id", referencedColumnName="id", nullable=true)
+	private Coordenador coordenador;
 	
-	@Column(name = "plano_atividades")
+	//@Column(name = "plano_atividades")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="plano_atividades_id", referencedColumnName="id",nullable=true)
 	private PlanoDeAtividades planoAtividades;
 	
 	@Column(name = "data_inicio")
@@ -82,7 +99,9 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@Column(name = "etapa_fluxo")
 	private EnumEtapaFluxo etapaFluxo;
 	
-	@Column(name = "ciencia_coordenacao")
+	//@Column(name = "ciencia_coordenacao")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="ciencia_coordenacao_id", referencedColumnName="id",nullable=true)
 	private CienciaCoordenacao cienciaCoordenacao;
 	
 	@Column(name = "parecer_coe")
@@ -107,7 +126,7 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 
 	public TermoDeEstagio(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
 			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
-			Coordenador coordenadorCurso, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
+			Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
 			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte, Date dataFimSuspensao,
 			Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo, EnumEtapaFluxo etapaFluxo,
 			CienciaCoordenacao cienciaCoordenacao, EnumParecerAprovadores parecerCOE,
@@ -122,7 +141,7 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 		this.agenteIntegrador = agenteIntegrador;
 		this.orientador = orientador;
 		this.supervisor = supervisor;
-		this.coordenadorCurso = coordenadorCurso;
+		this.coordenador = coordenador;
 		this.planoAtividades = planoAtividades;
 		this.dataInicio = dataInicio;
 		this.dataTermino = dataTermino;
@@ -207,12 +226,12 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 		this.supervisor = supervisor;
 	}
 
-	public Coordenador getCoordenadorCurso() {
-		return coordenadorCurso;
+	public Coordenador getCoordenador() {
+		return coordenador;
 	}
 
-	public void setCoordenadorCurso(Coordenador coordenadorCurso) {
-		this.coordenadorCurso = coordenadorCurso;
+	public void setCoordenador(Coordenador coordenador) {
+		this.coordenador = coordenador;
 	}
 
 	public PlanoDeAtividades getPlanoAtividades() {

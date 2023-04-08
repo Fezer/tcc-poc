@@ -15,6 +15,8 @@ import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 @Table(name = "estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Estagio extends RepresentationModel<Estagio> implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -29,28 +31,44 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@Column(name = "estagio_ufpr")
 	private boolean estagioUfpr;
 	
-	@Column(name = "aluno")
+	//@Column(name = "aluno")
+	@ManyToOne
+	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=true)
 	private Aluno aluno;
 	
-	@Column(name = "contratante")
+	//@Column(name = "contratante")
+	@ManyToOne
+	@JoinColumn(name="contratante_id", referencedColumnName="id", nullable=true)
 	private Contratante contratante;
 	
-	@Column(name = "seguradora")
+	//@Column(name = "seguradora")
+	@ManyToOne
+	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
 	
-	@Column(name = "apolice")
+	//@Column(name = "apolice")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="apolice_id", referencedColumnName="id",nullable=true)
 	private Apolice apolice;
 	
-	@Column(name = "agente_integrador")
+	//@Column(name = "agente_integrador")
+	@ManyToOne
+	@JoinColumn(name="agente_integrador_id", referencedColumnName="id", nullable=true)
 	private AgenteIntegrador agenteIntegrador;
 	
-	@Column(name = "orientador")
+	//@Column(name = "orientador")
+	@ManyToOne
+	@JoinColumn(name="orientador_id", referencedColumnName="id", nullable=true)
 	private Orientador orientador;
 	
-	@Column(name = "supervisor")
+	//@Column(name = "supervisor")
+	@ManyToOne
+	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
 	private Supervisor supervisor;
 	
-	@Column(name = "plano_de_atividades")
+	//@Column(name = "plano_de_atividades")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="plano_de_atividades_id", referencedColumnName="id",nullable=true)
 	private PlanoDeAtividades planoDeAtividades;
 	
 	@Column(name = "data_inicio")
@@ -73,24 +91,30 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	
 	//@OneToOne
 	//@JoinColumn(name="termo_de_compromisso_id")
-	@OneToOne(mappedBy="estagio")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="termo_de_compromisso_id", referencedColumnName="id",nullable=true)
 	private TermoDeEstagio termoDeCompromisso;
 	
-	@Column(name = "termo_adivito")
-	//@OneToMany(mappedBy="estagio")
+	@OneToMany(mappedBy="estagio", cascade= CascadeType.ALL)
 	private ArrayList<TermoDeEstagio> termoAdivito;
 	
-	@Column(name = "termo_de_rescisao")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="termo_de_rescisao_id", referencedColumnName="id",nullable=true)
 	private TermoDeRescisao termoDeRescisao;
 	
-	@Column(name = "relatorio_de_estagio")
+	//@Column(name = "relatorio_de_estagio")
 	//@OneToMany(mappedBy="estagio")
+	@OneToMany(mappedBy="estagio", cascade= CascadeType.ALL)
 	private ArrayList<RelatorioDeEstagio> relatorioDeEstagio;
 	
-	@Column(name = "ficha_de_avaliacao")
+	//@Column(name = "ficha_de_avaliacao")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="ficha_de_avaliacao_id", referencedColumnName="id",nullable=true)
 	private FichaDeAvaliacao fichaDeAvaliacao;
 	
-	@Column(name = "certificado_de_estagio")
+	//@Column(name = "certificado_de_estagio")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="certificado_de_estagi_id", referencedColumnName="id",nullable=true)
 	private CertificadoDeEstagio certificadoDeEstagio;
 	
 	@Column(name = "data_criacao")
