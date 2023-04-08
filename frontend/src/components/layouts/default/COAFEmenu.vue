@@ -6,7 +6,7 @@ export default {
         {
           label: "Pendências",
           link: "/coafe",
-          icon: "pi-briefcase",
+          icon: "pi-envelope",
         },
       ],
     };
