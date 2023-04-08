@@ -9,12 +9,15 @@ export default {
       type: Function,
       required: true,
     },
+    dados: {
+      type: Object,
+    },
   },
 
   methods: {
     handleValidateAndAdvanceStep() {
       if (this.tipoEstagio && this.localEstagio) {
-        this.advanceStep("TIPO_ESTAGIO", {
+        this.advanceStep({
           tipoEstagio: this.tipoEstagio,
           localEstagio: this.localEstagio,
         });
@@ -23,6 +26,13 @@ export default {
       }
     },
   },
+  mounted() {
+    if (this.dados) {
+      this.tipoEstagio = this.dados.tipoEstagio;
+      this.localEstagio = this.dados.localEstagio;
+    }
+  },
+
   data() {
     return {
       error: null as string | null,
@@ -72,7 +82,7 @@ export default {
     </div>
     <div class="w-full flex justify-end gap-2">
       <Button
-        @click="backStep()"
+        @click="backStep({ ...$data })"
         label="Voltar"
         class="p-button-secondary"
         icon="pi pi-arrow-left"

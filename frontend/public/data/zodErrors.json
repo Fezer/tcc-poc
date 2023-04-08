@@ -1,0 +1,11 @@
+{
+  "invalid_string": "Campo inválido ou vazio",
+  "required": "Campo obrigatório",
+  "invalid_email": "E-mail inválido",
+  "invalid_url": "URL inválida",
+  "invalid_date": "Data inválida",
+  "invalid_number": "Número inválido",
+  "invalid_type": "Campo obrigatório",
+  "too_long": "Campo muito longo",
+  "too_small": "Campo obrigatório"
+}

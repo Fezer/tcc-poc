@@ -91,21 +91,24 @@
           </div>
           <div class="field col">
             <label for="email2">Nível</label>
+
             <InputText disabled id="email2" type="text" value="teste" />
           </div>
         </div>
       </div>
     </div>
     <div class="w-full flex justify-end gap-2">
-      <Button
-        @click="backStep"
-        label="Voltar"
-        class="p-button-secondary"
-        icon="pi pi-arrow-left"
-      />
+      <a href="https://www.prppg.ufpr.br/siga/" target="_blank">
+        <Button
+          @click="() => {}"
+          label="Acessar SIGA"
+          class="p-button-secondary"
+          icon="pi pi-external-link"
+        />
+      </a>
       <Button
         @click="advanceStep"
-        :label="finalStep ? 'Gerar termo' : 'Avançar'"
+        label="Avançar"
         class="p-button-success"
         icon="pi pi-arrow-right"
       />
@@ -122,10 +125,6 @@ export default {
     },
     backStep: {
       type: Function,
-      required: true,
-    },
-    finalStep: {
-      type: Boolean,
       required: true,
     },
   },
