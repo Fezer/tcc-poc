@@ -1,14 +1,18 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppTopBar from "~/components/layouts/default/AppTopbar.vue";
-import AppMenu from "~/components/layouts/default/AppMenu.vue";
 import AlunoMenu from "../components/layouts/default/AlunoMenu.vue";
+import COEMenuVue from "../components/layouts/default/COEMenu.vue";
+import COAFEmenuVue from "../components/layouts/default/COAFEmenu.vue";
+import CoordMenuVue from "../components/layouts/default/CoordMenu.vue";
 
 export default defineComponent({
   components: {
     AppTopBar,
-    AppMenu,
     AlunoMenu,
+    CoeMenu: COEMenuVue,
+    CoafeMenu: COAFEmenuVue,
+    CoordMenu: CoordMenuVue,
   },
   data() {
     return {
@@ -136,12 +140,20 @@ export default defineComponent({
 <template>
   <div :class="containerClass" @click="onWrapperClick">
     <AppTopBar @menu-toggle="onMenuToggle" />
-    <!-- TODO: alternar entre perfis -->
-    <!-- <div class="layout-sidebar" @click="onSidebarClick">
-      <AppMenu :model="menu" @menuitem-click="onMenuItemClick" />
-    </div> -->
 
-    <div class="layout-sidebar" @click="onSidebarClick">
+    <div class="layout-sidebar" v-if="$route.path.includes('coe')">
+      <CoeMenu :model="menu" @menuitem-click="onMenuItemClick" />
+    </div>
+
+    <div class="layout-sidebar" v-else-if="$route.path.includes('coord')">
+      <CoordMenu :model="menu" @menuitem-click="onMenuItemClick" />
+    </div>
+
+    <div class="layout-sidebar" v-else-if="$route.path.includes('coafe')">
+      <CoafeMenu :model="menu" @menuitem-click="onMenuItemClick" />
+    </div>
+
+    <div class="layout-sidebar" @click="onSidebarClick" v-else>
       <AlunoMenu :model="menu" @menuitem-click="onMenuItemClick" />
     </div>
 

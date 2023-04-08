@@ -26,10 +26,24 @@ export default {
       <span>Módulo Estágios - SIGA</span>
     </div>
 
-    <Button
-      icon="pi pi-sign-out"
-      class="p-button-secondary"
-      v-tooltip.bottom="'Sair'"
-    />
+    <div class="flex gap-2">
+      <NuxtLink to="/aluno">
+        <Button class="p-button-secondary" label="Aluno (dev)" />
+      </NuxtLink>
+      <NuxtLink to="/coord">
+        <Button class="p-button-secondary" label="Coord (dev)" />
+      </NuxtLink>
+      <NuxtLink to="/coe">
+        <Button class="p-button-secondary" label="COE (dev)" />
+      </NuxtLink>
+      <NuxtLink to="/coafe">
+        <Button class="p-button-secondary" label="COAFE (dev)" />
+      </NuxtLink>
+      <Button
+        icon="pi pi-sign-out"
+        class="p-button-secondary"
+        v-tooltip.bottom="'Sair'"
+      />
+    </div>
   </div>
 </template>
