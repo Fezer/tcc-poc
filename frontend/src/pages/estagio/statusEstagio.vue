@@ -16,10 +16,10 @@ export default {
 
 <template>
   <div class="card">
-    <h4>Andamento do processo</h4>
+    <h4>Andamento do Estágio</h4>
 
     <ProgressBar
-      :value="status === 'EmAprovacao' ? 50 : 100"
+      :value="100"
       :show-value="false"
       style="height: 15px"
       class="mb-3"
@@ -27,30 +27,22 @@ export default {
 
     <div>
       <div class="grid">
-        <div class="text-box col-4">
+        <div class="text-box col-3">
           <strong>Status</strong>
-          <p v-if="status === 'EmAprovacao'" class="text-blue-500">
-            ANÁLISE {{ etapa || "" }}
-          </p>
-          <p
-            v-else
-            :class="
-              status === 'Aprovado'
-                ? 'text-green-500 font-bold'
-                : 'text-red-500 font-bold'
-            "
-          >
-            {{ status?.toUpperCase() || "" }}
-          </p>
+          <p class="text-orange-500 font-bold">NECESSITA DE RELATÓRIO</p>
         </div>
-        <div class="text-box col-4 flex flex-col">
-          <strong>Data de Início do processo</strong>
+        <div class="text-box col-3 flex flex-col">
+          <strong>Data de Início do Estágio</strong>
           <span>01/01/2021</span>
         </div>
-        <div class="col-4 flex items-center justify-end">
+        <div class="text-box col-3 flex flex-col">
+          <strong>Data de Início do Estágio</strong>
+          <span>01/01/2021</span>
+        </div>
+        <div class="col-3 flex items-center justify-end">
           <Button
-            label="Ver documento"
-            class="p-button-secondary self-center"
+            label="Inserir relatório de Estágio"
+            class="p-button-danger self-center bg-orange-500"
             icon="pi pi-file"
           />
         </div>
