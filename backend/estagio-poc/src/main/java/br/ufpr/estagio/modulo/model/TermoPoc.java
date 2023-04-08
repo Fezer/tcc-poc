@@ -7,13 +7,14 @@ import org.springframework.hateoas.RepresentationModel;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "termopoc")
 
 public class TermoPoc extends RepresentationModel<TermoPoc> implements Serializable {
-	private static final Long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue
 	

@@ -3,12 +3,42 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
+@Entity
+@Table(name = "seguradora", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Seguradora implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+
+	@Column(name = "nome")
 	private String nome;
+	
+	//@Column(name = "apolice")
+	@OneToMany(mappedBy="seguradora", cascade=CascadeType.ALL)
 	private ArrayList<Apolice> apolice;
+	
+	//@Column(name = "termo_de_estagio")
+	//@OneToMany(mappedBy="seguradora")
+	@OneToMany(mappedBy="seguradora", cascade=CascadeType.ALL)
 	private ArrayList<TermoDeEstagio> termoDeEstagio;
+	
+	//@Column(name = "estagio")
+	//@OneToMany(mappedBy="seguradora")
+	@OneToMany(mappedBy="seguradora", cascade=CascadeType.ALL)
 	private ArrayList<Estagio> estagio;
 	
 	public Seguradora() {

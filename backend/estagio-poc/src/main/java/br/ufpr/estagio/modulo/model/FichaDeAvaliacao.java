@@ -3,26 +3,61 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAcomp;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
+@Entity
+@Table(name = "ficha_de_avaliacao", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class FichaDeAvaliacao implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+
+	@OneToOne
+	@JoinColumn(name="estagio_id", referencedColumnName="id")
 	private Estagio estagio;
+	
 	private int totalHorasEstagioEfetivamenteRealizadas;
+	
 	private boolean atividadesForamRealizadas;
+	
 	private String atividadesRealizadasConsideracoes;
+	
 	private EnumAvaliacaoAcomp acompanhamentoOrientador;
+	
 	private String acompanhamentoOrientadorComentario;
+	
 	private EnumAvaliacaoAcomp acompanhamentoCoordenador;
+	
 	private String acompanhamentoCoordenadorComentario;
+	
 	private String contribuicaoEstagio;
+	
 	private EnumAvaliacaoAcomp avalPontualidade;
+	
 	private EnumAvaliacaoAcomp avalCriatividade;
+	
 	private EnumAvaliacaoAcomp avalProtagonismo;
+	
 	private EnumAvaliacaoAcomp avalResponsabilidade;
+	
 	private EnumAvaliacaoAcomp avalConduta;
+	
 	private EnumAvaliacaoAcomp avalDominioTecnico;
+	
 	private EnumAvaliacaoAcomp avalHabilidades;
+	
 	private EnumAvaliacaoAcomp avalEfetivacao;
 	
 	public FichaDeAvaliacao() {

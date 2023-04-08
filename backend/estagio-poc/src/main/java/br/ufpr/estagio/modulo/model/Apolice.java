@@ -3,14 +3,53 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
+@Entity
+@Table(name = "apolice", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Apolice implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+	
+	@Column(name = "numero")
 	private int numero;
+	
+	@Column(name = "dataInicio")
 	private Date dataInicio;
+	
+	@Column(name = "dataFim")
 	private Date dataFim;
+	
+	@ManyToOne
+	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
+	
+	// REVER DIAGRAMA
+	//@OneToOne
+	//@JoinColumn(name="id_termo_de_estagio")
+	@OneToOne
+	@JoinColumn(name="termo_de_estagio_id", referencedColumnName="id", nullable=true)
 	private TermoDeEstagio termoDeEstagio;
+	
+	// REVER DIAGRAMA + o que eh apolicecol (ou algo assim)?
+	//@OneToOne
+	//@JoinColumn(name="id_estagio")
+	@OneToOne
+	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=true)
 	private Estagio estagio;
 	
 	public Apolice() {

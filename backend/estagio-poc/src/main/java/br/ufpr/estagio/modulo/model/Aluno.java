@@ -4,17 +4,73 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
+@Entity
+@Table(name = "aluno", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class Aluno extends Pessoa implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+	
+	@Column(name = "matricula")
 	private String matricula;
+	
+	@Column(name = "rg")
 	private String rg;
+	
+	@Column(name = "cpf")
 	private String cpf;
+	
+	@Column(name = "email")
 	private String email;
+	
+	@Column(name = "dataNascimento")
 	private Date dataNascimento;
+	
+	//@OneToOne
+	@ManyToOne
+	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
+	
+	//@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="dados_auxiliares_id", referencedColumnName="id",nullable=true)
 	private DadosAuxiliares dadosAuxiliares;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="dados_bancarios_id", referencedColumnName="id",nullable=true)
 	private DadosBancarios dadosBancarios;
+	
+	//@Column(name = "disciplina")
+	@ManyToMany(mappedBy = "aluno")
 	private ArrayList<Disciplina> disciplina;
+	
+	//Faltou o relacionamento aluno-pessoa:
+	
+	//@OneToOne
+	//@JoinColumn(name="id_dadosBancarios")
+	//@OneToOne(mappedBy="aluno")
+	//private Pessoa pessoa;
+	
+	@OneToMany(mappedBy="aluno", cascade=CascadeType.ALL)
+	private ArrayList<Estagio> estagio;
 	
 	public Aluno() {
 		super();
@@ -22,7 +78,8 @@ public class Aluno extends Pessoa implements Serializable {
 	}
 
 	public Aluno(long id, String matricula, String rg, String cpf, String email, Date dataNascimento, Curso curso,
-			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, ArrayList<Disciplina> disciplina) {
+			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, ArrayList<Disciplina> disciplina,
+			Pessoa pessoa, ArrayList<Estagio> estagio) {
 		super();
 		this.id = id;
 		this.matricula = matricula;
@@ -34,6 +91,7 @@ public class Aluno extends Pessoa implements Serializable {
 		this.dadosAuxiliares = dadosAuxiliares;
 		this.dadosBancarios = dadosBancarios;
 		this.disciplina = disciplina;
+		this.estagio = estagio;
 	}
 
 	public long getId() {
@@ -115,5 +173,13 @@ public class Aluno extends Pessoa implements Serializable {
 	public void setDisciplina(ArrayList<Disciplina> disciplina) {
 		this.disciplina = disciplina;
 	}
-	
+
+	public ArrayList<Estagio> getEstagio() {
+		return estagio;
+	}
+
+	public void setEstagio(ArrayList<Estagio> estagio) {
+		this.estagio = estagio;
+	}
+
 }

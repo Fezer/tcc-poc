@@ -11,13 +11,15 @@ import jakarta.persistence.*;
 @Table(name = "relatorio_de_estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 public class RelatorioDeEstagio implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private long id;
-	
+
 	@ManyToOne
-	@JoinColumn(name="estagio_id", nullable=false)
+	@JoinColumn(name="estagio_id", referencedColumnName="id",nullable=false)
 	private Estagio estagio;
 	
 	@Column(name = "ciencia_orientador")

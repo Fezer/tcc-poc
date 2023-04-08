@@ -3,18 +3,53 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Discente implements Serializable{
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
+@Entity
+@Table(name = "discente", uniqueConstraints = { @UniqueConstraint(columnNames = { "id_discente" }) })
+public class Discente implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id_discente")
 	private long idDiscente;
+
+	@Column(name = "nome")
 	private String nome;
+	
+	@Column(name = "isPcD")
 	private boolean isPcD;
+	
+	@Column(name = "dataNascimento")
 	private Date dataNascimento;
+	
+	@Column(name = "documento")
 	private String documento;
+	
+	@Column(name = "grr")
 	private String grr;
+	
+	@Column(name = "periodoAtual")
 	private int periodoAtual;
+	
+	@Column(name = "email")
 	private String email;
+	
+	@Column(name = "rg")
 	private String rg;
+	
+	@Column(name = "curso")
 	private String curso;
+	
+	@Column(name = "turno")
 	private String turno;
 	
 	public Discente() {

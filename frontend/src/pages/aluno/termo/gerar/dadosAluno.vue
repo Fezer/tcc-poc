@@ -91,16 +91,44 @@
           </div>
           <div class="field col">
             <label for="email2">Nível</label>
+
             <InputText disabled id="email2" type="text" value="teste" />
           </div>
         </div>
       </div>
     </div>
+    <div class="w-full flex justify-end gap-2">
+      <a href="https://www.prppg.ufpr.br/siga/" target="_blank">
+        <Button
+          @click="() => {}"
+          label="Acessar SIGA"
+          class="p-button-secondary"
+          icon="pi pi-external-link"
+        />
+      </a>
+      <Button
+        @click="advanceStep"
+        label="Avançar"
+        class="p-button-success"
+        icon="pi pi-arrow-right"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    advanceStep: {
+      type: Function,
+      required: true,
+    },
+    backStep: {
+      type: Function,
+      required: true,
+    },
+  },
+};
 </script>
 
 <style></style>

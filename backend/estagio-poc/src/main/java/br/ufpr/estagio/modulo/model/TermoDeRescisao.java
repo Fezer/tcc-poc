@@ -4,16 +4,56 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TermoDeRescisao implements Serializable{
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
+@Entity
+@Table(name = "termo_de_rescisao", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+public class TermoDeRescisao implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
+
+	//@OneToOne
+	//@JoinColumn(name="estagio")
+	@OneToOne
+	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=false)
 	private Estagio estagio;
+	
+	@Column(name = "data_termino")
 	private Date dataTermino;
+	
+	@Column(name = "periodo_total_recesso")
 	private int periodoTotalRecesso;
+	
+	//@Column(name = "periodo_recesso")
+	//@OneToMany(mappedBy="termo_de_rescisao")
+	@OneToMany(mappedBy="termoRescisao", cascade=CascadeType.ALL)
 	private ArrayList<PeriodoRecesso> periodoRecesso;
+	
+	@Column(name = "ciencia_orientador")
 	private boolean cienciaOrientador;
+	
+	@Column(name = "ciencia_coordenador")
 	private boolean cienciaCoordenador;
+	
+	@Column(name = "ciencia_coe")
 	private boolean cienciaCOE;
+	
+	@Column(name = "ciencia_coafe")
 	private boolean cienciaCOAFE;
 	
 	public TermoDeRescisao() {

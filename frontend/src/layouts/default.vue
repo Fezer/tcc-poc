@@ -1,52 +1,64 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
-import AppTopBar from '~/components/layouts/default/AppTopbar.vue';
-import AppMenu from '~/components/layouts/default/AppMenu.vue';
+import { defineComponent } from "vue";
+import AppTopBar from "~/components/layouts/default/AppTopbar.vue";
+import AlunoMenu from "../components/layouts/default/AlunoMenu.vue";
+import COEMenuVue from "../components/layouts/default/COEMenu.vue";
+import COAFEmenuVue from "../components/layouts/default/COAFEmenu.vue";
+import CoordMenuVue from "../components/layouts/default/CoordMenu.vue";
 
 export default defineComponent({
   components: {
     AppTopBar,
-    AppMenu
+    AlunoMenu,
+    CoeMenu: COEMenuVue,
+    CoafeMenu: COAFEmenuVue,
+    CoordMenu: CoordMenuVue,
   },
   data() {
     return {
-      layoutMode: 'static',
+      layoutMode: "static",
       menuActive: false,
       menuClick: false,
       staticMenuInactive: false,
       overlayMenuActive: false,
-      mobileMenuActive: false
-
+      mobileMenuActive: false,
     };
   },
   computed: {
     containerClass() {
-      return ['layout-wrapper', {
-        'layout-overlay': this.layoutMode === 'overlay',
-        'layout-static': this.layoutMode === 'static',
-        'layout-static-sidebar-inactive': this.staticMenuInactive && this.layoutMode === 'static',
-        'layout-overlay-sidebar-active': this.overlayMenuActive && this.layoutMode === 'overlay',
-        'layout-mobile-sidebar-active': this.mobileMenuActive,
-        'p-input-filled': this.$primevue.config.inputStyle === 'filled',
-        'p-ripple-disabled': this.$primevue.config.ripple === false,
-        'layout-theme-light': this.$appState.theme?.startsWith('saga')
-      }];
+      return [
+        "layout-wrapper",
+        {
+          "layout-overlay": this.layoutMode === "overlay",
+          "layout-static": this.layoutMode === "static",
+          "layout-static-sidebar-inactive":
+            this.staticMenuInactive && this.layoutMode === "static",
+          "layout-overlay-sidebar-active":
+            this.overlayMenuActive && this.layoutMode === "overlay",
+          "layout-mobile-sidebar-active": this.mobileMenuActive,
+          "p-input-filled": this.$primevue.config.inputStyle === "filled",
+          "p-ripple-disabled": this.$primevue.config.ripple === false,
+          "layout-theme-light": this.$appState.theme?.startsWith("saga"),
+        },
+      ];
     },
     logo() {
-      return (this.$appState.darkTheme) ? '/images/logo-white.svg' : '/images/logo.svg';
-    }
+      return this.$appState.darkTheme
+        ? "/images/logo-white.svg"
+        : "/images/logo.svg";
+    },
   },
   watch: {
     $route() {
       this.menuActive = false;
       this.$toast.removeAllGroups();
-    }
+    },
   },
   beforeUpdate() {
     if (this.mobileMenuActive) {
-      this.addClass(document.body, 'body-overflow-hidden');
+      this.addClass(document.body, "body-overflow-hidden");
     } else {
-      this.removeClass(document.body, 'body-overflow-hidden');
+      this.removeClass(document.body, "body-overflow-hidden");
     }
   },
   methods: {
@@ -62,14 +74,14 @@ export default defineComponent({
       this.menuClick = true;
 
       if (this.isDesktop()) {
-        if (this.layoutMode === 'overlay') {
+        if (this.layoutMode === "overlay") {
           if (this.mobileMenuActive) {
             this.overlayMenuActive = true;
           }
 
           this.overlayMenuActive = !this.overlayMenuActive;
           this.mobileMenuActive = false;
-        } else if (this.layoutMode === 'static') {
+        } else if (this.layoutMode === "static") {
           this.staticMenuInactive = !this.staticMenuInactive;
         }
       } else {
@@ -101,7 +113,10 @@ export default defineComponent({
       if (element.classList) {
         element.classList.remove(className);
       } else {
-        element.className = element.className.replace(new RegExp(`(^|\\b)${className.split(' ').join('|')}(\\b|$)`, 'gi'), ' ');
+        element.className = element.className.replace(
+          new RegExp(`(^|\\b)${className.split(" ").join("|")}(\\b|$)`, "gi"),
+          " "
+        );
       }
     },
     isDesktop() {
@@ -109,24 +124,37 @@ export default defineComponent({
     },
     isSidebarVisible() {
       if (this.isDesktop()) {
-        if (this.layoutMode === 'static') {
+        if (this.layoutMode === "static") {
           return !this.staticMenuInactive;
-        } else if (this.layoutMode === 'overlay') {
+        } else if (this.layoutMode === "overlay") {
           return this.overlayMenuActive;
         }
       }
 
       return true;
-    }
-  }
+    },
+  },
 });
 </script>
 
 <template>
   <div :class="containerClass" @click="onWrapperClick">
     <AppTopBar @menu-toggle="onMenuToggle" />
-    <div class="layout-sidebar" @click="onSidebarClick">
-      <AppMenu :model="menu" @menuitem-click="onMenuItemClick" />
+
+    <div class="layout-sidebar" v-if="$route.path.includes('coe')">
+      <CoeMenu :model="menu" @menuitem-click="onMenuItemClick" />
+    </div>
+
+    <div class="layout-sidebar" v-else-if="$route.path.includes('coord')">
+      <CoordMenu :model="menu" @menuitem-click="onMenuItemClick" />
+    </div>
+
+    <div class="layout-sidebar" v-else-if="$route.path.includes('coafe')">
+      <CoafeMenu :model="menu" @menuitem-click="onMenuItemClick" />
+    </div>
+
+    <div class="layout-sidebar" @click="onSidebarClick" v-else>
+      <AlunoMenu :model="menu" @menuitem-click="onMenuItemClick" />
     </div>
 
     <div class="layout-main-container">
@@ -143,5 +171,5 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
-  @import '~/assets/styles/App.scss';
+@import "~/assets/styles/App.scss";
 </style>

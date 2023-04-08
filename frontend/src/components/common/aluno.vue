@@ -1,5 +1,5 @@
 <script>
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 export default {};
 </script>
@@ -30,7 +30,11 @@ const { data: aluno } = await useFetch(`http://localhost:5000/aluno/${id}`);
       <div class="col-4">
         <strong>Data de Nascimento</strong>
         <!-- get age -->
-        <p>{{ dayjs(new Date(aluno?.dataNascimento || 0)).format("DD/MM/YYYY") }} ({{ dayjs(new Date()).diff(new Date(aluno?.dataNascimento), "year") }} anos)</p>
+        <p>
+          {{ dayjs(new Date(aluno?.dataNascimento || 0)).format("DD/MM/YYYY") }}
+          ({{ dayjs(new Date()).diff(new Date(aluno?.dataNascimento), "year") }}
+          anos)
+        </p>
       </div>
       <!-- <div class="col-4">
         <strong>CPF</strong>
@@ -54,6 +58,12 @@ const { data: aluno } = await useFetch(`http://localhost:5000/aluno/${id}`);
         <strong>Período Atual</strong>
         <p>{{ aluno?.periodoAtual }}</p>
       </div>
+
+      <div class="col-4">
+        <strong>IRA</strong>
+        <p>{{ aluno?.ira }}</p>
+      </div>
+
       <div class="col-6">
         <strong>Curso</strong>
         <p>{{ aluno?.curso }}</p>
@@ -62,6 +72,4 @@ const { data: aluno } = await useFetch(`http://localhost:5000/aluno/${id}`);
   </div>
 </template>
 
-<style>
-
-</style>
+<style></style>
