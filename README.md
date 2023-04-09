@@ -2,8 +2,6 @@
 
 ## Frontend
 
----
-
 ### Bibliotecas importantes
 
 - [Sakai / PrimeVue](hhttps://primevue.org) - Template de componentes e estilização
@@ -28,3 +26,30 @@ docker-compose build --no-cache
 ```
 
 Então pode rodar novamente o comando acima.
+
+## Banco
+
+Criando imagem do banco em docker:
+
+```bash
+docker run --name tcc -e MYSQL_ROOT_PASSWORD=poc -e MYSQL_DATABASE=poc -e MYSQL_USER=poc -e MYSQL_PASSWORD=poc -p 3306:3306 -d mariadb:latest
+```
+
+## Backend
+
+Necessita:
+
+- **Java v17**
+- Banco MariaDB
+
+Para rodar:
+
+```bash
+./mvnw spring-boot:run
+```
+
+Caso ocorra erro de permissão:
+
+```bash
+chmod +x mvnw
+```
