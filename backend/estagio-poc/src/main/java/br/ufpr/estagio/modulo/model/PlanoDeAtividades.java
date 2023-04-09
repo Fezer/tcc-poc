@@ -38,10 +38,12 @@ public class PlanoDeAtividades implements Serializable{
 	@Column(name = "descricaoAtividades")
 	private String descricaoAtividades;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=true)
 	private Estagio estagio;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="termo_de_estagio_id", referencedColumnName="id", nullable=true)
 	private TermoDeEstagio termoDeEstagio;

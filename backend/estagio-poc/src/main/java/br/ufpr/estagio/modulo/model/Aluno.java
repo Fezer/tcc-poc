@@ -52,20 +52,24 @@ public class Aluno extends Pessoa implements Serializable {
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="dados_auxiliares_id", referencedColumnName="id", nullable=true)
 	private DadosAuxiliares dadosAuxiliares;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="dados_bancarios_id", referencedColumnName="id", nullable=true)
 	private DadosBancarios dadosBancarios;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "aluno", cascade=CascadeType.REMOVE)
 	private List<Disciplina> disciplina;
 	
 	//Faltou o relacionamento aluno-pessoa:
 	//Pessoa é herança não tem relacionamento
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="aluno", cascade=CascadeType.REMOVE)
 	private List<Estagio> estagio;
 	
@@ -177,6 +181,14 @@ public class Aluno extends Pessoa implements Serializable {
 
 	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
+	}
+
+	public Estagio novoEstagio() {
+		Estagio estagio = new Estagio();
+		estagio.setAluno(this);
+		estagio.novoTermoCompromisso();
+		this.setEstagio(getEstagio());
+		return estagio;
 	}
 
 }

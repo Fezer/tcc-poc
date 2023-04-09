@@ -38,6 +38,7 @@ public class Coordenador extends Pessoa implements Serializable{
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="coordenador", cascade=CascadeType.REMOVE)
 	private List<TermoDeEstagio> termoDeEstagio;
 

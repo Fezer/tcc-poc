@@ -31,6 +31,7 @@ public class Disciplina implements Serializable{
 	@Column(name = "id")
 	private long id;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.REMOVE })
 	@JoinTable(
 	    name = "disciplina_aluno", 

@@ -31,7 +31,7 @@ public class EstagioService {
         this.estagioRepo = estagioRepo;
     }
      
-    public List<Estagio> listAllEstagios() {
+    public List<Estagio> listarTodosEstagios() {
         return estagioRepo.findAll();
     }
      
@@ -41,19 +41,19 @@ public class EstagioService {
         return estagioRepo.save(estagio);
     }
     
-    public Estagio getEstagio(long id) {
+    public Estagio buscarEstagioPorId(long id) {
         return estagioRepo.findById(id).get();
     }
      
-    public Estagio saveEstagio(Estagio estagio) {
+    public Estagio salvarEstagio(Estagio estagio) {
         return estagioRepo.save(estagio);
     }
      
-    public Estagio updateEstagio(Estagio estagio) {
+    public Estagio atualizarEstagio(Estagio estagio) {
     	return estagioRepo.save(estagio);
     }
      
-    public void deleteEstagio(long id) {
+    public void deletarEstagio(long id) {
     	estagioRepo.deleteById(id);
     }
 
