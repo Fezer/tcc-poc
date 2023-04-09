@@ -5,6 +5,8 @@ import java.sql.Date;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
@@ -26,10 +28,12 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@Column(name = "tipo_termo_de_estagio")
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
 	
+	@JsonIgnore
 	@ManyToOne(cascade= {CascadeType.REMOVE, CascadeType.PERSIST})
 	@JoinColumn(name="estagio_id", referencedColumnName="id",nullable=true)
 	private Estagio estagio;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
@@ -38,18 +42,22 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@JoinColumn(name="apolice_id", referencedColumnName="id",nullable=true)
 	private Apolice apolice;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="agente_integrador_id", referencedColumnName="id", nullable=true)
 	private AgenteIntegrador agenteIntegrador;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="orientador_id", referencedColumnName="id", nullable=true)
 	private Orientador orientador;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
 	private Supervisor supervisor;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="coordenador_id", referencedColumnName="id", nullable=true)
 	private Coordenador coordenador;

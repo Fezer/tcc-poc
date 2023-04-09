@@ -2,6 +2,8 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +30,7 @@ public class PlanoDeAtividades implements Serializable{
 	@Column(name = "local")
 	private String local;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
 	private Supervisor supervisor;
