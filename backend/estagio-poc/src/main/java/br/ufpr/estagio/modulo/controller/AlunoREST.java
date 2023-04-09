@@ -109,7 +109,7 @@ public class AlunoREST {
 				} else {
 					Estagio estagio = alunoService.novoEstagio(aluno);
 					EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
-					return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
+					return new ResponseEntity<>(estagioDTO, HttpStatus.CREATED);
 				}
 			}
 		}catch (NumberFormatException e) {

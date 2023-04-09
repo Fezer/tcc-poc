@@ -21,6 +21,11 @@ import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
+import br.ufpr.estagio.modulo.repository.CienciaCoordenacaoRepository;
+import br.ufpr.estagio.modulo.repository.EstagioRepository;
+import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
+import br.ufpr.estagio.modulo.repository.RelatorioDeEstagioRepository;
+import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
 
 
  
@@ -30,12 +35,27 @@ public class AlunoService {
 
 	@Autowired
 	private AlunoRepository alunoRepo;
+	private EstagioRepository estagioRepo;
+	private PlanoDeAtividadesRepository planoAtividadesRepo;
+	private RelatorioDeEstagioRepository relatorioRepo;
+	private TermoDeEstagioRepository termoRepo;
+	private CienciaCoordenacaoRepository cienciaRepo;
 	private SigaApiAlunoService sigaApiAlunoService;
 		
     public AlunoService(AlunoRepository alunoRepo,
-    		SigaApiAlunoService sigaApiAlunoService) {
+    		SigaApiAlunoService sigaApiAlunoService,
+    		EstagioRepository estagioRepo,
+    		PlanoDeAtividadesRepository planoAtividadesRepo,
+    		RelatorioDeEstagioRepository relatorioRepo,
+    		CienciaCoordenacaoRepository cienciaRepo,
+    		TermoDeEstagioRepository termoRepo) {
         this.alunoRepo = alunoRepo;
         this.sigaApiAlunoService = sigaApiAlunoService;
+        this.estagioRepo = estagioRepo;
+        this.planoAtividadesRepo = planoAtividadesRepo;
+        this.relatorioRepo = relatorioRepo;
+        this.cienciaRepo = cienciaRepo;
+        this.termoRepo = termoRepo;
     }
      
     public List<Aluno> listarTodosAlunos() {
@@ -107,6 +127,12 @@ public class AlunoService {
 		planoDeAtividades.setTermoDeEstagio(termoDeCompromisso);
 		estagio.setPlanoDeAtividades(planoDeAtividades);
 		termoDeCompromisso.setPlanoAtividades(planoDeAtividades);
+		
+		cienciaRepo.save(cienciaCoordenacao);
+		planoAtividadesRepo.save(planoDeAtividades);
+		estagioRepo.save(estagio);
+		termoRepo.save(termoDeCompromisso);
+		alunoRepo.save(aluno);
 		
 		return estagio;
 	}

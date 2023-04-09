@@ -42,10 +42,12 @@ public class Apolice implements Serializable {
 	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="termo_de_estagio_id", referencedColumnName="id", nullable=true)
 	private TermoDeEstagio termoDeEstagio;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=true)
 	private Estagio estagio;

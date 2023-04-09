@@ -30,6 +30,7 @@ public class TermoDeRescisao implements Serializable{
 	@Column(name = "id")
 	private long id;
 
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=true)
 	private Estagio estagio;

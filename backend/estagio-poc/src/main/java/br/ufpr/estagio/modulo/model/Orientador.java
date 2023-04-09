@@ -36,6 +36,7 @@ public class Orientador extends Pessoa implements Serializable{
 	@Column(name = "departamento")
 	private String departamento;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "orientador", cascade=CascadeType.REMOVE)
 	private List<Curso> curso;
 

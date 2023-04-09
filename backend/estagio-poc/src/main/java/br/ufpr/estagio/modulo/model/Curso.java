@@ -47,6 +47,7 @@ public class Curso implements Serializable{
 	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
 	private List<Coordenador> coordenador;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.REMOVE })
 	@JoinTable(
 	    name = "curso_orientador",
