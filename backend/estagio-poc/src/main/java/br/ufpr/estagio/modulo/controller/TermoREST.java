@@ -22,15 +22,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
+import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoPocDTO;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoPoc;
 import br.ufpr.estagio.modulo.repository.TermoPocRepository;
+import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
+import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/termo")
 public class TermoREST {
+	
+    private EstagioService estagioService;
+    private TermoDeEstagioService termoDeEstagioService;
+    private RelatorioDeEstagioService relatorioDeEstagioService;
+    
+    public TermoREST(EstagioService estagioService, 
+    		TermoDeEstagioService termoDeEstagioService, 
+    		RelatorioDeEstagioService relatorioDeEstagioService) {
+        this.estagioService = estagioService;
+        this.termoDeEstagioService = termoDeEstagioService;
+        this.relatorioDeEstagioService = relatorioDeEstagioService;
+    }
 	
 	@Autowired
 	private TermoPocRepository repo;
@@ -39,10 +56,10 @@ public class TermoREST {
 	private ModelMapper mapper;
 	
 	@PostMapping("")
-	public ResponseEntity<TermoPocDTO> inserir(@RequestBody TermoPocDTO termo){
+	public ResponseEntity<TermoDeEstagioDTO> inserir(@RequestBody TermoDeEstagioDTO termo){
 		try {
-		TermoPoc newTermo = repo.save(mapper.map(termo, TermoPoc.class));
-		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newTermo, TermoPocDTO.class));
+		TermoDeEstagio newTermo = termoDeEstagioService.save(mapper.map(termo, TermoDeEstagio.class));
+		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newTermo, TermoDeEstagioDTO.class));
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
@@ -50,13 +67,13 @@ public class TermoREST {
 	}
 	
 	@GetMapping("")
-	public ResponseEntity<List<TermoPocDTO>> listarTodos(){
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTodos(){
 		try {
-			List<TermoPoc> lista = repo.findAll();
+			List<TermoDeEstagio> lista = termoDeEstagioService.listAll();
 			if(lista.isEmpty()) {
 				throw new PocException(HttpStatus.NOT_FOUND, "Nenhum termo encontrado!");
 			} else {
-				return ResponseEntity.status(HttpStatus.OK).body(lista.stream().map(e -> mapper.map(e, TermoPocDTO.class)).collect(Collectors.toList()));
+				return ResponseEntity.status(HttpStatus.OK).body(lista.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
 			}
 		}catch(PocException e) {
 			e.printStackTrace();
@@ -68,16 +85,15 @@ public class TermoREST {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<TermoPocDTO> listarTermo(@PathVariable Long id){
+	public ResponseEntity<TermoDeEstagioDTO> listarTermo(@PathVariable Long id){
 		try {
-			Optional<TermoPoc> termoOptional = repo.findById(id);
+			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.get(id));
 		if(termoOptional.isEmpty()) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
 		} else {
-			TermoPoc termo = termoOptional.get();
-			TermoPocDTO termoDTO = mapper.map(termo, TermoPocDTO.class);
+			TermoDeEstagio termo = termoOptional.get();
+			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			termo.add(linkTo(methodOn(TermoREST.class).listarTermo(id)).withSelfRel());
-			//return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termo, TermoPocDTO.class));
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
 		}catch(PocException e) {
@@ -90,15 +106,15 @@ public class TermoREST {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<TermoPocDTO> atualizar(@PathVariable Long id, @RequestBody TermoPocDTO termo){
+	public ResponseEntity<TermoDeEstagioDTO> atualizar(@PathVariable Long id, @RequestBody TermoDeEstagioDTO termo){
 		try {
-			Optional<TermoPoc> termofind = repo.findById(id);
+			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.get(id));
 		if(termofind.isEmpty()) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
 		} else {
-			repo.save(mapper.map(termofind, TermoPoc.class));
-			termofind = repo.findById(id);
-			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
+			termoDeEstagioService.save(mapper.map(termofind, TermoDeEstagio.class));
+			termofind = Optional.ofNullable(termoDeEstagioService.get(id));
+			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoDeEstagioDTO.class));
 		}
 		}catch(PocException e) {
 			e.printStackTrace();
@@ -110,13 +126,13 @@ public class TermoREST {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<TermoPocDTO> delete(@PathVariable Long id){
+	public ResponseEntity<TermoDeEstagioDTO> delete(@PathVariable Long id){
 		try {
-			Optional<TermoPoc> termofind = repo.findById(id);
+			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.get(id));
 		if(termofind.isEmpty()) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
 		} else {
-			repo.deleteById(id);
+			termoDeEstagioService.delete(id);
 			return ResponseEntity.status(HttpStatus.OK).body(null);
 		}
 		}catch(PocException e) {
