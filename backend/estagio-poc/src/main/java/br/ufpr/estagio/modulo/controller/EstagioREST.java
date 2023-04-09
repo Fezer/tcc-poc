@@ -55,7 +55,6 @@ public class EstagioREST {
         this.relatorioDeEstagioService = relatorioDeEstagioService;
     }
     
-	
 	@Autowired
 	private TermoPocRepository repo;
 
@@ -161,101 +160,6 @@ public class EstagioREST {
 			EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
 			return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
 		}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-	
-	@PutMapping("/termo/{id}")
-	public ResponseEntity<TermoPocDTO> atualizar(@PathVariable Long id, @RequestBody TermoPocDTO termo){
-		try {
-			Optional<TermoPoc> termofind = repo.findById(id);
-		if(termofind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
-		} else {
-			repo.save(mapper.map(termofind, TermoPoc.class));
-			termofind = repo.findById(id);
-			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
-		}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-	
-	@DeleteMapping("/termo/{id}")
-	public ResponseEntity<TermoPocDTO> delete(@PathVariable Long id){
-		try {
-			Optional<TermoPoc> termofind = repo.findById(id);
-		if(termofind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
-		} else {
-			repo.deleteById(id);
-			return ResponseEntity.status(HttpStatus.OK).body(null);
-		}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-	
-	@PutMapping("/termo/aprovar/coafe/{id}")
-	public ResponseEntity<TermoPocDTO> aprovarCoafe(@PathVariable Long id){
-		try {
-			Optional<TermoPoc> termofind = repo.findById(id);
-			if(termofind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
-			} else {
-				TermoPoc termo = new TermoPoc();
-				termo = termofind.get();
-				termo.setStatusTermo("Aprovado");
-				termo.setStatusEstagio("Aprovado");
-				termo.setParecerCOAFE("Aprovado");
-				repo.save(mapper.map(termo, TermoPoc.class));
-				termofind = repo.findById(id);
-				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
-			}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-	
-	@PutMapping("/termo/reprovar/coafe/{id}")
-	public ResponseEntity<TermoPocDTO> reprovarCoafe(@PathVariable Long id, @RequestBody JustificativaDTO requestBody){
-		try {
-			String justificativa = requestBody.getJustificativa();
-			Optional<TermoPoc> termofind = repo.findById(id);
-			if(termofind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
-			} else {
-				if (justificativa.isBlank() || justificativa.isEmpty()){
-					throw new PocException(HttpStatus.BAD_REQUEST, "O motivo do indeferimento deve ser informado!");
-				} else {
-					TermoPoc termo = new TermoPoc();
-					termo = termofind.get();
-					termo.setStatusTermo("Reprovado");
-					termo.setStatusEstagio("Reprovado");
-					termo.setParecerCOAFE("Reprovado");
-					termo.setMotivoIndeferimento(justificativa);
-					repo.save(mapper.map(termo, TermoPoc.class));
-					termofind = repo.findById(id);
-					return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoPocDTO.class));
-				}
-			}
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;
