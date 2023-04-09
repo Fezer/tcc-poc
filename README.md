@@ -15,9 +15,19 @@
 
 ### Como rodar
 
+Antes de rodar a primeira vez:
+
+```bash
+docker compose build
+```
+
+Então:
+
 ```bash
 docker-compose up
 ```
+
+_Rodando pelo docker é necessário atualzar a página para que as alterações tenham efeito_
 
 Se for preciso instalar alguma dependência, é preciso buildar novamente a imagem do docker, logo:
 
