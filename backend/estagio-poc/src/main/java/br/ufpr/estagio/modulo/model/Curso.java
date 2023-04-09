@@ -2,6 +2,9 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -40,6 +43,7 @@ public class Curso implements Serializable{
 	@Column(name = "peridiocidade")
 	private int peridiocidade;
 
+	@JsonIgnore
 	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
 	private List<Coordenador> coordenador;
 	
@@ -50,9 +54,11 @@ public class Curso implements Serializable{
 	    inverseJoinColumns = {@JoinColumn(name="curso_id")})
 	private List<Orientador> orientador;
 
+	@JsonIgnore
 	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
 	private List<Disciplina> disciplina;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
 	private List<Aluno> aluno;
 

@@ -2,6 +2,9 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -28,12 +31,15 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 	@Column(name = "cnpj")
 	private String cnpj;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="agenteIntegrador", cascade=CascadeType.ALL)
 	private List<Convenio> convenio;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="agenteIntegrador", cascade=CascadeType.ALL)
 	private List<TermoDeEstagio> termoDeEstagio;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="agenteIntegrador", cascade=CascadeType.ALL)
 	private List<Estagio> estagio;
 	

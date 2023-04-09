@@ -2,6 +2,9 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 import jakarta.persistence.CascadeType;
@@ -37,6 +40,7 @@ public class TermoDeRescisao implements Serializable{
 	@Column(name = "periodo_total_recesso")
 	private int periodoTotalRecesso;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="termoRescisao", cascade=CascadeType.REMOVE)
 	private List<PeriodoRecesso> periodoRecesso;
 	

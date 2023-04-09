@@ -94,6 +94,7 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@JoinColumn(name="termo_de_compromisso_id", referencedColumnName="id",nullable=true)
 	private TermoDeEstagio termoDeCompromisso;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="estagio", cascade= {CascadeType.REMOVE, CascadeType.PERSIST})
 	private List<TermoDeEstagio> termoAdivito;
 	
@@ -101,6 +102,7 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@JoinColumn(name="termo_de_rescisao_id", referencedColumnName="id",nullable=true)
 	private TermoDeRescisao termoDeRescisao;
 
+	@JsonIgnore
 	@OneToMany(mappedBy="estagio", cascade= CascadeType.REMOVE)
 	private List<RelatorioDeEstagio> relatorioDeEstagio;
 
@@ -354,6 +356,11 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
+	}
+
+	public void novoTermoCompromisso() {
+		TermoDeEstagio termoDeCompromisso = new TermoDeEstagio();
+		termoDeCompromisso.setEstagio(this);
 	}
 
 }

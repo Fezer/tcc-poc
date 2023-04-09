@@ -24,7 +24,7 @@ public class TermoDeEstagioService {
         this.repo = repo;
     }
      
-    public List<TermoDeEstagio> listAll() {
+    public List<TermoDeEstagio> listarTodos() {
         return repo.findAll();
     }
      
@@ -36,19 +36,19 @@ public class TermoDeEstagioService {
         return repo.save(termoDeEstagio);
     }
     
-    public TermoDeEstagio get(long id) {
+    public TermoDeEstagio buscarPorId(long id) {
         return repo.findById(id).get();
     }
      
-    public TermoDeEstagio save(TermoDeEstagio termoDeEstagio) {
+    public TermoDeEstagio salvar(TermoDeEstagio termoDeEstagio) {
         return repo.save(termoDeEstagio);
     }
      
-    public TermoDeEstagio update(TermoDeEstagio termoDeEstagio) {
+    public TermoDeEstagio atualizar(TermoDeEstagio termoDeEstagio) {
     	return repo.save(termoDeEstagio);
     }
      
-    public void delete(long id) {
+    public void deletar(long id) {
         repo.deleteById(id);
     }
 }

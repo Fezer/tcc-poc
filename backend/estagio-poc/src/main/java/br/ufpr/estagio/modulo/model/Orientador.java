@@ -3,6 +3,8 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,9 +39,11 @@ public class Orientador extends Pessoa implements Serializable{
 	@ManyToMany(mappedBy = "orientador", cascade=CascadeType.REMOVE)
 	private List<Curso> curso;
 
+	@JsonIgnore
 	@OneToMany(mappedBy="orientador", cascade=CascadeType.REMOVE)
 	private List<TermoDeEstagio> termoDeEstagio;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="orientador", cascade=CascadeType.REMOVE)
 	private List<Estagio> estagio;
 	

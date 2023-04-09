@@ -66,6 +66,7 @@ public class Aluno extends Pessoa implements Serializable {
 	//Faltou o relacionamento aluno-pessoa:
 	//Pessoa é herança não tem relacionamento
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="aluno", cascade=CascadeType.REMOVE)
 	private List<Estagio> estagio;
 	
@@ -177,6 +178,14 @@ public class Aluno extends Pessoa implements Serializable {
 
 	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
+	}
+
+	public Estagio novoEstagio() {
+		Estagio estagio = new Estagio();
+		estagio.setAluno(this);
+		estagio.novoTermoCompromisso();
+		this.setEstagio(getEstagio());
+		return estagio;
 	}
 
 }

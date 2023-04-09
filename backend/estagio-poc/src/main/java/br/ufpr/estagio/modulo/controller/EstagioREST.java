@@ -83,7 +83,7 @@ public class EstagioREST {
 	@GetMapping("/")
 	public ResponseEntity<List<EstagioDTO>> listarTodos(){
 		try {
-			List<Estagio> lista = estagioService.listAllEstagios();
+			List<Estagio> lista = estagioService.listarTodosEstagios();
 			if(lista.isEmpty()) {
 				throw new PocException(HttpStatus.NOT_FOUND, "Nenhum estágio encontrado!");
 			} else {
@@ -105,7 +105,7 @@ public class EstagioREST {
 	@GetMapping("{id}")
 	public ResponseEntity<EstagioDTO> listarEstagio(@PathVariable Long id){
 		try {
-			Estagio estagio = estagioService.getEstagio(id);
+			Estagio estagio = estagioService.buscarEstagioPorId(id);
 		if(estagio == null) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Estágio não encontrado!");
 		} else {
@@ -127,7 +127,7 @@ public class EstagioREST {
 			throw new PocException(HttpStatus.BAD_REQUEST, "Tipo do estágio não informado");
 		}
 		try {
-			Estagio estagio = estagioService.getEstagio(id);
+			Estagio estagio = estagioService.buscarEstagioPorId(id);
 		if(estagio == null) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Estágio não encontrado!");
 		} else {
@@ -150,7 +150,7 @@ public class EstagioREST {
 			throw new PocException(HttpStatus.BAD_REQUEST, "isUfpr não informado");
 		}
 		try {
-			Estagio estagio = estagioService.getEstagio(id);
+			Estagio estagio = estagioService.buscarEstagioPorId(id);
 		if(estagio == null) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Estágio não encontrado!");
 		} else {

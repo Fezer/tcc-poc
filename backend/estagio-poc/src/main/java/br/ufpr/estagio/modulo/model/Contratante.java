@@ -3,6 +3,8 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -37,6 +39,7 @@ public class Contratante extends Pessoa implements Serializable {
 	@Column(name = "representanteEmpresa")
 	private String representanteEmpresa;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="contratante", cascade=CascadeType.REMOVE)
 	private List<Estagio> estagio;
 	
