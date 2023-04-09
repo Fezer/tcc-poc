@@ -8,16 +8,8 @@ import org.springframework.hateoas.RepresentationModel;
 
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
-import br.ufpr.estagio.modulo.model.AgenteIntegrador;
-import br.ufpr.estagio.modulo.model.Aluno;
-import br.ufpr.estagio.modulo.model.Apolice;
-import br.ufpr.estagio.modulo.model.Contratante;
-import br.ufpr.estagio.modulo.model.Orientador;
-import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
-import br.ufpr.estagio.modulo.model.Seguradora;
-import br.ufpr.estagio.modulo.model.Supervisor;
 
-public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Serializable{
+public class BKP_EstagioDTO_20230409 extends RepresentationModel<BKP_EstagioDTO_20230409> implements Serializable{
 	
 	/**
 	 * 
@@ -28,14 +20,14 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 	private EnumTipoEstagio tipoEstagio;
 	private EnumStatusEstagio statusEstagio;
 	private boolean estagioUfpr;
-	private Aluno aluno;
-	private Contratante contratante;
-	private Seguradora seguradora;
-	private Apolice apolice;
-	private AgenteIntegrador agenteIntegrador;
-	private Orientador orientador;
-	private Supervisor supervisor;
-	private PlanoDeAtividades planoDeAtividades;
+	private long aluno;
+	private long contratante;
+	private long seguradora;
+	private long apolice;
+	private long agenteIntegrador;
+	private long orientador;
+	private long supervisor;
+	private long planoDeAtividades;
 	private Date dataInicio;
 	private Date dataTermino;
 	private int jornadaDiaria;
@@ -50,18 +42,17 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 	private long certificadoDeEstagio;
 	private Date dataCriacao;
 	
-	public EstagioDTO() {
+	public BKP_EstagioDTO_20230409() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public EstagioDTO(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr,
-			Aluno aluno, Contratante contratante, Seguradora seguradora, Apolice apolice,
-			AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
-			PlanoDeAtividades planoDeAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria,
+	public BKP_EstagioDTO_20230409(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr,
+			long aluno, long contratante, long seguradora, long apolice, long agenteIntegrador, long orientador,
+			long supervisor, long planoDeAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria,
 			int jornadaSemanal, float valorBolsa, float valorTransporte, long termoDeCompromisso,
-			List<Long> termoAdivito, long termoDeRescisao, List<Long> relatorioDeEstagio, long fichaDeAvaliacao,
-			long certificadoDeEstagio, Date dataCriacao) {
+			List<Long> termoAdivito, long termoDeRescisao, List<Long> relatorioDeEstagio,
+			long fichaDeAvaliacao, long certificadoDeEstagio, Date dataCriacao) {
 		super();
 		this.id = id;
 		this.tipoEstagio = tipoEstagio;
@@ -122,67 +113,67 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 		this.estagioUfpr = estagioUfpr;
 	}
 
-	public Aluno getAluno() {
+	public long getAluno() {
 		return aluno;
 	}
 
-	public void setAluno(Aluno aluno) {
+	public void setAluno(long aluno) {
 		this.aluno = aluno;
 	}
 
-	public Contratante getContratante() {
+	public long getContratante() {
 		return contratante;
 	}
 
-	public void setContratante(Contratante contratante) {
+	public void setContratante(long contratante) {
 		this.contratante = contratante;
 	}
 
-	public Seguradora getSeguradora() {
+	public long getSeguradora() {
 		return seguradora;
 	}
 
-	public void setSeguradora(Seguradora seguradora) {
+	public void setSeguradora(long seguradora) {
 		this.seguradora = seguradora;
 	}
 
-	public Apolice getApolice() {
+	public long getApolice() {
 		return apolice;
 	}
 
-	public void setApolice(Apolice apolice) {
+	public void setApolice(long apolice) {
 		this.apolice = apolice;
 	}
 
-	public AgenteIntegrador getAgenteIntegrador() {
+	public long getAgenteIntegrador() {
 		return agenteIntegrador;
 	}
 
-	public void setAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
+	public void setAgenteIntegrador(long agenteIntegrador) {
 		this.agenteIntegrador = agenteIntegrador;
 	}
 
-	public Orientador getOrientador() {
+	public long getOrientador() {
 		return orientador;
 	}
 
-	public void setOrientador(Orientador orientador) {
+	public void setOrientador(long orientador) {
 		this.orientador = orientador;
 	}
 
-	public Supervisor getSupervisor() {
+	public long getSupervisor() {
 		return supervisor;
 	}
 
-	public void setSupervisor(Supervisor supervisor) {
+	public void setSupervisor(long supervisor) {
 		this.supervisor = supervisor;
 	}
 
-	public PlanoDeAtividades getPlanoDeAtividades() {
+	public long getPlanoDeAtividades() {
 		return planoDeAtividades;
 	}
 
-	public void setPlanoDeAtividades(PlanoDeAtividades planoDeAtividades) {
+	public void setPlanoDeAtividades(long planoDeAtividades) {
 		this.planoDeAtividades = planoDeAtividades;
 	}
 
@@ -288,10 +279,6 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 	
 }
