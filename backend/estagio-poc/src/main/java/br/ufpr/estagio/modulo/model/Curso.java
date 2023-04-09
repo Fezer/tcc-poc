@@ -1,7 +1,8 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,27 +39,22 @@ public class Curso implements Serializable{
 	
 	@Column(name = "peridiocidade")
 	private int peridiocidade;
+
+	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
+	private List<Coordenador> coordenador;
 	
-	//@Column(name = "coordenador")
-	@OneToMany(mappedBy="curso", cascade=CascadeType.ALL)
-	private ArrayList<Coordenador> coordenador;
-	
-	//@Column(name = "orientador")
-	//@OneToMany(mappedBy="curso")
-	@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany(cascade = { CascadeType.REMOVE })
 	@JoinTable(
 	    name = "curso_orientador",
 	    joinColumns = {@JoinColumn(name="orientador_id")},
 	    inverseJoinColumns = {@JoinColumn(name="curso_id")})
-	private ArrayList<Orientador> orientador;
+	private List<Orientador> orientador;
+
+	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
+	private List<Disciplina> disciplina;
 	
-	//@Column(name = "disciplina")
-	@OneToMany(mappedBy="curso", cascade=CascadeType.ALL)
-	private ArrayList<Disciplina> disciplina;
-	
-	//@Column(name = "aluno")
-	@OneToMany(mappedBy="curso", cascade=CascadeType.ALL)
-	private ArrayList<Aluno> aluno;
+	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
+	private List<Aluno> aluno;
 
 	public Curso() {
 		super();
@@ -66,8 +62,8 @@ public class Curso implements Serializable{
 	}
 
 	public Curso(long id, String nome, String matricula, String nivel, int peridiocidade,
-			ArrayList<Coordenador> coordenador, ArrayList<Orientador> orientador, ArrayList<Disciplina> disciplina,
-			ArrayList<Aluno> aluno) {
+			List<Coordenador> coordenador, List<Orientador> orientador, List<Disciplina> disciplina,
+			List<Aluno> aluno) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -120,35 +116,35 @@ public class Curso implements Serializable{
 		this.peridiocidade = peridiocidade;
 	}
 
-	public ArrayList<Coordenador> getCoordenador() {
+	public List<Coordenador> getCoordenador() {
 		return coordenador;
 	}
 
-	public void setCoordenador(ArrayList<Coordenador> coordenador) {
+	public void setCoordenador(List<Coordenador> coordenador) {
 		this.coordenador = coordenador;
 	}
 
-	public ArrayList<Orientador> getOrientador() {
+	public List<Orientador> getOrientador() {
 		return orientador;
 	}
 
-	public void setOrientador(ArrayList<Orientador> orientador) {
+	public void setOrientador(List<Orientador> orientador) {
 		this.orientador = orientador;
 	}
 
-	public ArrayList<Disciplina> getDisciplina() {
+	public List<Disciplina> getDisciplina() {
 		return disciplina;
 	}
 
-	public void setDisciplina(ArrayList<Disciplina> disciplina) {
+	public void setDisciplina(List<Disciplina> disciplina) {
 		this.disciplina = disciplina;
 	}
 
-	public ArrayList<Aluno> getAluno() {
+	public List<Aluno> getAluno() {
 		return aluno;
 	}
 
-	public void setAluno(ArrayList<Aluno> aluno) {
+	public void setAluno(List<Aluno> aluno) {
 		this.aluno = aluno;
 	}
 	

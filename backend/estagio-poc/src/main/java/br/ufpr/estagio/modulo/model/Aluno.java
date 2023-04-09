@@ -3,6 +3,7 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -44,33 +45,26 @@ public class Aluno extends Pessoa implements Serializable {
 	@Column(name = "dataNascimento")
 	private Date dataNascimento;
 	
-	//@OneToOne
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
 	
-	//@OneToOne
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="dados_auxiliares_id", referencedColumnName="id",nullable=true)
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="dados_auxiliares_id", referencedColumnName="id", nullable=true)
 	private DadosAuxiliares dadosAuxiliares;
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="dados_bancarios_id", referencedColumnName="id",nullable=true)
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="dados_bancarios_id", referencedColumnName="id", nullable=true)
 	private DadosBancarios dadosBancarios;
 	
-	//@Column(name = "disciplina")
-	@ManyToMany(mappedBy = "aluno")
-	private ArrayList<Disciplina> disciplina;
+	@ManyToMany(mappedBy = "aluno", cascade=CascadeType.REMOVE)
+	private List<Disciplina> disciplina;
 	
 	//Faltou o relacionamento aluno-pessoa:
+	//Pessoa é herança não tem relacionamento
 	
-	//@OneToOne
-	//@JoinColumn(name="id_dadosBancarios")
-	//@OneToOne(mappedBy="aluno")
-	//private Pessoa pessoa;
-	
-	@OneToMany(mappedBy="aluno", cascade=CascadeType.ALL)
-	private ArrayList<Estagio> estagio;
+	@OneToMany(mappedBy="aluno", cascade=CascadeType.REMOVE)
+	private List<Estagio> estagio;
 	
 	public Aluno() {
 		super();
@@ -78,8 +72,8 @@ public class Aluno extends Pessoa implements Serializable {
 	}
 
 	public Aluno(long id, String matricula, String rg, String cpf, String email, Date dataNascimento, Curso curso,
-			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, ArrayList<Disciplina> disciplina,
-			Pessoa pessoa, ArrayList<Estagio> estagio) {
+			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, List<Disciplina> disciplina,
+			Pessoa pessoa, List<Estagio> estagio) {
 		super();
 		this.id = id;
 		this.matricula = matricula;
@@ -166,19 +160,19 @@ public class Aluno extends Pessoa implements Serializable {
 		this.dadosBancarios = dadosBancarios;
 	}
 
-	public ArrayList<Disciplina> getDisciplina() {
+	public List<Disciplina> getDisciplina() {
 		return disciplina;
 	}
 
-	public void setDisciplina(ArrayList<Disciplina> disciplina) {
+	public void setDisciplina(List<Disciplina> disciplina) {
 		this.disciplina = disciplina;
 	}
 
-	public ArrayList<Estagio> getEstagio() {
+	public List<Estagio> getEstagio() {
 		return estagio;
 	}
 
-	public void setEstagio(ArrayList<Estagio> estagio) {
+	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
 	}
 

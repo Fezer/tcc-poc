@@ -2,6 +2,7 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,9 +45,8 @@ public class Endereco implements Serializable{
 	@Column(name = "cep")
 	private String cep;
 	
-	//@Column(name = "pessoa")
-	@OneToOne
-	@JoinColumn(name="pessoa_id", referencedColumnName="id", nullable=false)
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="pessoa_id", referencedColumnName="id", nullable=true)
 	private Pessoa pessoa;
 
 	public Endereco() {

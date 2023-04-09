@@ -3,6 +3,7 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -84,8 +85,8 @@ public class DadosAuxiliares implements Serializable{
 	@Column(name = "cidadeDeNascimento")
 	private String cidadeDeNascimento;
 	
-	@OneToOne
-	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=false)
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=true)
 	private Aluno aluno;
 
 	public DadosAuxiliares() {

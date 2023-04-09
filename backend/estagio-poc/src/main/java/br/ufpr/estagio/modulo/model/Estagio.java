@@ -1,8 +1,9 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -31,43 +32,35 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@Column(name = "estagio_ufpr")
 	private boolean estagioUfpr;
 	
-	//@Column(name = "aluno")
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=true)
 	private Aluno aluno;
 	
-	//@Column(name = "contratante")
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="contratante_id", referencedColumnName="id", nullable=true)
 	private Contratante contratante;
 	
-	//@Column(name = "seguradora")
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
 	
-	//@Column(name = "apolice")
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="apolice_id", referencedColumnName="id",nullable=true)
 	private Apolice apolice;
 	
-	//@Column(name = "agente_integrador")
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="agente_integrador_id", referencedColumnName="id", nullable=true)
 	private AgenteIntegrador agenteIntegrador;
 	
-	//@Column(name = "orientador")
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="orientador_id", referencedColumnName="id", nullable=true)
 	private Orientador orientador;
 	
-	//@Column(name = "supervisor")
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
 	private Supervisor supervisor;
-	
-	//@Column(name = "plano_de_atividades")
-	@OneToOne(cascade=CascadeType.ALL)
+
+	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="plano_de_atividades_id", referencedColumnName="id",nullable=true)
 	private PlanoDeAtividades planoDeAtividades;
 	
@@ -89,31 +82,25 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@Column(name = "valor_transporte")
 	private float valorTransporte;
 	
-	//@OneToOne
-	//@JoinColumn(name="termo_de_compromisso_id")
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade= {CascadeType.REMOVE, CascadeType.PERSIST})
 	@JoinColumn(name="termo_de_compromisso_id", referencedColumnName="id",nullable=true)
 	private TermoDeEstagio termoDeCompromisso;
 	
-	@OneToMany(mappedBy="estagio", cascade= CascadeType.ALL)
-	private ArrayList<TermoDeEstagio> termoAdivito;
+	@OneToMany(mappedBy="estagio", cascade= {CascadeType.REMOVE, CascadeType.PERSIST})
+	private List<TermoDeEstagio> termoAdivito;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="termo_de_rescisao_id", referencedColumnName="id",nullable=true)
 	private TermoDeRescisao termoDeRescisao;
-	
-	//@Column(name = "relatorio_de_estagio")
-	//@OneToMany(mappedBy="estagio")
-	@OneToMany(mappedBy="estagio", cascade= CascadeType.ALL)
-	private ArrayList<RelatorioDeEstagio> relatorioDeEstagio;
-	
-	//@Column(name = "ficha_de_avaliacao")
-	@OneToOne(cascade=CascadeType.ALL)
+
+	@OneToMany(mappedBy="estagio", cascade= CascadeType.REMOVE)
+	private List<RelatorioDeEstagio> relatorioDeEstagio;
+
+	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="ficha_de_avaliacao_id", referencedColumnName="id",nullable=true)
 	private FichaDeAvaliacao fichaDeAvaliacao;
 	
-	//@Column(name = "certificado_de_estagio")
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="certificado_de_estagi_id", referencedColumnName="id",nullable=true)
 	private CertificadoDeEstagio certificadoDeEstagio;
 	
@@ -130,8 +117,8 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 			AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
 			PlanoDeAtividades planoDeAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria,
 			int jornadaSemanal, float valorBolsa, float valorTransporte, TermoDeEstagio termoDeCompromisso,
-			ArrayList<TermoDeEstagio> termoAdivito, TermoDeRescisao termoDeRescisao,
-			ArrayList<RelatorioDeEstagio> relatorioDeEstagio, FichaDeAvaliacao fichaDeAvaliacao,
+			List<TermoDeEstagio> termoAdivito, TermoDeRescisao termoDeRescisao,
+			List<RelatorioDeEstagio> relatorioDeEstagio, FichaDeAvaliacao fichaDeAvaliacao,
 			CertificadoDeEstagio certificadoDeEstagio, Date dataCriacao) {
 		super();
 		this.id = id;
@@ -313,11 +300,11 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 		this.termoDeCompromisso = termoDeCompromisso;
 	}
 
-	public ArrayList<TermoDeEstagio> getTermoAdivito() {
+	public List<TermoDeEstagio> getTermoAdivito() {
 		return termoAdivito;
 	}
 
-	public void setTermoAdivito(ArrayList<TermoDeEstagio> termoAdivito) {
+	public void setTermoAdivito(List<TermoDeEstagio> termoAdivito) {
 		this.termoAdivito = termoAdivito;
 	}
 
@@ -329,11 +316,11 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 		this.termoDeRescisao = termoDeRescisao;
 	}
 
-	public ArrayList<RelatorioDeEstagio> getRelatorioDeEstagio() {
+	public List<RelatorioDeEstagio> getRelatorioDeEstagio() {
 		return relatorioDeEstagio;
 	}
 
-	public void setRelatorioDeEstagio(ArrayList<RelatorioDeEstagio> relatorioDeEstagio) {
+	public void setRelatorioDeEstagio(List<RelatorioDeEstagio> relatorioDeEstagio) {
 		this.relatorioDeEstagio = relatorioDeEstagio;
 	}
 

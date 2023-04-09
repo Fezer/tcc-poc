@@ -2,6 +2,7 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,13 +23,11 @@ public class CertificadoDeEstagio implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private long id;
-	
-	//@Column(name = "id_estagio")
-	@OneToOne
-	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=false)
+
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=true)
 	private Estagio estagio;
-	
-	// nao tem a coluna no diagrama
+
 	@Column(name = "aprovado_coe")
 	private boolean aprovadoCOE;
 	

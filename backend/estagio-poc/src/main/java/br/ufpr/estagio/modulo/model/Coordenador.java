@@ -1,7 +1,8 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -29,21 +30,19 @@ public class Coordenador extends Pessoa implements Serializable{
 	@Column(name = "cpf")
 	private String cpf;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
 	
-	//@Column(name = "termo_de_estagio")
-	//@OneToMany(mappedBy="coordenador")
-	@OneToMany(mappedBy="coordenador", cascade=CascadeType.ALL)
-	private ArrayList<TermoDeEstagio> termoDeEstagio;
+	@OneToMany(mappedBy="coordenador", cascade=CascadeType.REMOVE)
+	private List<TermoDeEstagio> termoDeEstagio;
 
 	public Coordenador() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Coordenador(long id, String cpf, Curso curso, ArrayList<TermoDeEstagio> termoDeEstagio) {
+	public Coordenador(long id, String cpf, Curso curso, List<TermoDeEstagio> termoDeEstagio) {
 		super();
 		this.id = id;
 		this.cpf = cpf;
@@ -75,11 +74,11 @@ public class Coordenador extends Pessoa implements Serializable{
 		this.curso = curso;
 	}
 
-	public ArrayList<TermoDeEstagio> getTermoDeEstagio() {
+	public List<TermoDeEstagio> getTermoDeEstagio() {
 		return termoDeEstagio;
 	}
 
-	public void setTermoDeEstagio(ArrayList<TermoDeEstagio> termoDeEstagio) {
+	public void setTermoDeEstagio(List<TermoDeEstagio> termoDeEstagio) {
 		this.termoDeEstagio = termoDeEstagio;
 	}	
 }

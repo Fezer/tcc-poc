@@ -3,6 +3,7 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAcomp;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class FichaDeAvaliacao implements Serializable{
 	@Column(name = "id")
 	private long id;
 
-	@OneToOne
+	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="estagio_id", referencedColumnName="id")
 	private Estagio estagio;
 	

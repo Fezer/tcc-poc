@@ -3,6 +3,7 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,21 +35,15 @@ public class Apolice implements Serializable {
 	@Column(name = "dataFim")
 	private Date dataFim;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
 	
-	// REVER DIAGRAMA
-	//@OneToOne
-	//@JoinColumn(name="id_termo_de_estagio")
-	@OneToOne
+	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="termo_de_estagio_id", referencedColumnName="id", nullable=true)
 	private TermoDeEstagio termoDeEstagio;
 	
-	// REVER DIAGRAMA + o que eh apolicecol (ou algo assim)?
-	//@OneToOne
-	//@JoinColumn(name="id_estagio")
-	@OneToOne
+	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=true)
 	private Estagio estagio;
 	

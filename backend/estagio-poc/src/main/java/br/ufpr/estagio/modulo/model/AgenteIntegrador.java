@@ -1,7 +1,8 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,28 +28,22 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 	@Column(name = "cnpj")
 	private String cnpj;
 	
-	//@Column(name = "id_convenio")
-	//@OneToMany(mappedBy="agente_integrador")
 	@OneToMany(mappedBy="agenteIntegrador", cascade=CascadeType.ALL)
-	private ArrayList<Convenio> convenio;
+	private List<Convenio> convenio;
 	
-	//@Column(name = "TermoDeEstagio_id")
-	//@OneToMany(mappedBy="agente_integrador")
 	@OneToMany(mappedBy="agenteIntegrador", cascade=CascadeType.ALL)
-	private ArrayList<TermoDeEstagio> termoDeEstagio;
+	private List<TermoDeEstagio> termoDeEstagio;
 	
-	//@Column(name = "Estagio_id")
-	//@OneToMany(mappedBy="agente_integrador")
 	@OneToMany(mappedBy="agenteIntegrador", cascade=CascadeType.ALL)
-	private ArrayList<Estagio> estagio;
+	private List<Estagio> estagio;
 	
 	public AgenteIntegrador() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public AgenteIntegrador(long id, String cnpj, ArrayList<Convenio> convenio,
-			ArrayList<TermoDeEstagio> termoDeEstagio, ArrayList<Estagio> estagio) {
+	public AgenteIntegrador(long id, String cnpj, List<Convenio> convenio,
+			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio) {
 		super();
 		this.id = id;
 		this.cnpj = cnpj;
@@ -73,27 +68,27 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 		this.cnpj = cnpj;
 	}
 
-	public ArrayList<Convenio> getConvenio() {
+	public List<Convenio> getConvenio() {
 		return convenio;
 	}
 
-	public void setConvenio(ArrayList<Convenio> convenio) {
+	public void setConvenio(List<Convenio> convenio) {
 		this.convenio = convenio;
 	}
 
-	public ArrayList<TermoDeEstagio> getTermoDeEstagio() {
+	public List<TermoDeEstagio> getTermoDeEstagio() {
 		return termoDeEstagio;
 	}
 
-	public void setTermoDeEstagio(ArrayList<TermoDeEstagio> termoDeEstagio) {
+	public void setTermoDeEstagio(List<TermoDeEstagio> termoDeEstagio) {
 		this.termoDeEstagio = termoDeEstagio;
 	}
 
-	public ArrayList<Estagio> getEstagio() {
+	public List<Estagio> getEstagio() {
 		return estagio;
 	}
 
-	public void setEstagio(ArrayList<Estagio> estagio) {
+	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
 	}
 

@@ -18,8 +18,8 @@ public class RelatorioDeEstagio implements Serializable{
 	@Column(name = "id")
 	private long id;
 
-	@ManyToOne
-	@JoinColumn(name="estagio_id", referencedColumnName="id",nullable=false)
+	@ManyToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="estagio_id", referencedColumnName="id",nullable=true)
 	private Estagio estagio;
 	
 	@Column(name = "ciencia_orientador")

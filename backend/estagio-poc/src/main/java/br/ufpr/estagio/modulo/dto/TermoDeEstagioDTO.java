@@ -17,7 +17,7 @@ import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.Supervisor;
 
 public class TermoDeEstagioDTO {
-	private int id;
+	private long id;
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
 	private Estagio estagio;
 	private Seguradora seguradora;
@@ -50,7 +50,7 @@ public class TermoDeEstagioDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoDeEstagioDTO(int id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
+	public TermoDeEstagioDTO(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
 			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
 			Coordenador coordenadorCurso, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
 			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte, Date dataFimSuspensao,
@@ -88,11 +88,11 @@ public class TermoDeEstagioDTO {
 		this.descricaoAjustes = descricaoAjustes;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

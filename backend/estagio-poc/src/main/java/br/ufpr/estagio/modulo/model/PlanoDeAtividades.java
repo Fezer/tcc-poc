@@ -2,6 +2,7 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,23 +28,19 @@ public class PlanoDeAtividades implements Serializable{
 	@Column(name = "local")
 	private String local;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
 	private Supervisor supervisor;
 	
 	@Column(name = "descricaoAtividades")
 	private String descricaoAtividades;
 	
-	//@OneToOne
-	//@JoinColumn(name="estagio")
-	@OneToOne
-	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=false)
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=true)
 	private Estagio estagio;
 	
-	//@OneToOne
-	//@JoinColumn(name="termo_de_estagio")
-	@OneToOne
-	@JoinColumn(name="termo_de_estagio_id", referencedColumnName="id", nullable=false)
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="termo_de_estagio_id", referencedColumnName="id", nullable=true)
 	private TermoDeEstagio termoDeEstagio;
 	
 	public PlanoDeAtividades() {
