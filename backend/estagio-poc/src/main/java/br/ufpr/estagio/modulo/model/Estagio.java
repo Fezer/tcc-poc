@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
@@ -32,14 +34,17 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@Column(name = "estagio_ufpr")
 	private boolean estagioUfpr;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=true)
 	private Aluno aluno;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="contratante_id", referencedColumnName="id", nullable=true)
 	private Contratante contratante;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
@@ -48,14 +53,17 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@JoinColumn(name="apolice_id", referencedColumnName="id",nullable=true)
 	private Apolice apolice;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="agente_integrador_id", referencedColumnName="id", nullable=true)
 	private AgenteIntegrador agenteIntegrador;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="orientador_id", referencedColumnName="id", nullable=true)
 	private Orientador orientador;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
 	private Supervisor supervisor;
