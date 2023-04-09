@@ -55,7 +55,6 @@ public class EstagioREST {
         this.relatorioDeEstagioService = relatorioDeEstagioService;
     }
     
-	
 	@Autowired
 	private TermoPocRepository repo;
 
