@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,11 +22,27 @@ import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.TermoPoc;
 import br.ufpr.estagio.modulo.repository.TermoPocRepository;
+import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
+import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 import br.ufpr.estagio.modulo.wrapper.DiscenteWrapper;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/aluno")
 public class AlunoREST {
+	
+    private EstagioService estagioService;
+    private TermoDeEstagioService termoDeEstagioService;
+    private RelatorioDeEstagioService relatorioDeEstagioService;
+    
+    public AlunoREST(EstagioService estagioService, 
+    		TermoDeEstagioService termoDeEstagioService, 
+    		RelatorioDeEstagioService relatorioDeEstagioService) {
+        this.estagioService = estagioService;
+        this.termoDeEstagioService = termoDeEstagioService;
+        this.relatorioDeEstagioService = relatorioDeEstagioService;
+    }
 	
 	@Autowired
 	private ModelMapper mapper;
@@ -33,7 +50,7 @@ public class AlunoREST {
 	@Autowired
 	private TermoPocRepository repo;
 	
-	@GetMapping("/aluno/{termoIdURL}")
+	@GetMapping("/{termoIdURL}")
 	public ResponseEntity<Discente> listarTermo(@PathVariable String termoIdURL){
 		try {
 			if(termoIdURL.isBlank() || termoIdURL.isEmpty()) {
