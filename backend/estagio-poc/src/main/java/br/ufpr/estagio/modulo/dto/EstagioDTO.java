@@ -1,7 +1,7 @@
 package br.ufpr.estagio.modulo.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -30,9 +30,9 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 	private float valorBolsa;
 	private float valorTransporte;
 	private long termoDeCompromisso;
-	private ArrayList<Long> termoAdivito;
+	private List<Long> termoAdivito;
 	private long termoDeRescisao;
-	private ArrayList<Long> relatorioDeEstagio;
+	private List<Long> relatorioDeEstagio;
 	private long fichaDeAvaliacao;
 	private long certificadoDeEstagio;
 	private Date dataCriacao;
@@ -46,7 +46,7 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 			long aluno, long contratante, long seguradora, long apolice, long agenteIntegrador, long orientador,
 			long supervisor, long planoDeAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria,
 			int jornadaSemanal, float valorBolsa, float valorTransporte, long termoDeCompromisso,
-			ArrayList<Long> termoAdivito, long termoDeRescisao, ArrayList<Long> relatorioDeEstagio,
+			List<Long> termoAdivito, long termoDeRescisao, List<Long> relatorioDeEstagio,
 			long fichaDeAvaliacao, long certificadoDeEstagio, Date dataCriacao) {
 		super();
 		this.id = id;
@@ -228,11 +228,11 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 		this.termoDeCompromisso = termoDeCompromisso;
 	}
 
-	public ArrayList<Long> getTermoAdivito() {
+	public List<Long> getTermoAdivito() {
 		return termoAdivito;
 	}
 
-	public void setTermoAdivito(ArrayList<Long> termoAdivito) {
+	public void setTermoAdivito(List<Long> termoAdivito) {
 		this.termoAdivito = termoAdivito;
 	}
 
@@ -244,11 +244,11 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 		this.termoDeRescisao = termoDeRescisao;
 	}
 
-	public ArrayList<Long> getRelatorioDeEstagio() {
+	public List<Long> getRelatorioDeEstagio() {
 		return relatorioDeEstagio;
 	}
 
-	public void setRelatorioDeEstagio(ArrayList<Long> relatorioDeEstagio) {
+	public void setRelatorioDeEstagio(List<Long> relatorioDeEstagio) {
 		this.relatorioDeEstagio = relatorioDeEstagio;
 	}
 

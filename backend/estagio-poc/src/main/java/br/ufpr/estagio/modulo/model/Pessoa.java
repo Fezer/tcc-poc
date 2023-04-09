@@ -30,8 +30,7 @@ public class Pessoa implements Serializable{
 	@Column(name = "telefone")
 	private String telefone;
 	
-	//@Column(name = "endereco")
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="endereco_id", referencedColumnName="id",nullable=true)
 	private Endereco endereco;
 }

@@ -1,7 +1,7 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import jakarta.persistence.CascadeType;
@@ -37,10 +37,8 @@ public class Contratante extends Pessoa implements Serializable {
 	@Column(name = "representanteEmpresa")
 	private String representanteEmpresa;
 	
-	// nao consta no diagrama
-	//@Column(name = "estagio")
-	@OneToMany(mappedBy="contratante", cascade=CascadeType.ALL)
-	private ArrayList<Estagio> estagio;
+	@OneToMany(mappedBy="contratante", cascade=CascadeType.REMOVE)
+	private List<Estagio> estagio;
 	
 	public Contratante() {
 		super();
@@ -48,7 +46,7 @@ public class Contratante extends Pessoa implements Serializable {
 	}
 
 	public Contratante(long id, EnumTipoContratante tipo, String cnpj, String cpf, String representanteEmpresa,
-			ArrayList<Estagio> estagio) {
+			List<Estagio> estagio) {
 		super();
 		this.id = id;
 		this.tipo = tipo;
@@ -98,11 +96,11 @@ public class Contratante extends Pessoa implements Serializable {
 		this.representanteEmpresa = representanteEmpresa;
 	}
 
-	public ArrayList<Estagio> getEstagio() {
+	public List<Estagio> getEstagio() {
 		return estagio;
 	}
 
-	public void setEstagio(ArrayList<Estagio> estagio) {
+	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
 	}
 

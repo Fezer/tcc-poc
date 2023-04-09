@@ -1,7 +1,7 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 
 import jakarta.persistence.CascadeType;
@@ -27,10 +27,8 @@ public class TermoDeRescisao implements Serializable{
 	@Column(name = "id")
 	private long id;
 
-	//@OneToOne
-	//@JoinColumn(name="estagio")
-	@OneToOne
-	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=false)
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=true)
 	private Estagio estagio;
 	
 	@Column(name = "data_termino")
@@ -39,10 +37,8 @@ public class TermoDeRescisao implements Serializable{
 	@Column(name = "periodo_total_recesso")
 	private int periodoTotalRecesso;
 	
-	//@Column(name = "periodo_recesso")
-	//@OneToMany(mappedBy="termo_de_rescisao")
-	@OneToMany(mappedBy="termoRescisao", cascade=CascadeType.ALL)
-	private ArrayList<PeriodoRecesso> periodoRecesso;
+	@OneToMany(mappedBy="termoRescisao", cascade=CascadeType.REMOVE)
+	private List<PeriodoRecesso> periodoRecesso;
 	
 	@Column(name = "ciencia_orientador")
 	private boolean cienciaOrientador;
@@ -62,7 +58,7 @@ public class TermoDeRescisao implements Serializable{
 	}
 
 	public TermoDeRescisao(long id, Estagio estagio, Date dataTermino, int periodoTotalRecesso,
-			ArrayList<PeriodoRecesso> periodoRecesso, boolean cienciaOrientador, boolean cienciaCoordenador,
+			List<PeriodoRecesso> periodoRecesso, boolean cienciaOrientador, boolean cienciaCoordenador,
 			boolean cienciaCOE, boolean cienciaCOAFE) {
 		super();
 		this.id = id;
@@ -108,11 +104,11 @@ public class TermoDeRescisao implements Serializable{
 		this.periodoTotalRecesso = periodoTotalRecesso;
 	}
 
-	public ArrayList<PeriodoRecesso> getPeriodoRecesso() {
+	public List<PeriodoRecesso> getPeriodoRecesso() {
 		return periodoRecesso;
 	}
 
-	public void setPeriodoRecesso(ArrayList<PeriodoRecesso> periodoRecesso) {
+	public void setPeriodoRecesso(List<PeriodoRecesso> periodoRecesso) {
 		this.periodoRecesso = periodoRecesso;
 	}
 

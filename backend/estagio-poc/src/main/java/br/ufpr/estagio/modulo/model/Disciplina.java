@@ -1,7 +1,8 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,16 +28,56 @@ public class Disciplina implements Serializable{
 	@Column(name = "id")
 	private long id;
 	
-	//@Column(name = "aluno")
-	@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany(cascade = { CascadeType.REMOVE })
 	@JoinTable(
 	    name = "disciplina_aluno", 
 	    joinColumns = { @JoinColumn(name = "disciplina_id") }, 
 	    inverseJoinColumns = { @JoinColumn(name = "aluno_id") }
 	)
-	private ArrayList<Aluno> aluno;
+	private List<Aluno> aluno;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
+
+	public Disciplina() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Disciplina(long id, List<Aluno> aluno, Curso curso) {
+		super();
+		this.id = id;
+		this.aluno = aluno;
+		this.curso = curso;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public List<Aluno> getAluno() {
+		return aluno;
+	}
+
+	public void setAluno(List<Aluno> aluno) {
+		this.aluno = aluno;
+	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 }

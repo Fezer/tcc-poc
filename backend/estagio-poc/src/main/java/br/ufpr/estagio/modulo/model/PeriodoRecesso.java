@@ -3,12 +3,14 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -29,8 +31,8 @@ public class PeriodoRecesso implements Serializable{
 	@Column(name = "dataFim")
 	private Date dataFim;
 	
-	//@Column(name = "termo_de_rescisao")
-	@JoinColumn(name="termo_de_rescisao_id", referencedColumnName="id", nullable=false)
+	@ManyToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="termo_de_rescisao_id", referencedColumnName="id", nullable=true)
 	private TermoDeRescisao termoRescisao;
 	
 	public PeriodoRecesso() {
