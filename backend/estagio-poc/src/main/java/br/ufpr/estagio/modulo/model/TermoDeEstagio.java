@@ -5,6 +5,8 @@ import java.sql.Date;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
@@ -26,34 +28,42 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@Column(name = "tipo_termo_de_estagio")
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
 	
+	@JsonIgnore
 	@ManyToOne(cascade= {CascadeType.REMOVE, CascadeType.PERSIST})
 	@JoinColumn(name="estagio_id", referencedColumnName="id",nullable=true)
 	private Estagio estagio;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="apolice_id", referencedColumnName="id",nullable=true)
 	private Apolice apolice;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="agente_integrador_id", referencedColumnName="id", nullable=true)
 	private AgenteIntegrador agenteIntegrador;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="orientador_id", referencedColumnName="id", nullable=true)
 	private Orientador orientador;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
 	private Supervisor supervisor;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="coordenador_id", referencedColumnName="id", nullable=true)
 	private Coordenador coordenador;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="plano_atividades_id", referencedColumnName="id",nullable=true)
 	private PlanoDeAtividades planoAtividades;
@@ -91,6 +101,7 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@Column(name = "etapa_fluxo")
 	private EnumEtapaFluxo etapaFluxo;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="ciencia_coordenacao_id", referencedColumnName="id",nullable=true)
 	private CienciaCoordenacao cienciaCoordenacao;

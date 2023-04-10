@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
@@ -32,34 +34,42 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@Column(name = "estagio_ufpr")
 	private boolean estagioUfpr;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=true)
 	private Aluno aluno;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="contratante_id", referencedColumnName="id", nullable=true)
 	private Contratante contratante;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="apolice_id", referencedColumnName="id",nullable=true)
 	private Apolice apolice;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="agente_integrador_id", referencedColumnName="id", nullable=true)
 	private AgenteIntegrador agenteIntegrador;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="orientador_id", referencedColumnName="id", nullable=true)
 	private Orientador orientador;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
 	private Supervisor supervisor;
 
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="plano_de_atividades_id", referencedColumnName="id",nullable=true)
 	private PlanoDeAtividades planoDeAtividades;
@@ -82,24 +92,30 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@Column(name = "valor_transporte")
 	private float valorTransporte;
 	
+	@JsonIgnore
 	@OneToOne(cascade= {CascadeType.REMOVE, CascadeType.PERSIST})
 	@JoinColumn(name="termo_de_compromisso_id", referencedColumnName="id",nullable=true)
 	private TermoDeEstagio termoDeCompromisso;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="estagio", cascade= {CascadeType.REMOVE, CascadeType.PERSIST})
 	private List<TermoDeEstagio> termoAdivito;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="termo_de_rescisao_id", referencedColumnName="id",nullable=true)
 	private TermoDeRescisao termoDeRescisao;
 
+	@JsonIgnore
 	@OneToMany(mappedBy="estagio", cascade= CascadeType.REMOVE)
 	private List<RelatorioDeEstagio> relatorioDeEstagio;
 
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="ficha_de_avaliacao_id", referencedColumnName="id",nullable=true)
 	private FichaDeAvaliacao fichaDeAvaliacao;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="certificado_de_estagi_id", referencedColumnName="id",nullable=true)
 	private CertificadoDeEstagio certificadoDeEstagio;
@@ -346,6 +362,11 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
+	}
+
+	public void novoTermoCompromisso() {
+		TermoDeEstagio termoDeCompromisso = new TermoDeEstagio();
+		termoDeCompromisso.setEstagio(this);
 	}
 
 }

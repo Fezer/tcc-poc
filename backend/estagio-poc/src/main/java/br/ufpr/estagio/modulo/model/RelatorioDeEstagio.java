@@ -2,6 +2,8 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.ufpr.estagio.modulo.enums.EnumAvaliacao;
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAtividades;
 import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
@@ -18,6 +20,7 @@ public class RelatorioDeEstagio implements Serializable{
 	@Column(name = "id")
 	private long id;
 
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="estagio_id", referencedColumnName="id",nullable=true)
 	private Estagio estagio;

@@ -2,6 +2,9 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -30,10 +33,12 @@ public class Coordenador extends Pessoa implements Serializable{
 	@Column(name = "cpf")
 	private String cpf;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="coordenador", cascade=CascadeType.REMOVE)
 	private List<TermoDeEstagio> termoDeEstagio;
 

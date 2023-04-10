@@ -46,7 +46,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo/3",
+							"raw": "http://localhost:5000/termo/6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -54,7 +54,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"3"
+								"6"
 							]
 						}
 					},
@@ -242,6 +242,27 @@
 							"path": [
 								"aluno",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "novoEstagio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20201212/estagio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20201212",
+								"estagio"
 							]
 						}
 					},

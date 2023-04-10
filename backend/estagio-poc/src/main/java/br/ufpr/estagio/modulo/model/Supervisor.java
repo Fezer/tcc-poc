@@ -3,6 +3,8 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,12 +32,15 @@ public class Supervisor extends Pessoa implements Serializable{
 	@Column(name = "formacao")
 	private String formacao;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="supervisor", cascade=CascadeType.REMOVE)
 	private List<TermoDeEstagio> termoDeEstagio;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="supervisor", cascade=CascadeType.REMOVE)
 	private List<Estagio> estagio;
 
+	@JsonIgnore
 	@OneToMany(mappedBy="supervisor", cascade=CascadeType.REMOVE)
 	private List<PlanoDeAtividades> planoDeAtividades;
 	

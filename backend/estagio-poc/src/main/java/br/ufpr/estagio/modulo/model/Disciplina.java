@@ -2,6 +2,9 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -28,6 +31,7 @@ public class Disciplina implements Serializable{
 	@Column(name = "id")
 	private long id;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.REMOVE })
 	@JoinTable(
 	    name = "disciplina_aluno", 
@@ -36,6 +40,7 @@ public class Disciplina implements Serializable{
 	)
 	private List<Aluno> aluno;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
