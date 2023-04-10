@@ -1,19 +1,6 @@
-<script setup lang="ts">
-// parse money to BRL currency and R$ prefix
-const moneyMask = {
-  preProcess: (value: string) => {
-    return value.replace(/\D/g, "");
-  },
-  postProcess: (value: string) => {
-    if (!value) return "";
-
-    return "R$ " + value.replace(/(\d{1,2})$/, ",$1");
-  },
-};
-</script>
-
 <script lang="ts">
 import { z } from "zod";
+import NovoEstagioService from "../../../../../services/NovoEstagioService";
 import ZodErrorsService from "../../../../../services/ZodErrorsService";
 import validateStringDate from "../../../../utils/validateStringDate";
 
@@ -81,8 +68,10 @@ export default {
     },
   },
   zodErrorsService: null as ZodErrorsService | null,
+  novoEstagioService: null as NovoEstagioService | null,
   created() {
     this.zodErrorsService = new ZodErrorsService();
+    this.novoEstagioService = new NovoEstagioService();
   },
   mounted() {
     this.zodErrorsService
@@ -144,8 +133,6 @@ export default {
   },
 };
 </script>
-
-<style></style>
 
 <template>
   <div class="grid mt-2">
@@ -347,3 +334,5 @@ export default {
     </div>
   </div>
 </template>
+
+<style></style>

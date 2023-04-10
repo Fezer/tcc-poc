@@ -1,3 +1,7 @@
+<script lang="ts" setup>
+const novoEstagio = useNovoEstagio();
+</script>
+
 <script lang="ts">
 import DadosAluno from "./dadosAluno.vue";
 import DadosEstagio from "./dadosEstagio.vue";

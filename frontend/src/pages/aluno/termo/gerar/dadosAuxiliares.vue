@@ -89,7 +89,6 @@ export default {
       tipoVaga: null,
       banco: null,
       grupoSanguineo: null,
-      banco: null,
       numAgencia: null,
       numConta: null,
       nomeAgencia: null,

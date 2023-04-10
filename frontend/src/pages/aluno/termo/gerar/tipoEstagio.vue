@@ -1,5 +1,9 @@
 <script lang="ts">
-export default {
+import { reactive, ref, defineComponent } from "vue";
+import NovoEstagioService from "../../../../../services/NovoEstagioService";
+import { TipoEstagio } from "../../../../types/NovoEstagio";
+
+export default defineComponent({
   props: {
     advanceStep: {
       type: Function,
@@ -13,42 +17,76 @@ export default {
       type: Object,
     },
   },
+  setup({
+    advanceStep,
+    backStep,
+    dados,
+  }: {
+    advanceStep: Function;
+    backStep: Function;
+    dados: any;
+  }) {
+    const preenchimentoEstagio = useNovoEstagio();
 
-  methods: {
-    handleValidateAndAdvanceStep() {
-      if (this.tipoEstagio && this.localEstagio) {
-        this.advanceStep({
-          tipoEstagio: this.tipoEstagio,
-          localEstagio: this.localEstagio,
+    const locais = [
+      { label: "Empresa Externa", value: "EXTERNO" },
+      { label: "UFPR", value: "UFPR" },
+    ];
+    const tiposEstagio = [
+      { label: "Obrigatório", value: "Obrigatorio" },
+      { label: "Não obrigatório", value: "NaoObrigatorio" },
+    ];
+    const dadosTipoEstagio = reactive({
+      tipoEstagio: null as TipoEstagio | null,
+      localEstagio: null as "UFPR" | "EXTERNO" | null,
+    });
+
+    const novoEstagioService = new NovoEstagioService();
+
+    const error = ref(null as string | null);
+
+    const handleValidateAndAdvanceStep = async () => {
+      const { localEstagio, tipoEstagio } = dadosTipoEstagio;
+
+      if (localEstagio && tipoEstagio) {
+        try {
+          if (!preenchimentoEstagio.value.id) {
+            const { id } = await novoEstagioService.criarNovoEstagio();
+
+            preenchimentoEstagio.value.id = id;
+          }
+          const { id } = preenchimentoEstagio.value;
+
+          await novoEstagioService
+            .setTipoEstagio(id, tipoEstagio)
+            .then((res) => {
+              console.log(res);
+            });
+        } catch (error) {
+          console.log(error);
+
+          return;
+        }
+
+        advanceStep({
+          tipoEstagio,
+          localEstagio,
         });
       } else {
-        this.error = "Este campo é obrigatório";
+        error.value = "Este campo é obrigatório";
       }
-    },
-  },
-  mounted() {
-    if (this.dados) {
-      this.tipoEstagio = this.dados.tipoEstagio;
-      this.localEstagio = this.dados.localEstagio;
-    }
-  },
+    };
 
-  data() {
     return {
-      error: null as string | null,
-      tipoEstagio: null,
-      tipos: [
-        { label: "Obrigatório", value: "OBRIGATORIO" },
-        { label: "Não obrigatório", value: "NAO_OBRIGATORIO" },
-      ],
-      localEstagio: null,
-      locais: [
-        { label: "Empresa Externa", value: "EXTERNO" },
-        { label: "UFPR", value: "UFPR" },
-      ],
+      dadosTipoEstagio,
+      tiposEstagio,
+      locais,
+      error,
+      handleValidateAndAdvanceStep,
+      backStep,
     };
   },
-};
+});
 </script>
 
 <template>
@@ -59,8 +97,8 @@ export default {
       <div class="card p-fluid col-12">
         <h5>Obrigatoriedade do estágio</h5>
         <SelectButton
-          v-model="tipoEstagio"
-          :options="tipos"
+          v-model="dadosTipoEstagio.tipoEstagio"
+          :options="tiposEstagio"
           optionLabel="label"
           optionValue="value"
           :class="{ 'p-invalid': error }"
@@ -71,7 +109,7 @@ export default {
       <div class="card p-fluid col-12">
         <h5>Local do Estágio</h5>
         <SelectButton
-          v-model="localEstagio"
+          v-model="dadosTipoEstagio.localEstagio"
           :options="locais"
           optionLabel="label"
           optionValue="value"
