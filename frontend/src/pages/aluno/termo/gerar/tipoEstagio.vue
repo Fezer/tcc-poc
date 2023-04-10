@@ -62,6 +62,8 @@ export default defineComponent({
             .then((res) => {
               console.log(res);
             });
+
+          await novoEstagioService.setEstagioUfpr(id, localEstagio === "UFPR");
         } catch (error) {
           console.log(error);
 

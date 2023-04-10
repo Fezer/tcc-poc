@@ -31,4 +31,17 @@ export default class NovoEstagioService {
       },
     });
   }
+
+  async setEstagioUfpr(id: number, isEstagioUfpr: boolean) {
+    console.log("updateEstagio", id, isEstagioUfpr);
+    if (!id || (!isEstagioUfpr && isEstagioUfpr !== false)) {
+      throw new Error("Id e dados do estágio são obrigatórios");
+    }
+    return await $fetch(this.BASE_URL + `/estagio/ufpr/${id}`, {
+      method: "PUT",
+      params: {
+        estagioUfpr: isEstagioUfpr,
+      },
+    });
+  }
 }
