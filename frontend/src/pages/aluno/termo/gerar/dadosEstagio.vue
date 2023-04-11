@@ -40,7 +40,7 @@ export default defineComponent({
     const errors = ref({} as Record<string, string>);
 
     const zodErrors = new ZodErrorsService().getTranslatedErrors();
-    const novoEstagioService = ref(null as NovoEstagioService | null);
+    const novoEstagioService = new NovoEstagioService();
 
     const state = reactive({
       dataInicio: undefined as undefined | string,
