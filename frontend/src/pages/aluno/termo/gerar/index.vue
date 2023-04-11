@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      step: "DADOS_ALUNO" as Steps,
+      step: "DADOS_ESTAGIO" as Steps,
       progressValue: 20,
 
       estagioUfpr: null as Boolean | null,
