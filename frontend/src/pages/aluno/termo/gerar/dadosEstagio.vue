@@ -299,7 +299,7 @@ export default defineComponent({
       </div>
       <div class="w-full flex justify-end gap-2">
         <Button
-          @click="() => backStep({ ...$data })"
+          @click="() => backStep({ ...state })"
           label="Voltar"
           class="p-button-secondary"
           icon="pi pi-arrow-left"
