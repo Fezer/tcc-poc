@@ -31,6 +31,12 @@ export default defineComponent({
 
     const preenchimentoEstagio = useNovoEstagio();
 
+    onMounted(() => {
+      if (dados) {
+        dadosTipoEstagio.localEstagio = dados?.localEstagio;
+        dadosTipoEstagio.tipoEstagio = dados?.tipoEstagio;
+      }
+    });
     const locais = [
       { label: "Empresa Externa", value: "EXTERNO" },
       { label: "UFPR", value: "UFPR" },
@@ -126,7 +132,7 @@ export default defineComponent({
     </div>
     <div class="w-full flex justify-end gap-2">
       <Button
-        @click="backStep({ ...$data })"
+        @click="backStep({ ...dadosTipoEstagio })"
         label="Voltar"
         class="p-button-secondary"
         icon="pi pi-arrow-left"

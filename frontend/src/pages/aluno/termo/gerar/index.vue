@@ -1,13 +1,12 @@
-<script lang="ts" setup>
-const novoEstagio = useNovoEstagio();
-</script>
-
 <script lang="ts">
 import DadosAluno from "./dadosAluno.vue";
 import DadosEstagio from "./dadosEstagio.vue";
 import DadosAuxiliares from "./dadosAuxiliares.vue";
 import TipoContratante from "./tipoContratante.vue";
 import TipoEstagio from "./tipoEstagio.vue";
+
+import { defineComponent, reactive } from "vue";
+import { useToast } from "primevue/usetoast";
 
 type Steps =
   | "DADOS_ALUNO"
@@ -16,7 +15,7 @@ type Steps =
   | "DADOS_ESTAGIO"
   | "DADOS_AUXILIARES";
 
-export default {
+export default defineComponent({
   components: {
     DadosAluno,
     TipoEstagio,
@@ -24,9 +23,10 @@ export default {
     DadosAuxiliares,
     DadosEstagio,
   },
-  data() {
-    return {
-      step: "DADOS_ALUNO" as Steps,
+  setup() {
+    const toast = useToast();
+    const state = reactive({
+      step: "DADOS_AUXILIARES" as Steps,
       progressValue: 20,
 
       estagioUfpr: null as Boolean | null,
@@ -35,102 +35,106 @@ export default {
       dadosTipoEstagio: null,
       tipoContratante: null,
       dadosAuxiliares: null,
-    };
-  },
-  methods: {
-    handleGenerateTerm() {
-      this.$toast.add({
+    });
+
+    const handleGenerateTerm = () => {
+      toast.add({
         severity: "success",
         summary: "Termo gerado com sucesso",
         life: 3000,
       });
 
       const termo = {
-        ...this.dadosAluno,
-        ...this.dadosTipoEstagio,
-        ...this.tipoContratante,
-        ...this.dadosEstagio,
-        ...this.dadosAuxiliares,
+        ...state.dadosTipoEstagio,
+        ...state.tipoContratante,
+        ...state.dadosEstagio,
+        ...state.dadosAuxiliares,
       };
 
       console.log(termo);
-    },
+    };
 
-    handleAdvanceStep(stepData: any) {
-      switch (this.step) {
+    const handleAdvanceStep = (stepData: any) => {
+      switch (state.step) {
         case "DADOS_ALUNO":
-          this.step = "TIPO_ESTAGIO";
-          this.progressValue = 40;
+          state.step = "TIPO_ESTAGIO";
+          state.progressValue = 40;
           break;
         case "TIPO_ESTAGIO":
-          this.estagioUfpr = stepData.localEstagio === "UFPR";
-          this.dadosTipoEstagio = stepData;
+          state.estagioUfpr = stepData.localEstagio === "UFPR";
+          state.dadosTipoEstagio = stepData;
 
-          if (this.estagioUfpr) {
-            this.step = "DADOS_ESTAGIO";
-            this.progressValue = 80;
+          if (state.estagioUfpr) {
+            state.step = "DADOS_ESTAGIO";
+            state.progressValue = 80;
             return;
           }
 
-          this.step = "TIPO_CONTRATANTE";
-          this.progressValue = 60;
+          state.step = "TIPO_CONTRATANTE";
+          state.progressValue = 60;
           break;
         case "TIPO_CONTRATANTE":
-          this.step = "DADOS_ESTAGIO";
-          this.progressValue = this.estagioUfpr ? 80 : 100;
+          state.step = "DADOS_ESTAGIO";
+          state.progressValue = state.estagioUfpr ? 80 : 100;
 
-          this.tipoContratante = stepData;
+          state.tipoContratante = stepData;
           break;
         case "DADOS_ESTAGIO":
-          this.dadosEstagio = stepData;
+          state.dadosEstagio = stepData;
 
-          if (!this.estagioUfpr) {
-            return this.handleGenerateTerm();
+          if (!state.estagioUfpr) {
+            return handleGenerateTerm();
           }
-          this.step = "DADOS_AUXILIARES";
-          this.progressValue = 100;
+          state.step = "DADOS_AUXILIARES";
+          state.progressValue = 100;
 
           break;
         case "DADOS_AUXILIARES":
-          this.dadosAuxiliares = stepData;
-          return this.handleGenerateTerm();
+          state.dadosAuxiliares = stepData;
+          return handleGenerateTerm();
       }
-    },
-    handleBackStep(stepData: any) {
-      switch (this.step) {
+    };
+    const handleBackStep = (stepData: any) => {
+      switch (state.step) {
         case "DADOS_AUXILIARES":
-          this.step = "DADOS_ESTAGIO";
-          this.progressValue = 100;
+          state.step = "DADOS_ESTAGIO";
+          state.progressValue = 100;
 
-          this.dadosAuxiliares = stepData;
+          state.dadosAuxiliares = stepData;
           break;
         case "DADOS_ESTAGIO":
-          this.dadosEstagio = stepData;
-          if (this.estagioUfpr) {
-            this.step = "TIPO_ESTAGIO";
-            this.progressValue = 40;
+          state.dadosEstagio = stepData;
+          if (state.estagioUfpr) {
+            state.step = "TIPO_ESTAGIO";
+            state.progressValue = 40;
             return;
           }
-          this.step = "TIPO_CONTRATANTE";
-          this.progressValue = 60;
+          state.step = "TIPO_CONTRATANTE";
+          state.progressValue = 60;
 
           break;
         case "TIPO_CONTRATANTE":
-          this.step = "TIPO_ESTAGIO";
-          this.progressValue = 40;
+          state.step = "TIPO_ESTAGIO";
+          state.progressValue = 40;
 
-          this.tipoContratante = stepData;
+          state.tipoContratante = stepData;
           break;
         case "TIPO_ESTAGIO":
-          this.step = "DADOS_ALUNO";
-          this.progressValue = 20;
+          state.step = "DADOS_ALUNO";
+          state.progressValue = 20;
 
-          this.dadosTipoEstagio = stepData;
+          state.dadosTipoEstagio = stepData;
           break;
       }
-    },
+    };
+
+    return {
+      state,
+      handleBackStep,
+      handleAdvanceStep,
+    };
   },
-};
+});
 </script>
 
 <template>
@@ -139,47 +143,47 @@ export default {
     <small>Processos > Iniciar novo estágio</small>
     <h3>Novo termo de compromisso</h3>
     <ProgressBar
-      :value="progressValue"
+      :value="state.progressValue"
       style="height: 10px"
       :show-value="false"
     />
 
     <DadosAluno
-      v-if="step === 'DADOS_ALUNO'"
+      v-if="state.step === 'DADOS_ALUNO'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
     />
     <TipoEstagio
-      v-if="step === 'TIPO_ESTAGIO'"
+      v-if="state.step === 'TIPO_ESTAGIO'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
-      :dados="dadosTipoEstagio"
+      :dados="state.dadosTipoEstagio"
     />
     <TipoContratante
-      v-if="step === 'TIPO_CONTRATANTE'"
+      v-if="state.step === 'TIPO_CONTRATANTE'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
-      :dados="tipoContratante"
+      :dados="state.tipoContratante"
     />
     <DadosEstagio
-      v-if="step === 'DADOS_ESTAGIO'"
+      v-if="state.step === 'DADOS_ESTAGIO'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
-      :finalStep="!estagioUfpr"
-      :dados="dadosEstagio"
+      :finalStep="!state.estagioUfpr"
+      :dados="state.dadosEstagio"
     />
     <DadosAuxiliares
-      v-if="step === 'DADOS_AUXILIARES'"
+      v-if="state.step === 'DADOS_AUXILIARES'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
-      :dados="dadosAuxiliares"
+      :dados="state.dadosAuxiliares"
     />
     <!--
     <div class="w-full flex justify-end gap-2">
       <a
         icon="pi pi-external-link"
         class="p-button-secondary p-button font-bold"
-        v-if="step === 'DADOS_ALUNO'"
+        v-if="state.step === 'DADOS_ALUNO'"
         href="https://www.prppg.ufpr.br/siga/"
         target="_blank"
       >

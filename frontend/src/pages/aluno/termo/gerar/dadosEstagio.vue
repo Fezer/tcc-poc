@@ -1,10 +1,13 @@
 <script lang="ts">
+import { defineComponent, reactive, ref } from "vue";
+
 import { z } from "zod";
 import NovoEstagioService from "../../../../../services/NovoEstagioService";
 import ZodErrorsService from "../../../../../services/ZodErrorsService";
 import validateStringDate from "../../../../utils/validateStringDate";
+import { useToast } from "primevue/usetoast";
 
-export default {
+export default defineComponent({
   props: {
     advanceStep: {
       type: Function,
@@ -22,10 +25,41 @@ export default {
       type: Object,
     },
   },
-  methods: {
-    validateAndAdvance() {
+  setup({
+    advanceStep,
+    backStep,
+    finalStep,
+    data,
+  }: {
+    advanceStep: Function;
+    backStep?: Function;
+    finalStep?: boolean;
+    data?: any;
+  }) {
+    const toast = useToast();
+    const errors = ref({} as Record<string, string>);
+
+    const zodErrors = new ZodErrorsService().getTranslatedErrors();
+    const novoEstagioService = new NovoEstagioService();
+
+    const state = reactive({
+      dataInicio: undefined as undefined | string,
+      dataFinal: undefined as undefined | string,
+      jornadaDiaria: undefined as string | undefined,
+      jornadaSemanal: undefined as string | undefined,
+      bolsaAuxilio: undefined as string | undefined,
+      auxilioTransporte: undefined as string | undefined,
+      coordenador: undefined as string | undefined,
+      orientador: undefined as string | undefined,
+      departamentoOrientador: undefined as string | undefined,
+      nomeSupervisor: undefined as string | undefined,
+      telefoneSupervisor: undefined as string | undefined,
+      atividades: undefined as string | undefined,
+    });
+
+    const validateAndAdvance = () => {
       // return this.advanceStep();
-      this.errors = {};
+      errors.value = {};
       const validator = z.object({
         dataInicio: z.custom(validateStringDate, {
           message: "Data inválida",
@@ -43,99 +77,41 @@ export default {
         atividades: z.string().min(50).max(700),
       });
 
-      const result = validator.safeParse({ ...this.$data });
+      const result = validator.safeParse({ ...state });
 
       if (!result.success) {
         console.log(result.error.issues);
-        this.$toast.add({
+        toast.add({
           severity: "error",
           summary: "Erro",
           detail: "Preencha todos os campos",
           life: 3000,
         });
-        this.errors = result.error.issues.reduce((acc, issue) => {
-          acc[issue.path[0]] = this.zodErrors[issue.code] || issue.message;
+        errors.value = result.error.issues.reduce((acc, issue) => {
+          acc[issue.path[0]] = zodErrors[issue.code] || issue.message;
           return acc;
         }, {} as Record<string, string>);
         return;
       }
 
-      this.advanceStep({
-        ...this.$data,
-        errors: undefined,
-        zodErrors: undefined,
+      advanceStep({
+        ...state,
       });
-    },
-  },
-  zodErrorsService: null as ZodErrorsService | null,
-  novoEstagioService: null as NovoEstagioService | null,
-  created() {
-    this.zodErrorsService = new ZodErrorsService();
-    this.novoEstagioService = new NovoEstagioService();
-  },
-  mounted() {
-    this.zodErrorsService
-      .getTranslatedErrors()
-      .then((data: Record<string, string>) => (this.zodErrors = data));
-  },
+    };
 
-  focus() {
-    if (this.dados) {
-      // get data from props and set to data
-      const {
-        dataInicio,
-        dataFinal,
-        jornadaDiaria,
-        jornadaSemanal,
-        bolsaAuxilio,
-        auxilioTransporte,
-        coordenador,
-        orientador,
-        departamentoOrientador,
-        nomeSupervisor,
-        telefoneSupervisor,
-        atividades,
-      } = this.dados;
-
-      this.dataInicio = dataInicio;
-      this.dataFinal = dataFinal;
-      this.jornadaDiaria = jornadaDiaria;
-      this.jornadaSemanal = jornadaSemanal;
-      this.bolsaAuxilio = bolsaAuxilio;
-
-      this.auxilioTransporte = auxilioTransporte;
-      this.coordenador = coordenador;
-      this.orientador = orientador;
-      this.departamentoOrientador = departamentoOrientador;
-      this.nomeSupervisor = nomeSupervisor;
-      this.telefoneSupervisor = telefoneSupervisor;
-      this.atividades = atividades;
-    }
-  },
-  data() {
     return {
-      zodErrors: null as Record<string, string> | null,
-      errors: {} as Record<string, string>,
-
-      dataInicio: "",
-      dataFinal: "",
-      jornadaDiaria: "",
-      jornadaSemanal: "",
-      bolsaAuxilio: null as null | number,
-      auxilioTransporte: null as null | number,
-      coordenador: "",
-      orientador: "",
-      departamentoOrientador: "",
-      nomeSupervisor: "",
-      telefoneSupervisor: "",
-      atividades: "",
+      errors,
+      validateAndAdvance,
+      backStep,
+      state,
     };
   },
-};
+});
 </script>
 
 <template>
   <div class="grid mt-2">
+    <Toast />
     <h5 class="mb-0 p-2 mt-4">Dados do Estágio</h5>
 
     <div class="col-12">
@@ -144,12 +120,14 @@ export default {
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="dataInicio">Data de Início {{ dataInicio }}</label>
+            <label for="dataInicio"
+              >Data de Início {{ state.dataInicio }}</label
+            >
             <InputMask
               id="dataInicio"
               type="text"
               mask="99/99/9999"
-              v-model="dataInicio"
+              v-model="state.dataInicio"
               required
               :class="errors['dataInicio'] && 'p-invalid'"
             />
@@ -161,7 +139,7 @@ export default {
               id="dataFinal"
               type="text"
               mask="99/99/9999"
-              v-model="dataFinal"
+              v-model="state.dataFinal"
               :class="errors['dataFinal'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{ errors["dataFinal"] }}</small>
@@ -174,7 +152,7 @@ export default {
               :max="24"
               :min="1"
               suffix="h"
-              v-model="jornadaDiaria"
+              v-model="state.jornadaDiaria"
               :class="errors['jornadaDiaria'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{ errors["jornadaDiaria"] }}</small>
@@ -188,7 +166,7 @@ export default {
               :max="99"
               :min="1"
               suffix="h"
-              v-model="jornadaSemanal"
+              v-model="state.jornadaSemanal"
               :class="errors['jornadaSemanal'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{ errors["jornadaSemanal"] }}</small>
@@ -206,7 +184,7 @@ export default {
               mode="currency"
               currency="BRL"
               id="bolsaAuxilio"
-              v-model="bolsaAuxilio"
+              v-model="state.bolsaAuxilio"
               :class="errors['bolsaAuxilio'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{ errors["bolsaAuxilio"] }}</small>
@@ -219,7 +197,7 @@ export default {
               mode="currency"
               currency="BRL"
               id="auxilioTransporte"
-              v-model="auxilioTransporte"
+              v-model="state.auxilioTransporte"
               :class="errors['auxilioTransporte'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{
@@ -238,7 +216,7 @@ export default {
               type="text"
               disabled
               value="Prof. Dr. Professor Professor"
-              v-model="coordenador"
+              v-model="state.coordenador"
               :class="errors['coordenador'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{ errors["coordenador"] }}</small>
@@ -250,7 +228,7 @@ export default {
             <InputText
               id="orientador"
               type="text"
-              v-model="orientador"
+              v-model="state.orientador"
               :class="errors['orientador'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{ errors["orientador"] }}</small>
@@ -262,7 +240,7 @@ export default {
             <InputText
               id="departamentoOrientador"
               type="text"
-              v-model="departamentoOrientador"
+              v-model="state.departamentoOrientador"
               :class="errors['departamentoOrientador'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{
@@ -278,7 +256,7 @@ export default {
             <InputText
               id="nomeSupervisor"
               type="text"
-              v-model="nomeSupervisor"
+              v-model="state.nomeSupervisor"
               :class="errors['nomeSupervisor'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{ errors["nomeSupervisor"] }}</small>
@@ -289,7 +267,7 @@ export default {
               id="telefoneSupervisor"
               type="text"
               mask="(99) 99999-9999"
-              v-model="telefoneSupervisor"
+              v-model="state.telefoneSupervisor"
               :class="errors['telefoneSupervisor'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{
@@ -302,13 +280,15 @@ export default {
             <span>
               <label for="atividades">Atividades a Serem Desenvolvidas</label>
               <small class="ml-2"
-                >50 - 700 caracteres ({{ atividades.trim().length }})</small
+                >50 - 700 caracteres ({{
+                  state.atividades?.trim()?.length || 0
+                }})</small
               >
             </span>
             <Textarea
               id="atividades"
               type="text"
-              v-model="atividades"
+              v-model="state.atividades"
               :class="errors['atividades'] && 'p-invalid'"
               maxlength="700"
               class="h-32"
@@ -319,7 +299,7 @@ export default {
       </div>
       <div class="w-full flex justify-end gap-2">
         <Button
-          @click="() => backStep({ ...$data })"
+          @click="() => backStep({ ...state })"
           label="Voltar"
           class="p-button-secondary"
           icon="pi pi-arrow-left"
