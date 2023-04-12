@@ -1,7 +1,8 @@
 <script lang="ts">
-import { reactive, ref, defineComponent } from "vue";
+import { reactive, ref, defineComponent, onMounted } from "vue";
 import NovoEstagioService from "../../../../../services/NovoEstagioService";
 import { TipoEstagio } from "../../../../types/NovoEstagio";
+import { useToast } from "primevue/usetoast";
 
 export default defineComponent({
   props: {
@@ -26,6 +27,8 @@ export default defineComponent({
     backStep: Function;
     dados: any;
   }) {
+    const toast = useToast();
+
     const preenchimentoEstagio = useNovoEstagio();
 
     const locais = [
@@ -57,16 +60,16 @@ export default defineComponent({
           }
           const { id } = preenchimentoEstagio.value;
 
-          await novoEstagioService
-            .setTipoEstagio(id, tipoEstagio)
-            .then((res) => {
-              console.log(res);
-            });
+          await novoEstagioService.setTipoEstagio(id, tipoEstagio);
 
           await novoEstagioService.setEstagioUfpr(id, localEstagio === "UFPR");
         } catch (error) {
-          console.log(error);
-
+          toast.add({
+            severity: "error",
+            summary: error,
+            detail: "Erro ao salvar dados",
+            life: 3000,
+          });
           return;
         }
 
@@ -93,6 +96,7 @@ export default defineComponent({
 
 <template>
   <div class="grid mt-2">
+    <Toast />
     <h5 class="mb-0 mt-4 ml-2">Tipo do Estágio</h5>
 
     <div class="col-12">

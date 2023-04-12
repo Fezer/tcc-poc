@@ -10,8 +10,6 @@ export default class NovoEstagioService {
       method: "POST",
     });
 
-    console.log(response, response?.id);
-
     if (!response?.id) {
       throw new Error("Erro ao criar novo estágio");
     }

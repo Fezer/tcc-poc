@@ -29,12 +29,6 @@ export default defineComponent({
 
     // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 
-    function refreshData() {
-      refresh();
-    }
-
-    console.log(estagio);
-
     const tipoUsuario = ref("ALUNO" as TipoUsuario);
 
     const cancelationConfirm = ref(false);
