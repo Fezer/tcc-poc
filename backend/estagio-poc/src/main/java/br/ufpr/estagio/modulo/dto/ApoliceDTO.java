@@ -3,6 +3,10 @@ package br.ufpr.estagio.modulo.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.Seguradora;
+import br.ufpr.estagio.modulo.model.TermoDeEstagio;
+
 public class ApoliceDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -11,6 +15,9 @@ public class ApoliceDTO implements Serializable {
 	private int numero;
 	private Date dataInicio;
 	private Date dataFim;
+	private Seguradora seguradora;
+	private TermoDeEstagio termoDeEstagio;
+	private Estagio estagio;
 	
 	public ApoliceDTO() {
 		super();
@@ -23,6 +30,18 @@ public class ApoliceDTO implements Serializable {
 		this.numero = numero;
 		this.dataInicio = dataInicio;
 		this.dataFim = dataFim;
+	}
+
+	public ApoliceDTO(long id, int numero, Date dataInicio, Date dataFim, Seguradora seguradora,
+			TermoDeEstagio termoDeEstagio, Estagio estagio) {
+		super();
+		this.id = id;
+		this.numero = numero;
+		this.dataInicio = dataInicio;
+		this.dataFim = dataFim;
+		this.seguradora = seguradora;
+		this.termoDeEstagio = termoDeEstagio;
+		this.estagio = estagio;
 	}
 
 	public long getId() {
@@ -55,6 +74,30 @@ public class ApoliceDTO implements Serializable {
 
 	public void setDataFim(Date dataFim) {
 		this.dataFim = dataFim;
+	}
+	
+	public Seguradora getSeguradora() {
+		return seguradora;
+	}
+
+	public void setSeguradora(Seguradora seguradora) {
+		this.seguradora = seguradora;
+	}
+
+	public TermoDeEstagio getTermoDeEstagio() {
+		return termoDeEstagio;
+	}
+
+	public void setTermoDeEstagio(TermoDeEstagio termoDeEstagio) {
+		this.termoDeEstagio = termoDeEstagio;
+	}
+
+	public Estagio getEstagio() {
+		return estagio;
+	}
+
+	public void setEstagio(Estagio estagio) {
+		this.estagio = estagio;
 	}
 
 	public static long getSerialversionuid() {

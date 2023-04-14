@@ -13,6 +13,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -21,6 +23,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "coordenador", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Coordenador extends Pessoa implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

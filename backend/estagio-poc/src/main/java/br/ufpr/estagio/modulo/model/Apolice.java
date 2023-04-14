@@ -1,7 +1,9 @@
 	package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.*;
+
+import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,7 +21,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "apolice", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
-public class Apolice implements Serializable {
+public class Apolice extends RepresentationModel<Apolice> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	

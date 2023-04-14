@@ -6,10 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -17,6 +20,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "pessoa", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Pessoa implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
