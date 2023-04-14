@@ -24,8 +24,35 @@ public class AgenteIntegradorService {
 	public Optional<AgenteIntegrador> buscarPorId(Integer id) {
 		return agenteIntegradorRepository.findById(id);
 	}
+	
+	public Optional<AgenteIntegrador> buscarPorId(long id) {
+		return agenteIntegradorRepository.findById((int) id);
+	}
 
 	public List<AgenteIntegrador> listarAgentesIntegradores() {
 		return agenteIntegradorRepository.findAll();
 	}
+	
+	public AgenteIntegrador atualizarAgenteIntegrador(AgenteIntegrador agenteIntegradorAtualizado) {
+        AgenteIntegrador agenteIntegradorExistente = buscarPorId(agenteIntegradorAtualizado.getId())
+                .orElseThrow();
+
+        agenteIntegradorExistente.setCnpj(agenteIntegradorAtualizado.getCnpj());
+        agenteIntegradorExistente.setConvenio(agenteIntegradorAtualizado.getConvenio());
+        agenteIntegradorExistente.setTermoDeEstagio(agenteIntegradorAtualizado.getTermoDeEstagio());
+        agenteIntegradorExistente.setEstagio(agenteIntegradorAtualizado.getEstagio());
+
+        return agenteIntegradorRepository.save(agenteIntegradorExistente);
+    }
+	
+	public void excluirAgenteIntegrador(AgenteIntegrador agente) {
+        Optional<AgenteIntegrador> agenteIntegradorOptional = agenteIntegradorRepository.findById((int) agente.getId());
+        if (agenteIntegradorOptional.isPresent()) {
+            AgenteIntegrador agenteIntegrador = agenteIntegradorOptional.get();
+            agenteIntegradorRepository.delete(agenteIntegrador);
+        } else {
+        	// tratar. tava dando erro.
+            return;
+        }
+    }
 }

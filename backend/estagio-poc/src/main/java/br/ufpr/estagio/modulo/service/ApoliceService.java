@@ -29,5 +29,30 @@ public class ApoliceService {
 	public List<Apolice> listarApolices() {
 		return apoliceRepository.findAll();
 	}
+	
+	public Apolice atualizarApolice(Apolice apoliceAtualizada) {
+		Apolice apoliceExistente = buscarPorId((int) apoliceAtualizada.getId())
+		.orElseThrow();
+
+	    apoliceExistente.setNumero(apoliceAtualizada.getNumero());
+	    apoliceExistente.setDataInicio(apoliceAtualizada.getDataInicio());
+	    apoliceExistente.setDataFim(apoliceAtualizada.getDataFim());
+	    apoliceExistente.setSeguradora(apoliceAtualizada.getSeguradora());
+	    apoliceExistente.setTermoDeEstagio(apoliceAtualizada.getTermoDeEstagio());
+	    apoliceExistente.setEstagio(apoliceAtualizada.getEstagio());
+
+	    return apoliceRepository.save(apoliceExistente);
+	}
+	
+	public void excluirApolice(Apolice apolice) {
+	    Optional<Apolice> apoliceOptional = apoliceRepository.findById((int) apolice.getId());
+	    if (apoliceOptional.isPresent()) {
+	        Apolice apoliceExistente = apoliceOptional.get();
+	        apoliceRepository.delete(apoliceExistente);
+	    } else {
+	    	// tratar. tava dando erro.
+	        return;
+	    }
+	}
 
 }

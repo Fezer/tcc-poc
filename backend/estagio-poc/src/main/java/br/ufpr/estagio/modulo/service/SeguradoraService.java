@@ -29,4 +29,28 @@ public class SeguradoraService {
 		return seguradoraRepository.findAll();
 	}
 	
+	public Seguradora atualizarSeguradora(Seguradora seguradoraAtualizada) {
+	    Seguradora seguradoraExistente = buscarSeguradoraPorId(seguradoraAtualizada.getId())
+	            .orElseThrow();
+
+	    seguradoraExistente.setNome(seguradoraAtualizada.getNome());
+	    seguradoraExistente.setApolice(seguradoraAtualizada.getApolice());
+	    seguradoraExistente.setTermoDeEstagio(seguradoraAtualizada.getTermoDeEstagio());
+	    seguradoraExistente.setEstagio(seguradoraAtualizada.getEstagio());
+
+	    return seguradoraRepository.save(seguradoraExistente);
+	}
+
+	public void excluirSeguradora(Seguradora seguradora) {
+	    Optional<Seguradora> seguradoraOptional = seguradoraRepository.findById((long) seguradora.getId());
+	    if (seguradoraOptional.isPresent()) {
+	        Seguradora seguradoraExistente = seguradoraOptional.get();
+	        seguradoraRepository.delete(seguradoraExistente);
+	    } else {
+	    	// tratar. tava dando erro.
+	        return;
+	    }
+	}
+
+	
 }

@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -93,5 +95,32 @@ public class ApoliceREST {
 	            .collect(Collectors.toList());
 	    return ResponseEntity.ok().body(apolicesDTO);
 	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<ApoliceDTO> atualizarApolice(@PathVariable Integer id, @RequestBody ApoliceDTO apoliceDTO){
+	    Optional<Apolice> apolice = apoliceService.buscarPorId(id);
+	    
+	    if(apolice.isPresent()) {
+	        Apolice apoliceAtualizada = mapper.map(apoliceDTO, Apolice.class);
+	        apoliceAtualizada.setId(id);
+	        apoliceAtualizada = apoliceService.atualizarApolice(apoliceAtualizada);
+	        ApoliceDTO apoliceDTOAtualizada = mapper.map(apoliceAtualizada, ApoliceDTO.class);
+	        return ResponseEntity.ok().body(apoliceDTOAtualizada);
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluirApolice(@PathVariable Integer id){
+	    Optional<Apolice> apolice = apoliceService.buscarPorId(id);
+	    if(apolice.isPresent()) {
+	        apoliceService.excluirApolice(apolice.get());
+	        return ResponseEntity.noContent().build();
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
+	}
+
 	
 }

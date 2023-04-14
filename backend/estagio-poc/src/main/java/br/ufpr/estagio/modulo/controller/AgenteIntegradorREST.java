@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,6 +84,32 @@ public class AgenteIntegradorREST {
 	            .map(ap -> mapper.map(ap, ApoliceDTO.class))
 	            .collect(Collectors.toList());
 	    return ResponseEntity.ok().body(agentesIntegradoresDTO);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<AgenteIntegradorDTO> atualizarAgenteIntegrador(@PathVariable Integer id, @RequestBody AgenteIntegradorDTO agenteIntegradorDTO){
+	    Optional<AgenteIntegrador> agenteIntegrador = agenteIntegradorService.buscarPorId(id);
+	    
+	    if(agenteIntegrador.isPresent()) {
+	        AgenteIntegrador agenteIntegradorAtualizado = mapper.map(agenteIntegradorDTO, AgenteIntegrador.class);
+	        agenteIntegradorAtualizado.setId(id);
+	        agenteIntegradorAtualizado = agenteIntegradorService.atualizarAgenteIntegrador(agenteIntegradorAtualizado);
+	        AgenteIntegradorDTO agenteIntegradorDTOAtualizado = mapper.map(agenteIntegradorAtualizado, AgenteIntegradorDTO.class);
+	        return ResponseEntity.ok().body(agenteIntegradorDTOAtualizado);
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluirAgenteIntegrador(@PathVariable Integer id){
+	    Optional<AgenteIntegrador> agenteIntegrador = agenteIntegradorService.buscarPorId(id);
+	    if(agenteIntegrador.isPresent()) {
+	        agenteIntegradorService.excluirAgenteIntegrador(agenteIntegrador.get());
+	        return ResponseEntity.noContent().build();
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
 	}
 
 }

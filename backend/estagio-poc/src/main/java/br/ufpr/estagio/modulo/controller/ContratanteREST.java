@@ -1,5 +1,6 @@
 package br.ufpr.estagio.modulo.controller;
 
+import java.io.Console;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,16 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTO;
 import br.ufpr.estagio.modulo.dto.ContratanteDTO;
 import br.ufpr.estagio.modulo.dto.ConvenioDTO;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.service.ContratanteService;
@@ -71,5 +76,31 @@ public class ContratanteREST {
 	            .map(ap -> mapper.map(ap, ContratanteDTO.class))
 	            .collect(Collectors.toList());
 	    return ResponseEntity.ok().body(contratantesDTO);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<ContratanteDTO> atualizarContratante(@PathVariable Integer id, @RequestBody ContratanteDTO contratanteDTO){
+	    Optional<Contratante> contratante = contratanteService.buscarPorId(id);
+	    
+	    if(contratante.isPresent()) {
+	    	Contratante contratanteAtualizado = mapper.map(contratanteDTO, Contratante.class);
+	    	contratanteAtualizado.setId(id);
+	    	contratanteAtualizado = contratanteService.atualizarContratante(contratanteAtualizado);
+	        ContratanteDTO contratanteDTOAtualizado = mapper.map(contratanteAtualizado, ContratanteDTO.class);
+	        return ResponseEntity.ok().body(contratanteDTOAtualizado);
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluirContratante(@PathVariable Integer id){
+	    Optional<Contratante> contratante = contratanteService.buscarPorId(id);
+	    if(contratante.isPresent()) {
+	    	contratanteService.excluirContratante(contratante.get());
+	        return ResponseEntity.noContent().build();
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
 	}
 }

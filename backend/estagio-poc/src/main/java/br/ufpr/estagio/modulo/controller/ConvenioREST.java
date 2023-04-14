@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,5 +73,31 @@ public class ConvenioREST {
 	            .map(ap -> mapper.map(ap, ConvenioDTO.class))
 	            .collect(Collectors.toList());
 	    return ResponseEntity.ok().body(conveniosDTO);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<ConvenioDTO> atualizarConvenio(@PathVariable Integer id, @RequestBody ConvenioDTO convenioDTO){
+	    Optional<Convenio> agenteIntegrador = convenioService.buscarPorId(id);
+	    
+	    if(agenteIntegrador.isPresent()) {
+	    	Convenio convenioAtualizado = mapper.map(convenioDTO, Convenio.class);
+	    	convenioAtualizado.setId(id);
+	    	convenioAtualizado = convenioService.atualizarConvenio(convenioAtualizado);
+	    	ConvenioDTO convenioDTOAtualizado = mapper.map(convenioAtualizado, ConvenioDTO.class);
+	        return ResponseEntity.ok().body(convenioDTOAtualizado);
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluirConvenio(@PathVariable Integer id){
+	    Optional<Convenio> convenio = convenioService.buscarPorId(id);
+	    if(convenio.isPresent()) {
+	    	convenioService.excluirConvenio(convenio.get());
+	        return ResponseEntity.noContent().build();
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
 	}
 }
