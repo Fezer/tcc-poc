@@ -1,9 +1,8 @@
 import { TipoEstagio } from "../src/types/NovoEstagio";
+import BaseService from "./BaseService";
 
-export default class NovoEstagioService {
+export default class NovoEstagioService extends BaseService {
   ALUNO = 0;
-
-  private BASE_URL = "http://localhost:5000";
 
   async criarNovoEstagio(): Promise<{ id: number }> {
     const response = await $fetch(this.BASE_URL + "/estagio/novo", {

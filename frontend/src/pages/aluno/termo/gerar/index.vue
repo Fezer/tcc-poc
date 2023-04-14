@@ -26,7 +26,7 @@ export default defineComponent({
   setup() {
     const toast = useToast();
     const state = reactive({
-      step: "DADOS_AUXILIARES" as Steps,
+      step: "DADOS_ALUNO" as Steps,
       progressValue: 20,
 
       estagioUfpr: null as Boolean | null,

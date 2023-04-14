@@ -2,6 +2,9 @@
 import { useToast } from "primevue/usetoast";
 import { defineComponent, reactive, ref, onMounted } from "vue";
 import { z } from "zod";
+import ContratanteService from "~~/services/ContratanteService";
+import SeguradoraService from "~~/services/SeguradoraService";
+import ApoliceService from "~~/services/ApoliceService";
 import ZodErrorsService from "../../../../../services/ZodErrorsService";
 
 export default defineComponent({
@@ -30,6 +33,9 @@ export default defineComponent({
     const toast = useToast();
     const errors = ref({} as Record<string, string>);
     const zodErrors = new ZodErrorsService().getTranslatedErrors();
+    const contratanteService = new ContratanteService();
+    const seguradoraService = new SeguradoraService();
+    const apoliceService = new ApoliceService();
 
     onMounted(() => {
       console.log("mounted");
@@ -63,11 +69,11 @@ export default defineComponent({
     });
 
     const tipos = [
-      { label: "Pessoa Jurídica", value: "PJ" },
-      { label: "Pessoa Física", value: "PF" },
+      { label: "Pessoa Jurídica", value: "PessoaJuridica" },
+      { label: "Pessoa Física", value: "PessoaFisica" },
     ];
     const state = reactive({
-      tipoContratante: null as "PJ" | "PF" | null,
+      tipoContratante: null as "PessoaJuridica" | "PessoaFisica" | null,
 
       nomeContratante: null as string | null,
       telefoneContratante: null as string | null,
@@ -81,8 +87,8 @@ export default defineComponent({
       apoliceSeguradora: null as string | null,
     });
 
-    const validateAndAdvanceStep = () => {
-      return advanceStep();
+    const validateAndAdvanceStep = async () => {
+      // return advanceStep();
       const validator = z.object({
         tipoContratante: z.string().nonempty(),
         nomeContratante: z.string().nonempty(),
@@ -125,7 +131,38 @@ export default defineComponent({
         return;
       }
 
-      advanceStep();
+      try {
+        const { id: contratanteID } = await contratanteService.criarContratante(
+          { ...state, id: 0, nome: state.nomeContratante }
+        );
+
+        const seguradora = await seguradoraService.criarSeguradora({
+          id: 0,
+          nome: state.nomeSeguradora,
+        });
+
+        const apolice = await apoliceService.criarApolice(
+          {
+            id: 0,
+            numero: parseInt(state.apoliceSeguradora),
+          },
+          seguradora
+        );
+
+        console.log(contratanteID, seguradora, apolice);
+
+        advanceStep({
+          ...state,
+        });
+      } catch (err) {
+        console.log(err);
+        toast.add({
+          severity: "error",
+          summary: "Erro ao criar contratante",
+          detail: err,
+          life: 3000,
+        });
+      }
     };
 
     return {
@@ -186,7 +223,10 @@ export default defineComponent({
               }}</small>
             </div>
           </div>
-          <div class="formgrid grid" v-if="state.tipoContratante === 'PF'">
+          <div
+            class="formgrid grid"
+            v-if="state.tipoContratante === 'PessoaFisica'"
+          >
             <div class="field col-6">
               <label for="cpfContratante">CPF</label>
               <InputMask

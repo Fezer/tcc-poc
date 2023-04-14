@@ -1,3 +1,34 @@
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  props: {
+    advanceStep: {
+      type: Function,
+      required: true,
+    },
+    backStep: {
+      type: Function,
+      required: true,
+    },
+  },
+  setup({
+    advanceStep,
+    backStep,
+  }: {
+    advanceStep: Function;
+    backStep: Function;
+  }) {
+    return {
+      advanceStep,
+      backStep,
+    };
+  },
+});
+</script>
+
+<style></style>
+
 <template>
   <div class="grid mt-2">
     <div class="p-2 mt-4">
@@ -115,20 +146,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    advanceStep: {
-      type: Function,
-      required: true,
-    },
-    backStep: {
-      type: Function,
-      required: true,
-    },
-  },
-};
-</script>
-
-<style></style>
