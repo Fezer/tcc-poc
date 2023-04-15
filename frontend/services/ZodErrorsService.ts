@@ -1,5 +1,5 @@
 export default class ZodErrorsService {
-  getTranslatedErrors() {
+  getTranslatedErrors(): Promise<Record<string, string>> {
     return fetch("/data/zodErrors.json").then((res) => res.json());
   }
 }

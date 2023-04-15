@@ -1,8 +1,10 @@
 package br.ufpr.estagio.modulo.dto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
+import br.ufpr.estagio.modulo.model.Estagio;
 
 public class ContratanteDTO {
 	private long id;
@@ -10,7 +12,7 @@ public class ContratanteDTO {
 	private String cnpj;
 	private String cpf;
 	private String representanteEmpresa;
-	private ArrayList<EstagioDTO> Estagio;
+	private List<Estagio> estagio;
 	
 	public ContratanteDTO() {
 		super();
@@ -18,14 +20,14 @@ public class ContratanteDTO {
 	}
 
 	public ContratanteDTO(long id, EnumTipoContratante tipo, String cnpj, String cpf, String representanteEmpresa,
-			ArrayList<EstagioDTO> estagio) {
+			List<Estagio> estagio) {
 		super();
 		this.id = id;
 		this.tipo = tipo;
 		this.cnpj = cnpj;
 		this.cpf = cpf;
 		this.representanteEmpresa = representanteEmpresa;
-		Estagio = estagio;
+		this.estagio = estagio;
 	}
 
 	public long getId() {
@@ -68,12 +70,12 @@ public class ContratanteDTO {
 		this.representanteEmpresa = representanteEmpresa;
 	}
 
-	public ArrayList<EstagioDTO> getEstagio() {
-		return Estagio;
+	public List<Estagio> getEstagio() {
+		return estagio;
 	}
 
-	public void setEstagio(ArrayList<EstagioDTO> estagio) {
-		Estagio = estagio;
+	public void setEstagio(List<Estagio> estagio) {
+		this.estagio = estagio;
 	}
 	
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
+import { defineComponent, ref } from "vue";
 import aluno from "../../components/common/aluno.vue";
 import Contratante from "../../components/common/contratante.vue";
-import estagio from "../../components/common/estagio.vue";
 import planoAtividades from "../../components/common/plano-atividades.vue";
 import historicoDeMudancasVue from "./historicoDeMudancas.vue";
 import relatoriosVue from "./relatorios.vue";
@@ -9,41 +9,38 @@ import Status from "./statusEstagio.vue";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
 
-export default {
+export default defineComponent({
   components: {
     Aluno: aluno,
-    Estagio: estagio,
     PlanoAtividades: planoAtividades,
     Contratante,
     Status,
     HistoricoDeMudancas: historicoDeMudancasVue,
     Relatorios: relatoriosVue,
   },
-  data() {
-    return {
-      tipoUsuario: "ALUNO" as TipoUsuario,
+  async setup() {
+    const route = useRoute();
 
-      cancelationConfirm: false,
+    const { id } = route.params;
+
+    const { data: estagio, refresh } = await useFetch(
+      `http://localhost:5000/estagio/${id}`
+    );
+
+    // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
+
+    const tipoUsuario = ref("ALUNO" as TipoUsuario);
+
+    const cancelationConfirm = ref(false);
+
+    return {
+      tipoUsuario,
+      cancelationConfirm,
+      estagio,
     };
   },
   methods: {},
-};
-</script>
-
-<script setup lang="ts">
-const route = useRoute();
-
-const { id } = route.params;
-
-const { data: termo, refresh } = await useFetch(
-  `http://localhost:5000/termo/${id}`
-);
-
-// const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
-
-function refreshData() {
-  refresh();
-}
+});
 </script>
 
 <template>
@@ -74,17 +71,13 @@ function refreshData() {
       </div>
     </div>
 
-    <Status
-      :etapa="termo?.etapaFluxo"
-      :status="termo?.statusTermo"
-      :motivo="termo?.motivoIndeferimento"
-    />
+    <Status :estagio="estagio" />
 
-    <Estagio :termo="termo" />
+    <Estagio :termo="estagio" />
 
-    <PlanoAtividades :termo="termo" />
+    <PlanoAtividades :termo="estagio" />
 
-    <Contratante :termo="termo" />
+    <Contratante :termo="estagio" />
 
     <HistoricoDeMudancas />
 

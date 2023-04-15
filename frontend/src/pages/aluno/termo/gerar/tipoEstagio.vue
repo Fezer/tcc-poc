@@ -1,5 +1,10 @@
 <script lang="ts">
-export default {
+import { reactive, ref, defineComponent, onMounted } from "vue";
+import NovoEstagioService from "../../../../../services/NovoEstagioService";
+import { TipoEstagio } from "../../../../types/NovoEstagio";
+import { useToast } from "primevue/usetoast";
+
+export default defineComponent({
   props: {
     advanceStep: {
       type: Function,
@@ -13,54 +18,99 @@ export default {
       type: Object,
     },
   },
+  setup({
+    advanceStep,
+    backStep,
+    dados,
+  }: {
+    advanceStep: Function;
+    backStep: Function;
+    dados: any;
+  }) {
+    const toast = useToast();
 
-  methods: {
-    handleValidateAndAdvanceStep() {
-      if (this.tipoEstagio && this.localEstagio) {
-        this.advanceStep({
-          tipoEstagio: this.tipoEstagio,
-          localEstagio: this.localEstagio,
+    const preenchimentoEstagio = useNovoEstagio();
+
+    onMounted(() => {
+      if (dados) {
+        dadosTipoEstagio.localEstagio = dados?.localEstagio;
+        dadosTipoEstagio.tipoEstagio = dados?.tipoEstagio;
+      }
+    });
+    const locais = [
+      { label: "Empresa Externa", value: "EXTERNO" },
+      { label: "UFPR", value: "UFPR" },
+    ];
+    const tiposEstagio = [
+      { label: "Obrigatório", value: "Obrigatorio" },
+      { label: "Não obrigatório", value: "NaoObrigatorio" },
+    ];
+    const dadosTipoEstagio = reactive({
+      tipoEstagio: null as TipoEstagio | null,
+      localEstagio: null as "UFPR" | "EXTERNO" | null,
+    });
+
+    const novoEstagioService = new NovoEstagioService();
+
+    const error = ref(null as string | null);
+
+    const handleValidateAndAdvanceStep = async () => {
+      const { localEstagio, tipoEstagio } = dadosTipoEstagio;
+
+      if (localEstagio && tipoEstagio) {
+        try {
+          if (!preenchimentoEstagio.value.id) {
+            const { id } = await novoEstagioService.criarNovoEstagio();
+
+            preenchimentoEstagio.value.id = id;
+          }
+          const { id } = preenchimentoEstagio.value;
+
+          await novoEstagioService.setTipoEstagio(id, tipoEstagio);
+
+          await novoEstagioService.setEstagioUfpr(id, localEstagio === "UFPR");
+        } catch (error) {
+          toast.add({
+            severity: "error",
+            summary: error,
+            detail: "Erro ao salvar dados",
+            life: 3000,
+          });
+          return;
+        }
+
+        advanceStep({
+          tipoEstagio,
+          localEstagio,
         });
       } else {
-        this.error = "Este campo é obrigatório";
+        error.value = "Este campo é obrigatório";
       }
-    },
-  },
-  mounted() {
-    if (this.dados) {
-      this.tipoEstagio = this.dados.tipoEstagio;
-      this.localEstagio = this.dados.localEstagio;
-    }
-  },
+    };
 
-  data() {
     return {
-      error: null as string | null,
-      tipoEstagio: null,
-      tipos: [
-        { label: "Obrigatório", value: "OBRIGATORIO" },
-        { label: "Não obrigatório", value: "NAO_OBRIGATORIO" },
-      ],
-      localEstagio: null,
-      locais: [
-        { label: "Empresa Externa", value: "EXTERNO" },
-        { label: "UFPR", value: "UFPR" },
-      ],
+      dadosTipoEstagio,
+      tiposEstagio,
+      locais,
+      error,
+      handleValidateAndAdvanceStep,
+      backStep,
     };
   },
-};
+});
 </script>
 
 <template>
   <div class="grid mt-2">
+    <Toast />
     <h5 class="mb-0 mt-4 ml-2">Tipo do Estágio</h5>
 
     <div class="col-12">
       <div class="card p-fluid col-12">
         <h5>Obrigatoriedade do estágio</h5>
         <SelectButton
-          v-model="tipoEstagio"
-          :options="tipos"
+          v-model="dadosTipoEstagio.tipoEstagio"
+          :options="tiposEstagio"
           optionLabel="label"
           optionValue="value"
           :class="{ 'p-invalid': error }"
@@ -71,7 +121,7 @@ export default {
       <div class="card p-fluid col-12">
         <h5>Local do Estágio</h5>
         <SelectButton
-          v-model="localEstagio"
+          v-model="dadosTipoEstagio.localEstagio"
           :options="locais"
           optionLabel="label"
           optionValue="value"
@@ -82,7 +132,7 @@ export default {
     </div>
     <div class="w-full flex justify-end gap-2">
       <Button
-        @click="backStep({ ...$data })"
+        @click="backStep({ ...dadosTipoEstagio })"
         label="Voltar"
         class="p-button-secondary"
         icon="pi pi-arrow-left"
