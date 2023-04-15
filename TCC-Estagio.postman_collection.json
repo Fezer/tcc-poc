@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "952cc166-c57a-447c-a8b8-91be56a6d1f1",
-		"name": "TCC-Estagio",
+		"_postman_id": "2a2d441c-0840-465d-b599-8c657d928176",
+		"name": "TCC-Estagio Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17301767"
+		"_exporter_id": "18567474"
 	},
 	"item": [
 		{
@@ -233,7 +233,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/aluno/1",
+							"raw": "http://localhost:5000/aluno/GRR20201212",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -241,7 +241,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"1"
+								"GRR20201212"
 							]
 						}
 					},
