@@ -62,31 +62,17 @@ public class AlunoREST {
 	@Autowired
 	private TermoPocRepository repo;
 	
-	@GetMapping("/{termoIdURL}")
-	public ResponseEntity<Discente> listarTermo(@PathVariable String termoIdURL){
+	@GetMapping("/{grrAlunoURL}")
+	public ResponseEntity<Discente> listarTermo(@PathVariable String grrAlunoURL){
 		try {
-			if(termoIdURL.isBlank() || termoIdURL.isEmpty()) {
-				throw new PocException(HttpStatus.BAD_REQUEST, "ID do termo não informado!");
+			if(grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
 			} else {
-				Long termoId = Long.parseLong(termoIdURL);
-				Optional<TermoPoc> termo = repo.findById(termoId);
-				if(termo.isEmpty()) {
-					throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
-				} else {
-					String grr = termo.get().getGrrAluno();
-					Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(grr);
-//					URI uri = UriComponentsBuilder.fromUriString("https://siga.ufpr.br:8380/siga/api/graduacao/discentes").queryParam("grr", grr).build().toUri();
-//		            RestTemplate restTemplate = new RestTemplate();
-//					HttpHeaders headers = new HttpHeaders();
-//		            headers.set("Authorization", "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoX3JoMTdNUG1rOWlZalZQMElHTnJwSzdsVlczN25GZ1J4TmFPMEcwZkk0In0.eyJleHAiOjE2Nzc0MjYwNTksImlhdCI6MTY3NzQyMjQ1OSwiYXV0aF90aW1lIjoxNjc3NDIyNDU4LCJqdGkiOiI2OWJhNTNlYi0yNDliLTQ5MWMtODYzZi01YzY2ZTc5OTQxYWYiLCJpc3MiOiJodHRwczovL2xvZ2luLnVmcHIuYnIvcmVhbG1zL21hc3RlciIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJmOjRhNTgyMGJjLWQ2MzMtNGMxZS1hYzhjLWRhOWRlNmRkY2I3OTptb3JhZXMxIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZXN0YWdpb3MiLCJzZXNzaW9uX3N0YXRlIjoiNWIyZTE3ZmUtMWJiNi00MmEyLWEzNmYtNzY3NGQzNzg5ZjY3IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjMwMDAiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtbWFzdGVyIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUiLCJzaWQiOiI1YjJlMTdmZS0xYmI2LTQyYTItYTM2Zi03Njc0ZDM3ODlmNjciLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJMZW9uYXJkbyBNb3JhZXMiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtb3JhZXMxIiwiZ2l2ZW5fbmFtZSI6Ikxlb25hcmRvIiwiZmFtaWx5X25hbWUiOiJNb3JhZXMiLCJlbWFpbCI6Im1vcmFlczFAdWZwci5iciJ9.ueypAUp6uFh150D9EOKhpY6Y0i26_4VxAngdlcQDt90hAMghSSR_J7fP-2rO5CBhl8Zqs8kQxO84wzNhULlYnE0AP0EKy3AcATYeNLuTdTNmyzbB2BtYeMznUmntAuPh8cL5Xt_3vuamj_bGMD42lj6RXHm9hdC8BPGWmwLSdlRXy0m9S0XpcA9N5iIXmp7Uynq1ChHlm6k0YQ-LzQ_0bO0w5Am8dkpUgLKgzhahvjvc4Mtc3SjhRJmfNtI8hlKstFJPWmXNBVJbVHEOOoRU_KuNQhki8Rb25g_HzMnkFUHGUJ9SiD3SPbZOQo_e2kkdaWEtRw7yq0edXwLOYHeTrg");
-//		            HttpEntity<String> entity = new HttpEntity<>(headers);
-//		            ResponseEntity<DiscenteWrapper> discenteWrapper = restTemplate.exchange(uri, HttpMethod.GET, entity, DiscenteWrapper.class);
-//		            Discente discente = discenteWrapper.getBody().getData().getDiscente();
-					return ResponseEntity.status(HttpStatus.OK).body(mapper.map(discente, Discente.class));
-				}
+				Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(grrAlunoURL);
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(discente, Discente.class));
 			}
 		}catch (NumberFormatException e) {
-			throw new PocException(HttpStatus.BAD_REQUEST, "O ID informado para o termo não é do tipo de dado esperado!");
+			throw new PocException(HttpStatus.BAD_REQUEST, "O GRR informado para o aluno não é do tipo de dado esperado!");
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;
@@ -96,14 +82,13 @@ public class AlunoREST {
 		}
 	}
 	
-	@PostMapping("/{idAlunoURL}/estagio")
-	public ResponseEntity<EstagioDTO> novoEstagio(@PathVariable String idAlunoURL){
+	@PostMapping("/{grrAlunoURL}/estagio")
+	public ResponseEntity<EstagioDTO> novoEstagio(@PathVariable String grrAlunoURL){
 		try {
-			if(idAlunoURL.isBlank() || idAlunoURL.isEmpty()) {
-				throw new PocException(HttpStatus.BAD_REQUEST, "ID do aluno não informado!");
+			if(grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
 			} else {
-				//Long idAluno = Long.parseLong(idAlunoURL);
-				Aluno aluno = alunoService.buscarAlunoPorGrr(idAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
 				if(aluno == null) {
 					throw new PocException(HttpStatus.NOT_FOUND, "Aluno não encontrado!");
 				} else {
@@ -113,7 +98,7 @@ public class AlunoREST {
 				}
 			}
 		}catch (NumberFormatException e) {
-			throw new PocException(HttpStatus.BAD_REQUEST, "O ID informado para o aluno não é do tipo de dado esperado!");
+			throw new PocException(HttpStatus.BAD_REQUEST, "O GRR informado para o aluno não é do tipo de dado esperado!");
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;
