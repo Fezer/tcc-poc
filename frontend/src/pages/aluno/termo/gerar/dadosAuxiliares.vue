@@ -1,78 +1,3 @@
-<!-- <script setup lang="ts">
-import Dropdown from "primevue/dropdown";
-import { ref } from "vue";
-import { z } from "zod";
-import ZodErrorsService from "~~/services/ZodErrorsService";
-
-
-</script>
-
-<script lang="ts">
-export default {
-  props: {
-    advanceStep: {
-      type: Function,
-      required: true,
-    },
-    backStep: {
-      type: Function,
-      required: true,
-    },
-    dados: {
-      type: Object,
-    },
-  },
-  components: { Dropdown },
-  data() {
-    return {
-      zodErrors: {} as Record<string, string>,
-      errors: {} as Record<string, string>,
-
-      tipoVaga: null,
-      banco: null,
-      grupoSanguineo: null,
-      numAgencia: null,
-      numConta: null,
-      nomeAgencia: null,
-      cidadeAgencia: null,
-      enderecoAgencia: null,
-      bairroAgencia: null,
-      certificadoMilitar: null,
-      orgaoExpedicaoCertMilitar: null,
-      serieCertMilitar: null,
-    };
-  },
-  zodErrorsService: null as ZodErrorsService | null,
-  created() {
-    this.zodErrorsService = new ZodErrorsService();
-  },
-  mounted() {
-    this.zodErrorsService
-      .getTranslatedErrors()
-      .then((data: Record<string, string>) => (this.zodErrors = data));
-
-    if (this.dados) {
-      this.tipoVaga = this.dados.tipoVaga;
-      this.banco = this.dados.banco;
-      this.numAgencia = this.dados.numAgencia;
-      this.numConta = this.dados.numConta;
-      this.nomeAgencia = this.dados.nomeAgencia;
-      this.cidadeAgencia = this.dados.cidadeAgencia;
-      this.enderecoAgencia = this.dados.enderecoAgencia;
-      this.bairroAgencia = this.dados.bairroAgencia;
-      this.tipoVaga = this.dados.tipoVaga;
-      this.grupoSanguineo = this.dados.grupoSanguineo;
-      this.certificadoMilitar = this.dados.certificadoMilitar;
-      this.orgaoExpedicaoCertMilitar = this.dados.orgaoExpedicaoCertMilitar;
-      this.serieCertMilitar = this.dados.serieCertMilitar;
-    }
-  },
-  methods: {
-
-  },
-};
-</script> -->
-
 <script lang="ts">
 import { useToast } from "primevue/usetoast";
 import { defineComponent, reactive, ref } from "vue";
@@ -419,6 +344,9 @@ export default defineComponent({
               :options="bancos"
               optionLabel="name"
               optionValue="name"
+              v-tooltip.top="
+                'O pagamento da bolsa auxílio só poderá ser realizado nos bancos disponíveis na lista abaixo.'
+              "
               v-model="state.banco"
               :class="{ 'p-invalid': errors['banco'] }"
             />

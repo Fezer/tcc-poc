@@ -25,7 +25,7 @@ export default defineComponent({
       type: Object,
     },
   },
-  setup({
+  async setup({
     advanceStep,
     backStep,
     finalStep,
@@ -69,7 +69,7 @@ export default defineComponent({
         jornadaSemanal: z.number().min(1).max(99),
         bolsaAuxilio: z.number(),
         auxilioTransporte: z.number(),
-        // coordenador: z.number(),
+        coordenador: z.string(),
         // orientador: z.number(),
         departamentoOrientador: z.string().min(2),
         nomeSupervisor: z.string().min(2),
@@ -99,11 +99,18 @@ export default defineComponent({
       });
     };
 
+    const grr = "GRR20201212";
+
+    const { data: aluno } = await useFetch(
+      `http://localhost:5000/aluno/${grr}`
+    );
+
     return {
       errors,
       validateAndAdvance,
       backStep,
       state,
+      aluno,
     };
   },
 });
@@ -127,6 +134,9 @@ export default defineComponent({
               id="dataInicio"
               type="text"
               mask="99/99/9999"
+              v-tooltip.top="
+                'Inserir o período de início e término do estágio. Este termo de compromisso deve ser colocado na plataforma, contendo todas as assinaturas, com pelo menos 10 dias ANTES do início das atividades de estágio.'
+              "
               v-model="state.dataInicio"
               required
               :class="errors['dataInicio'] && 'p-invalid'"
@@ -149,8 +159,11 @@ export default defineComponent({
             <InputNumber
               id="jornadaDiaria"
               type="number"
-              :max="24"
+              :max="6"
               :min="1"
+              v-tooltip.top="
+                'Máximo de 4h para estágios de nível fundamental e especial. Máximo de 6h para estágios de nível médio e superior.\n (Art. 10 - Lei Federal 11.788/2008)'
+              "
               suffix="h"
               v-model="state.jornadaDiaria"
               :class="errors['jornadaDiaria'] && 'p-invalid'"
@@ -163,8 +176,11 @@ export default defineComponent({
               id="jornadaSemanal"
               type="number"
               maxlength="2"
-              :max="99"
+              :max="6"
               :min="1"
+              v-tooltip.top="
+                'Máximo de 20h para estágios de nível fundamental e especial. Máximo de 30h para estágios de nível médio e superior. (Art. 10 - Lei Federal no. 11.788/2008).'
+              "
               suffix="h"
               v-model="state.jornadaSemanal"
               :class="errors['jornadaSemanal'] && 'p-invalid'"
@@ -182,6 +198,9 @@ export default defineComponent({
             >
             <InputNumber
               mode="currency"
+              v-tolltip.top="
+                'A contratante é responsável pelo pagamento de bolsa auxílio mensal para o estudante que realiza o estágio na modalidade não obrigatório (Lei Federal 11.788/2008).'
+              "
               currency="BRL"
               id="bolsaAuxilio"
               v-model="state.bolsaAuxilio"
@@ -196,6 +215,9 @@ export default defineComponent({
             <InputNumber
               mode="currency"
               currency="BRL"
+              v-tooltip.top="
+                'A contratante é responsável pelo pagamento de auxílio transporte para o estudante que realiza o estágio na modalidade não obrigatório (Lei Federal 11.788/2008).'
+              "
               id="auxilioTransporte"
               v-model="state.auxilioTransporte"
               :class="errors['auxilioTransporte'] && 'p-invalid'"
@@ -215,7 +237,7 @@ export default defineComponent({
               id="coordenador"
               type="text"
               disabled
-              value="Prof. Dr. Professor Professor"
+              :value="aluno?.coordenador"
               v-model="state.coordenador"
               :class="errors['coordenador'] && 'p-invalid'"
             />
@@ -288,6 +310,9 @@ export default defineComponent({
             <Textarea
               id="atividades"
               type="text"
+              v-tooltip.top="
+                'Inserir todas as atividades que serão realizadas durante o período de estágio. As atividades devem ser compatíveis com a área do curso do estagiário. (Art. 3 - Lei Federal no. 11.788/2008)(Art. 2 - Instrução Normativa no. 01/13-CEPE)'
+              "
               v-model="state.atividades"
               :class="errors['atividades'] && 'p-invalid'"
               maxlength="700"
