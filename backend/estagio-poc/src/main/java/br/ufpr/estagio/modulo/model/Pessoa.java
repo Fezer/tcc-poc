@@ -40,4 +40,61 @@ public class Pessoa implements Serializable{
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="endereco_id", referencedColumnName="id",nullable=true)
 	private Endereco endereco;
+	
+	public Pessoa(long id, String nome, String telefone) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.telefone = telefone;
+	}
+
+	public Pessoa() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Pessoa(long id, String nome, String telefone, Endereco endereco) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.endereco = endereco;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 }

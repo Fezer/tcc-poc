@@ -57,6 +57,30 @@ public class Coordenador extends Pessoa implements Serializable{
 		this.curso = curso;
 		this.termoDeEstagio = termoDeEstagio;
 	}
+	
+	public Coordenador(long id, String nome, String telefone, String cpf, Curso curso, List<TermoDeEstagio> termoDeEstagio) {
+		super(id, nome, telefone);
+		this.id = id;
+		this.cpf = cpf;
+		this.curso = curso;
+		this.termoDeEstagio = termoDeEstagio;
+	}
+	
+	public String getNome() {
+		return super.getNome();
+	}
+	
+	public void setNome(String nome) {
+		super.setNome(nome);
+	}
+	
+	public String getTelefone() {
+		return super.getTelefone();
+	}
+	
+	public void setTelefone(String telefone) {
+		super.setTelefone(telefone);
+	}
 
 	public long getId() {
 		return id;
