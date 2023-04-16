@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,11 +38,17 @@ public class Curso implements Serializable{
 	@Column(name = "matricula")
 	private String matricula;
 	
+	@Column(name = "idPrograma")
+	private String idPrograma;
+	
 	@Column(name = "nivel")
 	private String nivel;
 	
 	@Column(name = "peridiocidade")
 	private int peridiocidade;
+	
+	@Column(name = "turno")
+	private String turno;
 
 	@JsonIgnore
 	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
@@ -65,18 +72,23 @@ public class Curso implements Serializable{
 
 	public Curso() {
 		super();
-		// TODO Auto-generated constructor stub
+		this.disciplina = new ArrayList<Disciplina>();
+		this.coordenador = new ArrayList<Coordenador>();
+		this.aluno = new ArrayList<Aluno>();
+		this.orientador = new ArrayList<Orientador>();
 	}
 
-	public Curso(long id, String nome, String matricula, String nivel, int peridiocidade,
-			List<Coordenador> coordenador, List<Orientador> orientador, List<Disciplina> disciplina,
+	public Curso(long id, String nome, String matricula, String idPrograma, String nivel, int peridiocidade,
+			String turno, List<Coordenador> coordenador, List<Orientador> orientador, List<Disciplina> disciplina,
 			List<Aluno> aluno) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.matricula = matricula;
+		this.idPrograma = idPrograma;
 		this.nivel = nivel;
 		this.peridiocidade = peridiocidade;
+		this.turno = turno;
 		this.coordenador = coordenador;
 		this.orientador = orientador;
 		this.disciplina = disciplina;
@@ -107,6 +119,14 @@ public class Curso implements Serializable{
 		this.matricula = matricula;
 	}
 
+	public String getIdPrograma() {
+		return idPrograma;
+	}
+
+	public void setIdPrograma(String idPrograma) {
+		this.idPrograma = idPrograma;
+	}
+
 	public String getNivel() {
 		return nivel;
 	}
@@ -121,6 +141,14 @@ public class Curso implements Serializable{
 
 	public void setPeridiocidade(int peridiocidade) {
 		this.peridiocidade = peridiocidade;
+	}
+
+	public String getTurno() {
+		return turno;
+	}
+
+	public void setTurno(String turno) {
+		this.turno = turno;
 	}
 
 	public List<Coordenador> getCoordenador() {
@@ -153,6 +181,10 @@ public class Curso implements Serializable{
 
 	public void setAluno(List<Aluno> aluno) {
 		this.aluno = aluno;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 }
