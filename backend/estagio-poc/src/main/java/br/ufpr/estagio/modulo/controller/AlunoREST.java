@@ -1,6 +1,8 @@
 package br.ufpr.estagio.modulo.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -111,4 +113,114 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
+	
+	@GetMapping("/{grrAlunoURL}/estagio/emPreenchimento")
+	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmPreenchimento(@PathVariable String grrAlunoURL) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new PocException(HttpStatus.NOT_FOUND, "Aluno não encontrado!");
+				} else {
+					List<Estagio> estagio = estagioService.buscarEstagioEmPreenchimentoPorAluno(aluno);
+					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
+					EstagioDTO estagioDTO = new EstagioDTO();
+					if(estagio.isEmpty()) {
+						estagioDTO = null;
+					} else {
+						for (Estagio e : estagio) {
+							estagioDTO = estagioService.toEstagioDTO(e);
+							listEstagioDTO.add(estagioDTO);
+						}
+					}
+					return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new PocException(HttpStatus.BAD_REQUEST,
+					"O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/{grrAlunoURL}/estagio/emAprovacao")
+	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmAprovacao(@PathVariable String grrAlunoURL) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new PocException(HttpStatus.NOT_FOUND, "Aluno não encontrado!");
+				} else {
+					List<Estagio> estagio = estagioService.buscarEstagioEmAprovacaoPorAluno(aluno);
+					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
+					EstagioDTO estagioDTO = new EstagioDTO();
+					if(estagio.isEmpty()) {
+						estagioDTO = null;
+					} else {
+						for (Estagio e : estagio) {
+							estagioDTO = estagioService.toEstagioDTO(e);
+							listEstagioDTO.add(estagioDTO);
+						}
+					}
+					return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new PocException(HttpStatus.BAD_REQUEST,
+					"O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	//Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em andamento.
+	@GetMapping("/{grrAlunoURL}/estagio/emProgresso")
+	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmProgresso(@PathVariable String grrAlunoURL) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new PocException(HttpStatus.NOT_FOUND, "Aluno não encontrado!");
+				} else {
+					List<Estagio> estagio = estagioService.buscarEstagioEmProgressoPorAluno(aluno);
+					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
+					EstagioDTO estagioDTO = new EstagioDTO();
+					if(estagio.isEmpty()) {
+						estagioDTO = null;
+					} else {
+						for (Estagio e : estagio) {
+							estagioDTO = estagioService.toEstagioDTO(e);
+							listEstagioDTO.add(estagioDTO);
+						}
+					}
+					return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new PocException(HttpStatus.BAD_REQUEST,
+					"O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
 }
