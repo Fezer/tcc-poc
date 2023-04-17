@@ -267,6 +267,72 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "listarEstagioEmPreenchimento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20201212/estagio/emPreenchimento",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20201212",
+								"estagio",
+								"emPreenchimento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarEstagioEmProgresso",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20201212/estagio/emProgresso",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20201212",
+								"estagio",
+								"emProgresso"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarEstagioEmAprovacao",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20201212/estagio/emAprovacao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20201212",
+								"estagio",
+								"emAprovacao"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -312,6 +378,56 @@
 								{
 									"key": "grr",
 									"value": "GRR20201212"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API SIGA - Docentes",
+			"item": [
+				{
+					"name": "listDocentes",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/docentes?idPrograma=40001016111G0",
+							"protocol": "http",
+							"host": [
+								"siga",
+								"ufpr",
+								"br"
+							],
+							"port": "8380",
+							"path": [
+								"siga",
+								"api",
+								"graduacao",
+								"docentes"
+							],
+							"query": [
+								{
+									"key": "idPrograma",
+									"value": "40001016111G0"
 								}
 							]
 						}
@@ -455,86 +571,6 @@
 								{
 									"key": "estagioUfpr",
 									"value": "false"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "API SIGA - Curso",
-			"item": [
-				{
-					"name": "listDocentes",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "redirect_uri",
-									"value": "http://localhost:3000/",
-									"type": "string"
-								},
-								{
-									"key": "clientSecret",
-									"value": "2xWHPudAW4hmAsnOYzW9eg4oUUKUHTLu",
-									"type": "string"
-								},
-								{
-									"key": "clientId",
-									"value": "estagios",
-									"type": "string"
-								},
-								{
-									"key": "accessTokenUrl",
-									"value": "https://login.ufpr.br/realms/master/protocol/openid-connect/token",
-									"type": "string"
-								},
-								{
-									"key": "authUrl",
-									"value": "https://login.ufpr.br/realms/master/protocol/openid-connect/auth",
-									"type": "string"
-								},
-								{
-									"key": "tokenName",
-									"value": "token",
-									"type": "string"
-								},
-								{
-									"key": "headerPrefix",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/docentes?idPrograma=40001016111G0",
-							"protocol": "http",
-							"host": [
-								"siga",
-								"ufpr",
-								"br"
-							],
-							"port": "8380",
-							"path": [
-								"siga",
-								"api",
-								"graduacao",
-								"docentes"
-							],
-							"query": [
-								{
-									"key": "idPrograma",
-									"value": "40001016111G0"
 								}
 							]
 						}
@@ -1151,6 +1187,93 @@
 							"path": [
 								"contratante",
 								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SIGA Via Backend",
+			"item": [
+				{
+					"name": "listAluno",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/siga/aluno?grr=GRR20201212",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"siga",
+								"aluno"
+							],
+							"query": [
+								{
+									"key": "grr",
+									"value": "GRR20201212"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listDocentes",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/siga/docentes?idPrograma=40001016111G0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"siga",
+								"docentes"
+							],
+							"query": [
+								{
+									"key": "idPrograma",
+									"value": "40001016111G0"
+								}
 							]
 						}
 					},
