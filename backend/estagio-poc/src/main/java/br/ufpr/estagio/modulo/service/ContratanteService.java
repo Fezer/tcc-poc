@@ -1,13 +1,13 @@
 package br.ufpr.estagio.modulo.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.repository.ContratanteRepository;
 
@@ -32,7 +32,7 @@ public class ContratanteService {
 
 	public Contratante atualizarContratante(Contratante contratanteAtualizado) {
 		Contratante contratanteExistente = buscarPorId((int) contratanteAtualizado.getId())
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Contratante não encontrado para o ID informado"));
 
 		contratanteExistente.setTipo(contratanteAtualizado.getTipo());
 		contratanteExistente.setCnpj(contratanteAtualizado.getCnpj());
@@ -49,8 +49,7 @@ public class ContratanteService {
         	Contratante contratante = contratanteOptional.get();
             contratanteRepository.delete(contratante);
         } else {
-        	// tratar. tava dando erro.
-            return;
+        	throw new RuntimeException("Não foi encontrado um contratante com o ID informado.");
         }
 		
 	}

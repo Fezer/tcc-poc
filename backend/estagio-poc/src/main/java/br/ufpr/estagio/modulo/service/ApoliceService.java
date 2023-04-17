@@ -1,13 +1,13 @@
 package br.ufpr.estagio.modulo.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.repository.ApoliceRepository;
 
@@ -32,7 +32,7 @@ public class ApoliceService {
 	
 	public Apolice atualizarApolice(Apolice apoliceAtualizada) {
 		Apolice apoliceExistente = buscarPorId((int) apoliceAtualizada.getId())
-		.orElseThrow();
+		.orElseThrow(() -> new NoSuchElementException("Apólice não encontrada para o ID informado"));
 
 	    apoliceExistente.setNumero(apoliceAtualizada.getNumero());
 	    apoliceExistente.setDataInicio(apoliceAtualizada.getDataInicio());
@@ -50,8 +50,7 @@ public class ApoliceService {
 	        Apolice apoliceExistente = apoliceOptional.get();
 	        apoliceRepository.delete(apoliceExistente);
 	    } else {
-	    	// tratar. tava dando erro.
-	        return;
+	    	throw new RuntimeException("Não foi encontrado uma apólice com o ID informado.");
 	    }
 	}
 

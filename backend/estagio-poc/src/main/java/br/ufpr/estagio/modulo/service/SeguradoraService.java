@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class SeguradoraService {
 	
 	public Seguradora atualizarSeguradora(Seguradora seguradoraAtualizada) {
 	    Seguradora seguradoraExistente = buscarSeguradoraPorId(seguradoraAtualizada.getId())
-	            .orElseThrow();
+	            .orElseThrow(() -> new NoSuchElementException("Seguradora não encontrada para o ID informado"));
 
 	    seguradoraExistente.setNome(seguradoraAtualizada.getNome());
 	    seguradoraExistente.setApolice(seguradoraAtualizada.getApolice());
@@ -47,8 +48,8 @@ public class SeguradoraService {
 	        Seguradora seguradoraExistente = seguradoraOptional.get();
 	        seguradoraRepository.delete(seguradoraExistente);
 	    } else {
-	    	// tratar. tava dando erro.
-	        return;
+        	throw new RuntimeException("Não foi encontrada uma seguradora com o ID informado.");
+
 	    }
 	}
 

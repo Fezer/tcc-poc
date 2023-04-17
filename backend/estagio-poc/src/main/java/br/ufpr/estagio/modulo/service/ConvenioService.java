@@ -1,15 +1,14 @@
 package br.ufpr.estagio.modulo.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Convenio;
-import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
 import br.ufpr.estagio.modulo.repository.ConvenioRepository;
 
 @Service
@@ -33,7 +32,7 @@ public class ConvenioService {
 
 	public Convenio atualizarConvenio(Convenio convenioAtualizado) {
 		Convenio convenioExistente = buscarPorId((int) convenioAtualizado.getId())
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Convenio não encontrado para o ID informado"));
 
 		convenioExistente.setNumero(convenioAtualizado.getNumero());
         convenioExistente.setDescricao(convenioAtualizado.getDescricao());
@@ -50,8 +49,7 @@ public class ConvenioService {
         	Convenio convenio = convenioOptional.get();
         	convenioRepository.delete(convenio);
         } else {
-        	// tratar. tava dando erro.
-            return;
+        	throw new RuntimeException("Não foi encontrado um convenio com o ID informado.");
         }
 		
 	}
