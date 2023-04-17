@@ -26,6 +26,8 @@ import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
 import br.ufpr.estagio.modulo.repository.RelatorioDeEstagioRepository;
 import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
+import br.ufpr.estagio.modulo.service.siga.SigaApiAlunoService;
+import br.ufpr.estagio.modulo.service.siga.SigaApiModuloEstagioMapping;
 
 
  
@@ -41,6 +43,7 @@ public class AlunoService {
 	private TermoDeEstagioRepository termoRepo;
 	private CienciaCoordenacaoRepository cienciaRepo;
 	private SigaApiAlunoService sigaApiAlunoService;
+	private SigaApiModuloEstagioMapping sigaApiModuloEstagioMapping;
 		
     public AlunoService(AlunoRepository alunoRepo,
     		SigaApiAlunoService sigaApiAlunoService,
@@ -48,7 +51,8 @@ public class AlunoService {
     		PlanoDeAtividadesRepository planoAtividadesRepo,
     		RelatorioDeEstagioRepository relatorioRepo,
     		CienciaCoordenacaoRepository cienciaRepo,
-    		TermoDeEstagioRepository termoRepo) {
+    		TermoDeEstagioRepository termoRepo,
+    		SigaApiModuloEstagioMapping sigaApiModuloEstagioMapping) {
         this.alunoRepo = alunoRepo;
         this.sigaApiAlunoService = sigaApiAlunoService;
         this.estagioRepo = estagioRepo;
@@ -56,6 +60,7 @@ public class AlunoService {
         this.relatorioRepo = relatorioRepo;
         this.cienciaRepo = cienciaRepo;
         this.termoRepo = termoRepo;
+        this.sigaApiModuloEstagioMapping = sigaApiModuloEstagioMapping;
     }
      
     public List<Aluno> listarTodosAlunos() {
@@ -75,7 +80,7 @@ public class AlunoService {
     	Aluno aluno = new Aluno();
     	if(alunoFind.isEmpty()) {
     		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula);
-    		aluno.setMatricula(discente.getGrr());
+    		aluno = sigaApiModuloEstagioMapping.mapearDiscenteEmAluno(discente);
     		aluno = this.salvarAluno(aluno);
     	} else {
     		aluno = alunoFind.get();

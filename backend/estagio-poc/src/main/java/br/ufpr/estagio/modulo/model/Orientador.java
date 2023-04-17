@@ -67,6 +67,34 @@ public class Orientador extends Pessoa implements Serializable{
 		this.termoDeEstagio = termoDeEstagio;
 		this.estagio = estagio;
 	}
+	
+	public Orientador(long id, String nome, String telefone, String cpf, String lotacao, String departamento, List<Curso> curso,
+			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio) {
+		super(id, nome, telefone);
+		this.id = id;
+		this.cpf = cpf;
+		this.lotacao = lotacao;
+		this.departamento = departamento;
+		this.curso = curso;
+		this.termoDeEstagio = termoDeEstagio;
+		this.estagio = estagio;
+	}
+	
+	public String getNome() {
+		return super.getNome();
+	}
+	
+	public void setNome(String nome) {
+		super.setNome(nome);
+	}
+	
+	public String getTelefone() {
+		return super.getTelefone();
+	}
+	
+	public void setTelefone(String telefone) {
+		super.setTelefone(telefone);
+	}
 
 	public long getId() {
 		return id;

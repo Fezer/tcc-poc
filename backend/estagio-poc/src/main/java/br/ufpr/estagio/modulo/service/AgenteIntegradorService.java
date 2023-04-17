@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class AgenteIntegradorService {
 	
 	public AgenteIntegrador atualizarAgenteIntegrador(AgenteIntegrador agenteIntegradorAtualizado) {
         AgenteIntegrador agenteIntegradorExistente = buscarPorId(agenteIntegradorAtualizado.getId())
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Agente integrador não encontrado para o ID informado"));
 
         agenteIntegradorExistente.setCnpj(agenteIntegradorAtualizado.getCnpj());
         agenteIntegradorExistente.setConvenio(agenteIntegradorAtualizado.getConvenio());
@@ -51,8 +52,7 @@ public class AgenteIntegradorService {
             AgenteIntegrador agenteIntegrador = agenteIntegradorOptional.get();
             agenteIntegradorRepository.delete(agenteIntegrador);
         } else {
-        	// tratar. tava dando erro.
-            return;
+        	throw new RuntimeException("Não foi encontrado um agente integrador com o ID informado.");
         }
     }
 }
