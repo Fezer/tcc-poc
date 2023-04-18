@@ -3,6 +3,8 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,12 +12,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "contratante", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Contratante extends Pessoa implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -37,6 +42,7 @@ public class Contratante extends Pessoa implements Serializable {
 	@Column(name = "representanteEmpresa")
 	private String representanteEmpresa;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="contratante", cascade=CascadeType.REMOVE)
 	private List<Estagio> estagio;
 	

@@ -38,6 +38,7 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@JoinColumn(name="seguradora_id", referencedColumnName="id", nullable=true)
 	private Seguradora seguradora;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="apolice_id", referencedColumnName="id",nullable=true)
 	private Apolice apolice;
@@ -62,6 +63,7 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@JoinColumn(name="coordenador_id", referencedColumnName="id", nullable=true)
 	private Coordenador coordenador;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="plano_atividades_id", referencedColumnName="id",nullable=true)
 	private PlanoDeAtividades planoAtividades;
@@ -99,6 +101,7 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@Column(name = "etapa_fluxo")
 	private EnumEtapaFluxo etapaFluxo;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="ciencia_coordenacao_id", referencedColumnName="id",nullable=true)
 	private CienciaCoordenacao cienciaCoordenacao;

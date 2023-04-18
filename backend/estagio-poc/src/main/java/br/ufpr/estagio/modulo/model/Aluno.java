@@ -13,6 +13,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
@@ -23,6 +25,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "aluno", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Aluno extends Pessoa implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -32,8 +35,17 @@ public class Aluno extends Pessoa implements Serializable {
 	@Column(name = "id")
 	private long id;
 	
+	@Column(name = "idDiscente")
+	private long idDiscente;
+	
+	@Column(name = "isPcd")
+	private boolean isPcd;
+	
 	@Column(name = "matricula")
 	private String matricula;
+	
+	@Column(name = "periodoAtual")
+	private int periodoAtual;
 	
 	@Column(name = "rg")
 	private String rg;
@@ -52,34 +64,39 @@ public class Aluno extends Pessoa implements Serializable {
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="dados_auxiliares_id", referencedColumnName="id", nullable=true)
 	private DadosAuxiliares dadosAuxiliares;
 	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="dados_bancarios_id", referencedColumnName="id", nullable=true)
 	private DadosBancarios dadosBancarios;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "aluno", cascade=CascadeType.REMOVE)
 	private List<Disciplina> disciplina;
 	
-	//Faltou o relacionamento aluno-pessoa:
-	//Pessoa é herança não tem relacionamento
-	
+	@JsonIgnore
 	@OneToMany(mappedBy="aluno", cascade=CascadeType.REMOVE)
 	private List<Estagio> estagio;
 	
 	public Aluno() {
 		super();
-		// TODO Auto-generated constructor stub
+		this.disciplina = new ArrayList<Disciplina>();
+		this.estagio = new ArrayList<Estagio>();
 	}
-
-	public Aluno(long id, String matricula, String rg, String cpf, String email, Date dataNascimento, Curso curso,
-			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, List<Disciplina> disciplina,
-			Pessoa pessoa, List<Estagio> estagio) {
-		super();
+	
+	public Aluno(long id, long idDiscente, boolean isPcd, String matricula, int periodoAtual, String rg, String cpf, String email, Date dataNascimento,
+			Curso curso, DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, List<Disciplina> disciplina,
+			List<Estagio> estagio, String nome, String telefone) {
+		super(id, nome, telefone);
 		this.id = id;
+		this.idDiscente = idDiscente;
+		this.isPcd = isPcd;
 		this.matricula = matricula;
+		this.periodoAtual = periodoAtual;
 		this.rg = rg;
 		this.cpf = cpf;
 		this.email = email;
@@ -91,12 +108,45 @@ public class Aluno extends Pessoa implements Serializable {
 		this.estagio = estagio;
 	}
 
+	
 	public long getId() {
 		return id;
 	}
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public String getNome() {
+		return super.getNome();
+	}
+	
+	public void setNome(String nome) {
+		super.setNome(nome);
+	}
+	
+	public String getTelefone() {
+		return super.getTelefone();
+	}
+	
+	public void setTelefone(String telefone) {
+		super.setTelefone(telefone);
+	}
+
+	public long getIdDiscente() {
+		return idDiscente;
+	}
+
+	public void setIdDiscente(long idDiscente) {
+		this.idDiscente = idDiscente;
+	}
+	
+	public boolean isPcd() {
+		return isPcd;
+	}
+
+	public void setPcd(boolean isPcd) {
+		this.isPcd = isPcd;
 	}
 
 	public String getMatricula() {
@@ -105,6 +155,14 @@ public class Aluno extends Pessoa implements Serializable {
 
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
+	}
+	
+	public int getPeriodoAtual() {
+		return periodoAtual;
+	}
+
+	public void setPeriodoAtual(int periodoAtual) {
+		this.periodoAtual = periodoAtual;
 	}
 
 	public String getRg() {
@@ -177,6 +235,18 @@ public class Aluno extends Pessoa implements Serializable {
 
 	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Estagio novoEstagio() {
+		Estagio estagio = new Estagio();
+		estagio.setAluno(this);
+		estagio.novoTermoCompromisso();
+		this.setEstagio(getEstagio());
+		return estagio;
 	}
 
 }

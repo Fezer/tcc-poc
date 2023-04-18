@@ -2,6 +2,8 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAcomp;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,6 +27,7 @@ public class FichaDeAvaliacao implements Serializable{
 	@Column(name = "id")
 	private long id;
 
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="estagio_id", referencedColumnName="id")
 	private Estagio estagio;

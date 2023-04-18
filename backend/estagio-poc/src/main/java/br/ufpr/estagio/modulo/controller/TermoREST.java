@@ -58,9 +58,12 @@ public class TermoREST {
 	@PostMapping("")
 	public ResponseEntity<TermoDeEstagioDTO> inserir(@RequestBody TermoDeEstagioDTO termo){
 		try {
-		TermoDeEstagio newTermo = termoDeEstagioService.save(mapper.map(termo, TermoDeEstagio.class));
+		TermoDeEstagio newTermo = termoDeEstagioService.salvar(mapper.map(termo, TermoDeEstagio.class));
 		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newTermo, TermoDeEstagioDTO.class));
-		}catch(Exception e) {
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+	        throw new PocException(HttpStatus.BAD_REQUEST, "Dados inválidos: " + e.getMessage());
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
@@ -69,7 +72,7 @@ public class TermoREST {
 	@GetMapping("")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTodos(){
 		try {
-			List<TermoDeEstagio> lista = termoDeEstagioService.listAll();
+			List<TermoDeEstagio> lista = termoDeEstagioService.listarTodos();
 			if(lista.isEmpty()) {
 				throw new PocException(HttpStatus.NOT_FOUND, "Nenhum termo encontrado!");
 			} else {
@@ -87,7 +90,7 @@ public class TermoREST {
 	@GetMapping("/{id}")
 	public ResponseEntity<TermoDeEstagioDTO> listarTermo(@PathVariable Long id){
 		try {
-			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.get(id));
+			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
 		if(termoOptional.isEmpty()) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
 		} else {
@@ -108,12 +111,12 @@ public class TermoREST {
 	@PutMapping("/{id}")
 	public ResponseEntity<TermoDeEstagioDTO> atualizar(@PathVariable Long id, @RequestBody TermoDeEstagioDTO termo){
 		try {
-			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.get(id));
+			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
 		if(termofind.isEmpty()) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
 		} else {
-			termoDeEstagioService.save(mapper.map(termofind, TermoDeEstagio.class));
-			termofind = Optional.ofNullable(termoDeEstagioService.get(id));
+			termoDeEstagioService.salvar(mapper.map(termofind, TermoDeEstagio.class));
+			termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoDeEstagioDTO.class));
 		}
 		}catch(PocException e) {
@@ -128,11 +131,11 @@ public class TermoREST {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<TermoDeEstagioDTO> delete(@PathVariable Long id){
 		try {
-			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.get(id));
+			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
 		if(termofind.isEmpty()) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
 		} else {
-			termoDeEstagioService.delete(id);
+			termoDeEstagioService.deletar(id);
 			return ResponseEntity.status(HttpStatus.OK).body(null);
 		}
 		}catch(PocException e) {

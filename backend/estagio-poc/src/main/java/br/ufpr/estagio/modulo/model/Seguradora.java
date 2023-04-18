@@ -3,6 +3,10 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +19,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "seguradora", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
-public class Seguradora implements Serializable{
+public class Seguradora extends RepresentationModel<Seguradora> implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -27,12 +31,15 @@ public class Seguradora implements Serializable{
 	@Column(name = "nome")
 	private String nome;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="seguradora", cascade=CascadeType.REMOVE)
 	private List<Apolice> apolice;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="seguradora", cascade=CascadeType.REMOVE)
 	private List<TermoDeEstagio> termoDeEstagio;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="seguradora", cascade=CascadeType.REMOVE)
 	private List<Estagio> estagio;
 	

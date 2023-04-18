@@ -2,15 +2,19 @@ package br.ufpr.estagio.modulo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
+import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
@@ -31,7 +35,7 @@ public class EstagioService {
         this.estagioRepo = estagioRepo;
     }
      
-    public List<Estagio> listAllEstagios() {
+    public List<Estagio> listarTodosEstagios() {
         return estagioRepo.findAll();
     }
      
@@ -41,19 +45,19 @@ public class EstagioService {
         return estagioRepo.save(estagio);
     }
     
-    public Estagio getEstagio(long id) {
+    public Estagio buscarEstagioPorId(long id) {
         return estagioRepo.findById(id).get();
     }
      
-    public Estagio saveEstagio(Estagio estagio) {
+    public Estagio salvarEstagio(Estagio estagio) {
         return estagioRepo.save(estagio);
     }
      
-    public Estagio updateEstagio(Estagio estagio) {
+    public Estagio atualizarEstagio(Estagio estagio) {
     	return estagioRepo.save(estagio);
     }
      
-    public void deleteEstagio(long id) {
+    public void deletarEstagio(long id) {
     	estagioRepo.deleteById(id);
     }
 
@@ -111,5 +115,34 @@ public class EstagioService {
 	public Estagio definirEstagioUfpr(Estagio estagio, Boolean estagioUfpr) {
 		estagio.setEstagioUfpr(estagioUfpr);
 		return estagioRepo.save(estagio);
+	}
+
+	public List<Estagio> buscarEstagioEmPreenchimentoPorAluno(Aluno aluno) {
+		EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
+		List<Estagio> estagio = estagioRepo.findByStatusEstagioAndAluno(statusEstagio, aluno);
+		return estagio;
+	}
+
+	//Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em andamento.
+	public List<Estagio> buscarEstagioEmProgressoPorAluno(Aluno aluno) {
+		//Primeiro busca por estágio aprovado.
+		EnumStatusEstagio statusEstagio = EnumStatusEstagio.Aprovado;
+		List<Estagio> estagioAprovado = estagioRepo.findByStatusEstagioAndAluno(statusEstagio, aluno);
+		
+		//Depois busca por estágio iniciado.
+		statusEstagio = EnumStatusEstagio.Iniciado;
+		List<Estagio> estagioIniciado = estagioRepo.findByStatusEstagioAndAluno(statusEstagio, aluno);
+		
+		//Por fim, concatena as duas listas em uma única lista.
+		List<Estagio> estagio = new ArrayList<>();
+		estagio.addAll(estagioAprovado);
+		estagio.addAll(estagioIniciado);
+		return estagio;
+	}
+
+	public List<Estagio> buscarEstagioEmAprovacaoPorAluno(Aluno aluno) {
+		EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
+		List<Estagio> estagio = estagioRepo.findByStatusEstagioAndAluno(statusEstagio, aluno);
+		return estagio;
 	}
 }

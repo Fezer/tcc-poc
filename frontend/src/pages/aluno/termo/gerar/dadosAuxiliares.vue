@@ -1,68 +1,10 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import Dropdown from "primevue/dropdown";
 import { ref } from "vue";
 import { z } from "zod";
 import ZodErrorsService from "~~/services/ZodErrorsService";
 
-const tiposDeVaga = ref([
-  {
-    name: "Ampla Concorrência",
-    code: "amplaConcorrencia",
-  },
-  {
-    name: "Negros",
-    code: "negros",
-  },
-  {
-    name: "PCD",
-    code: "pcd",
-  },
-]);
 
-const bancos = ref([
-  {
-    name: "Banco 341 - ITAU",
-  },
-  {
-    name: "Banco 033 - Santander",
-  },
-  {
-    name: "Banco 001 - Banco do Brasil",
-  },
-  {
-    name: "Banco 104 - Caixa Econômica Federal",
-  },
-  {
-    name: "Banco 237 - Bradesco",
-  },
-]);
-
-const gruposSanguineos = ref([
-  {
-    name: "A+",
-  },
-  {
-    name: "A-",
-  },
-  {
-    name: "B+",
-  },
-  {
-    name: "B-",
-  },
-  {
-    name: "AB+",
-  },
-  {
-    name: "AB-",
-  },
-  {
-    name: "O+",
-  },
-  {
-    name: "O-",
-  },
-]);
 </script>
 
 <script lang="ts">
@@ -89,7 +31,6 @@ export default {
       tipoVaga: null,
       banco: null,
       grupoSanguineo: null,
-      banco: null,
       numAgencia: null,
       numConta: null,
       nomeAgencia: null,
@@ -127,7 +68,121 @@ export default {
     }
   },
   methods: {
-    handleValidateAndAdvance() {
+
+  },
+};
+</script> -->
+
+<script lang="ts">
+import { useToast } from "primevue/usetoast";
+import { defineComponent, reactive, ref } from "vue";
+import { z } from "zod";
+import ZodErrorsService from "../../../../../services/ZodErrorsService";
+
+export default defineComponent({
+  props: {
+    advanceStep: {
+      type: Function,
+      required: true,
+    },
+    backStep: {
+      type: Function,
+      required: true,
+    },
+    dados: {
+      type: Object,
+    },
+  },
+  setup({
+    advanceStep,
+    backStep,
+    dados,
+  }: {
+    advanceStep: Function;
+    backStep: Function;
+    dados?: Record<string, any>;
+  }) {
+    const toast = useToast();
+    const zodErrors = new ZodErrorsService().getTranslatedErrors();
+
+    const errors = ref({} as Record<string, string>);
+
+    const tiposDeVaga = ref([
+      {
+        name: "Ampla Concorrência",
+        code: "amplaConcorrencia",
+      },
+      {
+        name: "Negros",
+        code: "negros",
+      },
+      {
+        name: "PCD",
+        code: "pcd",
+      },
+    ]);
+
+    const bancos = ref([
+      {
+        name: "Banco 341 - ITAU",
+      },
+      {
+        name: "Banco 033 - Santander",
+      },
+      {
+        name: "Banco 001 - Banco do Brasil",
+      },
+      {
+        name: "Banco 104 - Caixa Econômica Federal",
+      },
+      {
+        name: "Banco 237 - Bradesco",
+      },
+    ]);
+
+    const gruposSanguineos = ref([
+      {
+        name: "A+",
+      },
+      {
+        name: "A-",
+      },
+      {
+        name: "B+",
+      },
+      {
+        name: "B-",
+      },
+      {
+        name: "AB+",
+      },
+      {
+        name: "AB-",
+      },
+      {
+        name: "O+",
+      },
+      {
+        name: "O-",
+      },
+    ]);
+
+    const state = reactive({
+      tipoVaga: null,
+      banco: null,
+      grupoSanguineo: null,
+      numAgencia: null,
+      numConta: null,
+      nomeAgencia: null,
+      cidadeAgencia: null,
+      enderecoAgencia: null,
+      bairroAgencia: null,
+      certificadoMilitar: null,
+      orgaoExpedicaoCertMilitar: null,
+      serieCertMilitar: null,
+    });
+
+    const handleValidateAndAdvance = () => {
       console.log("validating..");
       const validator = z.object({
         banco: z.string().trim().min(1),
@@ -144,33 +199,41 @@ export default {
         serieCertMilitar: z.string().trim().min(1),
       });
 
-      const result = validator.safeParse({ ...this.$data });
+      const result = validator.safeParse({ ...state });
 
       if (!result.success) {
         console.log(result.error.issues);
-        this.$toast.add({
+        toast.add({
           severity: "error",
           summary: "Erro",
           detail: "Preencha todos os campos",
           life: 3000,
         });
 
-        this.errors = result.error.issues.reduce((acc, issue) => {
-          acc[issue.path[0]] = this.zodErrors[issue.code] || issue.message;
+        errors.value = result.error.issues.reduce((acc, issue) => {
+          acc[issue.path[0]] = zodErrors[issue.code] || issue.message;
           return acc;
         }, {} as Record<string, string>);
 
         return;
       }
 
-      this.advanceStep({
-        ...this.$data,
-        zodErrors: undefined,
-        errors: undefined,
+      advanceStep({
+        ...state,
       });
-    },
+    };
+
+    return {
+      errors,
+      handleValidateAndAdvance,
+      state,
+      backStep,
+      tiposDeVaga,
+      bancos,
+      gruposSanguineos,
+    };
   },
-};
+});
 </script>
 
 <template>
@@ -190,7 +253,7 @@ export default {
               optionLabel="name"
               optionValue="code"
               placeholder="Selecione o tipo da vaga"
-              v-model="tipoVaga"
+              v-model="state.tipoVaga"
               :class="{ 'p-invalid': errors['tipoVaga'] }"
             />
             <small class="text-rose-600">{{ errors["tipoVaga"] }}</small>
@@ -292,7 +355,7 @@ export default {
               :options="gruposSanguineos"
               optionLabel="name"
               optionValue="name"
-              v-model="grupoSanguineo"
+              v-model="state.grupoSanguineo"
             />
           </div>
           <div class="field col">
@@ -356,7 +419,7 @@ export default {
               :options="bancos"
               optionLabel="name"
               optionValue="name"
-              v-model="banco"
+              v-model="state.banco"
               :class="{ 'p-invalid': errors['banco'] }"
             />
             <small class="text-rose-600">{{ errors["banco"] }}</small>
@@ -369,7 +432,7 @@ export default {
             <InputText
               id="numAgencia"
               type="text"
-              v-model="numAgencia"
+              v-model="state.numAgencia"
               :class="{ 'p-invalid': errors['numAgencia'] }"
             />
             <small class="text-rose-600">{{ errors["numAgencia"] }}</small>
@@ -381,7 +444,7 @@ export default {
               id="numConta"
               type="text"
               mask="999.999-9"
-              v-model="numConta"
+              v-model="state.numConta"
               :class="{ 'p-invalid': errors['numConta'] }"
             />
             <small class="text-rose-600">{{ errors["numConta"] }}</small>
@@ -394,7 +457,7 @@ export default {
             <InputText
               id="nomeAgencia"
               type="text"
-              v-model="nomeAgencia"
+              v-model="state.nomeAgencia"
               :class="{ 'p-invalid': errors['nomeAgencia'] }"
             />
             <small class="text-rose-600">{{ errors["nomeAgencia"] }}</small>
@@ -405,7 +468,7 @@ export default {
             <InputText
               id="cidadeAgencia"
               type="text"
-              v-model="cidadeAgencia"
+              v-model="state.cidadeAgencia"
               :class="{ 'p-invalid': errors['cidadeAgencia'] }"
             />
             <small class="text-rose-600">{{ errors["cidadeAgencia"] }}</small>
@@ -418,7 +481,7 @@ export default {
             <InputText
               id="endAgencia"
               type="text"
-              v-model="enderecoAgencia"
+              v-model="state.enderecoAgencia"
               :class="{ 'p-invalid': errors['enderecoAgencia'] }"
             />
             <small class="text-rose-600">{{ errors["enderecoAgencia"] }}</small>
@@ -429,7 +492,7 @@ export default {
             <InputText
               id="bairroAgencia"
               type="text"
-              v-model="bairroAgencia"
+              v-model="state.bairroAgencia"
               :class="{ 'p-invalid': errors['bairroAgencia'] }"
             />
             <small class="text-rose-600">{{ errors["bairroAgencia"] }}</small>
@@ -447,7 +510,7 @@ export default {
               id="certificadoMilitar"
               type="text"
               placeholder="Obrigatório para homens acima dos 18 anos"
-              v-model="certificadoMilitar"
+              v-model="state.certificadoMilitar"
               :class="{ 'p-invalid': errors['certificadoMilitar'] }"
             />
             <small class="text-rose-600">{{
@@ -461,7 +524,7 @@ export default {
             <InputText
               id="orgaoExpedicaoCertMilitar"
               type="text"
-              v-model="orgaoExpedicaoCertMilitar"
+              v-model="state.orgaoExpedicaoCertMilitar"
               :class="{ 'p-invalid': errors['orgaoExpedicaoCertMilitar'] }"
             />
             <small class="text-rose-600">{{
@@ -474,7 +537,7 @@ export default {
             <InputText
               id="serieCertMilitar"
               type="text"
-              v-model="serieCertMilitar"
+              v-model="state.serieCertMilitar"
               :class="{ 'p-invalid': errors['serieCertMilitar'] }"
             />
             <small class="text-rose-600">{{
@@ -487,7 +550,7 @@ export default {
 
     <div class="w-full flex justify-end gap-2">
       <Button
-        @click="() => backStep({ ...$data })"
+        @click="() => backStep({ ...state })"
         label="Voltar"
         class="p-button-secondary"
         icon="pi pi-arrow-left"

@@ -1,13 +1,31 @@
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+import { TipoEstagio } from "../../types/NovoEstagio";
+
+export default defineComponent({
   props: {
     termo: {
       type: Object,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
+  setup() {
+    const formatMoney = (value: number) => {
+      return Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(value);
+    };
 
-};
+    const parseTipoEstagio = (tipo: TipoEstagio) =>
+      tipo === "Obrigatorio" ? "Obrigatório" : "Não Obrigatório";
+
+    return {
+      formatMoney,
+      parseTipoEstagio,
+    };
+  },
+});
 </script>
 
 <template>
@@ -17,7 +35,7 @@ export default {
     <div class="grid">
       <div class="col-4">
         <strong>Tipo do Estágio</strong>
-        <p>{{ termo?.tipoEstagio }}</p>
+        <p>{{ parseTipoEstagio(termo?.tipoEstagio) }}</p>
       </div>
       <div class="col-4">
         <strong>Estágio na UFPR</strong>
@@ -34,16 +52,18 @@ export default {
 
       <div class="col-4">
         <strong>Valor da Bolsa Auxílio (mensal)</strong>
-        <p>{{ Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(termo?.valorBolsa || 0) }}</p>
+        <p>
+          {{ formatMoney(termo?.valorBolsa || 0) }}
+        </p>
       </div>
       <div class="col-4">
         <strong>Valor do Auxílio Transporte</strong>
-        <p>{{ Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(termo?.valorTransporte || 0) }}</p>
+        <p>
+          {{ formatMoney(termo?.valorTransporte || 0) }}
+        </p>
       </div>
     </div>
   </div>
 </template>
 
-<style>
-
-</style>
+<style></style>

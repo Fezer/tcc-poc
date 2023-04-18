@@ -20,27 +20,27 @@ public class RelatorioDeEstagioService {
         this.repo = repo;
     }
      
-    public List<RelatorioDeEstagio> listAll() {
+    public List<RelatorioDeEstagio> listarTodosRelatorios() {
         return repo.findAll();
     }
      
-    public RelatorioDeEstagio novo(RelatorioDeEstagio relatorioDeEstagio) {
+    public RelatorioDeEstagio novoRelatorio(RelatorioDeEstagio relatorioDeEstagio) {
         return repo.save(relatorioDeEstagio);
     }
     
-    public RelatorioDeEstagio get(long id) {
+    public RelatorioDeEstagio buscarRelatorioPorId(long id) {
         return repo.findById(id).get();
     }
      
-    public RelatorioDeEstagio save(RelatorioDeEstagio relatorioDeEstagio) {
+    public RelatorioDeEstagio salvarRelatorio(RelatorioDeEstagio relatorioDeEstagio) {
         return repo.save(relatorioDeEstagio);
     }
      
-    public RelatorioDeEstagio update(RelatorioDeEstagio relatorioDeEstagio) {
+    public RelatorioDeEstagio atualizarRelatorio(RelatorioDeEstagio relatorioDeEstagio) {
     	return repo.save(relatorioDeEstagio);
     }
      
-    public void delete(long id) {
+    public void deletarRelatorio(long id) {
         repo.deleteById(id);
     }
 }

@@ -13,6 +13,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -21,6 +23,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "coordenador", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Coordenador extends Pessoa implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -38,6 +41,7 @@ public class Coordenador extends Pessoa implements Serializable{
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="coordenador", cascade=CascadeType.REMOVE)
 	private List<TermoDeEstagio> termoDeEstagio;
 
@@ -52,6 +56,30 @@ public class Coordenador extends Pessoa implements Serializable{
 		this.cpf = cpf;
 		this.curso = curso;
 		this.termoDeEstagio = termoDeEstagio;
+	}
+	
+	public Coordenador(long id, String nome, String telefone, String cpf, Curso curso, List<TermoDeEstagio> termoDeEstagio) {
+		super(id, nome, telefone);
+		this.id = id;
+		this.cpf = cpf;
+		this.curso = curso;
+		this.termoDeEstagio = termoDeEstagio;
+	}
+	
+	public String getNome() {
+		return super.getNome();
+	}
+	
+	public void setNome(String nome) {
+		super.setNome(nome);
+	}
+	
+	public String getTelefone() {
+		return super.getTelefone();
+	}
+	
+	public void setTelefone(String telefone) {
+		super.setTelefone(telefone);
 	}
 
 	public long getId() {

@@ -3,6 +3,8 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -82,9 +84,28 @@ public class DadosAuxiliares implements Serializable{
 	@Column(name = "dataDeEmissao")
 	private Date dataDeEmissao;
 	
+	@Column(name = "estadoNascimento")
+	private String estadoNascimento;
+	
 	@Column(name = "cidadeDeNascimento")
 	private String cidadeDeNascimento;
 	
+	@Column(name = "corRaca")
+	private String corRaca;
+	
+	@Column(name = "expressaoGenero")
+	private String expressaoGenero;
+	
+	@Column(name = "autoIdentificacaoGenero")
+	private String autoIdentificacaoGenero;
+	
+	@Column(name = "orientacaoSexual")
+	private String orientacaoSexual;
+	
+	@Column(name = "emailInstitucional")
+	private String emailInstitucional;
+	
+	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=true)
 	private Aluno aluno;
@@ -98,7 +119,8 @@ public class DadosAuxiliares implements Serializable{
 			String corDaPele, String sexo, String nomeDaMae, String nacionalidade, Date dataDeChegadaNoPais,
 			String orgaoEmissor, String uf, Date dataExpedicao, String tituloEleitoral, int zona, int secao,
 			String certificadoMilitar, String orgaoDeExpedicao, String serie, Date dataDeEmissao,
-			String cidadeDeNascimento, Aluno aluno) {
+			String estadoNascimento, String cidadeDeNascimento, String corRaca, String expressaoGenero,
+			String autoIdentificacaoGenero, String orientacaoSexual, String emailInstitucional, Aluno aluno) {
 		super();
 		this.id = id;
 		this.nomeDoPai = nomeDoPai;
@@ -120,7 +142,13 @@ public class DadosAuxiliares implements Serializable{
 		this.orgaoDeExpedicao = orgaoDeExpedicao;
 		this.serie = serie;
 		this.dataDeEmissao = dataDeEmissao;
+		this.estadoNascimento = estadoNascimento;
 		this.cidadeDeNascimento = cidadeDeNascimento;
+		this.corRaca = corRaca;
+		this.expressaoGenero = expressaoGenero;
+		this.autoIdentificacaoGenero = autoIdentificacaoGenero;
+		this.orientacaoSexual = orientacaoSexual;
+		this.emailInstitucional = emailInstitucional;
 		this.aluno = aluno;
 	}
 
@@ -284,12 +312,60 @@ public class DadosAuxiliares implements Serializable{
 		this.dataDeEmissao = dataDeEmissao;
 	}
 
+	public String getEstadoNascimento() {
+		return estadoNascimento;
+	}
+
+	public void setEstadoNascimento(String estadoNascimento) {
+		this.estadoNascimento = estadoNascimento;
+	}
+
 	public String getCidadeDeNascimento() {
 		return cidadeDeNascimento;
 	}
 
 	public void setCidadeDeNascimento(String cidadeDeNascimento) {
 		this.cidadeDeNascimento = cidadeDeNascimento;
+	}
+
+	public String getCorRaca() {
+		return corRaca;
+	}
+
+	public void setCorRaca(String corRaca) {
+		this.corRaca = corRaca;
+	}
+
+	public String getExpressaoGenero() {
+		return expressaoGenero;
+	}
+
+	public void setExpressaoGenero(String expressaoGenero) {
+		this.expressaoGenero = expressaoGenero;
+	}
+
+	public String getAutoIdentificacaoGenero() {
+		return autoIdentificacaoGenero;
+	}
+
+	public void setAutoIdentificacaoGenero(String autoIdentificacaoGenero) {
+		this.autoIdentificacaoGenero = autoIdentificacaoGenero;
+	}
+
+	public String getOrientacaoSexual() {
+		return orientacaoSexual;
+	}
+
+	public void setOrientacaoSexual(String orientacaoSexual) {
+		this.orientacaoSexual = orientacaoSexual;
+	}
+
+	public String getEmailInstitucional() {
+		return emailInstitucional;
+	}
+
+	public void setEmailInstitucional(String emailInstitucional) {
+		this.emailInstitucional = emailInstitucional;
 	}
 
 	public Aluno getAluno() {
@@ -300,4 +376,8 @@ public class DadosAuxiliares implements Serializable{
 		this.aluno = aluno;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 }

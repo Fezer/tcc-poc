@@ -73,7 +73,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      baseURL: "http://localhost:5000",
+      baseURL: process.env.BACKEND_URL,
     },
   },
 });
