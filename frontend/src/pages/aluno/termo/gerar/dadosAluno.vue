@@ -1,6 +1,5 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AlunoService from "~~/services/AlunoService";
 
 export default defineComponent({
   props: {
@@ -20,11 +19,9 @@ export default defineComponent({
     advanceStep: Function;
     backStep: Function;
   }) {
-    const grr = "GRR20201212";
+    const { aluno } = useAluno();
 
-    const { data: aluno } = await useFetch(
-      `http://localhost:5000/aluno/${grr}`
-    );
+    console.log(aluno);
 
     return {
       advanceStep,

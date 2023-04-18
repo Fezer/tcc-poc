@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, onMounted, reactive, ref } from "vue";
 
 import { z } from "zod";
 import NovoEstagioService from "../../../../../services/NovoEstagioService";
@@ -29,7 +29,6 @@ export default defineComponent({
     advanceStep,
     backStep,
     finalStep,
-    data,
   }: {
     advanceStep: Function;
     backStep?: Function;
@@ -38,9 +37,41 @@ export default defineComponent({
   }) {
     const toast = useToast();
     const errors = ref({} as Record<string, string>);
+    const { termo, setTermo } = useTermo();
+
+    onMounted(() => {
+      if (termo) {
+        state.dataInicio = termo.value?.dataInicio;
+        state.dataFinal = termo.value?.dataFinal;
+        state.jornadaDiaria = termo.value?.jornadaDiaria;
+        state.jornadaSemanal = termo.value?.jornadaSemanal;
+        state.bolsaAuxilio = termo.value?.bolsaAuxilio;
+        state.auxilioTransporte = termo.value?.auxilioTransporte;
+        state.coordenador = termo.value?.coordenador;
+        state.orientador = termo.value?.orientador;
+        state.departamentoOrientador = termo.value?.departamentoOrientador;
+        state.nomeSupervisor = termo.value?.nomeSupervisor;
+        state.telefoneSupervisor = termo.value?.telefoneSupervisor;
+        state.atividades = termo.value?.atividades;
+      }
+    });
 
     const zodErrors = new ZodErrorsService().getTranslatedErrors();
     const novoEstagioService = new NovoEstagioService();
+
+    const { aluno } = useAluno();
+    const idPrograma = aluno?.idPrograma;
+
+    const { data: orientadores } = useAsyncData("aluno", async (a) => {
+      const response = await $fetch(
+        `http://localhost:5000/siga/docentes?idPrograma=${a?.idPrograma}`
+      );
+
+      console.log(a);
+      console.log(response);
+
+      return response?.docentes;
+    });
 
     const state = reactive({
       dataInicio: undefined as undefined | string,
@@ -99,18 +130,13 @@ export default defineComponent({
       });
     };
 
-    const grr = "GRR20201212";
-
-    const { data: aluno } = await useFetch(
-      `http://localhost:5000/aluno/${grr}`
-    );
-
     return {
       errors,
       validateAndAdvance,
       backStep,
       state,
       aluno,
+      orientadores,
     };
   },
 });
@@ -247,11 +273,14 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="orientador">Professor Orientador na UFPR</label>
-            <InputText
+            <Dropdown
               id="orientador"
               type="text"
+              filter
+              :options="orientadores"
+              placeholder="Selecione orientador(a)"
               v-model="state.orientador"
-              :class="errors['orientador'] && 'p-invalid'"
+              :class="{ 'p-invalid': errors['orientador'] }"
             />
             <small class="text-rose-500">{{ errors["orientador"] }}</small>
           </div>

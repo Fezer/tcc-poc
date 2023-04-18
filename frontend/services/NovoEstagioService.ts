@@ -44,4 +44,12 @@ export default class NovoEstagioService extends BaseService {
       },
     });
   }
+
+  public async getTermoEmPreenchimento(grr: string) {
+    return await $fetch(
+      `http://localhost:5000/aluno/${grr}/estagio/emPreenchimento`
+    ).catch((err) => {
+      console.error(err);
+    });
+  }
 }

@@ -1,31 +1,76 @@
-<script>
+<script lang="ts">
+import { defineComponent, reactive } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
+import AlunoService from "~~/services/AlunoService";
+import NovoEstagioService from "../../../services/NovoEstagioService";
 
-export default {
-  data() {
+export default defineComponent({
+  components: { DataTable, Column },
+  async setup() {
+    const grr = "GRR20201212";
+    const alunoService = new AlunoService();
+    const novoEstagioService = new NovoEstagioService();
+
+    const { setAluno } = useAluno();
+    const { setTermo } = useTermo();
+
+    const { data: aluno, error: errAluno } = useAsyncData("aluno", async () => {
+      const response = await alunoService.getAlunoFromSiga(grr);
+      setAluno(response);
+      return response;
+    });
+
+    const { data: termo, error: errTermo } = useAsyncData("termo", async () => {
+      const response = await novoEstagioService.getTermoEmPreenchimento(grr);
+      console.log(response);
+      setTermo(response[0]);
+
+      return response;
+    });
+
     return {
-      termos: [],
+      aluno,
+      termo,
     };
   },
-  components: { DataTable, Column },
-};
+});
 </script>
 
 <template>
   <div>
     <div class="flex flex-col">
-      <h2 class="m-0">João Feliz da Silva</h2>
-      <p class="m-0">GRR20200141</p>
-      <p>Tecnologia em Análise e Desenvolvimento de sistemas</p>
+      <h2 class="m-0">{{ aluno?.nome }}</h2>
+      <p class="m-0">{{ aluno?.grr }}</p>
+      <p>{{ aluno?.curso?.nome }}</p>
     </div>
     <div
       class="h-full w-full flex items-center justify-center flex-col pt-3"
-      v-if="termos.length === 0"
+      v-if="termo && termo[0]"
     >
       <p>
-        Você não possui nenhum estágio ativo! Deseja iniciar um novo estágio
-        gerando um termo de compromisso?
+        Você já tem um termo de compromisso em preenchimento! Deseja continuar?
+      </p>
+      <NuxtLink to="/aluno/termo/gerar">
+        <Button label="Continuar preenchimento" icon="pi pi-pencil"></Button>
+      </NuxtLink>
+
+      <NuxtLink to="/estagio/1">
+        <Button
+          label="Ir para estágio dummy (dev)"
+          icon="pi pi-arrow-right"
+          class="p-button-secondary mt-2"
+        ></Button>
+      </NuxtLink>
+    </div>
+
+    <div
+      class="h-full w-full flex items-center justify-center flex-col pt-3"
+      v-else
+    >
+      <p>
+        Você não tem nenhum estágio ou termo ativo. Deseja iniciar um novo
+        termo?
       </p>
       <NuxtLink to="/aluno/termo/gerar">
         <Button
