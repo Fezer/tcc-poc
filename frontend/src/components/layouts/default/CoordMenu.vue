@@ -8,6 +8,11 @@ export default {
           link: "/coord",
           icon: "pi-envelope",
         },
+        {
+          label: "Processos",
+          link: "/coord/coordProcesses",
+          icon: "pi-envelope",
+        },
       ],
     };
   },

@@ -8,6 +8,11 @@ export default {
           link: "/coe",
           icon: "pi-envelope",
         },
+        {
+          label: "Processos",
+          link: "/coe/coeProcesses",
+          icon: "pi-envelope",
+        }
       ],
     };
   },

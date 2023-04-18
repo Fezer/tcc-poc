@@ -8,6 +8,31 @@ export default {
           link: "/coafe",
           icon: "pi-envelope",
         },
+        {
+          label: "Processos",
+          link: "/coafe/coafeProcesses",
+          icon: "pi-envelope",
+        },
+        {
+          label: "Empresas",
+          link: "/coafe/coafeEmpresas",
+          icon: "pi-home",
+        },
+        {
+          label: "Seguradoras",
+          link: "/coafe/coafeSeguradoras",
+          icon: "pi-home",
+        },
+        {
+          label: "Agentes de Integração",
+          link: "/coafe/coafeAgentes",
+          icon: "pi-home",
+        },
+        {
+          label: "Relatórios",
+          link: "/coafe/coafeRelatorios",
+          icon: "pi-file",
+        },
       ],
     };
   },
