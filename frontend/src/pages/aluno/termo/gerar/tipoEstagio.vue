@@ -51,12 +51,12 @@ export default defineComponent({
 
       if (localEstagio && tipoEstagio) {
         try {
-          if (!termo.value.id) {
+          if (!termo?.value?.id) {
             const { id } = await novoEstagioService.criarNovoEstagio();
 
-            termo.value.id = id;
+            termo.value = { id, ...termo.value };
           }
-          const { id } = termo.value;
+          const { id } = termo?.value;
 
           await novoEstagioService.setTipoEstagio(id, tipoEstagio);
 
@@ -68,11 +68,12 @@ export default defineComponent({
             detail: "Erro ao salvar dados",
             life: 3000,
           });
+          console.error(error);
           return;
         }
 
         setTermo({
-          ...termo.value,
+          ...termo,
           estagioUfpr: localEstagio === "UFPR",
           tipoEstagio,
         });
