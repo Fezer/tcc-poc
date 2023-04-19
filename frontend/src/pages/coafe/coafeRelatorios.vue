@@ -14,20 +14,39 @@
         <h5>Relatório de Estágios Ativos</h5>
     </span>
     <div class="card flex flex-wrap justify-content-center gap-3">
-        <div class="flex align-items-center">
+        <div class="flex align-items-left">
             <RadioButton  v-model="checked" inputId="opção1" name="tipoEstagio" value="estagioUfpr" :binary="true" />
             <label for="opção1" class="ml-2"> Estágios UFPR </label>
         </div>
-        <div class="flex align-items-center">
+        <div class="flex align-items-left">
             <RadioButton v-model="checked" inputId="opção2" name="tipoEstagio" value="estagioExterno" :binary="true" />
             <label for="opção2" class="ml-2"> Estágios Externos </label>
         </div>        
+        <div class="flex align-items-center">
+          <span class="p-float-label ml-2">            
+            <Calendar v-model="date" dateFormat="dd/mm/yy" inputId="dataInicio" showIcon showButtonBar />
+            <label for="dataInicio">De </label>
+          </span>
+          <span class="p-float-label ml-2">
+            <Calendar v-model="date" dateFormat="dd/mm/yy" inputId="DatadeFim" showIcon  showButtonBar />
+            <label for="DatadeFim">Até</label>
+          </span>
+        </div>
+        <div class="flex flex-column gap-2">
+            <label for="curso">Curso</label>
+            <InputText id="curso" v-model="value" />
+        </div>
     </div>
+    <span class="p-input-icon-right">
+        <Button label="Cadastrar"></Button>  
+    </span>  
   </div>
 </template>  
 <script>
   import RadioButton  from 'primevue/radiobutton';
-  import Button from "primevue/button";
+  import Calendar from 'primevue/calendar';
+  import InputText from "primevue/inputtext";
+  //import Button from "primevue/button";
  export default {
     data() {
       return {
@@ -47,6 +66,6 @@
 </script>
 <script setup>
 import { ref } from "vue";
-
-const checked = ref(false);
+const value = ref(null);
+const date = ref();
 </script>
