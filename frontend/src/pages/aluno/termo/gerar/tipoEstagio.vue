@@ -21,22 +21,14 @@ export default defineComponent({
   setup({
     advanceStep,
     backStep,
-    dados,
   }: {
     advanceStep: Function;
     backStep: Function;
     dados: any;
   }) {
     const toast = useToast();
+    const { termo, setTermo } = useTermo();
 
-    const preenchimentoEstagio = useNovoEstagio();
-
-    onMounted(() => {
-      if (dados) {
-        dadosTipoEstagio.localEstagio = dados?.localEstagio;
-        dadosTipoEstagio.tipoEstagio = dados?.tipoEstagio;
-      }
-    });
     const locais = [
       { label: "Empresa Externa", value: "EXTERNO" },
       { label: "UFPR", value: "UFPR" },
@@ -59,12 +51,12 @@ export default defineComponent({
 
       if (localEstagio && tipoEstagio) {
         try {
-          if (!preenchimentoEstagio.value.id) {
+          if (!termo?.value?.id) {
             const { id } = await novoEstagioService.criarNovoEstagio();
 
-            preenchimentoEstagio.value.id = id;
+            termo.value = { id, ...termo.value };
           }
-          const { id } = preenchimentoEstagio.value;
+          const { id } = termo?.value;
 
           await novoEstagioService.setTipoEstagio(id, tipoEstagio);
 
@@ -76,8 +68,15 @@ export default defineComponent({
             detail: "Erro ao salvar dados",
             life: 3000,
           });
+          console.error(error);
           return;
         }
+
+        setTermo({
+          ...termo,
+          estagioUfpr: localEstagio === "UFPR",
+          tipoEstagio,
+        });
 
         advanceStep({
           tipoEstagio,
@@ -87,6 +86,15 @@ export default defineComponent({
         error.value = "Este campo é obrigatório";
       }
     };
+
+    onMounted(() => {
+      if (termo) {
+        dadosTipoEstagio.localEstagio = termo.value?.estagioUfpr
+          ? "UFPR"
+          : "EXTERNO";
+        dadosTipoEstagio.tipoEstagio = termo.value?.tipoEstagio;
+      }
+    });
 
     return {
       dadosTipoEstagio,

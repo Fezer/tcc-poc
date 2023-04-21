@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, onMounted, reactive, ref } from "vue";
 
 import { z } from "zod";
 import NovoEstagioService from "../../../../../services/NovoEstagioService";
@@ -25,11 +25,10 @@ export default defineComponent({
       type: Object,
     },
   },
-  setup({
+  async setup({
     advanceStep,
     backStep,
     finalStep,
-    data,
   }: {
     advanceStep: Function;
     backStep?: Function;
@@ -38,9 +37,41 @@ export default defineComponent({
   }) {
     const toast = useToast();
     const errors = ref({} as Record<string, string>);
+    const { termo, setTermo } = useTermo();
+
+    onMounted(() => {
+      if (termo) {
+        state.dataInicio = termo.value?.dataInicio;
+        state.dataFinal = termo.value?.dataFinal;
+        state.jornadaDiaria = termo.value?.jornadaDiaria;
+        state.jornadaSemanal = termo.value?.jornadaSemanal;
+        state.bolsaAuxilio = termo.value?.bolsaAuxilio;
+        state.auxilioTransporte = termo.value?.auxilioTransporte;
+        state.coordenador = termo.value?.coordenador;
+        state.orientador = termo.value?.orientador;
+        state.departamentoOrientador = termo.value?.departamentoOrientador;
+        state.nomeSupervisor = termo.value?.nomeSupervisor;
+        state.telefoneSupervisor = termo.value?.telefoneSupervisor;
+        state.atividades = termo.value?.atividades;
+      }
+    });
 
     const zodErrors = new ZodErrorsService().getTranslatedErrors();
     const novoEstagioService = new NovoEstagioService();
+
+    const { aluno } = useAluno();
+    const idPrograma = aluno?.idPrograma;
+
+    const { data: orientadores } = useAsyncData("aluno", async (a) => {
+      const response = await $fetch(
+        `http://localhost:5000/siga/docentes?idPrograma=${a?.idPrograma}`
+      );
+
+      console.log(a);
+      console.log(response);
+
+      return response?.docentes;
+    });
 
     const state = reactive({
       dataInicio: undefined as undefined | string,
@@ -69,7 +100,7 @@ export default defineComponent({
         jornadaSemanal: z.number().min(1).max(99),
         bolsaAuxilio: z.number(),
         auxilioTransporte: z.number(),
-        // coordenador: z.number(),
+        coordenador: z.string(),
         // orientador: z.number(),
         departamentoOrientador: z.string().min(2),
         nomeSupervisor: z.string().min(2),
@@ -104,6 +135,8 @@ export default defineComponent({
       validateAndAdvance,
       backStep,
       state,
+      aluno,
+      orientadores,
     };
   },
 });
@@ -127,6 +160,9 @@ export default defineComponent({
               id="dataInicio"
               type="text"
               mask="99/99/9999"
+              v-tooltip.top="
+                'Inserir o período de início e término do estágio. Este termo de compromisso deve ser colocado na plataforma, contendo todas as assinaturas, com pelo menos 10 dias ANTES do início das atividades de estágio.'
+              "
               v-model="state.dataInicio"
               required
               :class="errors['dataInicio'] && 'p-invalid'"
@@ -149,8 +185,11 @@ export default defineComponent({
             <InputNumber
               id="jornadaDiaria"
               type="number"
-              :max="24"
+              :max="6"
               :min="1"
+              v-tooltip.top="
+                'Máximo de 4h para estágios de nível fundamental e especial. Máximo de 6h para estágios de nível médio e superior.\n (Art. 10 - Lei Federal 11.788/2008)'
+              "
               suffix="h"
               v-model="state.jornadaDiaria"
               :class="errors['jornadaDiaria'] && 'p-invalid'"
@@ -163,8 +202,11 @@ export default defineComponent({
               id="jornadaSemanal"
               type="number"
               maxlength="2"
-              :max="99"
+              :max="6"
               :min="1"
+              v-tooltip.top="
+                'Máximo de 20h para estágios de nível fundamental e especial. Máximo de 30h para estágios de nível médio e superior. (Art. 10 - Lei Federal no. 11.788/2008).'
+              "
               suffix="h"
               v-model="state.jornadaSemanal"
               :class="errors['jornadaSemanal'] && 'p-invalid'"
@@ -182,6 +224,9 @@ export default defineComponent({
             >
             <InputNumber
               mode="currency"
+              v-tolltip.top="
+                'A contratante é responsável pelo pagamento de bolsa auxílio mensal para o estudante que realiza o estágio na modalidade não obrigatório (Lei Federal 11.788/2008).'
+              "
               currency="BRL"
               id="bolsaAuxilio"
               v-model="state.bolsaAuxilio"
@@ -196,6 +241,9 @@ export default defineComponent({
             <InputNumber
               mode="currency"
               currency="BRL"
+              v-tooltip.top="
+                'A contratante é responsável pelo pagamento de auxílio transporte para o estudante que realiza o estágio na modalidade não obrigatório (Lei Federal 11.788/2008).'
+              "
               id="auxilioTransporte"
               v-model="state.auxilioTransporte"
               :class="errors['auxilioTransporte'] && 'p-invalid'"
@@ -215,7 +263,7 @@ export default defineComponent({
               id="coordenador"
               type="text"
               disabled
-              value="Prof. Dr. Professor Professor"
+              :value="aluno?.coordenador"
               v-model="state.coordenador"
               :class="errors['coordenador'] && 'p-invalid'"
             />
@@ -225,11 +273,14 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="orientador">Professor Orientador na UFPR</label>
-            <InputText
+            <Dropdown
               id="orientador"
               type="text"
+              filter
+              :options="orientadores"
+              placeholder="Selecione orientador(a)"
               v-model="state.orientador"
-              :class="errors['orientador'] && 'p-invalid'"
+              :class="{ 'p-invalid': errors['orientador'] }"
             />
             <small class="text-rose-500">{{ errors["orientador"] }}</small>
           </div>
@@ -288,6 +339,9 @@ export default defineComponent({
             <Textarea
               id="atividades"
               type="text"
+              v-tooltip.top="
+                'Inserir todas as atividades que serão realizadas durante o período de estágio. As atividades devem ser compatíveis com a área do curso do estagiário. (Art. 3 - Lei Federal no. 11.788/2008)(Art. 2 - Instrução Normativa no. 01/13-CEPE)'
+              "
               v-model="state.atividades"
               :class="errors['atividades'] && 'p-invalid'"
               maxlength="700"

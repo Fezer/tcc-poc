@@ -2,12 +2,15 @@ import { TipoEstagio } from "../src/types/NovoEstagio";
 import BaseService from "./BaseService";
 
 export default class NovoEstagioService extends BaseService {
-  ALUNO = 0;
+  ALUNO = "GRR20201212";
 
   async criarNovoEstagio(): Promise<{ id: number }> {
-    const response = await $fetch(this.BASE_URL + "/estagio/novo", {
-      method: "POST",
-    });
+    const response = await $fetch(
+      this.BASE_URL + `/aluno/${this.ALUNO}/estagio`,
+      {
+        method: "POST",
+      }
+    );
 
     if (!response?.id) {
       throw new Error("Erro ao criar novo estágio");
@@ -39,6 +42,14 @@ export default class NovoEstagioService extends BaseService {
       params: {
         estagioUfpr: isEstagioUfpr,
       },
+    });
+  }
+
+  public async getTermoEmPreenchimento(grr: string) {
+    return await $fetch(
+      `http://localhost:5000/aluno/${grr}/estagio/emPreenchimento`
+    ).catch((err) => {
+      console.error(err);
     });
   }
 }

@@ -25,6 +25,8 @@ export default defineComponent({
   },
   setup() {
     const toast = useToast();
+    const { termo } = useTermo();
+
     const state = reactive({
       step: "DADOS_ALUNO" as Steps,
       progressValue: 20,
@@ -43,15 +45,6 @@ export default defineComponent({
         summary: "Termo gerado com sucesso",
         life: 3000,
       });
-
-      const termo = {
-        ...state.dadosTipoEstagio,
-        ...state.tipoContratante,
-        ...state.dadosEstagio,
-        ...state.dadosAuxiliares,
-      };
-
-      console.log(termo);
     };
 
     const handleAdvanceStep = (stepData: any) => {
@@ -157,26 +150,22 @@ export default defineComponent({
       v-if="state.step === 'TIPO_ESTAGIO'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
-      :dados="state.dadosTipoEstagio"
     />
     <TipoContratante
       v-if="state.step === 'TIPO_CONTRATANTE'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
-      :dados="state.tipoContratante"
     />
     <DadosEstagio
       v-if="state.step === 'DADOS_ESTAGIO'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
       :finalStep="!state.estagioUfpr"
-      :dados="state.dadosEstagio"
     />
     <DadosAuxiliares
       v-if="state.step === 'DADOS_AUXILIARES'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
-      :dados="state.dadosAuxiliares"
     />
     <!--
     <div class="w-full flex justify-end gap-2">

@@ -9,7 +9,9 @@ const route = useRoute();
 
 const { id } = route.params;
 
-const { data: aluno } = await useFetch(`http://localhost:5000/aluno/${id}`);
+const grr = "GRR20201212";
+
+const { data: aluno } = await useFetch(`http://localhost:5000/aluno/${grr}`);
 
 // console.log(aluno)
 </script>
@@ -64,9 +66,14 @@ const { data: aluno } = await useFetch(`http://localhost:5000/aluno/${id}`);
         <p>{{ aluno?.ira }}</p>
       </div>
 
+      <div class="col-4">
+        <strong>Turno</strong>
+        <p>{{ aluno?.turno }}</p>
+      </div>
+
       <div class="col-6">
         <strong>Curso</strong>
-        <p>{{ aluno?.curso }}</p>
+        <p>{{ aluno?.curso?.nome }}</p>
       </div>
     </div>
   </div>
