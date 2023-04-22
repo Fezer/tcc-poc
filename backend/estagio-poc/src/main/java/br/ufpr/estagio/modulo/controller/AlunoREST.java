@@ -16,16 +16,19 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
+import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoPoc;
 import br.ufpr.estagio.modulo.repository.TermoPocRepository;
 import br.ufpr.estagio.modulo.service.AlunoService;
@@ -113,7 +116,41 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-	
+
+	@PutMapping("/{grrAlunoURL}/termo/{idTermo}/solicitarAprovacaoTermo")
+	public ResponseEntity<TermoDeEstagioDTO> solicitarAprovacaoTermo(@PathVariable String grrAlunoURL,
+			@PathVariable Long idTermo) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new PocException(HttpStatus.NOT_FOUND, "Aluno não encontrado!");
+				} else {
+					Optional<TermoDeEstagio> termofind = Optional
+							.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
+					if (termofind.isEmpty()) {
+						throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+					} else {
+						TermoDeEstagio termo = alunoService.solicitarAprovacaoTermo(termofind);
+						return ResponseEntity.status(HttpStatus.CREATED)
+								.body(mapper.map(termo, TermoDeEstagioDTO.class));
+					}
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new PocException(HttpStatus.BAD_REQUEST,
+					"O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+
 	@GetMapping("/{grrAlunoURL}/estagio/emPreenchimento")
 	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmPreenchimento(@PathVariable String grrAlunoURL) {
 		try {
@@ -127,7 +164,7 @@ public class AlunoREST {
 					List<Estagio> estagio = estagioService.buscarEstagioEmPreenchimentoPorAluno(aluno);
 					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
 					EstagioDTO estagioDTO = new EstagioDTO();
-					if(estagio.isEmpty()) {
+					if (estagio.isEmpty()) {
 						estagioDTO = null;
 					} else {
 						for (Estagio e : estagio) {
@@ -149,7 +186,7 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-	
+
 	@GetMapping("/{grrAlunoURL}/estagio/emAprovacao")
 	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmAprovacao(@PathVariable String grrAlunoURL) {
 		try {
@@ -163,7 +200,7 @@ public class AlunoREST {
 					List<Estagio> estagio = estagioService.buscarEstagioEmAprovacaoPorAluno(aluno);
 					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
 					EstagioDTO estagioDTO = new EstagioDTO();
-					if(estagio.isEmpty()) {
+					if (estagio.isEmpty()) {
 						estagioDTO = null;
 					} else {
 						for (Estagio e : estagio) {
@@ -185,8 +222,10 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-	
-	//Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em andamento.
+
+	// Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não
+	// iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em
+	// andamento.
 	@GetMapping("/{grrAlunoURL}/estagio/emProgresso")
 	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmProgresso(@PathVariable String grrAlunoURL) {
 		try {
@@ -200,7 +239,7 @@ public class AlunoREST {
 					List<Estagio> estagio = estagioService.buscarEstagioEmProgressoPorAluno(aluno);
 					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
 					EstagioDTO estagioDTO = new EstagioDTO();
-					if(estagio.isEmpty()) {
+					if (estagio.isEmpty()) {
 						estagioDTO = null;
 					} else {
 						for (Estagio e : estagio) {
@@ -222,5 +261,5 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-	
+
 }
