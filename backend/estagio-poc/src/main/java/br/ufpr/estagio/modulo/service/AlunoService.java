@@ -13,6 +13,7 @@ import br.ufpr.estagio.modulo.dto.AlunoDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
+import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
@@ -140,5 +141,31 @@ public class AlunoService {
 		alunoRepo.save(aluno);
 		
 		return estagio;
+	}
+
+	public TermoDeEstagio solicitarAprovacaoTermo(Optional<TermoDeEstagio> termofind) {
+		TermoDeEstagio termoAtualizado = termofind.get();
+		Estagio estagio = termoAtualizado.getEstagio();
+		
+		EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
+		estagio.setStatusEstagio(statusEstagio);
+		
+		EnumEtapaFluxo etapaFluxo = null;
+		//Se for estágio obrigatório não passa pela COE
+		if(estagio.getTipoEstagio() == EnumTipoEstagio.Obrigatorio) {
+			etapaFluxo = EnumEtapaFluxo.Coordenacao;
+		} else {
+			etapaFluxo = EnumEtapaFluxo.COE;
+		}
+		
+		termoAtualizado.setEtapaFluxo(etapaFluxo);
+		
+		EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
+		
+		termoAtualizado.setStatusTermo(statusTermo);
+		
+		estagioRepo.save(estagio);
+				
+		return termoRepo.save(termoAtualizado);
 	}
 }

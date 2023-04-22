@@ -20,10 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
+import br.ufpr.estagio.modulo.dto.PlanoDeAtividadesDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
-import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
@@ -111,9 +110,27 @@ public class TermoREST {
 		if(termofind.isEmpty()) {
 			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
 		} else {
-			termoDeEstagioService.salvar(mapper.map(termofind, TermoDeEstagio.class));
-			termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
-			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termofind, TermoDeEstagioDTO.class));
+			TermoDeEstagio termoAtualizado = termoDeEstagioService.atualizarDados(termofind, termo);
+			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
+		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/{id}/planoAtividades")
+	public ResponseEntity<TermoDeEstagioDTO> atualizarPlanoAtividades(@PathVariable Long id, @RequestBody PlanoDeAtividadesDTO planoAtividades){
+		try {
+			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
+		if(termofind.isEmpty()) {
+			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+		} else {
+			TermoDeEstagio termoAtualizado = termoDeEstagioService.atualizarPlanoAtividades(termofind, planoAtividades);
+			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
 		}
 		}catch(PocException e) {
 			e.printStackTrace();
