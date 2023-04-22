@@ -23,7 +23,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "coordenador", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
-@Inheritance(strategy = InheritanceType.JOINED)
+//@Inheritance(strategy = InheritanceType.JOINED)
 public class Coordenador extends Pessoa implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

@@ -15,6 +15,7 @@ import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
+import br.ufpr.estagio.modulo.mapper.SigaApiModuloEstagioMapper;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
 import br.ufpr.estagio.modulo.model.Discente;
@@ -28,7 +29,6 @@ import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
 import br.ufpr.estagio.modulo.repository.RelatorioDeEstagioRepository;
 import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
 import br.ufpr.estagio.modulo.service.siga.SigaApiAlunoService;
-import br.ufpr.estagio.modulo.service.siga.SigaApiModuloEstagioMapping;
 
 
  
@@ -40,25 +40,22 @@ public class AlunoService {
 	private AlunoRepository alunoRepo;
 	private EstagioRepository estagioRepo;
 	private PlanoDeAtividadesRepository planoAtividadesRepo;
-	private RelatorioDeEstagioRepository relatorioRepo;
 	private TermoDeEstagioRepository termoRepo;
 	private CienciaCoordenacaoRepository cienciaRepo;
 	private SigaApiAlunoService sigaApiAlunoService;
-	private SigaApiModuloEstagioMapping sigaApiModuloEstagioMapping;
+	private SigaApiModuloEstagioMapper sigaApiModuloEstagioMapping;
 		
     public AlunoService(AlunoRepository alunoRepo,
     		SigaApiAlunoService sigaApiAlunoService,
     		EstagioRepository estagioRepo,
     		PlanoDeAtividadesRepository planoAtividadesRepo,
-    		RelatorioDeEstagioRepository relatorioRepo,
     		CienciaCoordenacaoRepository cienciaRepo,
     		TermoDeEstagioRepository termoRepo,
-    		SigaApiModuloEstagioMapping sigaApiModuloEstagioMapping) {
+    		SigaApiModuloEstagioMapper sigaApiModuloEstagioMapping) {
         this.alunoRepo = alunoRepo;
         this.sigaApiAlunoService = sigaApiAlunoService;
         this.estagioRepo = estagioRepo;
         this.planoAtividadesRepo = planoAtividadesRepo;
-        this.relatorioRepo = relatorioRepo;
         this.cienciaRepo = cienciaRepo;
         this.termoRepo = termoRepo;
         this.sigaApiModuloEstagioMapping = sigaApiModuloEstagioMapping;
