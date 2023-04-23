@@ -7,6 +7,7 @@ import ZodErrorsService from "../../../../../services/ZodErrorsService";
 import validateStringDate from "../../../../utils/validateStringDate";
 import { useToast } from "primevue/usetoast";
 import { DadoEstagio } from "~~/src/types/NovoEstagio";
+import dayjs from "dayjs";
 
 export default defineComponent({
   props: {
@@ -26,7 +27,8 @@ export default defineComponent({
       type: Object,
     },
   },
-  async setup({
+
+  setup({
     advanceStep,
     backStep,
     finalStep,
@@ -36,26 +38,26 @@ export default defineComponent({
     finalStep?: boolean;
     data?: any;
   }) {
+    const { termo, setTermo } = useTermo();
     const toast = useToast();
     const errors = ref({} as Record<string, string>);
-    const { termo, setTermo } = useTermo();
 
     onMounted(() => {
       if (termo) {
-        state.dataInicio = termo.value?.dadosEstagio?.dataInicio;
-        state.dataFinal = termo.value?.dadosEstagio?.dataFinal;
-        state.jornadaDiaria = termo.value?.dadosEstagio?.jornadaDiaria;
-        state.jornadaSemanal = termo.value?.dadosEstagio?.jornadaSemanal;
-        state.bolsaAuxilio = termo.value?.dadosEstagio?.bolsaAuxilio;
-        state.auxilioTransporte = termo.value?.dadosEstagio?.auxilioTransporte;
-        // state.coordenador = termo.value?.dadosEstagio?.coordenador;
-        // state.orientador = termo.value?.dadosEstagio?.orientador;
+        console.log(termo.value);
+        state.dataInicio = termo.value?.dataInicio;
+        state.dataFinal = termo.value?.dataTermino;
+        state.jornadaDiaria = termo.value?.jornadaDiaria;
+        state.jornadaSemanal = termo.value?.jornadaSemanal;
+        state.bolsaAuxilio = termo.value?.bolsaAuxilio;
+        state.auxilioTransporte = termo.value?.auxilioTransporte;
+        // state.coordenador = termo.value?.coordenador;
+        // state.orientador = termo.value?.orientador;
         // state.departamentoOrientador =
-        //   termo.value?.dadosEstagio?.departamentoOrientador;
-        state.nomeSupervisor = termo.value?.dadosEstagio?.nomeSupervisor;
-        state.telefoneSupervisor =
-          termo.value?.dadosEstagio?.telefoneSupervisor;
-        state.atividades = termo.value?.dadosEstagio?.atividades;
+        //   termo.value?.departamentoOrientador;
+        state.nomeSupervisor = termo.value?.nomeSupervisor;
+        state.telefoneSupervisor = termo.value?.telefoneSupervisor;
+        state.atividades = termo.value?.descricaoAtividades;
       }
     });
 
@@ -91,7 +93,7 @@ export default defineComponent({
       atividades: undefined as string | undefined,
     });
 
-    const validateAndAdvance = () => {
+    const validateAndAdvance = async () => {
       // return this.advanceStep();
       errors.value = {};
       const validator = z.object({
@@ -103,13 +105,14 @@ export default defineComponent({
         jornadaSemanal: z.number().min(1).max(99),
         bolsaAuxilio: z.number(),
         auxilioTransporte: z.number(),
-        coordenador: z.string(),
+        // coordenador: z.string(),
         // orientador: z.number(),
-        departamentoOrientador: z.string().min(2),
-        nomeSupervisor: z.string().min(2),
-        telefoneSupervisor: z.string().min(2),
+        // departamentoOrientador: z.string().min(2),
+        // nomeSupervisor: z.string().min(2),
+        // telefoneSupervisor: z.string().min(2),
         atividades: z.string().min(50).max(700),
       });
+      console.log(termo);
 
       const result = validator.safeParse({ ...state });
 
@@ -128,15 +131,39 @@ export default defineComponent({
         return;
       }
 
+      const { id } = termo.value;
+
+      console.log("TERMO ", id);
+
       await novoEstagioService
-        .setDadosEstagio({
-          ...state,
+        .setDadosEstagio(id, {
+          dataInicio: dayjs(state.dataInicio).format("YYYY-MM-DD"),
+          dataFim: dayjs(state.dataFinal).format("YYYY-MM-DD"),
+          jornadaDiaria: state.jornadaDiaria,
+          jornadaSemanal: state.jornadaSemanal,
+          valorBolsa: state.bolsaAuxilio,
+          valorTransporte: state.auxilioTransporte,
         })
         .catch((err) => {
           console.log(err);
           toast.add({
             severity: "error",
-            summary: "Erro",
+            summary: "Erro na etapa de atualizar dados de estágio",
+            detail: "Erro ao salvar dados do estágio",
+            life: 3000,
+          });
+        });
+
+      await novoEstagioService
+        .setAtividadesEstagio(termo.value.id, {
+          local: "Qualquer",
+          descricaoAtividades: state.atividades,
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.add({
+            severity: "error",
+            summary: "Erro na etapa de atualizar as atividades de estágio",
             detail: "Erro ao salvar dados do estágio",
             life: 3000,
           });
@@ -170,18 +197,13 @@ export default defineComponent({
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="dataInicio"
-              >Data de Início {{ state.dataInicio }}</label
-            >
+            <label for="dataInicio">Data de Início</label>
             <InputMask
-              id="dataInicio"
-              type="text"
               mask="99/99/9999"
               v-tooltip.top="
                 'Inserir o período de início e término do estágio. Este termo de compromisso deve ser colocado na plataforma, contendo todas as assinaturas, com pelo menos 10 dias ANTES do início das atividades de estágio.'
               "
               v-model="state.dataInicio"
-              required
               :class="errors['dataInicio'] && 'p-invalid'"
             />
             <small class="text-rose-500">{{ errors["dataInicio"] }}</small>
@@ -189,8 +211,6 @@ export default defineComponent({
           <div class="field col">
             <label for="dataFinal">Data de Termino</label>
             <InputMask
-              id="dataFinal"
-              type="text"
               mask="99/99/9999"
               v-model="state.dataFinal"
               :class="errors['dataFinal'] && 'p-invalid'"
@@ -200,8 +220,6 @@ export default defineComponent({
           <div class="field col">
             <label for="jornadaDiaria">Jornada Diária</label>
             <InputNumber
-              id="jornadaDiaria"
-              type="number"
               :max="6"
               :min="1"
               v-tooltip.top="
@@ -216,11 +234,8 @@ export default defineComponent({
           <div class="field col">
             <label for="jornadaSemanal">Jornada Semanal</label>
             <InputNumber
-              id="jornadaSemanal"
-              type="number"
-              maxlength="2"
-              :max="6"
-              :min="1"
+              :max="30"
+              :min="state.jornadaDiaria || 1"
               v-tooltip.top="
                 'Máximo de 20h para estágios de nível fundamental e especial. Máximo de 30h para estágios de nível médio e superior. (Art. 10 - Lei Federal no. 11.788/2008).'
               "
@@ -241,7 +256,7 @@ export default defineComponent({
             >
             <InputNumber
               mode="currency"
-              v-tolltip.top="
+              v-tooltip.top="
                 'A contratante é responsável pelo pagamento de bolsa auxílio mensal para o estudante que realiza o estágio na modalidade não obrigatório (Lei Federal 11.788/2008).'
               "
               currency="BRL"

@@ -73,9 +73,9 @@ export default defineComponent({
         }
 
         setTermo({
-          ...termo,
-          estagioUfpr: localEstagio === "UFPR",
+          ...termo.value,
           tipoEstagio,
+          estagioUfpr: localEstagio === "UFPR",
         });
 
         advanceStep({
@@ -91,7 +91,7 @@ export default defineComponent({
       if (termo) {
         dadosTipoEstagio.localEstagio = termo.value?.estagioUfpr
           ? "UFPR"
-          : "EXTERNO";
+          : termo.value?.estagioUfpr === false && "EXTERNO";
         dadosTipoEstagio.tipoEstagio = termo.value?.tipoEstagio;
       }
     });

@@ -8,6 +8,7 @@ const useTermo = (): {
   const termo = useState<NovoEsatgio>("termo");
 
   const setTermo = (termoData: any) => {
+    console.log("setting termo", termoData);
     termo.value = termoData;
   };
 

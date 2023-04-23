@@ -24,6 +24,7 @@ export default defineComponent({
     DadosEstagio,
   },
   setup() {
+    const router = useRouter();
     const toast = useToast();
     const { termo } = useTermo();
 
@@ -45,6 +46,11 @@ export default defineComponent({
         summary: "Termo gerado com sucesso",
         life: 3000,
       });
+      setTimeout(() => {
+        router.push({
+          path: "/termo/" + termo.value.id,
+        });
+      }, 3000);
     };
 
     const handleAdvanceStep = (stepData: any) => {
@@ -75,16 +81,26 @@ export default defineComponent({
         case "DADOS_ESTAGIO":
           state.dadosEstagio = stepData;
 
-          if (!state.estagioUfpr) {
-            return handleGenerateTerm();
-          }
-          state.step = "DADOS_AUXILIARES";
-          state.progressValue = 100;
+          console.log("termo", termo.value);
 
-          break;
+          console.log(!termo.value.estagioUfpr);
+          console.log("step dados_estagio");
+
+          if (
+            termo.value.estagioUfpr &&
+            termo.value.tipoEstagio === "Obrigatorio"
+          ) {
+            state.step = "DADOS_AUXILIARES";
+            state.progressValue = 100;
+            break;
+          }
+
+          handleGenerateTerm();
+          return;
         case "DADOS_AUXILIARES":
           state.dadosAuxiliares = stepData;
-          return handleGenerateTerm();
+          handleGenerateTerm();
+          return;
       }
     };
     const handleBackStep = (stepData: any) => {

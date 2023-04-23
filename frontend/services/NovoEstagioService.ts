@@ -71,7 +71,7 @@ export default class NovoEstagioService extends BaseService {
   }
 
   public async setAtividadesEstagio(id, atividades) {
-    return await $fetch(this.BASE_URL + `/termo/${id}/atividades`, {
+    return await $fetch(this.BASE_URL + `/termo/${id}/planoAtividades`, {
       method: "PUT",
       body: atividades,
     });
