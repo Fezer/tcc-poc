@@ -215,6 +215,38 @@
 					"response": []
 				},
 				{
+					"name": "associarSupervisorAoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo/11/associarSupervisor/752",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"11",
+								"associarSupervisor",
+								"752"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "aprovarTermoCOAFE",
 					"request": {
 						"method": "PUT",
@@ -1169,7 +1201,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/supervisor/652",
+							"raw": "http://localhost:5000/supervisor/752",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1177,7 +1209,7 @@
 							"port": "5000",
 							"path": [
 								"supervisor",
-								"652"
+								"752"
 							]
 						}
 					},
