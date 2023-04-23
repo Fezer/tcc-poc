@@ -979,6 +979,36 @@
 					"response": []
 				},
 				{
+					"name": "criarApoliceSeguradora",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numero\": \"12345\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/seguradora/1/apolice",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"seguradora",
+								"1",
+								"apolice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "listSeguradora",
 					"request": {
 						"method": "GET",
