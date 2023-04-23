@@ -1,5 +1,6 @@
 package br.ufpr.estagio.modulo.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import br.ufpr.estagio.modulo.model.Coordenador;
 import br.ufpr.estagio.modulo.model.Curso;
 import br.ufpr.estagio.modulo.model.CursoSiga;
 import br.ufpr.estagio.modulo.model.Discente;
+import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CoordenadorRepository;
 import br.ufpr.estagio.modulo.repository.CursoRepository;
@@ -87,8 +89,14 @@ public class SigaApiModuloEstagioMapper {
 		return aluno;
 	}
 	
-	public Curso MapearCursoSigaEmCurso(CursoSiga cursoSiga) {
+	public Curso mapearCursoSigaEmCurso(CursoSiga cursoSiga) {
 		
 		return null;
 	}
+	
+	public List<Orientador> mapearDocentesEmListaOrientadores(ArrayList<String> listaDocentes) {
+		
+		return null;
+	}
+	
 }

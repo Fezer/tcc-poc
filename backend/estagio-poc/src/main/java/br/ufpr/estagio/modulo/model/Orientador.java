@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,16 +20,17 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "orientador", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+//@Table(name = "orientador", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "orientador")
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class Orientador extends Pessoa implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private long id;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Column(name = "id")
+//	private long id;
 	
 	@Column(name = "cpf")
 	private String cpf;
@@ -53,13 +55,11 @@ public class Orientador extends Pessoa implements Serializable{
 	
 	public Orientador() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Orientador(long id, String cpf, String lotacao, String departamento, List<Curso> curso,
 			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio) {
 		super();
-		this.id = id;
 		this.cpf = cpf;
 		this.lotacao = lotacao;
 		this.departamento = departamento;
@@ -71,7 +71,6 @@ public class Orientador extends Pessoa implements Serializable{
 	public Orientador(long id, String nome, String telefone, String cpf, String lotacao, String departamento, List<Curso> curso,
 			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio) {
 		super(id, nome, telefone);
-		this.id = id;
 		this.cpf = cpf;
 		this.lotacao = lotacao;
 		this.departamento = departamento;
@@ -97,11 +96,11 @@ public class Orientador extends Pessoa implements Serializable{
 	}
 
 	public long getId() {
-		return id;
+		return super.getId();
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		super.setId(id);
 	}
 
 	public String getCpf() {

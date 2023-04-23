@@ -1,12 +1,17 @@
 package br.ufpr.estagio.modulo.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.model.Estagio;
 
-public class ContratanteDTO {
+public class ContratanteDTO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private EnumTipoContratante tipo;
 	private String cnpj;

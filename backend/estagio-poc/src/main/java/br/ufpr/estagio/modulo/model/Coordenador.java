@@ -22,16 +22,17 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "coordenador", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+//@Table(name = "coordenador", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "coordenador")
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class Coordenador extends Pessoa implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id")
-	private long id;
+//	@Id
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@Column(name = "id")
+//	private long id;
 
 	@Column(name = "cpf")
 	private String cpf;
@@ -52,7 +53,6 @@ public class Coordenador extends Pessoa implements Serializable{
 
 	public Coordenador(long id, String cpf, Curso curso, List<TermoDeEstagio> termoDeEstagio) {
 		super();
-		this.id = id;
 		this.cpf = cpf;
 		this.curso = curso;
 		this.termoDeEstagio = termoDeEstagio;
@@ -60,7 +60,6 @@ public class Coordenador extends Pessoa implements Serializable{
 	
 	public Coordenador(long id, String nome, String telefone, String cpf, Curso curso, List<TermoDeEstagio> termoDeEstagio) {
 		super(id, nome, telefone);
-		this.id = id;
 		this.cpf = cpf;
 		this.curso = curso;
 		this.termoDeEstagio = termoDeEstagio;
@@ -83,11 +82,11 @@ public class Coordenador extends Pessoa implements Serializable{
 	}
 
 	public long getId() {
-		return id;
+		return super.getId();
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		super.setId(id);
 	}
 
 	public String getCpf() {

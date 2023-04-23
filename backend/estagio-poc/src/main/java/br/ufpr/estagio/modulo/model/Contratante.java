@@ -19,16 +19,17 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "contratante", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+//@Table(name = "contratante", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "contratante")
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class Contratante extends Pessoa implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id")
-	private long id;
+//	@Id
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@Column(name = "id")
+//	private long id;
 	
 	@Column(name = "tipo")
 	private EnumTipoContratante tipo;
@@ -54,7 +55,6 @@ public class Contratante extends Pessoa implements Serializable {
 	public Contratante(long id, EnumTipoContratante tipo, String cnpj, String cpf, String representanteEmpresa,
 			List<Estagio> estagio) {
 		super();
-		this.id = id;
 		this.tipo = tipo;
 		this.cnpj = cnpj;
 		this.cpf = cpf;
@@ -63,11 +63,11 @@ public class Contratante extends Pessoa implements Serializable {
 	}
 
 	public long getId() {
-		return id;
+		return super.getId();
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		super.setId(id);
 	}
 
 	public EnumTipoContratante getTipo() {

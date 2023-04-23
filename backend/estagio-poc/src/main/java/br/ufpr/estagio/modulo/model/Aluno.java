@@ -24,16 +24,17 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "aluno", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+//@Table(name = "aluno", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "aluno")
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class Aluno extends Pessoa implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id")
-	private long id;
+//	@Id
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@Column(name = "id")
+//	private long id;
 	
 	@Column(name = "idDiscente")
 	private long idDiscente;
@@ -92,7 +93,6 @@ public class Aluno extends Pessoa implements Serializable {
 			Curso curso, DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, List<Disciplina> disciplina,
 			List<Estagio> estagio, String nome, String telefone) {
 		super(id, nome, telefone);
-		this.id = id;
 		this.idDiscente = idDiscente;
 		this.isPcd = isPcd;
 		this.matricula = matricula;
@@ -110,11 +110,11 @@ public class Aluno extends Pessoa implements Serializable {
 
 	
 	public long getId() {
-		return id;
+		return super.getId();
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		super.setId(id);
 	}
 	
 	public String getNome() {

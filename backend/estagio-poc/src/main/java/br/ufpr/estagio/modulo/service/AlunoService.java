@@ -123,6 +123,7 @@ public class AlunoService {
 		estagio.setTermoDeCompromisso(termoDeCompromisso);
 		CienciaCoordenacao cienciaCoordenacao = new CienciaCoordenacao();
 		termoDeCompromisso.setCienciaCoordenacao(cienciaCoordenacao);
+		termoDeCompromisso.setCoordenador(aluno.getCurso().getCoordenador().get(0));
 		
 		//Bloco de criação do Plano De Atividades com as devidas associações entre Termo De Estágio e Estagio.
 		PlanoDeAtividades planoDeAtividades = new PlanoDeAtividades();
