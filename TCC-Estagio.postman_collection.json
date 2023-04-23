@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "2a2d441c-0840-465d-b599-8c657d928176",
-		"name": "TCC-Estagio Copy",
+		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18567474"
 	},
@@ -121,6 +121,37 @@
 				},
 				{
 					"name": "updatePlanoAtividades",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"local\": \"Qualquer\",\r\n    \"descricaoAtividades\": \"atividades Bacanas\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo/4/planoAtividades",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"4",
+								"planoAtividades"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associarOrientadorAoTermo",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -322,29 +353,6 @@
 					"response": []
 				},
 				{
-					"name": "solicitarAprovacaoTermo",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212/termo/4/solicitarAprovacaoTermo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20201212",
-								"termo",
-								"4",
-								"solicitarAprovacaoTermo"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "listarEstagioEmProgresso",
 					"request": {
 						"method": "GET",
@@ -383,6 +391,29 @@
 								"GRR20201212",
 								"estagio",
 								"emAprovacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "solicitarAprovacaoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20201212/termo/4/solicitarAprovacaoTermo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20201212",
+								"termo",
+								"4",
+								"solicitarAprovacaoTermo"
 							]
 						}
 					},
