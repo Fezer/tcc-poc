@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTOv2;
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
 import br.ufpr.estagio.modulo.dto.SeguradoraDTO;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.service.ApoliceService;
@@ -63,6 +65,19 @@ public class SeguradoraREST {
 			
 			return new ResponseEntity<>(seguradoraDTO, HttpStatus.CREATED);	
 			
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+    
+    @PostMapping("/")
+	public ResponseEntity<SeguradoraDTO> criarSeguradora(@RequestBody SeguradoraDTO seguradoraDTO){
+		try {
+			Seguradora seguradora = mapper.map(seguradoraDTO, Seguradora.class);
+			seguradora = seguradoraService.criarSeguradora(seguradora);
+			seguradoraDTO = mapper.map(seguradora, SeguradoraDTO.class);
+			return new ResponseEntity<>(seguradoraDTO, HttpStatus.CREATED);
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");

@@ -3,32 +3,19 @@ package br.ufpr.estagio.modulo.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 public class SeguradoraDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private long id;
-
 	private String nome;
-	
 	private boolean seguradoraUfpr;
-	
 	private List<Apolice> apolice;
-	
 	private List<TermoDeEstagio> termoDeEstagio;
-	
 	private List<Estagio> estagio;
 
 	public SeguradoraDTO() {
