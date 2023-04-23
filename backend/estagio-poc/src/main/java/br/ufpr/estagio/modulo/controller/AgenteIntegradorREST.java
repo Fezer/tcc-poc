@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTO;
+import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTOv2;
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
+import br.ufpr.estagio.modulo.dto.ConvenioDTO;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
+import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
 import br.ufpr.estagio.modulo.service.ConvenioService;
 import br.ufpr.estagio.modulo.service.EstagioService;
@@ -47,6 +50,9 @@ public class AgenteIntegradorREST {
     private TermoDeEstagioService termoDeEstagioService;
     
     @Autowired
+    private ConvenioService ConvenioService;
+    
+    @Autowired
 	private ModelMapper mapper;
     
     @PostMapping("/novo")
@@ -64,6 +70,38 @@ public class AgenteIntegradorREST {
 			
 			return new ResponseEntity<>(agenteIntegradorDTO, HttpStatus.CREATED);	
 			
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+    
+    @PostMapping("/")
+	public ResponseEntity<AgenteIntegradorDTOv2> criarAgenteIntegrador(@RequestBody AgenteIntegradorDTOv2 agenteIntegradorDTO){
+		try {
+			AgenteIntegrador agenteIntegrador = mapper.map(agenteIntegradorDTO, AgenteIntegrador.class);
+			agenteIntegrador = agenteIntegradorService.criarAgenteIntegrador(agenteIntegrador);
+			agenteIntegradorDTO = mapper.map(agenteIntegrador, AgenteIntegradorDTOv2.class);
+			return new ResponseEntity<>(agenteIntegradorDTO, HttpStatus.CREATED);
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+    
+    @PostMapping("/{idAgente}/convenio")
+	public ResponseEntity<ConvenioDTO> criarConvenio(@PathVariable Integer idAgente, @RequestBody ConvenioDTO convenio){
+		try {
+			Optional<AgenteIntegrador> agenteFind = agenteIntegradorService.buscarPorId(idAgente);
+			if(agenteFind.isEmpty()) {
+				throw new PocException(HttpStatus.NOT_FOUND, "Agente integrador não encontrado!");
+			}
+			AgenteIntegrador agente = agenteFind.get();
+			Convenio convenioNovo = mapper.map(convenio, Convenio.class);
+			convenioNovo = convenioService.criarConvenio(convenioNovo);
+			convenioNovo = convenioService.associarAgenteAoConvenio(convenioNovo, agente);
+			convenio = mapper.map(convenioNovo, ConvenioDTO.class);
+			return new ResponseEntity<>(convenio, HttpStatus.CREATED);
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
