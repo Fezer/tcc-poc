@@ -109,9 +109,9 @@ public class AgenteIntegradorREST {
 	}
     
     @GetMapping("/{id}")
-	public ResponseEntity<AgenteIntegradorDTO> buscarAgenteIntegradorPorId(@PathVariable Integer id) {
+	public ResponseEntity<AgenteIntegradorDTOv2> buscarAgenteIntegradorPorId(@PathVariable Integer id) {
 	    Optional<AgenteIntegrador> agenteIntegrador = agenteIntegradorService.buscarPorId(id);
-	    AgenteIntegradorDTO agenteIntegradorDTO = mapper.map(agenteIntegrador, AgenteIntegradorDTO.class);
+	    AgenteIntegradorDTOv2 agenteIntegradorDTO = mapper.map(agenteIntegrador, AgenteIntegradorDTOv2.class);
 	    return ResponseEntity.status(HttpStatus.OK).body(agenteIntegradorDTO);
 	}
 

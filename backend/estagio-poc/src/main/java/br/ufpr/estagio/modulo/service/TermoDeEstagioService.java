@@ -13,10 +13,12 @@ import br.ufpr.estagio.modulo.dto.PlanoDeAtividadesDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
+import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
+import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.OrientadorRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
@@ -28,9 +30,14 @@ public class TermoDeEstagioService {
 	
 	@Autowired
 	private TermoDeEstagioRepository termoRepo;
+	@Autowired
 	private PlanoDeAtividadesRepository planoRepo;
+	@Autowired
 	private OrientadorRepository orientadorRepo;
+	@Autowired
 	private EstagioRepository estagioRepo;
+	@Autowired
+	private AgenteIntegradorRepository agenteIntegradorRepository;
 	
     public TermoDeEstagioService(TermoDeEstagioRepository termoRepo,
     		PlanoDeAtividadesRepository planoRepo,
@@ -111,6 +118,41 @@ public class TermoDeEstagioService {
 		}
 		
 		orientadorRepo.save(orientador);
+		estagioRepo.save(termoDeEstagio.getEstagio());
+		termoDeEstagio = termoRepo.save(termoDeEstagio);
+		
+		return termoDeEstagio;
+	}
+
+	public TermoDeEstagio associarAgenteIntegradorAoTermo(TermoDeEstagio termoDeEstagio,
+			AgenteIntegrador agenteIntegrador) {
+		//Associa o agente integrador ao termo;
+		termoDeEstagio.setAgenteIntegrador(agenteIntegrador);
+		
+		//Associa o agente integrador ao Estagio;
+		termoDeEstagio.getEstagio().setAgenteIntegrador(agenteIntegrador);
+		
+		//Associa o termo ao agente integrador;
+		List<TermoDeEstagio> listaTermos = agenteIntegrador.getTermoDeEstagio();
+		if(listaTermos == null) {
+			listaTermos = new ArrayList<TermoDeEstagio>();
+		}
+		if(!listaTermos.contains(termoDeEstagio)) {
+			listaTermos.add(termoDeEstagio);
+			agenteIntegrador.setTermoDeEstagio(listaTermos);
+		}
+		
+		//Associa o estagio ao agente integrador;
+		List<Estagio> listaEstagios = agenteIntegrador.getEstagio();
+		if(listaEstagios == null) {
+			listaEstagios = new ArrayList<Estagio>();
+		}
+		if(!listaEstagios.contains(termoDeEstagio.getEstagio())) {
+			listaEstagios.add(termoDeEstagio.getEstagio());
+			agenteIntegrador.setEstagio(listaEstagios);
+		}
+		
+		agenteIntegradorRepository.save(agenteIntegrador);
 		estagioRepo.save(termoDeEstagio.getEstagio());
 		termoDeEstagio = termoRepo.save(termoDeEstagio);
 		
