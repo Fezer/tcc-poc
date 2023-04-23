@@ -950,6 +950,35 @@
 					"response": []
 				},
 				{
+					"name": "criarSeguradora",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Seguradora123\",\n    \"seguradoraUfpr\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/seguradora/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"seguradora",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "listSeguradora",
 					"request": {
 						"method": "GET",
