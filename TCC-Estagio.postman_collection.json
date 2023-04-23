@@ -247,6 +247,38 @@
 					"response": []
 				},
 				{
+					"name": "associarApoliceAoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo/11/associarApolice/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"11",
+								"associarApolice",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "aprovarTermoCOAFE",
 					"request": {
 						"method": "PUT",
