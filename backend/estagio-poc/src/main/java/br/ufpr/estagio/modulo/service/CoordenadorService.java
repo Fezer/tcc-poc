@@ -51,6 +51,7 @@ public class CoordenadorService {
     }
 
 	public Coordenador mapearCoordenadorDiscente(Discente discente) {
+		//TO-DO: Isso aqui pode dar problema caso existam dois coordenadores com o mesmo nome. O ideal seria a API do SIGA retornar junto com o nome do Coordenador algum ID dele, ou o CPF do coordenador.
 		Optional<Coordenador> coordenadorFind = coordenadorRepo.findByNome(discente.getCoordenador());
 		Coordenador coordenador = new Coordenador();
 		if(coordenadorFind.isEmpty()) {
