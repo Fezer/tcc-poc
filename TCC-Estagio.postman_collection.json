@@ -46,7 +46,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo/9",
+							"raw": "http://localhost:5000/termo/11",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -54,7 +54,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"9"
+								"11"
 							]
 						}
 					},
@@ -163,10 +163,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"local\": \"Qualquer\",\r\n    \"descricaoAtividades\": \"atividades Bacanas\"\r\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/4/planoAtividades",
+							"raw": "http://localhost:5000/termo/11/associarOrientador/552",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -174,8 +174,41 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"4",
-								"planoAtividades"
+								"11",
+								"associarOrientador",
+								"552"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associarAgenteIntegradorAoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo/11/associarAgenteIntegrador/602",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"11",
+								"associarAgenteIntegrador",
+								"602"
 							]
 						}
 					},
@@ -336,7 +369,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212/estagio/emPreenchimento",
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/emPreenchimento",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -344,7 +377,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20201212",
+								"GRR20175486",
 								"estagio",
 								"emPreenchimento"
 							]
@@ -1166,7 +1199,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Convenio123\",\n    \"telefone\": \"4112341234\",\n    \"cnpj\": \"00010001\"\n}",
+							"raw": "{\n    \"numero\": \"1212\",\n    \"descricao\": \"Inconveniente\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1174,7 +1207,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/",
+							"raw": "http://localhost:5000/agente-integrador/602/convenio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1182,7 +1215,8 @@
 							"port": "5000",
 							"path": [
 								"agente-integrador",
-								""
+								"602",
+								"convenio"
 							]
 						}
 					},
@@ -1194,7 +1228,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/1",
+							"raw": "http://localhost:5000/agente-integrador/602",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1202,7 +1236,7 @@
 							"port": "5000",
 							"path": [
 								"agente-integrador",
-								"1"
+								"602"
 							]
 						}
 					},
