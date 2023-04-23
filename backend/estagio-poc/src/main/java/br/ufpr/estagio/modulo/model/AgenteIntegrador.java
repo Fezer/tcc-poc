@@ -18,15 +18,16 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "agente_integrador", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+//@Table(name = "agente_integrador", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "agente_integrador")
 public class AgenteIntegrador extends Pessoa implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id")
-	private long id;
+//	@Id
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@Column(name = "id")
+//	private long id;
 	
 	@Column(name = "cnpj")
 	private String cnpj;
@@ -51,7 +52,6 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 	public AgenteIntegrador(long id, String cnpj, List<Convenio> convenio,
 			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio) {
 		super();
-		this.id = id;
 		this.cnpj = cnpj;
 		this.convenio = convenio;
 		this.termoDeEstagio = termoDeEstagio;
@@ -59,11 +59,11 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 	}
 
 	public long getId() {
-		return id;
+		return super.getId();
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		super.setId(id);
 	}
 
 	public String getCnpj() {

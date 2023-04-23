@@ -25,7 +25,7 @@ public class TermoDeEstagioDTO {
 	private AgenteIntegrador agenteIntegrador;
 	private Orientador orientador;
 	private Supervisor supervisor;
-	private Coordenador coordenadorCurso;
+	private Coordenador coordenador;
 	private PlanoDeAtividades planoAtividades;
 	private Date dataInicio;
 	private Date dataTermino;
@@ -52,7 +52,7 @@ public class TermoDeEstagioDTO {
 
 	public TermoDeEstagioDTO(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
 			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
-			Coordenador coordenadorCurso, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
+			Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
 			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte, Date dataFimSuspensao,
 			Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo, EnumEtapaFluxo etapaFluxo,
 			CienciaCoordenacao cienciaCoordenacao, EnumParecerAprovadores parecerCOE,
@@ -67,7 +67,7 @@ public class TermoDeEstagioDTO {
 		this.agenteIntegrador = agenteIntegrador;
 		this.orientador = orientador;
 		this.supervisor = supervisor;
-		this.coordenadorCurso = coordenadorCurso;
+		this.coordenador = coordenador;
 		this.planoAtividades = planoAtividades;
 		this.dataInicio = dataInicio;
 		this.dataTermino = dataTermino;
@@ -152,12 +152,12 @@ public class TermoDeEstagioDTO {
 		this.supervisor = supervisor;
 	}
 
-	public Coordenador getCoordenadorCurso() {
-		return coordenadorCurso;
+	public Coordenador getCoordenador() {
+		return coordenador;
 	}
 
-	public void setCoordenadorCurso(Coordenador coordenadorCurso) {
-		this.coordenadorCurso = coordenadorCurso;
+	public void setCoordenador(Coordenador coordenador) {
+		this.coordenador = coordenador;
 	}
 
 	public PlanoDeAtividades getPlanoAtividades() {

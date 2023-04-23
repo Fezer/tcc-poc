@@ -1,5 +1,6 @@
-package br.ufpr.estagio.modulo.service.siga;
+package br.ufpr.estagio.modulo.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,26 +11,38 @@ import org.springframework.transaction.annotation.Transactional;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Coordenador;
 import br.ufpr.estagio.modulo.model.Curso;
+import br.ufpr.estagio.modulo.model.CursoSiga;
 import br.ufpr.estagio.modulo.model.Discente;
+import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CoordenadorRepository;
 import br.ufpr.estagio.modulo.repository.CursoRepository;
+import br.ufpr.estagio.modulo.service.CoordenadorService;
+import br.ufpr.estagio.modulo.service.CursoService;
 
 @Service
 @Transactional
-public class SigaApiModuloEstagioMapping {
+public class SigaApiModuloEstagioMapper {
 	
 	@Autowired
 	private AlunoRepository alunoRepo;
 	private CursoRepository cursoRepo;
 	private CoordenadorRepository coordenadorRepo;
 	
-	public SigaApiModuloEstagioMapping(AlunoRepository alunoRepo,
+	private CursoService cursoService;
+	private CoordenadorService coordenadorService;
+
+	
+	public SigaApiModuloEstagioMapper(AlunoRepository alunoRepo,
 			CursoRepository cursoRepo,
-			CoordenadorRepository coordenadorRepo) {
+			CoordenadorRepository coordenadorRepo,
+			CursoService cursoService,
+			CoordenadorService coordenadorService) {
 		this.alunoRepo = alunoRepo;
 		this.cursoRepo = cursoRepo;
 		this.coordenadorRepo = coordenadorRepo;
+		this.cursoService = cursoService;
+		this.coordenadorService = coordenadorService;
 	}
 
 	public Aluno mapearDiscenteEmAluno (Discente discente) {
@@ -48,30 +61,26 @@ public class SigaApiModuloEstagioMapping {
 		}else {
 			aluno = alunoFind.get();
 		}
-		Optional<Curso> cursoFind = cursoRepo.findByNome(discente.getCurso().getNome());
-		Curso curso = new Curso();
-		if(cursoFind.isEmpty()) {
-			curso.setNome(discente.getCurso().getNome());
-		}else {
-			curso = cursoFind.get();
-		}
-		Optional<Coordenador> coordenadorFind = coordenadorRepo.findByNome(discente.getCoordenador());
-		Coordenador coordenador = new Coordenador();
-		if(coordenadorFind.isEmpty()) {
-			coordenador.setNome(discente.getCoordenador());
-		}else {
-			coordenador = coordenadorFind.get();
-		}		
+		
+		Curso curso = cursoService.mapearCursoDiscente(discente);
+		
+		Coordenador coordenador = coordenadorService.mapearCoordenadorDiscente(discente);
 		
 		aluno.setCurso(curso);
+		//TO-DO: Avaliar se não é melhor colocar essa lógica dentro da classe Curso.
+		List<Aluno> listAluno = curso.getAluno();				
+		if (!listAluno.contains(aluno)){
+			listAluno.add(aluno);
+			curso.setAluno(listAluno);
+		}
 		
-		List<Aluno> listAluno = curso.getAluno();
-		listAluno.add(aluno);
-		curso.setAluno(listAluno);
-		
+		coordenador.setCurso(curso);
+		//TO-DO: Avaliar se não é melhor colocar essa lógica dentro da classe Coordenador.
 		List<Coordenador> listCoordenador = curso.getCoordenador();
-		listCoordenador.add(coordenador);
-		curso.setCoordenador(listCoordenador);
+		if (!listCoordenador.contains(coordenador)) {
+			listCoordenador.add(coordenador);
+			curso.setCoordenador(listCoordenador);
+		}
 		
 		alunoRepo.save(aluno);
 		coordenadorRepo.save(coordenador);
@@ -79,4 +88,15 @@ public class SigaApiModuloEstagioMapping {
 		
 		return aluno;
 	}
+	
+	public Curso mapearCursoSigaEmCurso(CursoSiga cursoSiga) {
+		
+		return null;
+	}
+	
+	public List<Orientador> mapearDocentesEmListaOrientadores(ArrayList<String> listaDocentes) {
+		
+		return null;
+	}
+	
 }

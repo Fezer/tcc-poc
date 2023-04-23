@@ -18,16 +18,17 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "supervisor", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
-@Inheritance(strategy = InheritanceType.JOINED)
+//@Table(name = "supervisor", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "supervisor")
+//@Inheritance(strategy = InheritanceType.JOINED)
 public class Supervisor extends Pessoa implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id")
-	private long id;
+//	@Id
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@Column(name = "id")
+//	private long id;
 
 	@Column(name = "cpf")
 	private String cpf;
@@ -56,7 +57,6 @@ public class Supervisor extends Pessoa implements Serializable{
 	public Supervisor(long id, String cpf, String formacao, List<TermoDeEstagio> termoDeEstagio,
 			List<Estagio> estagio) {
 		super();
-		this.id = id;
 		this.cpf = cpf;
 		this.formacao = formacao;
 		this.termoDeEstagio = termoDeEstagio;
@@ -64,11 +64,11 @@ public class Supervisor extends Pessoa implements Serializable{
 	}
 
 	public long getId() {
-		return id;
+		return super.getId();
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		super.setId(id);
 	}
 
 	public String getCpf() {
