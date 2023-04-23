@@ -1132,6 +1132,129 @@
 			]
 		},
 		{
+			"name": "Supervisor",
+			"item": [
+				{
+					"name": "criarSupervisor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Supervisor123\",\n    \"telefone\": \"4112341234\",\n    \"cpf\": \"12312312312\",\n    \"formacao\": \"TADS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/supervisor/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supervisor",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listSupervisor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/supervisor/652",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supervisor",
+								"652"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listSupervisores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/supervisor/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supervisor",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizarSupervisor",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Supervisor123\",\n    \"telefone\": \"4112341234\",\n    \"cpf\": \"11111111111\",\n    \"formacao\": \"TADS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/supervisor/652",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supervisor",
+								"652"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletarSupervisor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/supervisor/652",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supervisor",
+								"652"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "AgenteIntegrador",
 			"item": [
 				{
