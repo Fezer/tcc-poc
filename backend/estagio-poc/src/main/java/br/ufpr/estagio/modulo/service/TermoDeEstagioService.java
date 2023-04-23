@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +14,11 @@ import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
+import br.ufpr.estagio.modulo.repository.OrientadorRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
 import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
  
@@ -26,11 +29,17 @@ public class TermoDeEstagioService {
 	@Autowired
 	private TermoDeEstagioRepository termoRepo;
 	private PlanoDeAtividadesRepository planoRepo;
+	private OrientadorRepository orientadorRepo;
+	private EstagioRepository estagioRepo;
 	
     public TermoDeEstagioService(TermoDeEstagioRepository termoRepo,
-    		PlanoDeAtividadesRepository planoRepo) {
+    		PlanoDeAtividadesRepository planoRepo,
+    		OrientadorRepository orientadorRepo,
+    		EstagioRepository estagioRepo) {
         this.termoRepo = termoRepo;
         this.planoRepo = planoRepo;
+        this.orientadorRepo = orientadorRepo;
+        this.estagioRepo = estagioRepo;
     }
      
     public List<TermoDeEstagio> listarTodos() {
@@ -82,5 +91,29 @@ public class TermoDeEstagioService {
 		planoAtividadesAtualizado.setDescricaoAtividades(planoAtividades.getDescricaoAtividades() == "" ? planoAtividadesAtualizado.getDescricaoAtividades() : planoAtividades.getDescricaoAtividades());
 		planoRepo.save(planoAtividadesAtualizado);
 		return termoRepo.save(termoAtualizado);
+	}
+
+	public TermoDeEstagio associarOrientadorAoTermo(TermoDeEstagio termoDeEstagio, Orientador orientador) {
+		//Associa o orientador ao termo;
+		termoDeEstagio.setOrientador(orientador);
+		
+		//Associa o orientador ao Estagio;
+		termoDeEstagio.getEstagio().setOrientador(orientador);
+		
+		//Associa o termo ao orientador;
+		List<TermoDeEstagio> listaTermos = orientador.getTermoDeEstagio();
+		if(listaTermos == null) {
+			listaTermos = new ArrayList<TermoDeEstagio>();
+		}
+		if(!listaTermos.contains(termoDeEstagio)) {
+			listaTermos.add(termoDeEstagio);
+			orientador.setTermoDeEstagio(listaTermos);
+		}
+		
+		orientadorRepo.save(orientador);
+		estagioRepo.save(termoDeEstagio.getEstagio());
+		termoDeEstagio = termoRepo.save(termoDeEstagio);
+		
+		return termoDeEstagio;
 	}
 }

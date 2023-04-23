@@ -25,8 +25,10 @@ import br.ufpr.estagio.modulo.dto.PlanoDeAtividadesDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.OrientadorService;
 import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
@@ -38,13 +40,16 @@ public class TermoREST {
     private EstagioService estagioService;
     private TermoDeEstagioService termoDeEstagioService;
     private RelatorioDeEstagioService relatorioDeEstagioService;
+    private OrientadorService orientadorService;
     
     public TermoREST(EstagioService estagioService, 
     		TermoDeEstagioService termoDeEstagioService, 
-    		RelatorioDeEstagioService relatorioDeEstagioService) {
+    		RelatorioDeEstagioService relatorioDeEstagioService,
+    		OrientadorService orientadorService) {
         this.estagioService = estagioService;
         this.termoDeEstagioService = termoDeEstagioService;
         this.relatorioDeEstagioService = relatorioDeEstagioService;
+        this.orientadorService = orientadorService;
     }
 
 	@Autowired
@@ -132,6 +137,29 @@ public class TermoREST {
 			TermoDeEstagio termoAtualizado = termoDeEstagioService.atualizarPlanoAtividades(termofind, planoAtividades);
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
 		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/{termoId}/associarOrientador/{orientadorId}")
+	public ResponseEntity<TermoDeEstagioDTO> associarOrientador(@PathVariable Long termoId, @PathVariable Long orientadorId){
+		try {
+			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
+			if(termofind.isEmpty()) {
+				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+			}
+			Optional<Orientador> orientadorFind = Optional.ofNullable(orientadorService.buscarOrientadorPorId(orientadorId));
+			if(orientadorFind.isEmpty()) {
+				throw new PocException(HttpStatus.NOT_FOUND, "Orientador não encontrado!");			
+			} else {
+				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarOrientadorAoTermo(termofind.get(), orientadorFind.get());
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
+			}
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;
