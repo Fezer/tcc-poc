@@ -17,11 +17,13 @@ import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
+import br.ufpr.estagio.modulo.model.Supervisor;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.OrientadorRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
+import br.ufpr.estagio.modulo.repository.SupervisorRepository;
 import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
  
 @Service
@@ -37,7 +39,9 @@ public class TermoDeEstagioService {
 	@Autowired
 	private EstagioRepository estagioRepo;
 	@Autowired
-	private AgenteIntegradorRepository agenteIntegradorRepository;
+	private AgenteIntegradorRepository agenteIntegradorRepo;
+	@Autowired
+	private SupervisorRepository supervisorRepo;
 	
     public TermoDeEstagioService(TermoDeEstagioRepository termoRepo,
     		PlanoDeAtividadesRepository planoRepo,
@@ -152,8 +156,56 @@ public class TermoDeEstagioService {
 			agenteIntegrador.setEstagio(listaEstagios);
 		}
 		
-		agenteIntegradorRepository.save(agenteIntegrador);
+		agenteIntegradorRepo.save(agenteIntegrador);
 		estagioRepo.save(termoDeEstagio.getEstagio());
+		termoDeEstagio = termoRepo.save(termoDeEstagio);
+		
+		return termoDeEstagio;
+	}
+
+	public TermoDeEstagio associarSupervisorAoTermo(TermoDeEstagio termoDeEstagio, Supervisor supervisor) {
+		//Associa o supervisor ao termo;
+		termoDeEstagio.setSupervisor(supervisor);
+		
+		//Associa o supervisor ao Estagio;
+		termoDeEstagio.getEstagio().setSupervisor(supervisor);
+		
+		//Associa o supervisor ao Plano de Atividades;
+		termoDeEstagio.getPlanoAtividades().setSupervisor(supervisor);
+		
+		//Associa o termo ao supervisor;
+		List<TermoDeEstagio> listaTermos = supervisor.getTermoDeEstagio();
+		if(listaTermos == null) {
+			listaTermos = new ArrayList<TermoDeEstagio>();
+		}
+		if(!listaTermos.contains(termoDeEstagio)) {
+			listaTermos.add(termoDeEstagio);
+			supervisor.setTermoDeEstagio(listaTermos);
+		}
+		
+		//Associa o estagio ao supervisor;
+		List<Estagio> listaEstagios = supervisor.getEstagio();
+		if(listaEstagios == null) {
+			listaEstagios = new ArrayList<Estagio>();
+		}
+		if(!listaEstagios.contains(termoDeEstagio.getEstagio())) {
+			listaEstagios.add(termoDeEstagio.getEstagio());
+			supervisor.setEstagio(listaEstagios);
+		}
+		
+		//Associa o plano de atividades ao supervisor;
+		List<PlanoDeAtividades> listaPlanoDeAtividades = supervisor.getPlanoDeAtividades();
+		if(listaPlanoDeAtividades == null) {
+			listaPlanoDeAtividades = new ArrayList<PlanoDeAtividades>();
+		}
+		if(!listaPlanoDeAtividades.contains(termoDeEstagio.getPlanoAtividades())) {
+			listaPlanoDeAtividades.add(termoDeEstagio.getPlanoAtividades());
+			supervisor.setPlanoDeAtividades(listaPlanoDeAtividades);
+		}
+				
+		supervisorRepo.save(supervisor);
+		estagioRepo.save(termoDeEstagio.getEstagio());
+		planoRepo.save(termoDeEstagio.getPlanoAtividades());
 		termoDeEstagio = termoRepo.save(termoDeEstagio);
 		
 		return termoDeEstagio;

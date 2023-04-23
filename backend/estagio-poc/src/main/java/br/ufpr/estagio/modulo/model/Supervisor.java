@@ -54,13 +54,15 @@ public class Supervisor extends Pessoa implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Supervisor(long id, String cpf, String formacao, List<TermoDeEstagio> termoDeEstagio,
-			List<Estagio> estagio) {
-		super();
+
+	public Supervisor(long id, String nome, String telefone, String cpf, String formacao,
+			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio, List<PlanoDeAtividades> planoDeAtividades) {
+		super(id, nome, telefone);
 		this.cpf = cpf;
 		this.formacao = formacao;
 		this.termoDeEstagio = termoDeEstagio;
 		this.estagio = estagio;
+		this.planoDeAtividades = planoDeAtividades;
 	}
 
 	public String getNome() {
@@ -91,32 +93,54 @@ public class Supervisor extends Pessoa implements Serializable{
 		return cpf;
 	}
 
+
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+
 
 	public String getFormacao() {
 		return formacao;
 	}
 
+
 	public void setFormacao(String formacao) {
 		this.formacao = formacao;
 	}
+
 
 	public List<TermoDeEstagio> getTermoDeEstagio() {
 		return termoDeEstagio;
 	}
 
+
 	public void setTermoDeEstagio(List<TermoDeEstagio> termoDeEstagio) {
 		this.termoDeEstagio = termoDeEstagio;
 	}
+
 
 	public List<Estagio> getEstagio() {
 		return estagio;
 	}
 
+
 	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
+	}
+
+
+	public List<PlanoDeAtividades> getPlanoDeAtividades() {
+		return planoDeAtividades;
+	}
+
+
+	public void setPlanoDeAtividades(List<PlanoDeAtividades> planoDeAtividades) {
+		this.planoDeAtividades = planoDeAtividades;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 }

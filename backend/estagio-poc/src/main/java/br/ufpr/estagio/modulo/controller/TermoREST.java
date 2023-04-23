@@ -27,11 +27,13 @@ import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Orientador;
+import br.ufpr.estagio.modulo.model.Supervisor;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
 import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.OrientadorService;
 import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
+import br.ufpr.estagio.modulo.service.SupervisorService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
@@ -49,6 +51,8 @@ public class TermoREST {
     private OrientadorService orientadorService;
 	@Autowired
     private AgenteIntegradorService agenteIntegradorService;
+	@Autowired
+    private SupervisorService supervisorService;
 
 	@Autowired
 	private ModelMapper mapper;
@@ -179,6 +183,29 @@ public class TermoREST {
 				throw new PocException(HttpStatus.NOT_FOUND, "Agente integrador não encontrado!");			
 			} else {
 				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarAgenteIntegradorAoTermo(termofind.get(), agenteFind.get());
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/{termoId}/associarSupervisor/{supervisorId}")
+	public ResponseEntity<TermoDeEstagioDTO> associarSupervisor(@PathVariable Long termoId, @PathVariable Long supervisorId){
+		try {
+			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
+			if(termofind.isEmpty()) {
+				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+			}
+			Optional<Supervisor> supervisorFind = supervisorService.buscarSupervisorPorId(supervisorId);
+			if(supervisorFind.isEmpty()) {
+				throw new PocException(HttpStatus.NOT_FOUND, "Supervisor não encontrado!");			
+			} else {
+				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarSupervisorAoTermo(termofind.get(), supervisorFind.get());
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
 			}
 		}catch(PocException e) {
