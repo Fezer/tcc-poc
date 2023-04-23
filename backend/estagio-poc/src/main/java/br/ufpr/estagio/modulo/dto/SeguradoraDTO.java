@@ -23,6 +23,8 @@ public class SeguradoraDTO implements Serializable {
 
 	private String nome;
 	
+	private boolean seguradoraUfpr;
+	
 	private List<Apolice> apolice;
 	
 	private List<TermoDeEstagio> termoDeEstagio;
@@ -34,11 +36,12 @@ public class SeguradoraDTO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SeguradoraDTO(long id, String nome, List<Apolice> apolice, List<TermoDeEstagio> termoDeEstagio,
-			List<Estagio> estagio) {
+	public SeguradoraDTO(long id, String nome, boolean seguradoraUfpr, List<Apolice> apolice,
+			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.seguradoraUfpr = seguradoraUfpr;
 		this.apolice = apolice;
 		this.termoDeEstagio = termoDeEstagio;
 		this.estagio = estagio;
@@ -58,6 +61,14 @@ public class SeguradoraDTO implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public boolean isSeguradoraUfpr() {
+		return seguradoraUfpr;
+	}
+
+	public void setSeguradoraUfpr(boolean seguradoraUfpr) {
+		this.seguradoraUfpr = seguradoraUfpr;
 	}
 
 	public List<Apolice> getApolice() {
@@ -83,8 +94,9 @@ public class SeguradoraDTO implements Serializable {
 	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
 	}
-	
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
 }

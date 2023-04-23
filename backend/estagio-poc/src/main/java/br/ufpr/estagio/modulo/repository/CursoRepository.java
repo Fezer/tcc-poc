@@ -10,4 +10,6 @@ public interface CursoRepository extends JpaRepository<Curso, Long>{
 
 	Optional<Curso> findByNome(String nome);
 
+	Curso findByIdPrograma(String idPrograma);
+
 }

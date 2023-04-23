@@ -46,7 +46,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo/6",
+							"raw": "http://localhost:5000/termo/9",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -54,7 +54,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"6"
+								"9"
 							]
 						}
 					},
@@ -102,10 +102,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tipoEstagio\": \"Obrigatorio\",\r\n    \"statusEstagio\": \"EmAprovacao\",\r\n    \"estagioUfpr\": \"false\",\r\n    \"grrAluno\": \"GRR20201212\",\r\n    \"tipoTermoDeEstagio\": \"TermoDeCompromisso\",\r\n    \"statusTermo\": \"EmAprovacao\",\r\n    \"etapaFluxo\": \"COAFE\",\r\n    \"parecerCoordenacao\": \"Aprovado\",\r\n    \"parecerCOE\": \"Aprovado\",\r\n    \"parecerCOAFE\": \"\",\r\n    \"motivoIndeferimento\": \"\",\r\n    \"descricaoAjustes\": \"\",\r\n    \"jornadaDiaria\": 8,\r\n    \"jornadaSemanal\": 40,\r\n    \"dataInicio\": \"\",\r\n    \"dataTermino\": \"\", \r\n    \"valorBolsa\": 2000,\r\n    \"valorTransporte\": 200,\r\n    \"nomeSupervisor\": \"Fulano\",\r\n    \"telefoneSupervisor\": \"041999919999\",\r\n    \"formacaoSupervisor\": \"Analista de Sistemas\",\r\n    \"nomeOrientador\": \"Ciclano\",\r\n    \"departamentoOrientador\": \"SEPT\",\r\n    \"atividadesEstagio\": \"Muitas atividades\",\r\n    \"nomeContratante\": \"Contratante\",\r\n    \"tipoContratante\": \"PJ\",\r\n    \"cnpjContratente\": \"134918231124\",\r\n    \"telefoneContratante\": \"041999919999\",\r\n    \"numeroApolice\": \"1234\",\r\n    \"enderecoContratente\": \"Rua das flores, 123\",\r\n    \"cidadeContratante\": \"Curitiba\",\r\n    \"estadoContratante\": \"PR\"\r\n}"
+							"raw": "{\r\n    \"dataInicio\": \"\",\r\n    \"dataTermino\": \"\", \r\n    \"jornadaDiaria\": 8,\r\n    \"jornadaSemanal\": 48,\r\n    \"valorBolsa\": 2000,\r\n    \"valorTransporte\": 200,\r\n    \"dataFimSuspensao\": \"\",\r\n    \"dataInicioRetomada\": \"\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/102",
+							"raw": "http://localhost:5000/termo/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -113,7 +113,38 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"102"
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePlanoAtividades",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"local\": \"Qualquer\",\r\n    \"descricaoAtividades\": \"atividades Bacanas\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo/4/planoAtividades",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"4",
+								"planoAtividades"
 							]
 						}
 					},
@@ -233,7 +264,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212",
+							"raw": "http://localhost:5000/aluno/GRR20175486",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -241,7 +272,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20201212"
+								"GRR20175486"
 							]
 						}
 					},
@@ -253,7 +284,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212/estagio",
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -261,7 +292,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20201212",
+								"GRR20175486",
 								"estagio"
 							]
 						}
@@ -285,6 +316,29 @@
 								"GRR20201212",
 								"estagio",
 								"emPreenchimento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "solicitarAprovacaoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20201212/termo/4/solicitarAprovacaoTermo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20201212",
+								"termo",
+								"4",
+								"solicitarAprovacaoTermo"
 							]
 						}
 					},
@@ -360,7 +414,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/discentes?grr=GRR20201212",
+							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/discentes?grr=GRR20175486",
 							"protocol": "http",
 							"host": [
 								"siga",
@@ -377,7 +431,7 @@
 							"query": [
 								{
 									"key": "grr",
-									"value": "GRR20201212"
+									"value": "GRR20175486"
 								}
 							]
 						}
@@ -509,7 +563,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/4",
+							"raw": "http://localhost:5000/estagio/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -517,7 +571,7 @@
 							"port": "5000",
 							"path": [
 								"estagio",
-								"4"
+								"1"
 							]
 						}
 					},
@@ -572,6 +626,71 @@
 									"key": "estagioUfpr",
 									"value": "false"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Curso",
+			"item": [
+				{
+					"name": "listCursos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/curso",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"curso"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listCursoPorIdPrograma",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/curso/40001016111G0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"curso",
+								"40001016111G0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listOrientadoresDoCurso",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/curso/40001016111G0/orientadores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"curso",
+								"40001016111G0",
+								"orientadores"
 							]
 						}
 					},
