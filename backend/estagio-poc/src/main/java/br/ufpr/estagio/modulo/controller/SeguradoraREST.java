@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTOv2;
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
+import br.ufpr.estagio.modulo.dto.ConvenioDTO;
 import br.ufpr.estagio.modulo.dto.SeguradoraDTO;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
+import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.service.ApoliceService;
 import br.ufpr.estagio.modulo.service.EstagioService;
@@ -78,6 +80,25 @@ public class SeguradoraREST {
 			seguradora = seguradoraService.criarSeguradora(seguradora);
 			seguradoraDTO = mapper.map(seguradora, SeguradoraDTO.class);
 			return new ResponseEntity<>(seguradoraDTO, HttpStatus.CREATED);
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+    
+    @PostMapping("/{idSeguradora}/apolice")
+	public ResponseEntity<ApoliceDTO> criarApolice(@PathVariable Integer idSeguradora, @RequestBody ApoliceDTO apolice){
+		try {
+			Optional<Seguradora> seguradoraFind = seguradoraService.buscarSeguradoraPorId(idSeguradora);
+			if(seguradoraFind.isEmpty()) {
+				throw new PocException(HttpStatus.NOT_FOUND, "Seguradora não encontrada!");
+			}
+			Seguradora seguradora = seguradoraFind.get();
+			Apolice apoliceNovo = mapper.map(apolice, Apolice.class);
+			apoliceNovo = apoliceService.criarApolice(apoliceNovo);
+			apoliceNovo = apoliceService.associarSeguradoraApolice(apoliceNovo, seguradora);
+			apolice = mapper.map(apoliceNovo, ApoliceDTO.class);
+			return new ResponseEntity<>(apolice, HttpStatus.CREATED);
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
