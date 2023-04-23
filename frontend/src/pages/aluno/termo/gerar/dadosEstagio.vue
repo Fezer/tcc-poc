@@ -6,6 +6,7 @@ import NovoEstagioService from "../../../../../services/NovoEstagioService";
 import ZodErrorsService from "../../../../../services/ZodErrorsService";
 import validateStringDate from "../../../../utils/validateStringDate";
 import { useToast } from "primevue/usetoast";
+import { DadoEstagio } from "~~/src/types/NovoEstagio";
 
 export default defineComponent({
   props: {
@@ -41,18 +42,20 @@ export default defineComponent({
 
     onMounted(() => {
       if (termo) {
-        state.dataInicio = termo.value?.dataInicio;
-        state.dataFinal = termo.value?.dataFinal;
-        state.jornadaDiaria = termo.value?.jornadaDiaria;
-        state.jornadaSemanal = termo.value?.jornadaSemanal;
-        state.bolsaAuxilio = termo.value?.bolsaAuxilio;
-        state.auxilioTransporte = termo.value?.auxilioTransporte;
-        state.coordenador = termo.value?.coordenador;
-        state.orientador = termo.value?.orientador;
-        state.departamentoOrientador = termo.value?.departamentoOrientador;
-        state.nomeSupervisor = termo.value?.nomeSupervisor;
-        state.telefoneSupervisor = termo.value?.telefoneSupervisor;
-        state.atividades = termo.value?.atividades;
+        state.dataInicio = termo.value?.dadosEstagio?.dataInicio;
+        state.dataFinal = termo.value?.dadosEstagio?.dataFinal;
+        state.jornadaDiaria = termo.value?.dadosEstagio?.jornadaDiaria;
+        state.jornadaSemanal = termo.value?.dadosEstagio?.jornadaSemanal;
+        state.bolsaAuxilio = termo.value?.dadosEstagio?.bolsaAuxilio;
+        state.auxilioTransporte = termo.value?.dadosEstagio?.auxilioTransporte;
+        // state.coordenador = termo.value?.dadosEstagio?.coordenador;
+        // state.orientador = termo.value?.dadosEstagio?.orientador;
+        // state.departamentoOrientador =
+        //   termo.value?.dadosEstagio?.departamentoOrientador;
+        state.nomeSupervisor = termo.value?.dadosEstagio?.nomeSupervisor;
+        state.telefoneSupervisor =
+          termo.value?.dadosEstagio?.telefoneSupervisor;
+        state.atividades = termo.value?.dadosEstagio?.atividades;
       }
     });
 
@@ -76,15 +79,15 @@ export default defineComponent({
     const state = reactive({
       dataInicio: undefined as undefined | string,
       dataFinal: undefined as undefined | string,
-      jornadaDiaria: undefined as string | undefined,
-      jornadaSemanal: undefined as string | undefined,
-      bolsaAuxilio: undefined as string | undefined,
-      auxilioTransporte: undefined as string | undefined,
-      coordenador: undefined as string | undefined,
-      orientador: undefined as string | undefined,
-      departamentoOrientador: undefined as string | undefined,
-      nomeSupervisor: undefined as string | undefined,
-      telefoneSupervisor: undefined as string | undefined,
+      jornadaDiaria: undefined as number | undefined,
+      jornadaSemanal: undefined as number | undefined,
+      bolsaAuxilio: undefined as number | undefined,
+      auxilioTransporte: undefined as number | undefined,
+      // coordenador: undefined as string | undefined,
+      // orientador: undefined as string | undefined,
+      // departamentoOrientador: undefined as string | undefined,
+      // nomeSupervisor: undefined as string | undefined,
+      // telefoneSupervisor: undefined as string | undefined,
       atividades: undefined as string | undefined,
     });
 
@@ -124,6 +127,20 @@ export default defineComponent({
         }, {} as Record<string, string>);
         return;
       }
+
+      await novoEstagioService
+        .setDadosEstagio({
+          ...state,
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.add({
+            severity: "error",
+            summary: "Erro",
+            detail: "Erro ao salvar dados do estágio",
+            life: 3000,
+          });
+        });
 
       advanceStep({
         ...state,
@@ -220,7 +237,7 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="bolsaAuxilio"
-              >Valor bolsa auxílio {{ bolsaAuxilio }}</label
+              >Valor bolsa auxílio {{ state.bolsaAuxilio }}</label
             >
             <InputNumber
               mode="currency"

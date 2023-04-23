@@ -52,4 +52,28 @@ export default class NovoEstagioService extends BaseService {
       console.error(err);
     });
   }
+
+  public async setDadosEstagio(
+    id: number,
+    dadosEstagio: {
+      dataInicio: string;
+      dataFim: string;
+      jornadaDiaria: number;
+      jornadaSemanal: number;
+      valorBolsa: number;
+      valorTransporte: number;
+    }
+  ) {
+    return await $fetch(this.BASE_URL + `/termo/${id}`, {
+      method: "PUT",
+      body: dadosEstagio,
+    });
+  }
+
+  public async setAtividadesEstagio(id, atividades) {
+    return await $fetch(this.BASE_URL + `/termo/${id}/atividades`, {
+      method: "PUT",
+      body: atividades,
+    });
+  }
 }
