@@ -60,6 +60,17 @@ public class ContratanteREST {
 	    ContratanteDTO contratanteDTO = mapper.map(contratante, ContratanteDTO.class);
 	    return ResponseEntity.status(HttpStatus.OK).body(contratanteDTO);
 	}
+    
+    @GetMapping("/nome/{nomeContratante}")
+	public ResponseEntity<ContratanteDTO> buscarContratanteNome(@PathVariable String nomeContratante) {
+	    Optional<Contratante> contratanteFind = contratanteService.buscarPorNome(nomeContratante);
+		if(contratanteFind.isEmpty()) {
+			throw new PocException(HttpStatus.NOT_FOUND, "Contratante não encontrado!");
+		} else {
+		    ContratanteDTO contratanteDTO = mapper.map(contratanteFind.get(), ContratanteDTO.class);
+		    return ResponseEntity.status(HttpStatus.OK).body(contratanteDTO);
+		}
+	}
 
 	@GetMapping("/")
 	public ResponseEntity<List<ContratanteDTO>> listarContratantes() {

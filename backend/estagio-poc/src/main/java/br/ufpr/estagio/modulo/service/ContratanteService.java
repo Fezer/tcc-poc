@@ -53,4 +53,8 @@ public class ContratanteService {
         }
 		
 	}
+
+	public Optional<Contratante> buscarPorNome(String nomeContratante) {
+		return contratanteRepository.findByNome(nomeContratante);
+	}
 }
