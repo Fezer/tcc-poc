@@ -1131,6 +1131,64 @@
 					"response": []
 				},
 				{
+					"name": "criarAgenteIntegrador",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Convenio123\",\n    \"telefone\": \"4112341234\",\n    \"cnpj\": \"00010001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/agente-integrador/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"agente-integrador",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "criarConvenioAgenteIntegrador",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Convenio123\",\n    \"telefone\": \"4112341234\",\n    \"cnpj\": \"00010001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/agente-integrador/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"agente-integrador",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "listAgenteIntegrador",
 					"request": {
 						"method": "GET",
