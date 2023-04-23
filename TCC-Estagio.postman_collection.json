@@ -46,7 +46,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo/4",
+							"raw": "http://localhost:5000/termo/9",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -54,7 +54,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"4"
+								"9"
 							]
 						}
 					},
@@ -264,7 +264,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212",
+							"raw": "http://localhost:5000/aluno/GRR20175486",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -272,7 +272,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20201212"
+								"GRR20175486"
 							]
 						}
 					},
@@ -284,7 +284,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212/estagio",
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -292,7 +292,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20201212",
+								"GRR20175486",
 								"estagio"
 							]
 						}
@@ -414,7 +414,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/discentes?grr=GRR20201212",
+							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/discentes?grr=GRR20175486",
 							"protocol": "http",
 							"host": [
 								"siga",
@@ -431,7 +431,7 @@
 							"query": [
 								{
 									"key": "grr",
-									"value": "GRR20201212"
+									"value": "GRR20175486"
 								}
 							]
 						}
@@ -563,7 +563,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/4",
+							"raw": "http://localhost:5000/estagio/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -571,7 +571,7 @@
 							"port": "5000",
 							"path": [
 								"estagio",
-								"4"
+								"1"
 							]
 						}
 					},
@@ -626,6 +626,71 @@
 									"key": "estagioUfpr",
 									"value": "false"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Curso",
+			"item": [
+				{
+					"name": "listCursos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/curso",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"curso"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listCursoPorIdPrograma",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/curso/40001016111G0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"curso",
+								"40001016111G0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listOrientadoresDoCurso",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/curso/40001016111G0/orientadores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"curso",
+								"40001016111G0",
+								"orientadores"
 							]
 						}
 					},
