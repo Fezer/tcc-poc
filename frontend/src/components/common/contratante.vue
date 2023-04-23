@@ -3,14 +3,14 @@ export default {
   props: {
     termo: {
       type: Object,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 };
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" v-if="!termo?.estagio?.estagioUfpr">
     <h5>Dados do Contratante</h5>
 
     <div class="grid">
@@ -50,6 +50,4 @@ export default {
   </div>
 </template>
 
-<style>
-
-</style>
+<style></style>

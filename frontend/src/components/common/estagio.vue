@@ -35,11 +35,11 @@ export default defineComponent({
     <div class="grid">
       <div class="col-4">
         <strong>Tipo do Estágio</strong>
-        <p>{{ parseTipoEstagio(termo?.tipoEstagio) }}</p>
+        <p>{{ parseTipoEstagio(termo?.estagio?.tipoEstagio) }}</p>
       </div>
       <div class="col-4">
         <strong>Estágio na UFPR</strong>
-        <p>{{ termo?.estagioUfpr ? "Sim" : "Não" }}</p>
+        <p>{{ termo?.estagio?.estagioUfpr ? "Sim" : "Não" }}</p>
       </div>
       <div class="col-4">
         <strong>Jornada Diária</strong>

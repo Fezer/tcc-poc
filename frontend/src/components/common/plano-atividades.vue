@@ -3,9 +3,9 @@ export default {
   props: {
     termo: {
       type: Object,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 };
 </script>
 
@@ -36,12 +36,10 @@ export default {
       </div>
       <div class="col-12">
         <strong>Atividades a serem desenvolvidas</strong>
-        <p>{{ termo?.atividadesEstagio }}</p>
+        <p>{{ termo?.planoAtividades?.descricaoAtividades }}</p>
       </div>
     </div>
   </div>
 </template>
 
-<style>
-
-</style>
+<style></style>
