@@ -75,7 +75,7 @@ public class SigaApiModuloEstagioMapper {
 		}
 		
 		coordenador.setCurso(curso);
-		//TO-DO: Avaliar se não é melhor colocar essa lógica dentro da classe Coordenador.
+		//TO-DO: Avaliar se não é melhor colocar essa lógica dentro da classe Curso.
 		List<Coordenador> listCoordenador = curso.getCoordenador();
 		if (!listCoordenador.contains(coordenador)) {
 			listCoordenador.add(coordenador);

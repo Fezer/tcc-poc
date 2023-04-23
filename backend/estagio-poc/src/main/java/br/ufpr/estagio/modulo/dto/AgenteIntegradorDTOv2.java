@@ -3,33 +3,48 @@ package br.ufpr.estagio.modulo.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import br.ufpr.estagio.modulo.model.Apolice;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
-public class SeguradoraDTO implements Serializable {
-	
+public class AgenteIntegradorDTOv2 implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private long id;
+	
 	private String nome;
-	private boolean seguradoraUfpr;
-	private List<Apolice> apolice;
+	
+	private String telefone;
+	
+	private String cnpj;
+	
+	private List<Convenio> convenio;
+	
 	private List<TermoDeEstagio> termoDeEstagio;
+	
 	private List<Estagio> estagio;
-
-	public SeguradoraDTO() {
+	
+	public AgenteIntegradorDTOv2() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public SeguradoraDTO(long id, String nome, boolean seguradoraUfpr, List<Apolice> apolice,
+	public AgenteIntegradorDTOv2(long id, String nome, String telefone, String cnpj, List<Convenio> convenio,
 			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.seguradoraUfpr = seguradoraUfpr;
-		this.apolice = apolice;
+		this.telefone = telefone;
+		this.cnpj = cnpj;
+		this.convenio = convenio;
 		this.termoDeEstagio = termoDeEstagio;
 		this.estagio = estagio;
 	}
@@ -50,20 +65,28 @@ public class SeguradoraDTO implements Serializable {
 		this.nome = nome;
 	}
 
-	public boolean isSeguradoraUfpr() {
-		return seguradoraUfpr;
+	public String getTelefone() {
+		return telefone;
 	}
 
-	public void setSeguradoraUfpr(boolean seguradoraUfpr) {
-		this.seguradoraUfpr = seguradoraUfpr;
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
-	public List<Apolice> getApolice() {
-		return apolice;
+	public String getCnpj() {
+		return cnpj;
 	}
 
-	public void setApolice(List<Apolice> apolice) {
-		this.apolice = apolice;
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public List<Convenio> getConvenio() {
+		return convenio;
+	}
+
+	public void setConvenio(List<Convenio> convenio) {
+		this.convenio = convenio;
 	}
 
 	public List<TermoDeEstagio> getTermoDeEstagio() {

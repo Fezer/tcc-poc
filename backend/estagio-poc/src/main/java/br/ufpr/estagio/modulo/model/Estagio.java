@@ -13,6 +13,7 @@ import jakarta.persistence.*;
 
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
+import br.ufpr.estagio.modulo.service.CurrentTimestampService;
 
 @Entity
 @Table(name = "estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
@@ -125,7 +126,12 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	
 	public Estagio() {
 		super();
-		// TODO Auto-generated constructor stub
+		this.dataCriacao = this.gerarDataCriacao();
+	}
+
+	private Date gerarDataCriacao() {
+		CurrentTimestampService time = new CurrentTimestampService();
+		return time.getTimestamp();
 	}
 
 	public Estagio(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr,
