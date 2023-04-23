@@ -28,7 +28,7 @@ public class ApoliceService {
 		return apoliceRepository.save(apolice);
 	}
 
-	public Optional<Apolice> buscarPorId(Integer id) {
+	public Optional<Apolice> buscarPorId(Long id) {
 		return apoliceRepository.findById(id);
 	}
 
@@ -37,7 +37,7 @@ public class ApoliceService {
 	}
 	
 	public Apolice atualizarApolice(Apolice apoliceAtualizada) {
-		Apolice apoliceExistente = buscarPorId((int) apoliceAtualizada.getId())
+		Apolice apoliceExistente = buscarPorId(apoliceAtualizada.getId())
 		.orElseThrow(() -> new NoSuchElementException("Apólice não encontrada para o ID informado"));
 
 	    apoliceExistente.setNumero(apoliceAtualizada.getNumero());
@@ -51,7 +51,7 @@ public class ApoliceService {
 	}
 	
 	public void excluirApolice(Apolice apolice) {
-	    Optional<Apolice> apoliceOptional = apoliceRepository.findById((int) apolice.getId());
+	    Optional<Apolice> apoliceOptional = apoliceRepository.findById(apolice.getId());
 	    if (apoliceOptional.isPresent()) {
 	        Apolice apoliceExistente = apoliceOptional.get();
 	        apoliceRepository.delete(apoliceExistente);

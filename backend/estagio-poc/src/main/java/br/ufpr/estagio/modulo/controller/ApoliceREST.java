@@ -81,7 +81,7 @@ public class ApoliceREST {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ApoliceDTO> buscarApolicePorId(@PathVariable Integer id) {
+	public ResponseEntity<ApoliceDTO> buscarApolicePorId(@PathVariable Long id) {
 	    Optional<Apolice> apolice = apoliceService.buscarPorId(id);
 	    ApoliceDTO apoliceDTO = mapper.map(apolice, ApoliceDTO.class);
 	    return ResponseEntity.status(HttpStatus.OK).body(apoliceDTO);
@@ -97,7 +97,7 @@ public class ApoliceREST {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ApoliceDTO> atualizarApolice(@PathVariable Integer id, @RequestBody ApoliceDTO apoliceDTO){
+	public ResponseEntity<ApoliceDTO> atualizarApolice(@PathVariable Long id, @RequestBody ApoliceDTO apoliceDTO){
 	    Optional<Apolice> apolice = apoliceService.buscarPorId(id);
 	    
 	    if(apolice.isPresent()) {
@@ -112,7 +112,7 @@ public class ApoliceREST {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> excluirApolice(@PathVariable Integer id){
+	public ResponseEntity<Void> excluirApolice(@PathVariable Long id){
 	    Optional<Apolice> apolice = apoliceService.buscarPorId(id);
 	    if(apolice.isPresent()) {
 	        apoliceService.excluirApolice(apolice.get());

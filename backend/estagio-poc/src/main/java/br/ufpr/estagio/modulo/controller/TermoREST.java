@@ -26,13 +26,13 @@ import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
+import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.Supervisor;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
-import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.ApoliceService;
 import br.ufpr.estagio.modulo.service.OrientadorService;
-import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.SupervisorService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
@@ -42,17 +42,15 @@ import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 public class TermoREST {
 	
 	@Autowired
-    private EstagioService estagioService;
-	@Autowired
     private TermoDeEstagioService termoDeEstagioService;
-	@Autowired
-    private RelatorioDeEstagioService relatorioDeEstagioService;
 	@Autowired
     private OrientadorService orientadorService;
 	@Autowired
     private AgenteIntegradorService agenteIntegradorService;
 	@Autowired
     private SupervisorService supervisorService;
+	@Autowired
+    private ApoliceService apoliceService;
 
 	@Autowired
 	private ModelMapper mapper;
@@ -206,6 +204,29 @@ public class TermoREST {
 				throw new PocException(HttpStatus.NOT_FOUND, "Supervisor não encontrado!");			
 			} else {
 				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarSupervisorAoTermo(termofind.get(), supervisorFind.get());
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/{termoId}/associarApolice/{apoliceId}")
+	public ResponseEntity<TermoDeEstagioDTO> associarApolice(@PathVariable Long termoId, @PathVariable Long apoliceId){
+		try {
+			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
+			if(termofind.isEmpty()) {
+				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+			}
+			Optional<Apolice> apoliceFind = apoliceService.buscarPorId(apoliceId);
+			if(apoliceFind.isEmpty()) {
+				throw new PocException(HttpStatus.NOT_FOUND, "Apolice não encontrada!");			
+			} else {
+				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarApoliceAoTermo(termofind.get(), apoliceFind.get());
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
 			}
 		}catch(PocException e) {
