@@ -77,6 +77,42 @@ export default class NovoEstagioService extends BaseService {
     });
   }
 
+  public async setOrientador(id: string, orientador: string) {
+    return await $fetch(
+      this.BASE_URL +
+        `http://localhost:5000/termo/${id}/associarOrientador/${orientador}`,
+      {
+        method: "PUT",
+      }
+    );
+  }
+
+  public async setSupervisor(
+    id: string,
+    supervisor: {
+      nome: string;
+      telefone: string;
+      formacao: string;
+      cpf: string;
+    }
+  ) {
+    return await $fetch("http://localhost:5000/supervisor/", {
+      method: "POST",
+
+      body: supervisor,
+    }).then(async (res) => {
+      console.log(res);
+      if (!res?.id) throw new Error("Erro ao criar novo supervisor - No ID!");
+      return await $fetch(
+        this.BASE_URL + `/termo/${id}/associarSupervisor/${res?.id}`,
+
+        {
+          method: "PUT",
+        }
+      );
+    });
+  }
+
   public async solicitarAprovacaoTermo(id: string) {
     const grr = "GRR20201212";
 

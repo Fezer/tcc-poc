@@ -16,15 +16,15 @@ export default {
     <div class="grid">
       <div class="col-4">
         <strong>Nome do Supervisor no Local de Estágio</strong>
-        <p>{{ termo?.nomeSupervisor }}</p>
+        <p>{{ termo?.supervisor?.nome }}</p>
       </div>
       <div class="col-4">
         <strong>Telefone do Supervisor</strong>
-        <p>{{ termo?.telefoneSupervisor }}</p>
+        <p>{{ termo?.supervisor?.telefone }}</p>
       </div>
       <div class="col-4">
         <strong>Formação do Supervisor</strong>
-        <p>{{ termo?.formacaoSupervisor }}o</p>
+        <p>{{ termo?.supervisor?.formacao }}o</p>
       </div>
       <div class="col-4">
         <strong>Nome Professor Orientador UFPR</strong>

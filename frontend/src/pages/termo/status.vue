@@ -34,7 +34,15 @@ export default defineComponent({
 
     const percentage = getPercentageByEtapa();
 
+    const parseStatus = (status: string) => {
+      if (status === "EmPreenchimento") return "Em preenchimento";
+      if (status === "Aprovado") return "Aprovado";
+      if (status === "Reprovado") return "Reprovado";
+      return "Teste";
+    };
+
     return {
+      parseStatus,
       percentage,
     };
   },
@@ -67,7 +75,7 @@ export default defineComponent({
                 : 'text-red-500 font-bold'
             "
           >
-            {{ status?.toUpperCase() || "" }}
+            {{ parseStatus(status) || "" }}
           </p>
         </div>
         <div class="text-box col-4 flex flex-col">

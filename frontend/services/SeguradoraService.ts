@@ -2,20 +2,20 @@ import Seguradora from "~~/src/types/Seguradora";
 import BaseService from "./BaseService";
 
 export default class SeguradoraService extends BaseService {
-  async criarSeguradora(seguradora: Seguradora) {
+  async criarSeguradora(seguradora: Seguradora, termoID: number) {
     const response = await $fetch(this.BASE_URL + "/seguradora/novo", {
       method: "POST",
       body: {
         ...seguradora,
         termoDeEstagio: [
           {
-            id: 1,
+            id: termoID,
             nome: "Termo de Estágio",
           },
         ],
         estagio: [
           {
-            id: 1,
+            id: termoID,
             nome: "Estágio",
           },
         ],

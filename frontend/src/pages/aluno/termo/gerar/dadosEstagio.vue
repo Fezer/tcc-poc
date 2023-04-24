@@ -52,31 +52,31 @@ export default defineComponent({
         state.bolsaAuxilio = termo.value?.bolsaAuxilio;
         state.auxilioTransporte = termo.value?.auxilioTransporte;
         // state.coordenador = termo.value?.coordenador;
-        // state.orientador = termo.value?.orientador;
-        // state.departamentoOrientador =
-        //   termo.value?.departamentoOrientador;
+        state.orientador = termo.value?.orientador;
         state.nomeSupervisor = termo.value?.nomeSupervisor;
         state.telefoneSupervisor = termo.value?.telefoneSupervisor;
         state.atividades = termo.value?.descricaoAtividades;
       }
+
+      handleLoadDocentes();
     });
 
     const zodErrors = new ZodErrorsService().getTranslatedErrors();
     const novoEstagioService = new NovoEstagioService();
+    const docentes = ref([] as any[]);
 
     const { aluno } = useAluno();
-    const idPrograma = aluno?.idPrograma;
+    const handleLoadDocentes = async () => {
+      console.log(aluno.value);
 
-    const { data: orientadores } = useAsyncData("aluno", async (a) => {
       const response = await $fetch(
-        `http://localhost:5000/siga/docentes?idPrograma=${a?.idPrograma}`
+        `http://localhost:5000/siga/docentes?idPrograma=${aluno.value?.idPrograma}`
       );
 
-      console.log(a);
-      console.log(response);
+      docentes.value = response?.docentes;
 
       return response?.docentes;
-    });
+    };
 
     const state = reactive({
       dataInicio: undefined as undefined | string,
@@ -85,11 +85,11 @@ export default defineComponent({
       jornadaSemanal: undefined as number | undefined,
       bolsaAuxilio: undefined as number | undefined,
       auxilioTransporte: undefined as number | undefined,
-      // coordenador: undefined as string | undefined,
-      // orientador: undefined as string | undefined,
-      // departamentoOrientador: undefined as string | undefined,
-      // nomeSupervisor: undefined as string | undefined,
-      // telefoneSupervisor: undefined as string | undefined,
+      orientador: undefined as string | undefined,
+      nomeSupervisor: undefined as string | undefined,
+      cpfSupervisor: undefined as string | undefined,
+      formacaoSupervisor: undefined as string | undefined,
+      telefoneSupervisor: undefined as string | undefined,
       atividades: undefined as string | undefined,
     });
 
@@ -105,15 +105,13 @@ export default defineComponent({
         jornadaSemanal: z.number().min(1).max(99),
         bolsaAuxilio: z.number(),
         auxilioTransporte: z.number(),
-        // coordenador: z.string(),
         // orientador: z.number(),
-        // departamentoOrientador: z.string().min(2),
-        // nomeSupervisor: z.string().min(2),
-        // telefoneSupervisor: z.string().min(2),
+        nomeSupervisor: z.string().min(2),
+        telefoneSupervisor: z.string().min(2),
+        formacaoSupervisor: z.string().min(2),
+        cpfSupervisor: z.string().min(2),
         atividades: z.string().min(50).max(700),
       });
-      console.log(termo);
-
       const result = validator.safeParse({ ...state });
 
       if (!result.success) {
@@ -169,6 +167,35 @@ export default defineComponent({
           });
         });
 
+      // await novoEstagioService
+      //   .setOrientador(termo.value.id, state.orientador)
+      //   .catch((err) => {
+      //     console.log(err);
+      //     toast.add({
+      //       severity: "error",
+      //       summary: "Erro na etapa de atualizar o orientador",
+      //       detail: "Erro ao salvar dados do estágio",
+      //       life: 3000,
+      //     });
+      //   });
+
+      await novoEstagioService
+        .setSupervisor(termo.value.id, {
+          nome: state.nomeSupervisor,
+          telefone: state.telefoneSupervisor,
+          cpf: state.cpfSupervisor,
+          formacao: state.formacaoSupervisor,
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.add({
+            severity: "error",
+            summary: "Erro na etapa de atualizar o supervisor",
+            detail: "Erro ao salvar dados do estágio",
+            life: 3000,
+          });
+        });
+
       advanceStep({
         ...state,
       });
@@ -180,7 +207,8 @@ export default defineComponent({
       backStep,
       state,
       aluno,
-      orientadores,
+      handleLoadDocentes,
+      docentes,
     };
   },
 });
@@ -306,29 +334,13 @@ export default defineComponent({
           <div class="field col">
             <label for="orientador">Professor Orientador na UFPR</label>
             <Dropdown
-              id="orientador"
-              type="text"
               filter
-              :options="orientadores"
+              :options="docentes"
               placeholder="Selecione orientador(a)"
               v-model="state.orientador"
               :class="{ 'p-invalid': errors['orientador'] }"
             />
             <small class="text-rose-500">{{ errors["orientador"] }}</small>
-          </div>
-          <div class="field col">
-            <label for="departamentoOrientador"
-              >Lotação/Departamento do Orientador</label
-            >
-            <InputText
-              id="departamentoOrientador"
-              type="text"
-              v-model="state.departamentoOrientador"
-              :class="errors['departamentoOrientador'] && 'p-invalid'"
-            />
-            <small class="text-rose-500">{{
-              errors["departamentoOrientador"]
-            }}</small>
           </div>
         </div>
         <div class="formgrid grid">
@@ -355,6 +367,33 @@ export default defineComponent({
             />
             <small class="text-rose-500">{{
               errors["telefoneSupervisor"]
+            }}</small>
+          </div>
+        </div>
+        <div class="formgrid grid">
+          <div class="field col">
+            <label for="nomeSupervisor"
+              >CPF do Supervisor no Local de Estágio</label
+            >
+            <InputMask
+              mask="999.999.999-99"
+              v-model="state.cpfSupervisor"
+              :class="errors['cpfSupervisor'] && 'p-invalid'"
+            />
+            <small class="text-rose-500">{{ errors["cpfSupervisor"] }}</small>
+          </div>
+          <div class="field col">
+            <label for="telefoneSupervisor"
+              >Formação do Supervisor no Local de Estágio</label
+            >
+            <InputText
+              id="formacaoSupervisor"
+              type="text"
+              v-model="state.formacaoSupervisor"
+              :class="errors['formacaoSupervisor'] && 'p-invalid'"
+            />
+            <small class="text-rose-500">{{
+              errors["formacaoSupervisor"]
             }}</small>
           </div>
         </div>

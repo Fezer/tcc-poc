@@ -3,18 +3,22 @@ import Seguradora from "~~/src/types/Seguradora";
 import BaseService from "./BaseService";
 
 export default class ApoliceService extends BaseService {
-  async criarApolice(apolice: Apolice, seguradora: Seguradora) {
+  async criarApolice(
+    apolice: Apolice,
+    seguradora: Seguradora,
+    termoID: number
+  ) {
     const response = await $fetch(this.BASE_URL + "/apolice/novo", {
       method: "POST",
       body: {
         ...apolice,
         seguradora: seguradora,
         termoDeEstagio: {
-          id: 1,
+          id: termoID,
           nome: "Termo de Estágio",
         },
         estagio: {
-          id: 1,
+          id: termoID,
           nome: "Estágio",
         },
       },

@@ -36,6 +36,7 @@ export default defineComponent({
     const contratanteService = new ContratanteService();
     const seguradoraService = new SeguradoraService();
     const apoliceService = new ApoliceService();
+    const { termo, setTermo } = useTermo();
 
     onMounted(() => {
       console.log("mounted");
@@ -133,20 +134,37 @@ export default defineComponent({
 
       try {
         const { id: contratanteID } = await contratanteService.criarContratante(
-          { ...state, id: 0, nome: state.nomeContratante }
+          {
+            ...state,
+            id: 0,
+            nome: state.nomeContratante,
+            cnpj: state.cnpjContratante,
+            cpf: state.cpfContratante,
+            cep: state.cepContratante,
+            cidade: state.cidadeContratante,
+            estado: state.estadoContratante,
+            endereco: state.enderecoContratante,
+            telefone: state.telefoneContratante,
+            tipo: state.tipoContratante,
+          },
+          termo.value.id
         );
 
-        const seguradora = await seguradoraService.criarSeguradora({
-          id: 0,
-          nome: state.nomeSeguradora,
-        });
+        const seguradora = await seguradoraService.criarSeguradora(
+          {
+            id: 0,
+            nome: state.nomeSeguradora,
+          },
+          termo.value.id
+        );
 
         const apolice = await apoliceService.criarApolice(
           {
             id: 0,
             numero: parseInt(state.apoliceSeguradora),
           },
-          seguradora
+          seguradora,
+          termo.value.id
         );
 
         console.log(contratanteID, seguradora, apolice);
