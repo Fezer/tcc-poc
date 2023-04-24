@@ -1,4 +1,4 @@
-import { TipoEstagio } from "../src/types/NovoEstagio";
+import { PlanoAtividades, TipoEstagio } from "../src/types/NovoEstagio";
 import BaseService from "./BaseService";
 
 export default class NovoEstagioService extends BaseService {
@@ -70,10 +70,21 @@ export default class NovoEstagioService extends BaseService {
     });
   }
 
-  public async setAtividadesEstagio(id, atividades) {
+  public async setAtividadesEstagio(id: string, atividades: PlanoAtividades) {
     return await $fetch(this.BASE_URL + `/termo/${id}/planoAtividades`, {
       method: "PUT",
       body: atividades,
     });
+  }
+
+  public async solicitarAprovacaoTermo(id: string) {
+    const grr = "GRR20201212";
+
+    return await $fetch(
+      this.BASE_URL + `/aluno/${grr}/termo/${id}/solicitarAprovacaoTermo`,
+      {
+        method: "PUT",
+      }
+    );
   }
 }
