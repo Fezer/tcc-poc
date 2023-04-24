@@ -1,7 +1,7 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -13,6 +13,7 @@ import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
+import br.ufpr.estagio.modulo.service.CurrentTimestampService;
 
 @Entity
 @Table(name = "termo_de_estagio", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
@@ -123,8 +124,14 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	
 	public TermoDeEstagio() {
 		super();
-		// TODO Auto-generated constructor stub
+		this.dataCriacao = this.gerarDataCriacao();
 	}
+	
+	private Date gerarDataCriacao() {
+		CurrentTimestampService time = new CurrentTimestampService();
+		return time.getTimestamp();
+	}
+	
 
 	public TermoDeEstagio(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
 			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,

@@ -1,9 +1,14 @@
 package br.ufpr.estagio.modulo.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class AlunoDTO {
+public class AlunoDTO implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long idDiscente;
 	private String nome;
 	private boolean isPcD;

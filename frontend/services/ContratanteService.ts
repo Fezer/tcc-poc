@@ -20,4 +20,10 @@ export default class ContratanteService extends BaseService {
 
     return response;
   }
+
+  async listContratantes() {
+    const response = await $fetch(this.BASE_URL + "/contratante/");
+
+    return response;
+  }
 }

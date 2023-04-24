@@ -1,9 +1,14 @@
-const useTermo = () => {
-  const termo = useState("termo", () => {});
+import { Ref } from "vue";
+import NovoEsatgio from "../types/NovoEstagio";
+
+const useTermo = (): {
+  termo: Ref<NovoEsatgio>;
+  setTermo(termoData: NovoEsatgio): void;
+} => {
+  const termo = useState<NovoEsatgio>("termo");
 
   const setTermo = (termoData: any) => {
-    console.log("SETTING TERMO");
-
+    console.log("setting termo", termoData);
     termo.value = termoData;
   };
 

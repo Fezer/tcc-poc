@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import AlunoService from "~~/services/AlunoService";
 
 export default defineComponent({
   props: {
@@ -19,9 +20,19 @@ export default defineComponent({
     advanceStep: Function;
     backStep: Function;
   }) {
-    const { aluno } = useAluno();
+    const { aluno, setAluno } = useAluno();
+    const alunoService = new AlunoService();
 
-    console.log(aluno);
+    const grr = "GRR20201212";
+
+    const { data: alunoData, error: errAluno } = useAsyncData(
+      "aluno",
+      async () => {
+        const response = await alunoService.getAlunoFromSiga(grr);
+        setAluno(response);
+        return response;
+      }
+    );
 
     return {
       advanceStep,

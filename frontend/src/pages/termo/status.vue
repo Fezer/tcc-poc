@@ -1,5 +1,7 @@
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
   props: {
     etapa: {
       type: String,
@@ -11,7 +13,32 @@ export default {
       type: String,
     },
   },
-};
+  setup({
+    etapa,
+    status,
+    motivo,
+  }: {
+    etapa: string;
+    status: string;
+    motivo: string;
+  }) {
+    const getPercentageByEtapa = () => {
+      if (status === "EmAprovacao") {
+        if (etapa === "COE") return 40;
+        if (etapa === "COORD") return 80;
+        if (etapa === "COAFE") return 90;
+      }
+
+      return 0;
+    };
+
+    const percentage = getPercentageByEtapa();
+
+    return {
+      percentage,
+    };
+  },
+});
 </script>
 
 <template>
@@ -19,7 +46,7 @@ export default {
     <h4>Andamento do processo</h4>
 
     <ProgressBar
-      :value="status === 'EmAprovacao' ? 50 : 100"
+      :value="percentage"
       :show-value="false"
       style="height: 15px"
       class="mb-3"

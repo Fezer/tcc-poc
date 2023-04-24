@@ -1,4 +1,7 @@
 <script lang="ts">
+import { useToast } from "primevue/usetoast";
+import { defineComponent, reactive } from "vue";
+import NovoEstagioService from "../../../services/NovoEstagioService";
 import aluno from "../../components/common/aluno.vue";
 import Contratante from "../../components/common/contratante.vue";
 import estagio from "../../components/common/estagio.vue";
@@ -7,7 +10,7 @@ import StatusTermo from "./status.vue";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
 
-export default {
+export default defineComponent({
   components: {
     Aluno: aluno,
     Estagio: estagio,
@@ -15,27 +18,46 @@ export default {
     Contratante,
     StatusTermo,
   },
-  data() {
-    return {
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const toast = useToast();
+
+    const { id } = route.params;
+
+    const novoEstagioService = new NovoEstagioService();
+
+    const { setTermo } = useTermo();
+
+    const { data: termo, refresh } = useFetch(
+      `http://localhost:5000/termo/${id}`
+    );
+
+    // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
+
+    function refreshData() {
+      refresh();
+    }
+
+    const state = reactive({
       tipoUsuario: "ALUNO" as TipoUsuario,
 
       indeferimentoConfirm: false,
       cancelationConfirm: false,
       justificativa: "",
-    };
-  },
-  methods: {
-    async responderTermo(resposta) {
-      this.indeferimentoConfirm = false;
+    });
+
+    const responderTermo = async (resposta: any) => {
+      state.indeferimentoConfirm = false;
       const respostaFormated =
         resposta === "aprovar" ? "aprovado" : "reprovado";
 
       await fetch(
-        `http://localhost:5000/termo/${resposta}/coafe/${useRoute().params.id}`,
+        `http://localhost:5000/termo/${resposta}/coafe/${route.params.id}`,
         {
           method: "PUT",
           body: JSON.stringify({
-            justificativa: this.justificativa,
+            justificativa: state.justificativa,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -44,7 +66,7 @@ export default {
       )
         .then(() => {
           console.log("Aprovado com sucesso");
-          this.$toast.add({
+          toast.add({
             severity: "success",
             summary: `${respostaFormated.toUpperCase()}`,
             detail: `Termo ${respostaFormated} com sucesso`,
@@ -53,32 +75,42 @@ export default {
         })
         .catch((err) => {
           console.error(err);
-          this.$toast.add({
+          toast.add({
             severity: "error",
             summary: "Ops!",
             detail: "Tivemos um problema ao efetivar a análise do termo.",
             life: 3000,
           });
         });
-    },
+    };
+
+    const handleEditarTermo = () => {
+      setTermo(termo);
+
+      router.push({
+        path: "/aluno/termo/gerar",
+      });
+    };
+
+    const handleSolicitarAprovacao = async () => {
+      console.log(termo.value);
+      await novoEstagioService
+        .solicitarAprovacaoTermo(termo.value.id)
+        .then(() => {
+          refreshData();
+        });
+    };
+
+    return {
+      termo,
+      refreshData,
+      state,
+      responderTermo,
+      handleEditarTermo,
+      handleSolicitarAprovacao,
+    };
   },
-};
-</script>
-
-<script setup lang="ts">
-const route = useRoute();
-
-const { id } = route.params;
-
-const { data: termo, refresh } = await useFetch(
-  `http://localhost:5000/termo/${id}`
-);
-
-// const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
-
-function refreshData() {
-  refresh();
-}
+});
 </script>
 
 <template>
@@ -102,7 +134,9 @@ function refreshData() {
     <Contratante :termo="termo" />
 
     <div
-      v-if="termo?.statusTermo === 'EmAprovacao' && tipoUsuario !== 'ALUNO'"
+      v-if="
+        termo?.statusTermo === 'EmAprovacao' && state.tipoUsuario !== 'ALUNO'
+      "
       class="flex align-items-end justify-content-end gap-2"
     >
       <Button
@@ -113,26 +147,36 @@ function refreshData() {
       </Button>
       <Button
         class="p-button-danger"
-        @click="() => (indeferimentoConfirm = true)"
+        @click="() => (state.indeferimentoConfirm = true)"
       >
         Indeferir
       </Button>
     </div>
 
     <div
-      v-else-if="tipoUsuario === 'ALUNO'"
+      v-else-if="state.tipoUsuario === 'ALUNO'"
       class="flex align-items-end justify-content-end gap-2"
     >
       <Button
         class="p-button-danger"
-        @click="() => (cancelationConfirm = true)"
+        @click="() => (state.cancelationConfirm = true)"
       >
         Cancelar termo
       </Button>
+
+      <template v-if="termo?.statusTermo === 'EmPreenchimento'">
+        <Button class="p-button-secondary" @click="handleEditarTermo">
+          Editar termo
+        </Button>
+
+        <Button class="p-button-primary" @click="handleSolicitarAprovacao">
+          Solicitar Aprovação
+        </Button>
+      </template>
     </div>
 
     <Dialog
-      :visible="cancelationConfirm"
+      :visible="state.cancelationConfirm"
       header="Confirmar cancelamento"
       :closable="false"
       style="width: 500px"
@@ -147,7 +191,7 @@ function refreshData() {
           label="Voltar"
           icon="pi pi-times"
           class="p-button-secondary"
-          @click="cancelationConfirm = false"
+          @click="state.cancelationConfirm = false"
         />
         <Button
           label="Cancelar"
@@ -159,7 +203,7 @@ function refreshData() {
     </Dialog>
 
     <Dialog
-      :visible="indeferimentoConfirm"
+      :visible="state.indeferimentoConfirm"
       header="Justificativa indeferimento"
       style="min-width: 500px"
       :modal="true"
@@ -167,7 +211,7 @@ function refreshData() {
       <div class="flex align-items-center justify-content-center flex-column">
         <Textarea
           id="justificativa"
-          v-model="justificativa"
+          v-model="state.justificativa"
           style="min-width: 100%"
           name="justificativa"
           cols="30"
@@ -179,14 +223,14 @@ function refreshData() {
           label="Cancelar"
           icon="pi pi-times"
           class="p-button-secondary"
-          @click="indeferimentoConfirm = false"
+          @click="state.indeferimentoConfirm = false"
         />
         <Button
           label="Indeferir"
           icon="pi pi-check"
           class="p-button-danger"
           autofocus
-          @click="responderTermo('reprovar').then(() => refresh())"
+          @click="responderTermo('reprovar').then(() => refreshData())"
         />
       </template>
     </Dialog>

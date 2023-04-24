@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "2a2d441c-0840-465d-b599-8c657d928176",
-		"name": "TCC-Estagio Copy",
+		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18567474"
 	},
@@ -46,7 +46,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo/4",
+							"raw": "http://localhost:5000/termo/11",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -54,7 +54,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"4"
+								"11"
 							]
 						}
 					},
@@ -145,6 +145,134 @@
 								"termo",
 								"4",
 								"planoAtividades"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associarOrientadorAoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo/11/associarOrientador/552",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"11",
+								"associarOrientador",
+								"552"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associarAgenteIntegradorAoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo/11/associarAgenteIntegrador/602",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"11",
+								"associarAgenteIntegrador",
+								"602"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associarSupervisorAoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo/11/associarSupervisor/752",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"11",
+								"associarSupervisor",
+								"752"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associarApoliceAoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/termo/11/associarApolice/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"11",
+								"associarApolice",
+								"1"
 							]
 						}
 					},
@@ -264,7 +392,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212",
+							"raw": "http://localhost:5000/aluno/GRR20175486",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -272,7 +400,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20201212"
+								"GRR20175486"
 							]
 						}
 					},
@@ -284,7 +412,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212/estagio",
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -292,7 +420,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20201212",
+								"GRR20175486",
 								"estagio"
 							]
 						}
@@ -305,7 +433,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212/estagio/emPreenchimento",
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/emPreenchimento",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -313,32 +441,9 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20201212",
+								"GRR20175486",
 								"estagio",
 								"emPreenchimento"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "solicitarAprovacaoTermo",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212/termo/4/solicitarAprovacaoTermo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20201212",
-								"termo",
-								"4",
-								"solicitarAprovacaoTermo"
 							]
 						}
 					},
@@ -387,6 +492,29 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "solicitarAprovacaoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20201212/termo/4/solicitarAprovacaoTermo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20201212",
+								"termo",
+								"4",
+								"solicitarAprovacaoTermo"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -414,7 +542,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/discentes?grr=GRR20201212",
+							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/discentes?grr=GRR20175486",
 							"protocol": "http",
 							"host": [
 								"siga",
@@ -431,7 +559,7 @@
 							"query": [
 								{
 									"key": "grr",
-									"value": "GRR20201212"
+									"value": "GRR20175486"
 								}
 							]
 						}
@@ -563,7 +691,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/4",
+							"raw": "http://localhost:5000/estagio/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -571,7 +699,7 @@
 							"port": "5000",
 							"path": [
 								"estagio",
-								"4"
+								"1"
 							]
 						}
 					},
@@ -626,6 +754,71 @@
 									"key": "estagioUfpr",
 									"value": "false"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Curso",
+			"item": [
+				{
+					"name": "listCursos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/curso",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"curso"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listCursoPorIdPrograma",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/curso/40001016111G0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"curso",
+								"40001016111G0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listOrientadoresDoCurso",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/curso/40001016111G0/orientadores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"curso",
+								"40001016111G0",
+								"orientadores"
 							]
 						}
 					},
@@ -783,6 +976,65 @@
 							"path": [
 								"seguradora",
 								"novo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "criarSeguradora",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Seguradora123\",\n    \"seguradoraUfpr\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/seguradora/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"seguradora",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "criarApoliceSeguradora",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numero\": \"12345\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/seguradora/1/apolice",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"seguradora",
+								"1",
+								"apolice"
 							]
 						}
 					},
@@ -1003,6 +1255,129 @@
 			]
 		},
 		{
+			"name": "Supervisor",
+			"item": [
+				{
+					"name": "criarSupervisor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Supervisor123\",\n    \"telefone\": \"4112341234\",\n    \"cpf\": \"12312312312\",\n    \"formacao\": \"TADS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/supervisor/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supervisor",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listSupervisor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/supervisor/752",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supervisor",
+								"752"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listSupervisores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/supervisor/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supervisor",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizarSupervisor",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Supervisor123\",\n    \"telefone\": \"4112341234\",\n    \"cpf\": \"11111111111\",\n    \"formacao\": \"TADS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/supervisor/652",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supervisor",
+								"652"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletarSupervisor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/supervisor/652",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supervisor",
+								"652"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "AgenteIntegrador",
 			"item": [
 				{
@@ -1035,12 +1410,21 @@
 					"response": []
 				},
 				{
-					"name": "listAgenteIntegrador",
+					"name": "criarAgenteIntegrador",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Convenio123\",\n    \"telefone\": \"4112341234\",\n    \"cnpj\": \"00010001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/1",
+							"raw": "http://localhost:5000/agente-integrador/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1048,7 +1432,57 @@
 							"port": "5000",
 							"path": [
 								"agente-integrador",
-								"1"
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "criarConvenioAgenteIntegrador",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numero\": \"1212\",\n    \"descricao\": \"Inconveniente\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/agente-integrador/602/convenio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"agente-integrador",
+								"602",
+								"convenio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listAgenteIntegrador",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/agente-integrador/602",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"agente-integrador",
+								"602"
 							]
 						}
 					},

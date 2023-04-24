@@ -1,6 +1,5 @@
 package br.ufpr.estagio.modulo.controller;
 
-import java.io.Console;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,15 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTO;
 import br.ufpr.estagio.modulo.dto.ContratanteDTO;
-import br.ufpr.estagio.modulo.dto.ConvenioDTO;
 import br.ufpr.estagio.modulo.exception.PocException;
-import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Contratante;
-import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.service.ContratanteService;
-import br.ufpr.estagio.modulo.service.EstagioService;
+
 
 @CrossOrigin
 @RestController
@@ -36,10 +31,7 @@ public class ContratanteREST {
 	
 	@Autowired
     private ContratanteService contratanteService;
-    
-    @Autowired
-    private EstagioService estagioService;
-    
+        
     @Autowired
 	private ModelMapper mapper;
     
@@ -67,6 +59,17 @@ public class ContratanteREST {
 	    Optional<Contratante> contratante = contratanteService.buscarPorId(id);
 	    ContratanteDTO contratanteDTO = mapper.map(contratante, ContratanteDTO.class);
 	    return ResponseEntity.status(HttpStatus.OK).body(contratanteDTO);
+	}
+    
+    @GetMapping("/nome/{nomeContratante}")
+	public ResponseEntity<ContratanteDTO> buscarContratanteNome(@PathVariable String nomeContratante) {
+	    Optional<Contratante> contratanteFind = contratanteService.buscarPorNome(nomeContratante);
+		if(contratanteFind.isEmpty()) {
+			throw new PocException(HttpStatus.NOT_FOUND, "Contratante não encontrado!");
+		} else {
+		    ContratanteDTO contratanteDTO = mapper.map(contratanteFind.get(), ContratanteDTO.class);
+		    return ResponseEntity.status(HttpStatus.OK).body(contratanteDTO);
+		}
 	}
 
 	@GetMapping("/")
