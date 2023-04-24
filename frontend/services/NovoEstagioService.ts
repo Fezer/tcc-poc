@@ -83,8 +83,7 @@ export default class NovoEstagioService extends BaseService {
 
   public async setOrientador(id: string, orientador: string) {
     return await $fetch(
-      this.BASE_URL +
-        `http://localhost:5000/termo/${id}/associarOrientador/${orientador}`,
+      this.BASE_URL + `/termo/${id}/associarOrientador/${orientador}`,
       {
         method: "PUT",
       }

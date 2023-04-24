@@ -11,6 +11,7 @@ export default defineComponent({
     const grr = "GRR20201212";
     const alunoService = new AlunoService();
     const novoEstagioService = new NovoEstagioService();
+    const router = useRouter();
 
     const { setAluno } = useAluno();
     const { setTermo } = useTermo();
@@ -24,7 +25,12 @@ export default defineComponent({
     const { data: termo, error: errTermo } = useAsyncData("termo", async () => {
       const response = await novoEstagioService.getTermoEmPreenchimento(grr);
       console.log(response);
-      setTermo(response[0]);
+
+      if (response && response.length > 0) {
+        router.push({
+          path: "/termo/" + response[0].id,
+        });
+      }
 
       return response;
     });

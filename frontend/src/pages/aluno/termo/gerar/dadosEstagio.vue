@@ -58,7 +58,7 @@ export default defineComponent({
         state.bolsaAuxilio = termo.value?.valorBolsa;
         state.auxilioTransporte = termo.value?.valorTransporte;
         // state.coordenador = termo.value?.coordenador;
-        state.orientador = termo.value?.orientador;
+        state.orientador = termo.value?.orientador?.id;
         state.nomeSupervisor = termo.value?.supervisor?.nome;
         state.telefoneSupervisor = termo.value?.supervisor?.telefone;
         state.cpfSupervisor = termo.value?.supervisor?.cpf;
@@ -78,12 +78,10 @@ export default defineComponent({
       console.log(aluno.value);
 
       const response = await $fetch(
-        `http://localhost:5000/siga/docentes?idPrograma=${aluno.value?.idPrograma}`
+        `http://localhost:5000/curso/${aluno.value?.idPrograma}/orientadores`
       );
 
-      docentes.value = response?.docentes;
-
-      return response?.docentes;
+      docentes.value = response;
     };
 
     const state = reactive({
@@ -141,6 +139,8 @@ export default defineComponent({
 
       console.log("TERMO ", id);
 
+      console.log(state.orientador);
+
       await novoEstagioService
         .setDadosEstagio(id, {
           dataInicio: dayjs(state.dataInicio).format("YYYY-MM-DD"),
@@ -175,17 +175,17 @@ export default defineComponent({
           });
         });
 
-      // await novoEstagioService
-      //   .setOrientador(termo.value.id, state.orientador)
-      //   .catch((err) => {
-      //     console.log(err);
-      //     toast.add({
-      //       severity: "error",
-      //       summary: "Erro na etapa de atualizar o orientador",
-      //       detail: "Erro ao salvar dados do estágio",
-      //       life: 3000,
-      //     });
-      //   });
+      await novoEstagioService
+        .setOrientador(termo.value.id, state.orientador)
+        .catch((err) => {
+          console.log(err);
+          toast.add({
+            severity: "error",
+            summary: "Erro na etapa de atualizar o orientador",
+            detail: "Erro ao salvar dados do estágio",
+            life: 3000,
+          });
+        });
 
       await novoEstagioService
         .setSupervisor(termo.value.id, {
@@ -335,7 +335,10 @@ export default defineComponent({
             <Dropdown
               filter
               :options="docentes"
+              optionLabel="nome"
+              optionValue="id"
               placeholder="Selecione orientador(a)"
+              :filter-fields="['nome']"
               v-model="state.orientador"
               :class="{ 'p-invalid': errors['orientador'] }"
             />

@@ -28,11 +28,11 @@ export default {
       </div>
       <div class="col-4">
         <strong>Nome Professor Orientador UFPR</strong>
-        <p>Prof. {{ termo?.nomeOrientador }}</p>
+        <p>Prof. {{ termo?.orientador?.nome }}</p>
       </div>
       <div class="col-4">
         <strong>Departamento do Orientador</strong>
-        <p>{{ termo?.departamentoOrientador }}</p>
+        <p>{{ termo?.orientador?.departamento }}</p>
       </div>
       <div class="col-12">
         <strong>Atividades a serem desenvolvidas</strong>
