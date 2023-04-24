@@ -11,7 +11,9 @@ const { id } = route.params;
 
 const grr = "GRR20201212";
 
-const { data: aluno } = await useFetch(`http://localhost:5000/aluno/${grr}`);
+const { data: aluno } = await useFetch(
+  `http://localhost:5000/siga/aluno?grr=${grr}`
+);
 
 // console.log(aluno)
 </script>

@@ -169,9 +169,7 @@ export default defineComponent({
 
         console.log(contratanteID, seguradora, apolice);
 
-        advanceStep({
-          ...state,
-        });
+        advanceStep();
       } catch (err) {
         console.log(err);
         toast.add({
@@ -230,8 +228,6 @@ export default defineComponent({
             <div class="field col">
               <label for="telefoneContratante">Telefone do Contratante</label>
               <InputMask
-                id="telefoneContratante"
-                type="text"
                 mask="(99) 9999-9999"
                 v-model="state.telefoneContratante"
                 :class="{ 'p-invalid': errors['telefoneContratante'] }"
@@ -372,7 +368,7 @@ export default defineComponent({
 
     <div class="w-full flex justify-end gap-2">
       <Button
-        @click="backStep({ ...state })"
+        @click="backStep()"
         label="Voltar"
         class="p-button-secondary"
         icon="pi pi-arrow-left"

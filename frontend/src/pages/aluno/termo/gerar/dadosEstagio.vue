@@ -42,19 +42,27 @@ export default defineComponent({
     const toast = useToast();
     const errors = ref({} as Record<string, string>);
 
+    const parseDateToMask = (date?: string) => {
+      if (!date) return "";
+      const [year, month, day] = date.split("-");
+      return `${day}/${month}/${year}`;
+    };
+
     onMounted(() => {
       if (termo) {
         console.log(termo.value);
-        state.dataInicio = termo.value?.dataInicio;
-        state.dataFinal = termo.value?.dataTermino;
+        state.dataInicio = parseDateToMask(termo.value?.dataInicio);
+        state.dataFinal = parseDateToMask(termo.value?.dataTermino);
         state.jornadaDiaria = termo.value?.jornadaDiaria;
         state.jornadaSemanal = termo.value?.jornadaSemanal;
-        state.bolsaAuxilio = termo.value?.bolsaAuxilio;
-        state.auxilioTransporte = termo.value?.auxilioTransporte;
+        state.bolsaAuxilio = termo.value?.valorBolsa;
+        state.auxilioTransporte = termo.value?.valorTransporte;
         // state.coordenador = termo.value?.coordenador;
         state.orientador = termo.value?.orientador;
-        state.nomeSupervisor = termo.value?.nomeSupervisor;
-        state.telefoneSupervisor = termo.value?.telefoneSupervisor;
+        state.nomeSupervisor = termo.value?.supervisor?.nome;
+        state.telefoneSupervisor = termo.value?.supervisor?.telefone;
+        state.cpfSupervisor = termo.value?.supervisor?.cpf;
+        state.formacaoSupervisor = termo.value?.supervisor?.formacao;
         state.atividades = termo.value?.descricaoAtividades;
       }
 
@@ -136,7 +144,7 @@ export default defineComponent({
       await novoEstagioService
         .setDadosEstagio(id, {
           dataInicio: dayjs(state.dataInicio).format("YYYY-MM-DD"),
-          dataFim: dayjs(state.dataFinal).format("YYYY-MM-DD"),
+          dataTermino: dayjs(state.dataFinal).format("YYYY-MM-DD"),
           jornadaDiaria: state.jornadaDiaria,
           jornadaSemanal: state.jornadaSemanal,
           valorBolsa: state.bolsaAuxilio,
@@ -196,9 +204,7 @@ export default defineComponent({
           });
         });
 
-      advanceStep({
-        ...state,
-      });
+      advanceStep();
     };
 
     return {
@@ -279,16 +285,13 @@ export default defineComponent({
         <h5>Valores da Bolsa Auxílio</h5>
         <div class="formgrid grid">
           <div class="field col">
-            <label for="bolsaAuxilio"
-              >Valor bolsa auxílio {{ state.bolsaAuxilio }}</label
-            >
+            <label for="bolsaAuxilio">Valor bolsa auxílio </label>
             <InputNumber
               mode="currency"
               v-tooltip.top="
                 'A contratante é responsável pelo pagamento de bolsa auxílio mensal para o estudante que realiza o estágio na modalidade não obrigatório (Lei Federal 11.788/2008).'
               "
               currency="BRL"
-              id="bolsaAuxilio"
               v-model="state.bolsaAuxilio"
               :class="errors['bolsaAuxilio'] && 'p-invalid'"
             />
@@ -304,7 +307,6 @@ export default defineComponent({
               v-tooltip.top="
                 'A contratante é responsável pelo pagamento de auxílio transporte para o estudante que realiza o estágio na modalidade não obrigatório (Lei Federal 11.788/2008).'
               "
-              id="auxilioTransporte"
               v-model="state.auxilioTransporte"
               :class="errors['auxilioTransporte'] && 'p-invalid'"
             />
@@ -316,7 +318,7 @@ export default defineComponent({
       </div>
       <div class="card p-fluid col-12">
         <h5>Plano de Atividades</h5>
-        <div class="formgrid grid">
+        <!-- <div class="formgrid grid">
           <div class="field col">
             <label for="coordenador">Coordenador do curso</label>
             <InputText
@@ -324,12 +326,9 @@ export default defineComponent({
               type="text"
               disabled
               :value="aluno?.coordenador"
-              v-model="state.coordenador"
-              :class="errors['coordenador'] && 'p-invalid'"
             />
-            <small class="text-rose-500">{{ errors["coordenador"] }}</small>
           </div>
-        </div>
+        </div> -->
         <div class="formgrid grid">
           <div class="field col">
             <label for="orientador">Professor Orientador na UFPR</label>
@@ -359,8 +358,6 @@ export default defineComponent({
           <div class="field col">
             <label for="telefoneSupervisor">Telefone do Supervisor</label>
             <InputMask
-              id="telefoneSupervisor"
-              type="text"
               mask="(99) 99999-9999"
               v-model="state.telefoneSupervisor"
               :class="errors['telefoneSupervisor'] && 'p-invalid'"
@@ -409,7 +406,6 @@ export default defineComponent({
             </span>
             <Textarea
               id="atividades"
-              type="text"
               v-tooltip.top="
                 'Inserir todas as atividades que serão realizadas durante o período de estágio. As atividades devem ser compatíveis com a área do curso do estagiário. (Art. 3 - Lei Federal no. 11.788/2008)(Art. 2 - Instrução Normativa no. 01/13-CEPE)'
               "
@@ -424,7 +420,7 @@ export default defineComponent({
       </div>
       <div class="w-full flex justify-end gap-2">
         <Button
-          @click="() => backStep({ ...state })"
+          @click="() => backStep()"
           label="Voltar"
           class="p-button-secondary"
           icon="pi pi-arrow-left"

@@ -20,8 +20,15 @@ export default defineComponent({
     const parseTipoEstagio = (tipo: TipoEstagio) =>
       tipo === "Obrigatorio" ? "Obrigatório" : "Não Obrigatório";
 
+    const parseDate = (date?: string) => {
+      if (!date) return "";
+      const [year, month, day] = date.split("-");
+      return `${day}/${month}/${year}`;
+    };
+
     return {
       formatMoney,
+      parseDate,
       parseTipoEstagio,
     };
   },
@@ -48,6 +55,15 @@ export default defineComponent({
       <div class="col-4">
         <strong>Jornada Semanal</strong>
         <p>{{ termo?.jornadaSemanal }} horas</p>
+      </div>
+
+      <div class="col-4">
+        <strong>Data de Inicio</strong>
+        <p>{{ parseDate(termo?.dataInicio) }}</p>
+      </div>
+      <div class="col-4">
+        <strong>Data prevista de Fim</strong>
+        <p>{{ parseDate(termo?.dataTermino) }}</p>
       </div>
 
       <div class="col-4">

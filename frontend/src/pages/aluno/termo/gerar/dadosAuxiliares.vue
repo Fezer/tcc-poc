@@ -143,9 +143,7 @@ export default defineComponent({
         return;
       }
 
-      advanceStep({
-        ...state,
-      });
+      advanceStep();
     };
 
     return {
@@ -478,7 +476,7 @@ export default defineComponent({
 
     <div class="w-full flex justify-end gap-2">
       <Button
-        @click="() => backStep({ ...state })"
+        @click="() => backStep()"
         label="Voltar"
         class="p-button-secondary"
         icon="pi pi-arrow-left"

@@ -78,10 +78,7 @@ export default defineComponent({
           estagioUfpr: localEstagio === "UFPR",
         });
 
-        advanceStep({
-          tipoEstagio,
-          localEstagio,
-        });
+        advanceStep();
       } else {
         error.value = "Este campo é obrigatório";
       }
@@ -140,7 +137,7 @@ export default defineComponent({
     </div>
     <div class="w-full flex justify-end gap-2">
       <Button
-        @click="backStep({ ...dadosTipoEstagio })"
+        @click="backStep()"
         label="Voltar"
         class="p-button-secondary"
         icon="pi pi-arrow-left"

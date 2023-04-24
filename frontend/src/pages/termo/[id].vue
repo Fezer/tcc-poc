@@ -85,7 +85,11 @@ export default defineComponent({
     };
 
     const handleEditarTermo = () => {
-      setTermo(termo);
+      setTermo({
+        ...termo.value.estagio,
+        ...termo.value.planoAtividades,
+        ...termo.value,
+      });
 
       router.push({
         path: "/aluno/termo/gerar",
@@ -98,6 +102,14 @@ export default defineComponent({
         .solicitarAprovacaoTermo(termo.value.id)
         .then(() => {
           refreshData();
+        })
+        .then(() => {
+          toast.add({
+            severity: "success",
+            summary: `Aprovação solicitada!`,
+            detail: `Aprovação do termo solicitada com sucesso! O termo de compromisso agora está sob Análise da COE. Acompanhe o status do termo na página de Processos.`,
+            life: 3000,
+          });
         });
     };
 

@@ -1,22 +1,19 @@
-export default interface NovoEstagio {
+export default interface NovoEstagio
+  extends PlanoAtividades,
+    DadosAuxiliares,
+    DadoEstagio {
   id: number | null;
-  dadosTipoEstagio: {
-    tipoEstagio: TipoEstagio;
-    localEstagio: "UFPR" | "EXTERNO";
-  } | null;
-  tipoContratante: {
-    tipoContratante: "PF" | "PJ";
-  } | null;
-  dadosEstagio: DadoEstagio | null;
-  dadosAuxiliares: DadosAuxiliares | null;
+  tipoEstagio: TipoEstagio;
+  estagioUfpr: boolean;
+  supervisor: Supervisor;
 }
 
-export type PlanoAtividades = {
+export interface PlanoAtividades {
   local: string;
   descricaoAtividades: string;
-};
+}
 
-export type DadosAuxiliares = {
+export interface DadosAuxiliares {
   tipoVaga: "amplaConcorrencia" | "negros" | "pcd";
   grupoSanguineo: string;
   banco: string;
@@ -29,17 +26,25 @@ export type DadosAuxiliares = {
   certificadoMilitar: string;
   orgaoExpedicaoCertMilitar: string;
   serieCertMilitar: string;
-};
+}
 
-export type DadoEstagio = {
+export interface DadoEstagio {
   dataInicio: string;
   dataFinal: string;
+  dataTermino: string;
   jornadaDiaria: number;
   jornadaSemanal: number;
   bolsaAuxilio: number;
   auxilioTransporte: number;
   nomeSupervisor: string;
   telefoneSupervisor: string;
-};
+}
 
 export type TipoEstagio = "Obrigatorio" | "NaoObrigatorio";
+
+export type Supervisor = {
+  nome: string;
+  cpf: string;
+  telefone: string;
+  formacao: string;
+};

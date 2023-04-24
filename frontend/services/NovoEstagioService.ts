@@ -1,4 +1,8 @@
-import { PlanoAtividades, TipoEstagio } from "../src/types/NovoEstagio";
+import {
+  PlanoAtividades,
+  Supervisor,
+  TipoEstagio,
+} from "../src/types/NovoEstagio";
 import BaseService from "./BaseService";
 
 export default class NovoEstagioService extends BaseService {
@@ -57,7 +61,7 @@ export default class NovoEstagioService extends BaseService {
     id: number,
     dadosEstagio: {
       dataInicio: string;
-      dataFim: string;
+      dataTermino: string;
       jornadaDiaria: number;
       jornadaSemanal: number;
       valorBolsa: number;
@@ -87,15 +91,7 @@ export default class NovoEstagioService extends BaseService {
     );
   }
 
-  public async setSupervisor(
-    id: string,
-    supervisor: {
-      nome: string;
-      telefone: string;
-      formacao: string;
-      cpf: string;
-    }
-  ) {
+  public async setSupervisor(id: string, supervisor: Supervisor) {
     return await $fetch("http://localhost:5000/supervisor/", {
       method: "POST",
 
