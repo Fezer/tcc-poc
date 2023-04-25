@@ -4,6 +4,7 @@ import { defineComponent, reactive } from "vue";
 import NovoEstagioService from "../../../services/NovoEstagioService";
 import aluno from "../../components/common/aluno.vue";
 import Contratante from "../../components/common/contratante.vue";
+import dadosAuxiliaresVue from "../../components/common/dadosAuxiliares.vue";
 import estagio from "../../components/common/estagio.vue";
 import planoAtividades from "../../components/common/plano-atividades.vue";
 import StatusTermo from "./status.vue";
@@ -17,6 +18,7 @@ export default defineComponent({
     PlanoAtividades: planoAtividades,
     Contratante,
     StatusTermo,
+    DadosAuxiliares: dadosAuxiliaresVue,
   },
   setup() {
     const router = useRouter();
@@ -162,6 +164,7 @@ export default defineComponent({
       :etapa="termo?.etapaFluxo"
       :status="termo?.statusTermo"
       :motivo="termo?.motivoIndeferimento"
+      :termo="termo"
     />
 
     <Aluno />
@@ -169,6 +172,8 @@ export default defineComponent({
     <Estagio :termo="termo" />
 
     <PlanoAtividades :termo="termo" />
+
+    <DadosAuxiliares :termo="termo" />
 
     <Contratante :termo="termo" />
 

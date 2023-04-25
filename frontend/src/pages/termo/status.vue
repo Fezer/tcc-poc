@@ -1,5 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import NovoEstagio from "../../types/NovoEstagio";
+import parseDate from "~/utils/parseDate";
 
 export default defineComponent({
   props: {
@@ -12,15 +14,20 @@ export default defineComponent({
     motivo: {
       type: String,
     },
+    termo: {
+      type: Object,
+    },
   },
   setup({
     etapa,
     status,
     motivo,
+    termo,
   }: {
     etapa: string;
     status: string;
     motivo: string;
+    termo: NovoEstagio;
   }) {
     const getPercentageByEtapa = () => {
       if (status === "EmAprovacao") {
@@ -44,6 +51,9 @@ export default defineComponent({
     return {
       parseStatus,
       percentage,
+      parseDate,
+      motivo,
+      termo,
     };
   },
 });
@@ -80,7 +90,7 @@ export default defineComponent({
         </div>
         <div class="text-box col-4 flex flex-col">
           <strong>Data de Início do processo</strong>
-          <span>01/01/2021</span>
+          <span>{{ parseDate(termo?.dataCriacao) }}</span>
         </div>
         <div class="col-4 flex items-center justify-end">
           <Button
@@ -90,7 +100,7 @@ export default defineComponent({
           />
         </div>
       </div>
-      <div>
+      <div v-if="motivo">
         <strong>Detalhes</strong>
         <p>
           {{

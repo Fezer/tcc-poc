@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import { TipoEstagio } from "../../types/NovoEstagio";
+import NovoEstagio, { TipoEstagio } from "../../types/NovoEstagio";
 import parseDate from "~/utils/parseDate";
 
 export default defineComponent({
@@ -10,7 +10,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
+  setup({ termo }: { termo: NovoEstagio }) {
     const formatMoney = (value: number) => {
       return Intl.NumberFormat("pt-BR", {
         style: "currency",
@@ -25,14 +25,18 @@ export default defineComponent({
       formatMoney,
       parseDate,
       parseTipoEstagio,
+      termo,
     };
   },
 });
 </script>
 
 <template>
-  <div class="card">
-    <h5>Dados do estágio</h5>
+  <div
+    class="card"
+    v-if="termo?.estagioUfpr && termo?.tipoEstagio === 'Obrigatorio'"
+  >
+    <h5>Dados Auxiliares</h5>
 
     <div class="grid">
       <div class="col-4">

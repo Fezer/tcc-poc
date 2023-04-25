@@ -342,9 +342,6 @@ export default defineComponent({
               :options="bancos"
               optionLabel="name"
               optionValue="name"
-              v-tooltip.top="
-                'O pagamento da bolsa auxílio só poderá ser realizado nos bancos disponíveis na lista abaixo.'
-              "
               v-model="state.banco"
               :class="{ 'p-invalid': errors['banco'] }"
             />
