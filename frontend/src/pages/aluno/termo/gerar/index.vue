@@ -7,6 +7,7 @@ import TipoEstagio from "./tipoEstagio.vue";
 
 import { defineComponent, reactive } from "vue";
 import { useToast } from "primevue/usetoast";
+import { z } from "zod";
 
 type Steps =
   | "DADOS_ALUNO"

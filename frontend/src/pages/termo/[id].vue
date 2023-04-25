@@ -46,6 +46,25 @@ export default defineComponent({
       cancelationConfirm: false,
       justificativa: "",
     });
+    const checkIfTermoCompleto = () => {
+      const necessaryValues = [
+        "planoAtividades",
+        "supervisor",
+        "orientador",
+        "jornadaSemanal",
+        "jornadaDiaria",
+        "dadaInicio",
+        "dataTermino",
+        "valorBolsa",
+        "valorTransporte",
+      ];
+
+      for (const value of necessaryValues) {
+        if (!termo.value[value]) {
+          return false;
+        }
+      }
+    };
 
     const responderTermo = async (resposta: any) => {
       state.indeferimentoConfirm = false;
@@ -97,7 +116,15 @@ export default defineComponent({
     };
 
     const handleSolicitarAprovacao = async () => {
-      console.log(termo.value);
+      if (!checkIfTermoCompleto()) {
+        return toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail:
+            "Termo incompleto. Por favor, visite a edição de termo, e termine o fluxo!",
+          life: 3000,
+        });
+      }
       await novoEstagioService
         .solicitarAprovacaoTermo(termo.value.id)
         .then(() => {
