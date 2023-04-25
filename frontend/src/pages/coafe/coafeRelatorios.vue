@@ -18,7 +18,7 @@
     <div class="card flex-column">
       <div class="flex flex-row gap-10">
         <div class="flex align-items-left pb-4">
-            <Checkbox 
+            <Checkbox
                 v-model="checked"
                 inputId="opção1"
                 name="tipoEstagio"
@@ -28,7 +28,7 @@
             <label for="opção1" class="ml-2"> Estágios UFPR </label>
         </div>
         <div class="flex align-items-left pb-6">
-            <Checkbox 
+            <Checkbox
               v-model="checked"
               inputId="opção2"
               name="tipoEstagio"
@@ -36,11 +36,11 @@
               :binary="true"
             />
             <label for="opção2" class="ml-2"> Estágios Externos </label>
-        </div>        
+        </div>
       </div>
       <div>
         <div class="flex align-items-center pb-6 gap-6">
-          <span class="p-float-label ml-2">            
+          <span class="p-float-label ml-2">
             <Calendar
               v-model="date"
               dateFormat="dd/mm/yy"
@@ -68,7 +68,7 @@
       </div>
     </div>
     <div class="flex justify-content-end">
-        <Button label="Cadastrar" class="botao-principal"></Button>  
+        <Button label="Cadastrar" class="botao-principal"></Button>
     </div>
   </div>
   <div>
@@ -84,11 +84,11 @@
         <div class="flex align-items-left pb-6">
             <Checkbox v-model="checked" inputId="opção2" name="tipoEstagio" value="estagioExterno" :binary="true" />
             <label for="opção2" class="ml-2"> Estágios Externos </label>
-        </div>        
+        </div>
       </div>
       <div>
         <div class="flex align-items-center pb-6 gap-6">
-          <span class="p-float-label ml-2">            
+          <span class="p-float-label ml-2">
             <Calendar v-model="date" dateFormat="dd/mm/yy" inputId="dataInicio" showIcon showButtonBar />
             <label for="dataInicio">De </label>
           </span>
@@ -104,10 +104,11 @@
       </div>
     </div>
     <div class="flex justify-content-end">
-        <Button label="Cadastrar" class="botao-principal"></Button>  
+        <Button label="Cadastrar" class="botao-principal"></Button>
     </div>
-  </div>  
-</template>  
+  </div>
+</div>
+</template>
 <script>
   import InputText from "primevue/inputtext";
   import Button from "primevue/button";

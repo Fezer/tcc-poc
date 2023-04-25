@@ -60,14 +60,6 @@ export default defineComponent({
       <NuxtLink to="/aluno/termo/gerar">
         <Button label="Continuar preenchimento" icon="pi pi-pencil"></Button>
       </NuxtLink>
-
-      <NuxtLink to="/estagio/1">
-        <Button
-          label="Ir para estágio dummy (dev)"
-          icon="pi pi-arrow-right"
-          class="p-button-secondary mt-2"
-        ></Button>
-      </NuxtLink>
     </div>
 
     <div
@@ -82,14 +74,6 @@ export default defineComponent({
         <Button
           label="Gerar novo termo de compromisso"
           icon="pi pi-plus"
-        ></Button>
-      </NuxtLink>
-
-      <NuxtLink to="/estagio/1">
-        <Button
-          label="Ir para estágio dummy (dev)"
-          icon="pi pi-arrow-right"
-          class="p-button-secondary mt-2"
         ></Button>
       </NuxtLink>
     </div>

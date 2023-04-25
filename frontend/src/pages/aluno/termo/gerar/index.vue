@@ -155,7 +155,7 @@ export default defineComponent({
       v-if="state.step === 'DADOS_ESTAGIO'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
-      :finalStep="!termo.estagioUfpr"
+      :finalStep="!termo?.estagioUfpr"
     />
     <DadosAuxiliares
       v-if="state.step === 'DADOS_AUXILIARES'"

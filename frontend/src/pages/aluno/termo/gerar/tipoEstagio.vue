@@ -52,9 +52,9 @@ export default defineComponent({
       if (localEstagio && tipoEstagio) {
         try {
           if (!termo?.value?.id) {
-            const { id } = await novoEstagioService.criarNovoEstagio();
+            const termo = await novoEstagioService.criarNovoEstagio();
 
-            termo.value = { id, ...termo.value };
+            setTermo(termo)
           }
           const { id } = termo?.value;
 
