@@ -1,5 +1,7 @@
 package br.ufpr.estagio.modulo.controller;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +26,9 @@ import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTO;
 import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTOv2;
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
 import br.ufpr.estagio.modulo.dto.ConvenioDTO;
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
+import br.ufpr.estagio.modulo.exception.NotFoundException;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Convenio;
@@ -43,8 +50,13 @@ public class AgenteIntegradorREST {
 	private ModelMapper mapper;
     
     @PostMapping("/novo")
-	public ResponseEntity<AgenteIntegradorDTO> novoAgenteIntegrador(@RequestBody AgenteIntegradorDTO agenteIntegradorDTO){
-		try {
+	public ResponseEntity<Object> novoAgenteIntegrador(@RequestBody AgenteIntegradorDTO agenteIntegradorDTO){
+    	
+    	if (agenteIntegradorDTO.getCnpj().isBlank() || agenteIntegradorDTO.getCnpj().isEmpty())
+    		throw new InvalidFieldException("CNPJ inválido.");
+    	
+    	try {
+			
 			AgenteIntegrador agenteIntegrador = mapper.map(agenteIntegradorDTO, AgenteIntegrador.class);
 			
 			agenteIntegrador.setConvenio(agenteIntegradorDTO.getConvenio());
@@ -59,26 +71,53 @@ public class AgenteIntegradorREST {
 			
 		}catch(Exception e) {
 			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao criar cliente!");
 		}
+    	
 	}
     
     @PostMapping("/")
 	public ResponseEntity<AgenteIntegradorDTOv2> criarAgenteIntegrador(@RequestBody AgenteIntegradorDTOv2 agenteIntegradorDTO){
-		try {
+		
+    	if (agenteIntegradorDTO.getNome().isBlank() || agenteIntegradorDTO.getNome().isEmpty())
+    		throw new InvalidFieldException("Nome inválido.");
+    	
+    	if (agenteIntegradorDTO.getTelefone().isBlank() || agenteIntegradorDTO.getTelefone().isEmpty())
+    		throw new InvalidFieldException("Telefone inválido.");
+    	
+    	if (agenteIntegradorDTO.getCnpj().isBlank() || agenteIntegradorDTO.getCnpj().isEmpty())
+    		throw new InvalidFieldException("CNPJ inválido.");
+    	
+    	try {
 			AgenteIntegrador agenteIntegrador = mapper.map(agenteIntegradorDTO, AgenteIntegrador.class);
 			agenteIntegrador = agenteIntegradorService.criarAgenteIntegrador(agenteIntegrador);
 			agenteIntegradorDTO = mapper.map(agenteIntegrador, AgenteIntegradorDTOv2.class);
 			return new ResponseEntity<>(agenteIntegradorDTO, HttpStatus.CREATED);
 		}catch(Exception e) {
 			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao criar agente integrador!");
 		}
 	}
     
     @PostMapping("/{idAgente}/convenio")
 	public ResponseEntity<ConvenioDTO> criarConvenio(@PathVariable Integer idAgente, @RequestBody ConvenioDTO convenio){
-		try {
+		
+    	if (convenio.getNumero() < 1)
+    		throw new InvalidFieldException("Número inválido.");
+    	
+    	if (convenio.getDescricao().isBlank() || convenio.getDescricao().isEmpty())
+    		throw new InvalidFieldException("Preencha a descrição.");
+    	
+    	if (convenio.getDataInicio() == null)
+    		throw new InvalidFieldException("Insira uma data de início.");
+    	
+    	if (convenio.getDataFim() == null)
+    		throw new InvalidFieldException("Insira uma data de fim.");
+    	
+    	if (convenio.getDataFim().before(convenio.getDataInicio()))
+    		throw new InvalidFieldException("A data de fim deve ser posterior à data de início");
+    	
+    	try {
 			Optional<AgenteIntegrador> agenteFind = agenteIntegradorService.buscarPorId(idAgente);
 			if(agenteFind.isEmpty()) {
 				throw new PocException(HttpStatus.NOT_FOUND, "Agente integrador não encontrado!");
@@ -91,50 +130,74 @@ public class AgenteIntegradorREST {
 			return new ResponseEntity<>(convenio, HttpStatus.CREATED);
 		}catch(Exception e) {
 			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao criar convenio!");
 		}
 	}
     
     @GetMapping("/{id}")
 	public ResponseEntity<AgenteIntegradorDTOv2> buscarAgenteIntegradorPorId(@PathVariable Integer id) {
-	    Optional<AgenteIntegrador> agenteIntegrador = agenteIntegradorService.buscarPorId(id);
-	    AgenteIntegradorDTOv2 agenteIntegradorDTO = mapper.map(agenteIntegrador, AgenteIntegradorDTOv2.class);
-	    return ResponseEntity.status(HttpStatus.OK).body(agenteIntegradorDTO);
+    	try {
+    		Optional<AgenteIntegrador> agenteIntegrador = agenteIntegradorService.buscarPorId(id);
+    		if(agenteIntegrador.isEmpty()) {
+                throw new NotFoundException("Agente integrador não encontrado!");
+            }
+    		AgenteIntegradorDTOv2 agenteIntegradorDTO = mapper.map(agenteIntegrador, AgenteIntegradorDTOv2.class);
+    		return ResponseEntity.status(HttpStatus.OK).body(agenteIntegradorDTO);
+    	} catch (Exception e) {
+            e.printStackTrace();
+            throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar agente integrador!");
+        }
 	}
 
 	@GetMapping("/")
 	public ResponseEntity<List<ApoliceDTO>> listarApolices() {
-	    List<AgenteIntegrador> agentesIntegradores = agenteIntegradorService.listarAgentesIntegradores();
-	    List<ApoliceDTO> agentesIntegradoresDTO = agentesIntegradores.stream()
-	            .map(ap -> mapper.map(ap, ApoliceDTO.class))
-	            .collect(Collectors.toList());
-	    return ResponseEntity.ok().body(agentesIntegradoresDTO);
+		try {
+			List<AgenteIntegrador> agentesIntegradores = agenteIntegradorService.listarAgentesIntegradores();
+			List<ApoliceDTO> agentesIntegradoresDTO = agentesIntegradores.stream()
+					.map(ap -> mapper.map(ap, ApoliceDTO.class))
+					.collect(Collectors.toList());
+			return ResponseEntity.ok().body(agentesIntegradoresDTO);
+		} catch (Exception e) {
+	        e.printStackTrace();
+	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao listar apólices!");
+	    }
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<AgenteIntegradorDTO> atualizarAgenteIntegrador(@PathVariable Integer id, @RequestBody AgenteIntegradorDTO agenteIntegradorDTO){
-	    Optional<AgenteIntegrador> agenteIntegrador = agenteIntegradorService.buscarPorId(id);
-	    
-	    if(agenteIntegrador.isPresent()) {
-	        AgenteIntegrador agenteIntegradorAtualizado = mapper.map(agenteIntegradorDTO, AgenteIntegrador.class);
-	        agenteIntegradorAtualizado.setId(id);
-	        agenteIntegradorAtualizado = agenteIntegradorService.atualizarAgenteIntegrador(agenteIntegradorAtualizado);
-	        AgenteIntegradorDTO agenteIntegradorDTOAtualizado = mapper.map(agenteIntegradorAtualizado, AgenteIntegradorDTO.class);
-	        return ResponseEntity.ok().body(agenteIntegradorDTOAtualizado);
-	    } else {
-	        return ResponseEntity.notFound().build();
+	    try {
+			Optional<AgenteIntegrador> agenteIntegrador = agenteIntegradorService.buscarPorId(id);
+		    
+		    if(agenteIntegrador.isPresent()) {
+		        AgenteIntegrador agenteIntegradorAtualizado = mapper.map(agenteIntegradorDTO, AgenteIntegrador.class);
+		        agenteIntegradorAtualizado.setId(id);
+		        agenteIntegradorAtualizado = agenteIntegradorService.atualizarAgenteIntegrador(agenteIntegradorAtualizado);
+		        AgenteIntegradorDTO agenteIntegradorDTOAtualizado = mapper.map(agenteIntegradorAtualizado, AgenteIntegradorDTO.class);
+		        return ResponseEntity.ok().body(agenteIntegradorDTOAtualizado);
+		    } else {
+		    	throw new NotFoundException("Agente integrador não encontrado!");
+		    }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao atualizar agente integrador!");
 	    }
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> excluirAgenteIntegrador(@PathVariable Integer id){
-	    Optional<AgenteIntegrador> agenteIntegrador = agenteIntegradorService.buscarPorId(id);
-	    if(agenteIntegrador.isPresent()) {
-	        agenteIntegradorService.excluirAgenteIntegrador(agenteIntegrador.get());
-	        return ResponseEntity.noContent().build();
-	    } else {
-	        return ResponseEntity.notFound().build();
-	    }
+		try {
+		    Optional<AgenteIntegrador> agenteIntegrador = agenteIntegradorService.buscarPorId(id);
+		    if(agenteIntegrador.isPresent()) {
+		        agenteIntegradorService.excluirAgenteIntegrador(agenteIntegrador.get());
+		        return ResponseEntity.noContent().build();
+		    } else {
+		        //return ResponseEntity.notFound().build();
+		    	throw new NotFoundException("Agente integrador não encontrado!");
+		    }
+		} catch (Exception e) {
+	        e.printStackTrace();
+	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao excluir agente integrador!");
+		}
 	}
 
 }

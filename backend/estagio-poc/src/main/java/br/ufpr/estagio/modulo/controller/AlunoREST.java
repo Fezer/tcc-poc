@@ -24,6 +24,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
+import br.ufpr.estagio.modulo.exception.BadRequestException;
+import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Discente;
@@ -69,18 +71,17 @@ public class AlunoREST {
 	public ResponseEntity<Aluno> listarTermo(@PathVariable String grrAlunoURL) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
 				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
 				if (aluno == null) {
-					throw new PocException(HttpStatus.NOT_FOUND, "Aluno não encontrado!");
+					throw new NotFoundException("Aluno não encontrado!");
 				} else {
 					return ResponseEntity.status(HttpStatus.OK).body(mapper.map(aluno, Aluno.class));
 				}
 			}
 		} catch (NumberFormatException e) {
-			throw new PocException(HttpStatus.BAD_REQUEST,
-					"O GRR informado para o aluno não é do tipo de dado esperado!");
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
 		} catch (PocException e) {
 			e.printStackTrace();
 			throw e;
@@ -94,11 +95,11 @@ public class AlunoREST {
 	public ResponseEntity<EstagioDTO> novoEstagio(@PathVariable String grrAlunoURL) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
 				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
 				if (aluno == null) {
-					throw new PocException(HttpStatus.NOT_FOUND, "Aluno não encontrado!");
+					throw new NotFoundException("Aluno não encontrado!");
 				} else {
 					Estagio estagio = alunoService.novoEstagio(aluno);
 					EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
@@ -106,8 +107,7 @@ public class AlunoREST {
 				}
 			}
 		} catch (NumberFormatException e) {
-			throw new PocException(HttpStatus.BAD_REQUEST,
-					"O GRR informado para o aluno não é do tipo de dado esperado!");
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
 		} catch (PocException e) {
 			e.printStackTrace();
 			throw e;
@@ -122,16 +122,16 @@ public class AlunoREST {
 			@PathVariable Long idTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
 				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
 				if (aluno == null) {
-					throw new PocException(HttpStatus.NOT_FOUND, "Aluno não encontrado!");
+					throw new NotFoundException("Aluno não encontrado!");
 				} else {
 					Optional<TermoDeEstagio> termofind = Optional
 							.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
 					if (termofind.isEmpty()) {
-						throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+						throw new NotFoundException("Termo não encontrado!");
 					} else {
 						TermoDeEstagio termo = alunoService.solicitarAprovacaoTermo(termofind);
 						return ResponseEntity.status(HttpStatus.CREATED)
@@ -140,8 +140,7 @@ public class AlunoREST {
 				}
 			}
 		} catch (NumberFormatException e) {
-			throw new PocException(HttpStatus.BAD_REQUEST,
-					"O GRR informado para o aluno não é do tipo de dado esperado!");
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
 		} catch (PocException e) {
 			e.printStackTrace();
 			throw e;
@@ -155,11 +154,11 @@ public class AlunoREST {
 	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmPreenchimento(@PathVariable String grrAlunoURL) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
 				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
 				if (aluno == null) {
-					throw new PocException(HttpStatus.NOT_FOUND, "Aluno não encontrado!");
+					throw new NotFoundException("Aluno não encontrado!");
 				} else {
 					List<Estagio> estagio = estagioService.buscarEstagioEmPreenchimentoPorAluno(aluno);
 					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
@@ -176,8 +175,7 @@ public class AlunoREST {
 				}
 			}
 		} catch (NumberFormatException e) {
-			throw new PocException(HttpStatus.BAD_REQUEST,
-					"O GRR informado para o aluno não é do tipo de dado esperado!");
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
 		} catch (PocException e) {
 			e.printStackTrace();
 			throw e;
@@ -191,11 +189,11 @@ public class AlunoREST {
 	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmAprovacao(@PathVariable String grrAlunoURL) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
 				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
 				if (aluno == null) {
-					throw new PocException(HttpStatus.NOT_FOUND, "Aluno não encontrado!");
+					throw new NotFoundException("Aluno não encontrado!");
 				} else {
 					List<Estagio> estagio = estagioService.buscarEstagioEmAprovacaoPorAluno(aluno);
 					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
@@ -212,8 +210,7 @@ public class AlunoREST {
 				}
 			}
 		} catch (NumberFormatException e) {
-			throw new PocException(HttpStatus.BAD_REQUEST,
-					"O GRR informado para o aluno não é do tipo de dado esperado!");
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
 		} catch (PocException e) {
 			e.printStackTrace();
 			throw e;
@@ -230,11 +227,11 @@ public class AlunoREST {
 	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmProgresso(@PathVariable String grrAlunoURL) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
 				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
 				if (aluno == null) {
-					throw new PocException(HttpStatus.NOT_FOUND, "Aluno não encontrado!");
+					throw new NotFoundException("Aluno não encontrado!");
 				} else {
 					List<Estagio> estagio = estagioService.buscarEstagioEmProgressoPorAluno(aluno);
 					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
@@ -251,8 +248,7 @@ public class AlunoREST {
 				}
 			}
 		} catch (NumberFormatException e) {
-			throw new PocException(HttpStatus.BAD_REQUEST,
-					"O GRR informado para o aluno não é do tipo de dado esperado!");
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
 		} catch (PocException e) {
 			e.printStackTrace();
 			throw e;
