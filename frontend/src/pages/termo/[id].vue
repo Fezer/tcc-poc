@@ -118,15 +118,15 @@ export default defineComponent({
     };
 
     const handleSolicitarAprovacao = async () => {
-      if (!checkIfTermoCompleto()) {
-        return toast.add({
-          severity: "error",
-          summary: "Ops!",
-          detail:
-            "Termo incompleto. Por favor, visite a edição de termo, e termine o fluxo!",
-          life: 3000,
-        });
-      }
+      // if (!checkIfTermoCompleto()) {
+      //   return toast.add({
+      //     severity: "error",
+      //     summary: "Ops!",
+      //     detail:
+      //       "Termo incompleto. Por favor, visite a edição de termo, e termine o fluxo!",
+      //     life: 3000,
+      //   });
+      // }
       await novoEstagioService
         .solicitarAprovacaoTermo(termo.value.id)
         .then(() => {
@@ -171,9 +171,9 @@ export default defineComponent({
 
     <Estagio :termo="termo" />
 
-    <PlanoAtividades :termo="termo" />
-
     <DadosAuxiliares :termo="termo" />
+
+    <PlanoAtividades :termo="termo" />
 
     <Contratante :termo="termo" />
 

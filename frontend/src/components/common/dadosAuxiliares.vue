@@ -34,7 +34,10 @@ export default defineComponent({
 <template>
   <div
     class="card"
-    v-if="termo?.estagioUfpr && termo?.tipoEstagio === 'Obrigatorio'"
+    v-if="
+      !!termo?.estagio?.estagioUfpr &&
+      termo?.estagio?.tipoEstagio == 'Obrigatorio'
+    "
   >
     <h5>Dados Auxiliares</h5>
 
