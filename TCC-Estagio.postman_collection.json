@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "2a2d441c-0840-465d-b599-8c657d928176",
+		"_postman_id": "b78150af-aea1-465d-a616-c09acf0ba04d",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18567474"
+		"_exporter_id": "17301767"
 	},
 	"item": [
 		{
@@ -132,10 +132,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"local\": \"Qualquer\",\r\n    \"descricaoAtividades\": \"atividades Bacanas\"\r\n}"
+							"raw": "{\r\n    \"local\": \"Qualquer\",\r\n    \"nomeSupervisor\": \"SuperVitor\",\r\n    \"telefoneSupervisor\": \"41999990000\",\r\n    \"cpfSupervisor\": \"11111111134\",\r\n    \"formacaoSupervisor\": \"TADS\",\r\n    \"descricaoAtividades\": \"atividades Bacanas\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/4/planoAtividades",
+							"raw": "http://localhost:5000/termo/1/planoAtividades",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -143,7 +143,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"4",
+								"1",
 								"planoAtividades"
 							]
 						}
@@ -366,6 +366,28 @@
 							"port": "5000",
 							"path": [
 								"termo",
+								"102"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associarContratanteAoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/termo/2/associarContratante/102",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"2",
+								"associarContratante",
 								"102"
 							]
 						}
@@ -1563,35 +1585,6 @@
 			"name": "Contratante",
 			"item": [
 				{
-					"name": "novoContratante",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"tipo\": \"PessoaJuridica\",\n    \"cnpj\": \"121.212.12238964186349168121\",\n    \"cpf\": null,\n    \"representanteEmpresa\": \"Sergey\",\n    \"estagio\": null\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/contratante/novo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"contratante",
-								"novo"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "listContratante",
 					"request": {
 						"method": "GET",
@@ -1675,6 +1668,35 @@
 							"path": [
 								"contratante",
 								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "criarContratante",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Ilya\",\n    \"telefone\": \"419292929292\",\n    \"tipo\": \"PessoaJuridica\",\n    \"cnpj\": \"121.212.12238964186349168121\",\n    \"cpf\": null,\n    \"representanteEmpresa\": \"Sergey\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/contratante/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"contratante",
+								""
 							]
 						}
 					},
