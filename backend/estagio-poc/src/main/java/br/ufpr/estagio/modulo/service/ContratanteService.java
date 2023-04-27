@@ -22,7 +22,7 @@ public class ContratanteService {
 		return contratanteRepository.save(contratante);
 	}
 
-	public Optional<Contratante> buscarPorId(Integer id) {
+	public Optional<Contratante> buscarPorId(Long id) {
 		return contratanteRepository.findById(id);
 	}
 
@@ -31,7 +31,7 @@ public class ContratanteService {
 	}
 
 	public Contratante atualizarContratante(Contratante contratanteAtualizado) {
-		Contratante contratanteExistente = buscarPorId((int) contratanteAtualizado.getId())
+		Contratante contratanteExistente = buscarPorId(contratanteAtualizado.getId())
                 .orElseThrow(() -> new NoSuchElementException("Contratante não encontrado para o ID informado"));
 
 		contratanteExistente.setTipo(contratanteAtualizado.getTipo());
@@ -44,7 +44,7 @@ public class ContratanteService {
 	}
 
 	public void excluirContratante(Contratante c) {
-		Optional<Contratante> contratanteOptional = contratanteRepository.findById((int) c.getId());
+		Optional<Contratante> contratanteOptional = contratanteRepository.findById(c.getId());
         if (contratanteOptional.isPresent()) {
         	Contratante contratante = contratanteOptional.get();
             contratanteRepository.delete(contratante);

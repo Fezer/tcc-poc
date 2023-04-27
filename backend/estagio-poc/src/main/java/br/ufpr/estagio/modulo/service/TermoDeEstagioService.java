@@ -15,6 +15,8 @@ import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
+import br.ufpr.estagio.modulo.model.Contratante;
+import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
@@ -22,6 +24,7 @@ import br.ufpr.estagio.modulo.model.Supervisor;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
 import br.ufpr.estagio.modulo.repository.ApoliceRepository;
+import br.ufpr.estagio.modulo.repository.ContratanteRepository;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.OrientadorRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
@@ -49,7 +52,8 @@ public class TermoDeEstagioService {
 	private ApoliceRepository apoliceRepo;
 	@Autowired
 	private SeguradoraRepository seguradoraRepo;
-	
+	@Autowired
+	private ContratanteRepository contratanteRepo;
 	
     public TermoDeEstagioService(TermoDeEstagioRepository termoRepo,
     		PlanoDeAtividadesRepository planoRepo,
@@ -256,6 +260,41 @@ public class TermoDeEstagioService {
 		seguradoraRepo.save(apolice.getSeguradora());
 		apoliceRepo.save(apolice);
 
+		termoDeEstagio = termoRepo.save(termoDeEstagio);
+		
+		return termoDeEstagio;
+	}
+	
+	public TermoDeEstagio associarContratanteAoTermo(TermoDeEstagio termoDeEstagio,
+			Contratante contratante) {
+		//Associa o contratante ao termo;
+		termoDeEstagio.setContratante(contratante);
+		
+		//Associa o contratante ao Estagio;
+		termoDeEstagio.getEstagio().setContratante(contratante);
+		
+		//Associa o termo ao contratante;
+		List<TermoDeEstagio> listaTermos = contratante.getTermoDeEstagio();
+		if(listaTermos == null) {
+			listaTermos = new ArrayList<TermoDeEstagio>();
+		}
+		if(!listaTermos.contains(termoDeEstagio)) {
+			listaTermos.add(termoDeEstagio);
+			contratante.setTermoDeEstagio(listaTermos);
+		}
+		
+		//Associa o estagio ao contratante;
+		List<Estagio> listaEstagios = contratante.getEstagio();
+		if(listaEstagios == null) {
+			listaEstagios = new ArrayList<Estagio>();
+		}
+		if(!listaEstagios.contains(termoDeEstagio.getEstagio())) {
+			listaEstagios.add(termoDeEstagio.getEstagio());
+			contratante.setEstagio(listaEstagios);
+		}
+		
+		contratanteRepo.save(contratante);
+		estagioRepo.save(termoDeEstagio.getEstagio());
 		termoDeEstagio = termoRepo.save(termoDeEstagio);
 		
 		return termoDeEstagio;

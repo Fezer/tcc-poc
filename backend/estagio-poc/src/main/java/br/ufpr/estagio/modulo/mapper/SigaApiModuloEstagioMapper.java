@@ -57,7 +57,8 @@ public class SigaApiModuloEstagioMapper {
 			aluno.setMatricula(discente.getGrr());
 			aluno.setPeriodoAtual(discente.getPeriodoAtual());
 			aluno.setEmail(discente.getEmail());
-			aluno.setRg(discente.getRg());			
+			aluno.setRg(discente.getRg());
+			//dadosauxiliares
 		}else {
 			aluno = alunoFind.get();
 		}
@@ -65,6 +66,9 @@ public class SigaApiModuloEstagioMapper {
 		Curso curso = cursoService.mapearCursoDiscente(discente);
 		
 		Coordenador coordenador = coordenadorService.mapearCoordenadorDiscente(discente);
+		
+		//Dados auxiliares aqui
+//		DadosAuxiliares dados...;
 		
 		aluno.setCurso(curso);
 		//TO-DO: Avaliar se não é melhor colocar essa lógica dentro da classe Curso.

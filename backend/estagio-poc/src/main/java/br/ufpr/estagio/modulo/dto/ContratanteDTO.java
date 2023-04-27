@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 
 public class ContratanteDTO implements Serializable{
 	/**
@@ -14,18 +15,40 @@ public class ContratanteDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private long id;
 	private EnumTipoContratante tipo;
+	private String nome;
+	private String telefone;
 	private String cnpj;
 	private String cpf;
 	private String representanteEmpresa;
 	private List<Estagio> estagio;
 	
+	// adicionado para concluir a task de associar contratante ao termo
+	private List<TermoDeEstagio> termoDeEstagio;
+	
 	public ContratanteDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public ContratanteDTO(long id, EnumTipoContratante tipo, String nome, String telefone, String cnpj, String cpf,
+			String representanteEmpresa, List<Estagio> estagio, List<TermoDeEstagio> termoDeEstagio) {
+		super();
+		this.id = id;
+		this.tipo = tipo;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.cnpj = cnpj;
+		this.cpf = cpf;
+		this.representanteEmpresa = representanteEmpresa;
+		this.estagio = estagio;
+		this.termoDeEstagio = termoDeEstagio;
+	}
 
+
+
+	// adicionado para concluir a task de associar contratante ao termo
 	public ContratanteDTO(long id, EnumTipoContratante tipo, String cnpj, String cpf, String representanteEmpresa,
-			List<Estagio> estagio) {
+			List<Estagio> estagio, List<TermoDeEstagio> termoDeEstagio) {
 		super();
 		this.id = id;
 		this.tipo = tipo;
@@ -33,6 +56,7 @@ public class ContratanteDTO implements Serializable{
 		this.cpf = cpf;
 		this.representanteEmpresa = representanteEmpresa;
 		this.estagio = estagio;
+		this.termoDeEstagio = termoDeEstagio;
 	}
 
 	public long getId() {
@@ -41,6 +65,22 @@ public class ContratanteDTO implements Serializable{
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	public EnumTipoContratante getTipo() {
@@ -81,6 +121,16 @@ public class ContratanteDTO implements Serializable{
 
 	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
+	}
+
+	// adicionado para concluir a task de associar contratante ao termo
+	public List<TermoDeEstagio> getTermoDeEstagio() {
+		return termoDeEstagio;
+	}
+
+	// adicionado para concluir a task de associar contratante ao termo
+	public void setTermoDeEstagio(List<TermoDeEstagio> termoDeEstagio) {
+		this.termoDeEstagio = termoDeEstagio;
 	}
 	
 }

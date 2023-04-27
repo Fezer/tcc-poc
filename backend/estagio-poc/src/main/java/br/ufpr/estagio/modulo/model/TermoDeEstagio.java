@@ -44,6 +44,12 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@JoinColumn(name="apolice_id", referencedColumnName="id",nullable=true)
 	private Apolice apolice;
 	
+	// adicionado para concluir a task de associar contratante ao termo
+	@JsonIgnore
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="contratante_id", referencedColumnName="id",nullable=true)
+	private Contratante contratante;
+	
 	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="agente_integrador_id", referencedColumnName="id", nullable=true)
@@ -170,6 +176,46 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 		this.motivoIndeferimento = motivoIndeferimento;
 		this.descricaoAjustes = descricaoAjustes;
 	}
+	
+	// adicionado para concluir a task de associar contratante ao termo
+	public TermoDeEstagio(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
+			Apolice apolice, Contratante contratante, AgenteIntegrador agenteIntegrador, Orientador orientador,
+			Supervisor supervisor, Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio,
+			Date dataTermino, int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte,
+			Date dataFimSuspensao, Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo,
+			EnumEtapaFluxo etapaFluxo, CienciaCoordenacao cienciaCoordenacao, EnumParecerAprovadores parecerCOE,
+			EnumParecerAprovadores parecerCOAFE, EnumParecerAprovadores parecerCoordenacao, String motivoIndeferimento,
+			String descricaoAjustes) {
+		super();
+		this.id = id;
+		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
+		this.estagio = estagio;
+		this.seguradora = seguradora;
+		this.apolice = apolice;
+		this.contratante = contratante;
+		this.agenteIntegrador = agenteIntegrador;
+		this.orientador = orientador;
+		this.supervisor = supervisor;
+		this.coordenador = coordenador;
+		this.planoAtividades = planoAtividades;
+		this.dataInicio = dataInicio;
+		this.dataTermino = dataTermino;
+		this.jornadaDiaria = jornadaDiaria;
+		this.jornadaSemanal = jornadaSemanal;
+		this.valorBolsa = valorBolsa;
+		this.valorTransporte = valorTransporte;
+		this.dataFimSuspensao = dataFimSuspensao;
+		this.dataInicioRetomada = dataInicioRetomada;
+		this.dataCriacao = dataCriacao;
+		this.statusTermo = statusTermo;
+		this.etapaFluxo = etapaFluxo;
+		this.cienciaCoordenacao = cienciaCoordenacao;
+		this.parecerCOE = parecerCOE;
+		this.parecerCOAFE = parecerCOAFE;
+		this.parecerCoordenacao = parecerCoordenacao;
+		this.motivoIndeferimento = motivoIndeferimento;
+		this.descricaoAjustes = descricaoAjustes;
+	}
 
 	public long getId() {
 		return id;
@@ -210,7 +256,17 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	public void setApolice(Apolice apolice) {
 		this.apolice = apolice;
 	}
+	
+	// adicionado para concluir a task de associar contratante ao termo
+	public Contratante getContratante() {
+		return contratante;
+	}
 
+	// adicionado para concluir a task de associar contratante ao termo
+	public void setContratante(Contratante contratante) {
+		this.contratante = contratante;
+	}
+	
 	public AgenteIntegrador getAgenteIntegrador() {
 		return agenteIntegrador;
 	}

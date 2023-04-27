@@ -54,8 +54,26 @@ public class ContratanteREST {
 		}
 	}
     
+    // TO-DO: Adicionar validação para garantir que contratante tem CPF **OU** CNPJ
+    @PostMapping("/")
+	public ResponseEntity<ContratanteDTO> criarContratante(@RequestBody ContratanteDTO contratanteDTO){
+		try {
+			Contratante contratante = mapper.map(contratanteDTO, Contratante.class);
+		    
+			contratante = contratanteService.criarContratante(contratante);
+			
+			contratanteDTO = mapper.map(contratante, ContratanteDTO.class);
+			
+			return new ResponseEntity<>(contratanteDTO, HttpStatus.CREATED);	
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+    
     @GetMapping("/{id}")
-	public ResponseEntity<ContratanteDTO> buscarContratantePorId(@PathVariable Integer id) {
+	public ResponseEntity<ContratanteDTO> buscarContratantePorId(@PathVariable Long id) {
 	    Optional<Contratante> contratante = contratanteService.buscarPorId(id);
 	    ContratanteDTO contratanteDTO = mapper.map(contratante, ContratanteDTO.class);
 	    return ResponseEntity.status(HttpStatus.OK).body(contratanteDTO);
@@ -82,7 +100,7 @@ public class ContratanteREST {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ContratanteDTO> atualizarContratante(@PathVariable Integer id, @RequestBody ContratanteDTO contratanteDTO){
+	public ResponseEntity<ContratanteDTO> atualizarContratante(@PathVariable Long id, @RequestBody ContratanteDTO contratanteDTO){
 	    Optional<Contratante> contratante = contratanteService.buscarPorId(id);
 	    
 	    if(contratante.isPresent()) {
@@ -97,7 +115,7 @@ public class ContratanteREST {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> excluirContratante(@PathVariable Integer id){
+	public ResponseEntity<Void> excluirContratante(@PathVariable Long id){
 	    Optional<Contratante> contratante = contratanteService.buscarPorId(id);
 	    if(contratante.isPresent()) {
 	    	contratanteService.excluirContratante(contratante.get());

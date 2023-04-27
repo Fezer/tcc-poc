@@ -24,14 +24,18 @@ import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.PlanoDeAtividadesDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
+import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
+import br.ufpr.estagio.modulo.model.Contratante;
+import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.Supervisor;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
 import br.ufpr.estagio.modulo.service.ApoliceService;
+import br.ufpr.estagio.modulo.service.ContratanteService;
 import br.ufpr.estagio.modulo.service.OrientadorService;
 import br.ufpr.estagio.modulo.service.SupervisorService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
@@ -51,6 +55,8 @@ public class TermoREST {
     private SupervisorService supervisorService;
 	@Autowired
     private ApoliceService apoliceService;
+	@Autowired
+    private ContratanteService contratanteService;
 
 	@Autowired
 	private ModelMapper mapper;
@@ -227,6 +233,29 @@ public class TermoREST {
 				throw new PocException(HttpStatus.NOT_FOUND, "Apolice não encontrada!");			
 			} else {
 				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarApoliceAoTermo(termofind.get(), apoliceFind.get());
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/{termoId}/associarContratante/{contratanteId}")
+	public ResponseEntity<TermoDeEstagioDTO> associarContratante(@PathVariable Long termoId, @PathVariable Long contratanteId){
+		try {
+			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
+			if(termofind.isEmpty()) {
+				throw new NotFoundException("Termo não encontrado!");
+			}
+			Optional<Contratante> contratanteFind = contratanteService.buscarPorId(contratanteId);
+			if(contratanteFind.isEmpty()) {
+				throw new NotFoundException("Contratante não encontrado!");			
+			} else {
+				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarContratanteAoTermo(termofind.get(), contratanteFind.get());
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
 			}
 		}catch(PocException e) {

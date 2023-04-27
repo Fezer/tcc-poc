@@ -9,6 +9,7 @@ import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
+import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Coordenador;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
@@ -22,6 +23,10 @@ public class TermoDeEstagioDTO {
 	private Estagio estagio;
 	private Seguradora seguradora;
 	private Apolice apolice;
+	
+	// adicionado para concluir a task de associar contratante ao termo
+	private Contratante contratante;
+	
 	private AgenteIntegrador agenteIntegrador;
 	private Orientador orientador;
 	private Supervisor supervisor;
@@ -88,6 +93,46 @@ public class TermoDeEstagioDTO {
 		this.descricaoAjustes = descricaoAjustes;
 	}
 
+	// adicionado para concluir a task de associar contratante ao termo
+	public TermoDeEstagioDTO(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
+			Apolice apolice, Contratante contratante, AgenteIntegrador agenteIntegrador, Orientador orientador,
+			Supervisor supervisor, Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio,
+			Date dataTermino, int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte,
+			Date dataFimSuspensao, Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo,
+			EnumEtapaFluxo etapaFluxo, CienciaCoordenacao cienciaCoordenacao, EnumParecerAprovadores parecerCOE,
+			EnumParecerAprovadores parecerCOAFE, EnumParecerAprovadores parecerCoordenacao, String motivoIndeferimento,
+			String descricaoAjustes) {
+		super();
+		this.id = id;
+		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
+		this.estagio = estagio;
+		this.seguradora = seguradora;
+		this.apolice = apolice;
+		this.contratante = contratante;
+		this.agenteIntegrador = agenteIntegrador;
+		this.orientador = orientador;
+		this.supervisor = supervisor;
+		this.coordenador = coordenador;
+		this.planoAtividades = planoAtividades;
+		this.dataInicio = dataInicio;
+		this.dataTermino = dataTermino;
+		this.jornadaDiaria = jornadaDiaria;
+		this.jornadaSemanal = jornadaSemanal;
+		this.valorBolsa = valorBolsa;
+		this.valorTransporte = valorTransporte;
+		this.dataFimSuspensao = dataFimSuspensao;
+		this.dataInicioRetomada = dataInicioRetomada;
+		this.dataCriacao = dataCriacao;
+		this.statusTermo = statusTermo;
+		this.etapaFluxo = etapaFluxo;
+		this.cienciaCoordenacao = cienciaCoordenacao;
+		this.parecerCOE = parecerCOE;
+		this.parecerCOAFE = parecerCOAFE;
+		this.parecerCoordenacao = parecerCoordenacao;
+		this.motivoIndeferimento = motivoIndeferimento;
+		this.descricaoAjustes = descricaoAjustes;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -126,6 +171,16 @@ public class TermoDeEstagioDTO {
 
 	public void setApolice(Apolice apolice) {
 		this.apolice = apolice;
+	}
+
+	// adicionado para concluir a task de associar contratante ao termo
+	public Contratante getContratante() {
+		return contratante;
+	}
+
+	// adicionado para concluir a task de associar contratante ao termo
+	public void setContratante(Contratante contratante) {
+		this.contratante = contratante;
 	}
 
 	public AgenteIntegrador getAgenteIntegrador() {

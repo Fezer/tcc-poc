@@ -257,5 +257,7 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
+	
+	//endpoint de dados auxiliares. so get
 
 }

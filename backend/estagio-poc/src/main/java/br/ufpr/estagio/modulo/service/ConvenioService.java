@@ -28,7 +28,7 @@ public class ConvenioService {
 		return convenioRepository.save(convenio);
 	}
 
-	public Optional<Convenio> buscarPorId(Integer id) {
+	public Optional<Convenio> buscarPorId(Long id) {
 		return convenioRepository.findById(id);
 	}
 
@@ -37,7 +37,7 @@ public class ConvenioService {
 	}
 
 	public Convenio atualizarConvenio(Convenio convenioAtualizado) {
-		Convenio convenioExistente = buscarPorId((int) convenioAtualizado.getId())
+		Convenio convenioExistente = buscarPorId(convenioAtualizado.getId())
                 .orElseThrow(() -> new NoSuchElementException("Convenio não encontrado para o ID informado"));
 
 		convenioExistente.setNumero(convenioAtualizado.getNumero());
@@ -50,7 +50,7 @@ public class ConvenioService {
 	}
 
 	public void excluirConvenio(Convenio c) {
-		Optional<Convenio> convenioOptional = convenioRepository.findById((int) c.getId());
+		Optional<Convenio> convenioOptional = convenioRepository.findById(c.getId());
         if (convenioOptional.isPresent()) {
         	Convenio convenio = convenioOptional.get();
         	convenioRepository.delete(convenio);

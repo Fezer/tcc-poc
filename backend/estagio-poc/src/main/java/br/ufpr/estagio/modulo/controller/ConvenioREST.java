@@ -60,7 +60,7 @@ public class ConvenioREST {
 	}
     
     @GetMapping("/{id}")
-	public ResponseEntity<ConvenioDTO> buscarAgenteIntegradorPorId(@PathVariable Integer id) {
+	public ResponseEntity<ConvenioDTO> buscarAgenteIntegradorPorId(@PathVariable Long id) {
 	    Optional<Convenio> convenio = convenioService.buscarPorId(id);
 	    ConvenioDTO convenioDTO = mapper.map(convenio, ConvenioDTO.class);
 	    return ResponseEntity.status(HttpStatus.OK).body(convenioDTO);
@@ -76,7 +76,7 @@ public class ConvenioREST {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ConvenioDTO> atualizarConvenio(@PathVariable Integer id, @RequestBody ConvenioDTO convenioDTO){
+	public ResponseEntity<ConvenioDTO> atualizarConvenio(@PathVariable Long id, @RequestBody ConvenioDTO convenioDTO){
 	    Optional<Convenio> agenteIntegrador = convenioService.buscarPorId(id);
 	    
 	    if(agenteIntegrador.isPresent()) {
@@ -91,7 +91,7 @@ public class ConvenioREST {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> excluirConvenio(@PathVariable Integer id){
+	public ResponseEntity<Void> excluirConvenio(@PathVariable Long id){
 	    Optional<Convenio> convenio = convenioService.buscarPorId(id);
 	    if(convenio.isPresent()) {
 	    	convenioService.excluirConvenio(convenio.get());
