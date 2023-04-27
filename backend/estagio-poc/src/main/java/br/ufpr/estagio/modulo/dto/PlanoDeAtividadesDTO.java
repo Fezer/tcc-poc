@@ -2,8 +2,6 @@ package br.ufpr.estagio.modulo.dto;
 
 import java.io.Serializable;
 
-import br.ufpr.estagio.modulo.model.Supervisor;
-
 
 public class PlanoDeAtividadesDTO implements Serializable {
 	
@@ -14,7 +12,10 @@ public class PlanoDeAtividadesDTO implements Serializable {
 	
 	private long id;
 	private String local;
-	private Supervisor supervisor;
+	private String nomeSupervisor;
+	private String telefoneSupervisor;
+	private String cpfSupervisor;
+	private String formacaoSupervisor;
 	private String descricaoAtividades;
 	
 	public PlanoDeAtividadesDTO() {
@@ -22,11 +23,15 @@ public class PlanoDeAtividadesDTO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PlanoDeAtividadesDTO(long id, String local, Supervisor supervisor, String descricaoAtividades) {
+	public PlanoDeAtividadesDTO(long id, String local, String nomeSupervisor, String telefoneSupervisor,
+			String cpfSupervisor, String formacaoSupervisor, String descricaoAtividades) {
 		super();
 		this.id = id;
 		this.local = local;
-		this.supervisor = supervisor;
+		this.nomeSupervisor = nomeSupervisor;
+		this.telefoneSupervisor = telefoneSupervisor;
+		this.cpfSupervisor = cpfSupervisor;
+		this.formacaoSupervisor = formacaoSupervisor;
 		this.descricaoAtividades = descricaoAtividades;
 	}
 
@@ -46,12 +51,36 @@ public class PlanoDeAtividadesDTO implements Serializable {
 		this.local = local;
 	}
 
-	public Supervisor getSupervisor() {
-		return supervisor;
+	public String getNomeSupervisor() {
+		return nomeSupervisor;
 	}
 
-	public void setSupervisor(Supervisor supervisor) {
-		this.supervisor = supervisor;
+	public void setNomeSupervisor(String nomeSupervisor) {
+		this.nomeSupervisor = nomeSupervisor;
+	}
+
+	public String getTelefoneSupervisor() {
+		return telefoneSupervisor;
+	}
+
+	public void setTelefoneSupervisor(String telefoneSupervisor) {
+		this.telefoneSupervisor = telefoneSupervisor;
+	}
+
+	public String getCpfSupervisor() {
+		return cpfSupervisor;
+	}
+
+	public void setCpfSupervisor(String cpfSupervisor) {
+		this.cpfSupervisor = cpfSupervisor;
+	}
+
+	public String getFormacaoSupervisor() {
+		return formacaoSupervisor;
+	}
+
+	public void setFormacaoSupervisor(String formacaoSupervisor) {
+		this.formacaoSupervisor = formacaoSupervisor;
 	}
 
 	public String getDescricaoAtividades() {

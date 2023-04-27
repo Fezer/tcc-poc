@@ -65,10 +65,10 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@JoinColumn(name="orientador_id", referencedColumnName="id", nullable=true)
 	private Orientador orientador;
 	
-	@JsonIgnore
+	/*@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
-	private Supervisor supervisor;
+	private Supervisor supervisor;*/
 
 	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
@@ -136,7 +136,7 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 
 	public Estagio(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr,
 			Aluno aluno, Contratante contratante, Seguradora seguradora, Apolice apolice,
-			AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
+			AgenteIntegrador agenteIntegrador, Orientador orientador,
 			PlanoDeAtividades planoDeAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria,
 			int jornadaSemanal, float valorBolsa, float valorTransporte, TermoDeEstagio termoDeCompromisso,
 			List<TermoDeEstagio> termoAdivito, TermoDeRescisao termoDeRescisao,
@@ -153,7 +153,6 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 		this.apolice = apolice;
 		this.agenteIntegrador = agenteIntegrador;
 		this.orientador = orientador;
-		this.supervisor = supervisor;
 		this.planoDeAtividades = planoDeAtividades;
 		this.dataInicio = dataInicio;
 		this.dataTermino = dataTermino;
@@ -248,14 +247,6 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 
 	public void setOrientador(Orientador orientador) {
 		this.orientador = orientador;
-	}
-
-	public Supervisor getSupervisor() {
-		return supervisor;
-	}
-
-	public void setSupervisor(Supervisor supervisor) {
-		this.supervisor = supervisor;
 	}
 
 	public PlanoDeAtividades getPlanoDeAtividades() {

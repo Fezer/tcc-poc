@@ -1,4 +1,4 @@
-package br.ufpr.estagio.modulo.repository;
+/*package br.ufpr.estagio.modulo.repository;
 
 import java.util.Optional;
 
@@ -11,3 +11,4 @@ public interface SupervisorRepository extends JpaRepository<Supervisor, Long>{
 	Optional<Supervisor> findByNome(String nome);
 
 }
+*/

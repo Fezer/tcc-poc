@@ -73,7 +73,6 @@ public class EstagioService {
 		estagioDTO.setApolice(estagio.getApolice());
 		estagioDTO.setAgenteIntegrador(estagio.getAgenteIntegrador());
 		estagioDTO.setOrientador(estagio.getOrientador());
-		estagioDTO.setSupervisor(estagio.getSupervisor());
 		estagioDTO.setPlanoDeAtividades(estagio.getPlanoDeAtividades());
 		estagioDTO.setDataInicio(estagio.getDataInicio());
 		estagioDTO.setDataTermino(estagio.getDataTermino());

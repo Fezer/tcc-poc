@@ -15,7 +15,6 @@ import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.Seguradora;
-import br.ufpr.estagio.modulo.model.Supervisor;
 
 public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Serializable{
 	
@@ -34,7 +33,7 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 	private Apolice apolice;
 	private AgenteIntegrador agenteIntegrador;
 	private Orientador orientador;
-	private Supervisor supervisor;
+//	private Supervisor supervisor;
 	private PlanoDeAtividades planoDeAtividades;
 	private Date dataInicio;
 	private Date dataTermino;
@@ -57,7 +56,7 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 
 	public EstagioDTO(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr,
 			Aluno aluno, Contratante contratante, Seguradora seguradora, Apolice apolice,
-			AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
+			AgenteIntegrador agenteIntegrador, Orientador orientador,
 			PlanoDeAtividades planoDeAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria,
 			int jornadaSemanal, float valorBolsa, float valorTransporte, long termoDeCompromisso,
 			List<Long> termoAdivito, long termoDeRescisao, List<Long> relatorioDeEstagio, long fichaDeAvaliacao,
@@ -73,7 +72,6 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 		this.apolice = apolice;
 		this.agenteIntegrador = agenteIntegrador;
 		this.orientador = orientador;
-		this.supervisor = supervisor;
 		this.planoDeAtividades = planoDeAtividades;
 		this.dataInicio = dataInicio;
 		this.dataTermino = dataTermino;
@@ -168,14 +166,6 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 
 	public void setOrientador(Orientador orientador) {
 		this.orientador = orientador;
-	}
-
-	public Supervisor getSupervisor() {
-		return supervisor;
-	}
-
-	public void setSupervisor(Supervisor supervisor) {
-		this.supervisor = supervisor;
 	}
 
 	public PlanoDeAtividades getPlanoDeAtividades() {

@@ -15,7 +15,6 @@ import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.Seguradora;
-import br.ufpr.estagio.modulo.model.Supervisor;
 
 public class TermoDeEstagioDTO {
 	private long id;
@@ -29,7 +28,6 @@ public class TermoDeEstagioDTO {
 	
 	private AgenteIntegrador agenteIntegrador;
 	private Orientador orientador;
-	private Supervisor supervisor;
 	private Coordenador coordenador;
 	private PlanoDeAtividades planoAtividades;
 	private Date dataInicio;
@@ -56,7 +54,7 @@ public class TermoDeEstagioDTO {
 	}
 
 	public TermoDeEstagioDTO(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
-			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
+			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador,
 			Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
 			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte, Date dataFimSuspensao,
 			Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo, EnumEtapaFluxo etapaFluxo,
@@ -71,7 +69,6 @@ public class TermoDeEstagioDTO {
 		this.apolice = apolice;
 		this.agenteIntegrador = agenteIntegrador;
 		this.orientador = orientador;
-		this.supervisor = supervisor;
 		this.coordenador = coordenador;
 		this.planoAtividades = planoAtividades;
 		this.dataInicio = dataInicio;
@@ -96,7 +93,7 @@ public class TermoDeEstagioDTO {
 	// adicionado para concluir a task de associar contratante ao termo
 	public TermoDeEstagioDTO(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
 			Apolice apolice, Contratante contratante, AgenteIntegrador agenteIntegrador, Orientador orientador,
-			Supervisor supervisor, Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio,
+			Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio,
 			Date dataTermino, int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte,
 			Date dataFimSuspensao, Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo,
 			EnumEtapaFluxo etapaFluxo, CienciaCoordenacao cienciaCoordenacao, EnumParecerAprovadores parecerCOE,
@@ -111,7 +108,6 @@ public class TermoDeEstagioDTO {
 		this.contratante = contratante;
 		this.agenteIntegrador = agenteIntegrador;
 		this.orientador = orientador;
-		this.supervisor = supervisor;
 		this.coordenador = coordenador;
 		this.planoAtividades = planoAtividades;
 		this.dataInicio = dataInicio;
@@ -197,14 +193,6 @@ public class TermoDeEstagioDTO {
 
 	public void setOrientador(Orientador orientador) {
 		this.orientador = orientador;
-	}
-
-	public Supervisor getSupervisor() {
-		return supervisor;
-	}
-
-	public void setSupervisor(Supervisor supervisor) {
-		this.supervisor = supervisor;
 	}
 
 	public Coordenador getCoordenador() {

@@ -20,7 +20,6 @@ import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
-import br.ufpr.estagio.modulo.model.Supervisor;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
 import br.ufpr.estagio.modulo.repository.ApoliceRepository;
@@ -29,7 +28,6 @@ import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.OrientadorRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
 import br.ufpr.estagio.modulo.repository.SeguradoraRepository;
-import br.ufpr.estagio.modulo.repository.SupervisorRepository;
 import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
  
 @Service
@@ -46,8 +44,8 @@ public class TermoDeEstagioService {
 	private EstagioRepository estagioRepo;
 	@Autowired
 	private AgenteIntegradorRepository agenteIntegradorRepo;
-	@Autowired
-	private SupervisorRepository supervisorRepo;
+	/*@Autowired
+	private SupervisorRepository supervisorRepo;*/
 	@Autowired
 	private ApoliceRepository apoliceRepo;
 	@Autowired
@@ -112,6 +110,11 @@ public class TermoDeEstagioService {
 		PlanoDeAtividades planoAtividadesAtualizado = termoAtualizado.getPlanoAtividades();
 		planoAtividadesAtualizado.setLocal(planoAtividades.getLocal() == "" ? planoAtividadesAtualizado.getLocal() : planoAtividades.getLocal());
 		planoAtividadesAtualizado.setDescricaoAtividades(planoAtividades.getDescricaoAtividades() == "" ? planoAtividadesAtualizado.getDescricaoAtividades() : planoAtividades.getDescricaoAtividades());
+		planoAtividadesAtualizado.setNomeSupervisor(planoAtividades.getNomeSupervisor() == "" ? planoAtividadesAtualizado.getNomeSupervisor() : planoAtividades.getNomeSupervisor());
+		planoAtividadesAtualizado.setTelefoneSupervisor(planoAtividades.getTelefoneSupervisor() == null ? planoAtividadesAtualizado.getTelefoneSupervisor() : planoAtividades.getTelefoneSupervisor());
+		planoAtividadesAtualizado.setCpfSupervisor(planoAtividades.getCpfSupervisor() == null ? planoAtividadesAtualizado.getCpfSupervisor() : planoAtividades.getCpfSupervisor());
+		planoAtividadesAtualizado.setFormacaoSupervisor(planoAtividades.getFormacaoSupervisor() == null ? planoAtividadesAtualizado.getFormacaoSupervisor() : planoAtividades.getFormacaoSupervisor());
+
 		planoRepo.save(planoAtividadesAtualizado);
 		return termoRepo.save(termoAtualizado);
 	}
@@ -175,7 +178,7 @@ public class TermoDeEstagioService {
 		return termoDeEstagio;
 	}
 
-	public TermoDeEstagio associarSupervisorAoTermo(TermoDeEstagio termoDeEstagio, Supervisor supervisor) {
+	/*public TermoDeEstagio associarSupervisorAoTermo(TermoDeEstagio termoDeEstagio, Supervisor supervisor) {
 		//Associa o supervisor ao termo;
 		termoDeEstagio.setSupervisor(supervisor);
 		
@@ -221,7 +224,7 @@ public class TermoDeEstagioService {
 		termoDeEstagio = termoRepo.save(termoDeEstagio);
 		
 		return termoDeEstagio;
-	}
+	}*/
 
 	public TermoDeEstagio associarApoliceAoTermo(TermoDeEstagio termoDeEstagio, Apolice apolice) {
 		//Associa o apolice e seguradora ao termo;

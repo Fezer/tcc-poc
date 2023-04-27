@@ -60,10 +60,10 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@JoinColumn(name="orientador_id", referencedColumnName="id", nullable=true)
 	private Orientador orientador;
 	
-	@JsonIgnore
+	/*@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
-	private Supervisor supervisor;
+	private Supervisor supervisor;*/
 	
 	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
@@ -140,7 +140,7 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	
 
 	public TermoDeEstagio(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
-			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador, Supervisor supervisor,
+			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador,
 			Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
 			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte, Date dataFimSuspensao,
 			Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo, EnumEtapaFluxo etapaFluxo,
@@ -155,7 +155,6 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 		this.apolice = apolice;
 		this.agenteIntegrador = agenteIntegrador;
 		this.orientador = orientador;
-		this.supervisor = supervisor;
 		this.coordenador = coordenador;
 		this.planoAtividades = planoAtividades;
 		this.dataInicio = dataInicio;
@@ -180,7 +179,7 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	// adicionado para concluir a task de associar contratante ao termo
 	public TermoDeEstagio(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
 			Apolice apolice, Contratante contratante, AgenteIntegrador agenteIntegrador, Orientador orientador,
-			Supervisor supervisor, Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio,
+			Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio,
 			Date dataTermino, int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte,
 			Date dataFimSuspensao, Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo,
 			EnumEtapaFluxo etapaFluxo, CienciaCoordenacao cienciaCoordenacao, EnumParecerAprovadores parecerCOE,
@@ -195,7 +194,6 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 		this.contratante = contratante;
 		this.agenteIntegrador = agenteIntegrador;
 		this.orientador = orientador;
-		this.supervisor = supervisor;
 		this.coordenador = coordenador;
 		this.planoAtividades = planoAtividades;
 		this.dataInicio = dataInicio;
@@ -281,14 +279,6 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 
 	public void setOrientador(Orientador orientador) {
 		this.orientador = orientador;
-	}
-
-	public Supervisor getSupervisor() {
-		return supervisor;
-	}
-
-	public void setSupervisor(Supervisor supervisor) {
-		this.supervisor = supervisor;
 	}
 
 	public Coordenador getCoordenador() {

@@ -31,13 +31,11 @@ import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Orientador;
-import br.ufpr.estagio.modulo.model.Supervisor;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
 import br.ufpr.estagio.modulo.service.ApoliceService;
 import br.ufpr.estagio.modulo.service.ContratanteService;
 import br.ufpr.estagio.modulo.service.OrientadorService;
-import br.ufpr.estagio.modulo.service.SupervisorService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
@@ -51,8 +49,6 @@ public class TermoREST {
     private OrientadorService orientadorService;
 	@Autowired
     private AgenteIntegradorService agenteIntegradorService;
-	@Autowired
-    private SupervisorService supervisorService;
 	@Autowired
     private ApoliceService apoliceService;
 	@Autowired
@@ -198,7 +194,7 @@ public class TermoREST {
 		}
 	}
 	
-	@PutMapping("/{termoId}/associarSupervisor/{supervisorId}")
+	/*@PutMapping("/{termoId}/associarSupervisor/{supervisorId}")
 	public ResponseEntity<TermoDeEstagioDTO> associarSupervisor(@PathVariable Long termoId, @PathVariable Long supervisorId){
 		try {
 			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
@@ -219,7 +215,7 @@ public class TermoREST {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
-	}
+	}*/
 	
 	@PutMapping("/{termoId}/associarApolice/{apoliceId}")
 	public ResponseEntity<TermoDeEstagioDTO> associarApolice(@PathVariable Long termoId, @PathVariable Long apoliceId){

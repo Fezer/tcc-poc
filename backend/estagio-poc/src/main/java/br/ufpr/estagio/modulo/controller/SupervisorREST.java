@@ -1,4 +1,4 @@
-package br.ufpr.estagio.modulo.controller;
+/*package br.ufpr.estagio.modulo.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -123,4 +123,4 @@ public class SupervisorREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-}
+}*/

@@ -30,10 +30,22 @@ public class PlanoDeAtividades implements Serializable{
 	@Column(name = "local")
 	private String local;
 	
-	@JsonIgnore
+	/*@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
-	private Supervisor supervisor;
+	private Supervisor supervisor;*/
+	
+	@Column(name = "nomeSupervisor")
+	private String nomeSupervisor;
+	
+	@Column(name = "telefoneSupervisor")
+	private String telefoneSupervisor;
+	
+	@Column(name = "cpfSupervisor")
+	private String cpfSupervisor;
+	
+	@Column(name = "formacaoSupervisor")
+	private String formacaoSupervisor;
 	
 	@Column(name = "descricaoAtividades")
 	private String descricaoAtividades;
@@ -52,13 +64,17 @@ public class PlanoDeAtividades implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public PlanoDeAtividades(long id, String local, Supervisor supervisor, String descricaoAtividades, Estagio estagio,
+	
+	public PlanoDeAtividades(long id, String local, String nomeSupervisor, String telefoneSupervisor,
+			String cpfSupervisor, String formacaoSupervisor, String descricaoAtividades, Estagio estagio,
 			TermoDeEstagio termoDeEstagio) {
 		super();
 		this.id = id;
 		this.local = local;
-		this.supervisor = supervisor;
+		this.nomeSupervisor = nomeSupervisor;
+		this.telefoneSupervisor = telefoneSupervisor;
+		this.cpfSupervisor = cpfSupervisor;
+		this.formacaoSupervisor = formacaoSupervisor;
 		this.descricaoAtividades = descricaoAtividades;
 		this.estagio = estagio;
 		this.termoDeEstagio = termoDeEstagio;
@@ -80,12 +96,36 @@ public class PlanoDeAtividades implements Serializable{
 		this.local = local;
 	}
 
-	public Supervisor getSupervisor() {
-		return supervisor;
+	public String getNomeSupervisor() {
+		return nomeSupervisor;
 	}
 
-	public void setSupervisor(Supervisor supervisor) {
-		this.supervisor = supervisor;
+	public void setNomeSupervisor(String nomeSupervisor) {
+		this.nomeSupervisor = nomeSupervisor;
+	}
+
+	public String getTelefoneSupervisor() {
+		return telefoneSupervisor;
+	}
+
+	public void setTelefoneSupervisor(String telefoneSupervisor) {
+		this.telefoneSupervisor = telefoneSupervisor;
+	}
+
+	public String getCpfSupervisor() {
+		return cpfSupervisor;
+	}
+
+	public void setCpfSupervisor(String cpfSupervisor) {
+		this.cpfSupervisor = cpfSupervisor;
+	}
+
+	public String getFormacaoSupervisor() {
+		return formacaoSupervisor;
+	}
+
+	public void setFormacaoSupervisor(String formacaoSupervisor) {
+		this.formacaoSupervisor = formacaoSupervisor;
 	}
 
 	public String getDescricaoAtividades() {

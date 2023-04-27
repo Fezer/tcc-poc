@@ -1,4 +1,4 @@
-package br.ufpr.estagio.modulo.model;
+/*package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 import java.util.List;
@@ -143,4 +143,4 @@ public class Supervisor extends Pessoa implements Serializable{
 		return serialVersionUID;
 	}
 	
-}
+}*/

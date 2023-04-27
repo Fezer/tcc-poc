@@ -1,4 +1,4 @@
-package br.ufpr.estagio.modulo.service;
+/*package br.ufpr.estagio.modulo.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,3 +55,4 @@ public class SupervisorService {
 		return supervisorRepo.save(supervisor);
 	}
 }
+*/
