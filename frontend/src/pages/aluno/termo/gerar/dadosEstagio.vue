@@ -59,10 +59,10 @@ export default defineComponent({
         state.auxilioTransporte = termo.value?.valorTransporte;
         // state.coordenador = termo.value?.coordenador;
         state.orientador = termo.value?.orientador?.id;
-        state.nomeSupervisor = termo.value?.supervisor?.nome;
-        state.telefoneSupervisor = termo.value?.supervisor?.telefone;
-        state.cpfSupervisor = termo.value?.supervisor?.cpf;
-        state.formacaoSupervisor = termo.value?.supervisor?.formacao;
+        state.nomeSupervisor = termo.value?.nomeSupervisor;
+        state.telefoneSupervisor = termo.value?.telefoneSupervisor;
+        state.cpfSupervisor = termo.value?.cpfSupervisor;
+        state.formacaoSupervisor = termo.value?.formacaoSupervisor;
         state.atividades = termo.value?.descricaoAtividades;
       }
 
@@ -136,10 +136,12 @@ export default defineComponent({
       }
 
       const { id } = termo.value;
-
-      console.log("TERMO ", id);
-
-      console.log(state.orientador);
+      const {
+        nomeSupervisor,
+        cpfSupervisor,
+        formacaoSupervisor,
+        telefoneSupervisor,
+      } = state;
 
       await novoEstagioService
         .setDadosEstagio(id, {
@@ -164,6 +166,10 @@ export default defineComponent({
         .setAtividadesEstagio(termo.value.id, {
           local: "Qualquer",
           descricaoAtividades: state.atividades,
+          nomeSupervisor,
+          telefoneSupervisor,
+          cpfSupervisor,
+          formacaoSupervisor,
         })
         .catch((err) => {
           console.log(err);
@@ -182,23 +188,6 @@ export default defineComponent({
           toast.add({
             severity: "error",
             summary: "Erro na etapa de atualizar o orientador",
-            detail: "Erro ao salvar dados do estágio",
-            life: 3000,
-          });
-        });
-
-      await novoEstagioService
-        .setSupervisor(termo.value.id, {
-          nome: state.nomeSupervisor,
-          telefone: state.telefoneSupervisor,
-          cpf: state.cpfSupervisor,
-          formacao: state.formacaoSupervisor,
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.add({
-            severity: "error",
-            summary: "Erro na etapa de atualizar o supervisor",
             detail: "Erro ao salvar dados do estágio",
             life: 3000,
           });

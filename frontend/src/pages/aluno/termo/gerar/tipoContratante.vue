@@ -6,6 +6,7 @@ import ContratanteService from "~~/services/ContratanteService";
 import SeguradoraService from "~~/services/SeguradoraService";
 import ApoliceService from "~~/services/ApoliceService";
 import ZodErrorsService from "../../../../../services/ZodErrorsService";
+import NovoEstagioService from "../../../../../services/NovoEstagioService";
 
 export default defineComponent({
   props: {
@@ -17,18 +18,13 @@ export default defineComponent({
       type: Function,
       required: true,
     },
-    dados: {
-      type: Object,
-    },
   },
   setup({
     advanceStep,
     backStep,
-    dados,
   }: {
     advanceStep: Function;
     backStep: Function;
-    dados?: any;
   }) {
     const toast = useToast();
     const errors = ref({} as Record<string, string>);
@@ -36,36 +32,47 @@ export default defineComponent({
     const contratanteService = new ContratanteService();
     const seguradoraService = new SeguradoraService();
     const apoliceService = new ApoliceService();
+    const novoEstagioService = new NovoEstagioService();
     const { termo, setTermo } = useTermo();
+
+    const { data: contratantes } = useFetch(
+      "http://localhost:5000/contratante/"
+    );
 
     onMounted(() => {
       console.log("mounted");
-      if (dados) {
-        const {
-          tipoContratante,
-          nomeContratante,
-          telefoneContratante,
-          cpfContratante,
-          cnpjContratante,
-          enderecoContratante,
-          cepContratante,
-          cidadeContratante,
-          estadoContratante,
-          nomeSeguradora,
-          apoliceSeguradora,
-        } = dados;
 
-        state.tipoContratante = tipoContratante;
-        state.nomeContratante = nomeContratante;
-        state.telefoneContratante = telefoneContratante;
-        state.cpfContratante = cpfContratante;
-        state.cnpjContratante = cnpjContratante;
-        state.enderecoContratante = enderecoContratante;
-        state.cepContratante = cepContratante;
-        state.cidadeContratante = cidadeContratante;
-        state.estadoContratante = estadoContratante;
-        state.nomeSeguradora = nomeSeguradora;
-        state.apoliceSeguradora = apoliceSeguradora;
+      if (termo) {
+        const contratante = termo?.value?.contratante;
+        const seguradora = termo?.value?.seguradora;
+        const apolice = termo?.value?.apolice;
+
+        console.log(contratante, seguradora, apolice);
+
+        state.id = contratante?.id || null;
+        state.tipoContratante = contratante?.tipo || null;
+        state.nomeContratante = contratante?.nome || null;
+
+        state.telefoneContratante = contratante?.telefone || null;
+        state.cpfContratante = contratante?.cpf || null;
+        state.cnpjContratante = contratante?.cnpj || null;
+        state.enderecoContratante = contratante?.endereco || null;
+        state.cepContratante = contratante?.cep || null;
+        state.cidadeContratante = contratante?.cidade || null;
+        state.estadoContratante = contratante?.estado || null;
+
+        state.nomeSeguradora = seguradora?.nome || null;
+        state.apoliceSeguradora = apolice?.numero || null;
+
+        // state.telefoneContratante = telefoneContratante;
+        // state.cpfContratante = cpfContratante;
+        // state.cnpjContratante = cnpjContratante;
+        // state.enderecoContratante = enderecoContratante;
+        // state.cepContratante = cepContratante;
+        // state.cidadeContratante = cidadeContratante;
+        // state.estadoContratante = estadoContratante;
+        // state.nomeSeguradora = nomeSeguradora;
+        // state.apoliceSeguradora = apoliceSeguradora;
       }
     });
 
@@ -75,6 +82,9 @@ export default defineComponent({
     ];
     const state = reactive({
       tipoContratante: null as "PessoaJuridica" | "PessoaFisica" | null,
+
+      id: null as number | null,
+      cadastrarContratante: false as boolean,
 
       nomeContratante: null as string | null,
       telefoneContratante: null as string | null,
@@ -88,18 +98,33 @@ export default defineComponent({
       apoliceSeguradora: null as string | null,
     });
 
+    const handleToggleRegisterContratante = () => {
+      state.cadastrarContratante = !state.cadastrarContratante;
+
+      if (state.cadastrarContratante) {
+        state.id = null;
+      }
+    };
+
     const validateAndAdvanceStep = async () => {
       // return advanceStep();
+
+      const contratanteFields = state.id
+        ? {}
+        : {
+            nomeContratante: z.string().nonempty(),
+            telefoneContratante: z.string().nonempty(),
+            enderecoContratante: z.string().nonempty(),
+            cepContratante: z.string().nonempty(),
+            cidadeContratante: z.string().nonempty(),
+            estadoContratante: z.string().nonempty(),
+          };
+
       const validator = z.object({
         tipoContratante: z.string().nonempty(),
-        nomeContratante: z.string().nonempty(),
-        telefoneContratante: z.string().nonempty(),
-        enderecoContratante: z.string().nonempty(),
-        cepContratante: z.string().nonempty(),
-        cidadeContratante: z.string().nonempty(),
-        estadoContratante: z.string().nonempty(),
         nomeSeguradora: z.string().nonempty(),
-        apoliceSeguradora: z.string().nonempty(),
+        apoliceSeguradora: z.number(),
+        ...contratanteFields,
       });
 
       const result = validator.safeParse({ ...state });
@@ -133,26 +158,32 @@ export default defineComponent({
       }
 
       try {
-        const { id: contratanteID } = await contratanteService.criarContratante(
-          {
-            ...state,
-            id: 0,
-            nome: state.nomeContratante,
-            cnpj: state.cnpjContratante,
-            cpf: state.cpfContratante,
-            cep: state.cepContratante,
-            cidade: state.cidadeContratante,
-            estado: state.estadoContratante,
-            endereco: state.enderecoContratante,
-            telefone: state.telefoneContratante,
-            tipo: state.tipoContratante,
-          },
-          termo.value.id
-        );
+        let contratanteID = state.id || null;
+        if (!contratanteID) {
+          const { id: novoID } = await contratanteService.criarContratante(
+            {
+              ...state,
+              id: 0,
+              nome: state.nomeContratante,
+              cnpj: state.cnpjContratante,
+              cpf: state.cpfContratante,
+              cep: state.cepContratante,
+              cidade: state.cidadeContratante,
+              estado: state.estadoContratante,
+              endereco: state.enderecoContratante,
+              telefone: state.telefoneContratante,
+              tipo: state.tipoContratante,
+            },
+            termo.value.id
+          );
+
+          contratanteID = novoID;
+        }
+
+        await novoEstagioService.setContratante(termo.value.id, contratanteID);
 
         const seguradora = await seguradoraService.criarSeguradora(
           {
-            id: 0,
             nome: state.nomeSeguradora,
           },
           termo.value.id
@@ -160,12 +191,14 @@ export default defineComponent({
 
         const apolice = await apoliceService.criarApolice(
           {
-            id: 0,
+            dataInicio: new Date(),
+            dataFim: new Date(),
             numero: parseInt(state.apoliceSeguradora),
           },
-          seguradora,
-          termo.value.id
+          seguradora
         );
+
+        await novoEstagioService.setApolice(termo.value.id, apolice?.id);
 
         console.log(contratanteID, seguradora, apolice);
 
@@ -175,7 +208,7 @@ export default defineComponent({
         toast.add({
           severity: "error",
           summary: "Erro ao criar contratante",
-          detail: err,
+          detail: err?.message,
           life: 3000,
         });
       }
@@ -187,6 +220,8 @@ export default defineComponent({
       errors,
       validateAndAdvanceStep,
       backStep,
+      contratantes,
+      handleToggleRegisterContratante,
     };
   },
 });
@@ -208,9 +243,39 @@ export default defineComponent({
       </div>
     </div>
 
+    <div
+      class="card p-fluid col-12 m-2"
+      v-if="state.tipoContratante === 'PessoaJuridica'"
+    >
+      <Dropdown
+        filter
+        :options="contratantes"
+        :optionLabel="(c) => `${c.nome} - ${c.cnpj}`"
+        optionValue="id"
+        placeholder="Busca por contratante"
+        :filter-fields="['nome', 'cnpj']"
+        v-model="state.id"
+        :disabled="state.cadastrarContratante"
+        :class="{ 'p-invalid': errors['id'] }"
+      />
+      <div class="flex justify-end w-full">
+        <Button
+          class="w-2 flex items-center justify-center mt-4"
+          icon="pi-add"
+          @click="handleToggleRegisterContratante"
+        >
+          {{
+            state.cadastrarContratante
+              ? "Buscar contratante"
+              : "Cadastrar nova contratante"
+          }}
+        </Button>
+      </div>
+    </div>
+
     <template v-if="!!state.tipoContratante">
       <div class="col-12">
-        <div class="card p-fluid col-12">
+        <div class="card p-fluid col-12" v-if="state.cadastrarContratante">
           <h5>Dados do Contratante</h5>
           <div class="formgrid grid">
             <div class="field col">
@@ -273,7 +338,7 @@ export default defineComponent({
         </div>
       </div>
 
-      <div class="col-12">
+      <div class="col-12" v-if="state.cadastrarContratante">
         <div class="card p-fluid col-12">
           <h5>Endereço Contratante</h5>
           <div class="formgrid grid">
@@ -350,10 +415,7 @@ export default defineComponent({
             </div>
             <div class="field col">
               <label for="apoliceSeguradora">Número da Apólice</label>
-              <InputMask
-                id="apoliceSeguradora"
-                type="text"
-                mask="99.999-999"
+              <InputNumber
                 v-model="state.apoliceSeguradora"
                 :class="{ 'p-invalid': errors['apoliceSeguradora'] }"
               />

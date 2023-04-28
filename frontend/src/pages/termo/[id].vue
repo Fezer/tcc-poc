@@ -51,7 +51,6 @@ export default defineComponent({
     const checkIfTermoCompleto = () => {
       const necessaryValues = [
         "planoAtividades",
-        "supervisor",
         "orientador",
         "jornadaSemanal",
         "jornadaDiaria",

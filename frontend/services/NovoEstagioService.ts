@@ -118,4 +118,22 @@ export default class NovoEstagioService extends BaseService {
       }
     );
   }
+
+  public async setContratante(id: string, contratanteID: number) {
+    return await $fetch(
+      this.BASE_URL + `/termo/${id}/associarContratante/${contratanteID}`,
+      {
+        method: "PUT",
+      }
+    );
+  }
+
+  public async setApolice(id: string, apoliceID: number) {
+    return await $fetch(
+      this.BASE_URL + `/termo/${id}/associarApolice/${apoliceID}`,
+      {
+        method: "PUT",
+      }
+    );
+  }
 }

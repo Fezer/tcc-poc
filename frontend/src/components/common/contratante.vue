@@ -16,25 +16,33 @@ export default {
     <div class="grid">
       <div class="col-4">
         <strong>Nome do Contratante</strong>
-        <p>{{ termo?.nomeContratante }}</p>
+        <p>{{ termo?.contratante?.nome }}</p>
       </div>
       <div class="col-4">
         <strong>Tipo do Contratante</strong>
-        <p>{{ termo?.tipoContratante }}</p>
+        <p>{{ termo?.contratante?.tipo }}</p>
       </div>
-      <div class="col-4">
+      <div class="col-4" v-if="termo?.contratante?.tipo === 'PessoaJuridica'">
         <strong>CNPJ</strong>
-        <p>{{ termo?.cnpjContratente }}</p>
+        <p>{{ termo?.contratante?.cnpj }}</p>
+      </div>
+      <div class="col-4" v-else>
+        <strong>CPF</strong>
+        <p>{{ termo?.contratante?.cpf }}</p>
       </div>
       <div class="col-4">
         <strong>Telefone do Contratante</strong>
-        <p>{{ termo?.telefoneContratante }}</p>
+        <p>{{ termo?.contratante?.telefone }}</p>
+      </div>
+      <div class="col-4">
+        <strong>Seguradora</strong>
+        <p>{{ termo?.seguradora?.nome }}</p>
       </div>
       <div class="col-4">
         <strong>Número da Apólice</strong>
-        <p>{{ termo?.numeroApolice }}</p>
+        <p>{{ termo?.apolice?.numero }}</p>
       </div>
-      <div class="col-4">
+      <!-- <div class="col-4">
         <strong>Endereço</strong>
         <p>{{ termo?.enderecoContratente }}</p>
       </div>
@@ -45,7 +53,7 @@ export default {
       <div class="col-4">
         <strong>Estado</strong>
         <p>{{ termo?.estadoContratante }}</p>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
