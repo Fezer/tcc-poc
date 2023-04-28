@@ -158,7 +158,10 @@ export default defineComponent({
       }
 
       try {
-        let contratanteID = state.id || null;
+        let contratanteID =
+          state.id && state.tipoContratante === "PessoaJuridica"
+            ? state.id
+            : "";
         if (!contratanteID) {
           const { id: novoID } = await contratanteService.criarContratante(
             {
@@ -275,7 +278,13 @@ export default defineComponent({
 
     <template v-if="!!state.tipoContratante">
       <div class="col-12">
-        <div class="card p-fluid col-12" v-if="state.cadastrarContratante">
+        <div
+          class="card p-fluid col-12"
+          v-if="
+            state.cadastrarContratante ||
+            state.tipoContratante === 'PessoaFisica'
+          "
+        >
           <h5>Dados do Contratante</h5>
           <div class="formgrid grid">
             <div class="field col">
@@ -338,7 +347,12 @@ export default defineComponent({
         </div>
       </div>
 
-      <div class="col-12" v-if="state.cadastrarContratante">
+      <div
+        class="col-12"
+        v-if="
+          state.cadastrarContratante || state.tipoContratante === 'PessoaFisica'
+        "
+      >
         <div class="card p-fluid col-12">
           <h5>Endereço Contratante</h5>
           <div class="formgrid grid">
