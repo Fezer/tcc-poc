@@ -15,6 +15,7 @@ import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
+import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.mapper.SigaApiModuloEstagioMapper;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
@@ -102,6 +103,10 @@ public class AlunoService {
 		return null;
 	}
 	
+	public Estagio buscarEstagioPorId(long id) {   	
+        return estagioRepo.findById(id).get();
+    }
+	
 	public Estagio novoEstagio(Aluno aluno) {
 		//Bloco de criação do novo estágio e associação deste novo estágio ao Aluno;
 		Estagio estagio = new Estagio();
@@ -166,4 +171,22 @@ public class AlunoService {
 				
 		return termoRepo.save(termoAtualizado);
 	}
+	
+	public void cancelarEstagio(Estagio estagio) {
+		
+		// usado caso queira passar somente o id do estagio
+	    /*Estagio estagio = estagioRepo.findById(idEstagio)
+	        .orElseThrow(() -> new NotFoundException("Estágio não encontrado!"));*/
+	    TermoDeEstagio termoDeCompromisso = estagio.getTermoDeCompromisso();
+	    PlanoDeAtividades planoDeAtividades = estagio.getPlanoDeAtividades();
+	    Aluno aluno = estagio.getAluno();
+	    List<Estagio> listaEstagios = aluno.getEstagio();
+	    listaEstagios.remove(estagio);
+	    aluno.setEstagio(listaEstagios);
+	    alunoRepo.save(aluno);
+	    termoRepo.delete(termoDeCompromisso);
+	    planoAtividadesRepo.delete(planoDeAtividades);
+	    estagioRepo.delete(estagio);
+	}
+
 }

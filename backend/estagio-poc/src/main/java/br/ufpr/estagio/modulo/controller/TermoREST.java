@@ -24,6 +24,7 @@ import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.PlanoDeAtividadesDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
+import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
@@ -64,29 +65,28 @@ public class TermoREST {
 		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newTermo, TermoDeEstagioDTO.class));
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-	        throw new PocException(HttpStatus.BAD_REQUEST, "Dados inválidos: " + e.getMessage());
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 	    } catch(Exception e) {
 			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+			throw new NotFoundException("Não foi possível criar um novo termo.");
 		}
 	}
 	
 	@GetMapping("")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTodos(){
-		try {
+		
+		// o try estava sobrescrevendo o lançamento de NotFoundException. por algum motivo,
+		// a mesma estrutura, em outra classe, funciona mesmo com o try. vou verificar depois
+		//try {
 			List<TermoDeEstagio> lista = termoDeEstagioService.listarTodos();
 			if(lista.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Nenhum termo encontrado!");
+				throw new NotFoundException("Nenhum termo encontrado!");
 			} else {
 				return ResponseEntity.status(HttpStatus.OK).body(lista.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
 			}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
+		/*}catch(Exception e) {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
+		}*/
 	}
 	
 	@GetMapping("/{id}")
@@ -103,7 +103,7 @@ public class TermoREST {
 		}
 		}catch(PocException e) {
 			e.printStackTrace();
-			throw e;
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
