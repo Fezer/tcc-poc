@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "b78150af-aea1-465d-a616-c09acf0ba04d",
+		"_postman_id": "9f5950df-e509-4fb4-ac06-39b2e2a58008",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17301767"
+		"_exporter_id": "18567474"
 	},
 	"item": [
 		{
@@ -102,10 +102,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"dataInicio\": \"\",\r\n    \"dataTermino\": \"\", \r\n    \"jornadaDiaria\": 8,\r\n    \"jornadaSemanal\": 48,\r\n    \"valorBolsa\": 2000,\r\n    \"valorTransporte\": 200,\r\n    \"dataFimSuspensao\": \"\",\r\n    \"dataInicioRetomada\": \"\"\r\n}"
+							"raw": "{\r\n    \"dataInicio\": \"2023-05-05\",\r\n    \"dataTermino\": \"2023-12-05\", \r\n    \"jornadaDiaria\": 6,\r\n    \"jornadaSemanal\": 30,\r\n    \"valorBolsa\": 2000,\r\n    \"valorTransporte\": 200,\r\n    \"dataFimSuspensao\": \"\",\r\n    \"dataInicioRetomada\": \"\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/4",
+							"raw": "http://localhost:5000/termo/12",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -113,7 +113,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"4"
+								"12"
 							]
 						}
 					},
@@ -135,7 +135,7 @@
 							"raw": "{\r\n    \"local\": \"Qualquer\",\r\n    \"nomeSupervisor\": \"SuperVitor\",\r\n    \"telefoneSupervisor\": \"41999990000\",\r\n    \"cpfSupervisor\": \"11111111134\",\r\n    \"formacaoSupervisor\": \"TADS\",\r\n    \"descricaoAtividades\": \"atividades Bacanas\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/1/planoAtividades",
+							"raw": "http://localhost:5000/termo/12/planoAtividades",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -143,7 +143,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"1",
+								"12",
 								"planoAtividades"
 							]
 						}
@@ -166,7 +166,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/11/associarOrientador/552",
+							"raw": "http://localhost:5000/termo/12/associarOrientador/552",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -174,7 +174,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"11",
+								"12",
 								"associarOrientador",
 								"552"
 							]
@@ -198,7 +198,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/11/associarAgenteIntegrador/602",
+							"raw": "http://localhost:5000/termo/12/associarAgenteIntegrador/602",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -206,41 +206,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"11",
+								"12",
 								"associarAgenteIntegrador",
 								"602"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "associarSupervisorAoTermo",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://localhost:5000/termo/11/associarSupervisor/752",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"termo",
-								"11",
-								"associarSupervisor",
-								"752"
 							]
 						}
 					},
@@ -262,7 +230,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/11/associarApolice/1",
+							"raw": "http://localhost:5000/termo/12/associarApolice/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -270,9 +238,31 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"11",
+								"12",
 								"associarApolice",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associarContratanteAoTermo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/termo/12/associarContratante/802",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo",
+								"12",
+								"associarContratante",
+								"802"
 							]
 						}
 					},
@@ -366,28 +356,6 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"102"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "associarContratanteAoTermo",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/termo/2/associarContratante/102",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"termo",
-								"2",
-								"associarContratante",
 								"102"
 							]
 						}
@@ -521,7 +489,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20201212/termo/4/solicitarAprovacaoTermo",
+							"raw": "http://localhost:5000/aluno/GRR20175486/termo/12/solicitarAprovacaoTermo",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -529,9 +497,9 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20201212",
+								"GRR20175486",
 								"termo",
-								"4",
+								"12",
 								"solicitarAprovacaoTermo"
 							]
 						}
@@ -713,7 +681,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/1",
+							"raw": "http://localhost:5000/estagio/12",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -721,19 +689,19 @@
 							"port": "5000",
 							"path": [
 								"estagio",
-								"1"
+								"12"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "setTipoEstagio",
+					"name": "definirTipoEstagio",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/tipo/4?tipoEstagio=Obrigatorio",
+							"raw": "http://localhost:5000/estagio/tipo/12?tipoEstagio=Obrigatorio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -742,7 +710,7 @@
 							"path": [
 								"estagio",
 								"tipo",
-								"4"
+								"12"
 							],
 							"query": [
 								{
@@ -760,7 +728,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/ufpr/4?estagioUfpr=false",
+							"raw": "http://localhost:5000/estagio/ufpr/12?estagioUfpr=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -769,11 +737,38 @@
 							"path": [
 								"estagio",
 								"ufpr",
-								"4"
+								"12"
 							],
 							"query": [
 								{
 									"key": "estagioUfpr",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "definirEstagioSeed",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/estagio/seed/12?estagioSeed=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"estagio",
+								"seed",
+								"12"
+							],
+							"query": [
+								{
+									"key": "estagioSeed",
 									"value": "false"
 								}
 							]
@@ -1585,12 +1580,21 @@
 			"name": "Contratante",
 			"item": [
 				{
-					"name": "listContratante",
+					"name": "criarContratante",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Ilya\",\n    \"telefone\": \"419292929292\",\n    \"tipo\": \"PessoaJuridica\",\n    \"cnpj\": \"121.212.12238964186349168121\",\n    \"cpf\": null,\n    \"representanteEmpresa\": \"Sergey\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:5000/contratante/2",
+							"raw": "http://localhost:5000/contratante/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1598,7 +1602,27 @@
 							"port": "5000",
 							"path": [
 								"contratante",
-								"2"
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listContratante",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/contratante/802",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"contratante",
+								"802"
 							]
 						}
 					},
@@ -1619,6 +1643,71 @@
 							"path": [
 								"contratante",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listContratantePorNome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/contratante/nome/Ilya",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"contratante",
+								"nome",
+								"Ilya"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listContratantePorNomeContendo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/contratante/nome/contendo/A",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"contratante",
+								"nome",
+								"contendo",
+								"A"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listContratantePorNomeComecandoPor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/contratante/nome/comecandoPor/I",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"contratante",
+								"nome",
+								"comecandoPor",
+								"I"
 							]
 						}
 					},
@@ -1674,13 +1763,13 @@
 					"response": []
 				},
 				{
-					"name": "criarContratante",
+					"name": "criarEnderecoContratante",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Ilya\",\n    \"telefone\": \"419292929292\",\n    \"tipo\": \"PessoaJuridica\",\n    \"cnpj\": \"121.212.12238964186349168121\",\n    \"cpf\": null,\n    \"representanteEmpresa\": \"Sergey\"\n}",
+							"raw": "{\r\n    \"logradouro\": \"Rua das Flores\",\r\n    \"numero\": 123,\r\n    \"complemento\": \"Apto 123\",\r\n    \"cidade\": \"Curitiba\",\r\n    \"estado\": \"Parana\",\r\n    \"cep\": \"80123-123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1688,7 +1777,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/contratante/",
+							"raw": "http://localhost:5000/contratante/802/endereco/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1696,7 +1785,132 @@
 							"port": "5000",
 							"path": [
 								"contratante",
+								"802",
+								"endereco",
 								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Endereco",
+			"item": [
+				{
+					"name": "criarEndereco",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"logradouro\": \"Rua das Flores\",\n    \"numero\": 123,\n    \"complemento\": \"Apto 123\",\n    \"cidade\": \"Curitiba\",\n    \"estado\": \"Parana\",\n    \"cep\": \"80123-123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/endereco/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"endereco",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarEndereco",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/endereco/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"endereco",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarEnderecos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/endereco/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"endereco",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizarEndereco",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"logradouro\": \"Rua das Flores 123\",\n    \"numero\": 123,\n    \"complemento\": \"Apto 123\",\n    \"cidade\": \"Curitiba\",\n    \"estado\": \"Parana\",\n    \"cep\": \"80123-123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/endereco/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"endereco",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletarEndereco",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/endereco/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"endereco",
+								"2"
 							]
 						}
 					},

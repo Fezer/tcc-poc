@@ -181,6 +181,7 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
+	
 
 	@GetMapping("/{grrAlunoURL}/estagio/emPreenchimento")
 	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmPreenchimento(@PathVariable String grrAlunoURL) {
@@ -252,9 +253,9 @@ public class AlunoREST {
 		}
 	}
 
-	// Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não
-	// iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em
-	// andamento.
+	/** Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não
+	iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em
+	andamento. **/
 	@GetMapping("/{grrAlunoURL}/estagio/emProgresso")
 	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmProgresso(@PathVariable String grrAlunoURL) {
 		try {

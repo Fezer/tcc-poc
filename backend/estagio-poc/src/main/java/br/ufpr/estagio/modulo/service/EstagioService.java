@@ -67,6 +67,7 @@ public class EstagioService {
 		estagioDTO.setTipoEstagio(estagio.getTipoEstagio());
 		estagioDTO.setStatusEstagio(estagio.getStatusEstagio());
 		estagioDTO.setEstagioUfpr(estagio.isEstagioUfpr());
+		estagioDTO.setEstagioSeed(estagio.isEstagioSeed());
 		estagioDTO.setAluno(estagio.getAluno());
 		estagioDTO.setContratante(estagio.getContratante());
 		estagioDTO.setSeguradora(estagio.getSeguradora());
@@ -115,6 +116,11 @@ public class EstagioService {
 		estagio.setEstagioUfpr(estagioUfpr);
 		return estagioRepo.save(estagio);
 	}
+	
+	public Estagio definirEstagioSeed(Estagio estagio, Boolean estagioSeed) {
+		estagio.setEstagioSeed(estagioSeed);
+		return estagioRepo.save(estagio);
+	}
 
 	public List<Estagio> buscarEstagioEmPreenchimentoPorAluno(Aluno aluno) {
 		EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
@@ -144,4 +150,5 @@ public class EstagioService {
 		List<Estagio> estagio = estagioRepo.findByStatusEstagioAndAluno(statusEstagio, aluno);
 		return estagio;
 	}
+
 }

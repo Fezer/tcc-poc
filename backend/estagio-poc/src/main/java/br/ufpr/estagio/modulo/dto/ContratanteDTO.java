@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
+import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 
@@ -20,6 +21,7 @@ public class ContratanteDTO implements Serializable{
 	private String cnpj;
 	private String cpf;
 	private String representanteEmpresa;
+	private Endereco endereco;
 	private List<Estagio> estagio;
 	
 	// adicionado para concluir a task de associar contratante ao termo
@@ -55,6 +57,23 @@ public class ContratanteDTO implements Serializable{
 		this.cnpj = cnpj;
 		this.cpf = cpf;
 		this.representanteEmpresa = representanteEmpresa;
+		this.estagio = estagio;
+		this.termoDeEstagio = termoDeEstagio;
+	}
+	
+	
+
+	public ContratanteDTO(long id, EnumTipoContratante tipo, String nome, String telefone, String cnpj, String cpf,
+			String representanteEmpresa, Endereco endereco, List<Estagio> estagio, List<TermoDeEstagio> termoDeEstagio) {
+		super();
+		this.id = id;
+		this.tipo = tipo;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.cnpj = cnpj;
+		this.cpf = cpf;
+		this.representanteEmpresa = representanteEmpresa;
+		this.endereco = endereco;
 		this.estagio = estagio;
 		this.termoDeEstagio = termoDeEstagio;
 	}
@@ -131,6 +150,18 @@ public class ContratanteDTO implements Serializable{
 	// adicionado para concluir a task de associar contratante ao termo
 	public void setTermoDeEstagio(List<TermoDeEstagio> termoDeEstagio) {
 		this.termoDeEstagio = termoDeEstagio;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 }

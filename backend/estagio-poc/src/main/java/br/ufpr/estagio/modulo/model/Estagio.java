@@ -29,12 +29,15 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@Column(name = "tipo_estagio")
 	private EnumTipoEstagio tipoEstagio;
 	
-	@Column(name = "status_estagio")
-	private EnumStatusEstagio statusEstagio;
-	
 	@Column(name = "estagio_ufpr")
 	private boolean estagioUfpr;
 	
+	@Column(name = "estagio_seed")
+	private boolean estagioSeed;
+	
+	@Column(name = "status_estagio")
+	private EnumStatusEstagio statusEstagio;
+		
 	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=true)
@@ -134,9 +137,9 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 		return time.getTimestamp();
 	}
 
-	public Estagio(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr,
-			Aluno aluno, Contratante contratante, Seguradora seguradora, Apolice apolice,
-			AgenteIntegrador agenteIntegrador, Orientador orientador,
+	public Estagio(long id, EnumTipoEstagio tipoEstagio, boolean estagioUfpr, boolean estagioSeed,
+			EnumStatusEstagio statusEstagio, Aluno aluno, Contratante contratante, Seguradora seguradora,
+			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador,
 			PlanoDeAtividades planoDeAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria,
 			int jornadaSemanal, float valorBolsa, float valorTransporte, TermoDeEstagio termoDeCompromisso,
 			List<TermoDeEstagio> termoAdivito, TermoDeRescisao termoDeRescisao,
@@ -145,8 +148,9 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 		super();
 		this.id = id;
 		this.tipoEstagio = tipoEstagio;
-		this.statusEstagio = statusEstagio;
 		this.estagioUfpr = estagioUfpr;
+		this.estagioSeed = estagioSeed;
+		this.statusEstagio = statusEstagio;
 		this.aluno = aluno;
 		this.contratante = contratante;
 		this.seguradora = seguradora;
@@ -199,6 +203,14 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 
 	public void setEstagioUfpr(boolean estagioUfpr) {
 		this.estagioUfpr = estagioUfpr;
+	}
+	
+	public boolean isEstagioSeed() {
+		return estagioSeed;
+	}
+
+	public void setEstagioSeed(boolean estagioSeed) {
+		this.estagioSeed = estagioSeed;
 	}
 
 	public Aluno getAluno() {
