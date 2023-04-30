@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "9f5950df-e509-4fb4-ac06-39b2e2a58008",
-		"name": "TCC-Estagio Copy",
+		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18567474"
 	},
@@ -755,7 +755,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/ufpr/12?estagioSeed=false",
+							"raw": "http://localhost:5000/estagio/seed/12?estagioSeed=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -763,7 +763,7 @@
 							"port": "5000",
 							"path": [
 								"estagio",
-								"ufpr",
+								"seed",
 								"12"
 							],
 							"query": [
