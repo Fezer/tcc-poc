@@ -144,4 +144,9 @@ public class EstagioService {
 		List<Estagio> estagio = estagioRepo.findByStatusEstagioAndAluno(statusEstagio, aluno);
 		return estagio;
 	}
+
+	public Estagio definirEstagioSeed(Estagio estagio, Boolean estagioSeed) {
+		estagio.setEstagioSeed(estagioSeed);
+		return estagioRepo.save(estagio);
+	}
 }

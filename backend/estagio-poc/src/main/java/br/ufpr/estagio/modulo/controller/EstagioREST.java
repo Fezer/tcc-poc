@@ -166,4 +166,28 @@ public class EstagioREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
+	
+	@PutMapping("/seed/{id}")
+	public ResponseEntity<EstagioDTO> isSeed(@PathVariable Long id, @RequestParam Boolean estagioSeed){
+		if(estagioSeed == null) {
+			throw new PocException(HttpStatus.BAD_REQUEST, "isSeed não informado");
+		}
+		try {
+			Estagio estagio = estagioService.buscarEstagioPorId(id);
+		if(estagio == null) {
+			throw new PocException(HttpStatus.NOT_FOUND, "Estágio não encontrado!");
+		} else {
+			estagio = estagioService.definirEstagioSeed(estagio, estagioSeed);
+			EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
+			return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
+		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
 }

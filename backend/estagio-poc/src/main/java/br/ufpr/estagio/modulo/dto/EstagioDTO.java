@@ -27,6 +27,7 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 	private EnumTipoEstagio tipoEstagio;
 	private EnumStatusEstagio statusEstagio;
 	private boolean estagioUfpr;
+	private boolean estagioSeed;
 	private Aluno aluno;
 	private Contratante contratante;
 	private Seguradora seguradora;
@@ -55,17 +56,17 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 	}
 
 	public EstagioDTO(long id, EnumTipoEstagio tipoEstagio, EnumStatusEstagio statusEstagio, boolean estagioUfpr,
-			Aluno aluno, Contratante contratante, Seguradora seguradora, Apolice apolice,
-			AgenteIntegrador agenteIntegrador, Orientador orientador,
-			PlanoDeAtividades planoDeAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria,
-			int jornadaSemanal, float valorBolsa, float valorTransporte, long termoDeCompromisso,
-			List<Long> termoAdivito, long termoDeRescisao, List<Long> relatorioDeEstagio, long fichaDeAvaliacao,
-			long certificadoDeEstagio, Date dataCriacao) {
+			boolean estagioSeed, Aluno aluno, Contratante contratante, Seguradora seguradora, Apolice apolice,
+			AgenteIntegrador agenteIntegrador, Orientador orientador, PlanoDeAtividades planoDeAtividades,
+			Date dataInicio, Date dataTermino, int jornadaDiaria, int jornadaSemanal, float valorBolsa,
+			float valorTransporte, long termoDeCompromisso, List<Long> termoAdivito, long termoDeRescisao,
+			List<Long> relatorioDeEstagio, long fichaDeAvaliacao, long certificadoDeEstagio, Date dataCriacao) {
 		super();
 		this.id = id;
 		this.tipoEstagio = tipoEstagio;
 		this.statusEstagio = statusEstagio;
 		this.estagioUfpr = estagioUfpr;
+		this.estagioSeed = estagioSeed;
 		this.aluno = aluno;
 		this.contratante = contratante;
 		this.seguradora = seguradora;
@@ -118,6 +119,14 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 
 	public void setEstagioUfpr(boolean estagioUfpr) {
 		this.estagioUfpr = estagioUfpr;
+	}
+	
+	public boolean isEstagioSeed() {
+		return estagioSeed;
+	}
+
+	public void setEstagioSeed(boolean estagioSeed) {
+		this.estagioSeed = estagioSeed;
 	}
 
 	public Aluno getAluno() {
