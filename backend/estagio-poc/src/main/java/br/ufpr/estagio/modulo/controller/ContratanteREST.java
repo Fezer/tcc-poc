@@ -89,6 +89,32 @@ public class ContratanteREST {
 		    return ResponseEntity.status(HttpStatus.OK).body(contratanteDTO);
 		}
 	}
+    
+    @GetMapping("/nome/contendo/{nomeContratante}")
+	public ResponseEntity<List<ContratanteDTO>> buscarContratantePorNomeSimilar(@PathVariable String nomeContratante) {
+	    List<Contratante> contratantesFind = contratanteService.buscarPorNomeContendo(nomeContratante);
+		if(contratantesFind.isEmpty()) {
+			throw new PocException(HttpStatus.NOT_FOUND, "Contratante não encontrado!");
+		} else {
+		    List<ContratanteDTO> contratantesDTO = contratantesFind.stream()
+		            .map(ap -> mapper.map(ap, ContratanteDTO.class))
+		            .collect(Collectors.toList());
+		    return ResponseEntity.ok().body(contratantesDTO);
+		}
+	}
+    
+    @GetMapping("/nome/comecandoPor/{nomeContratante}")
+	public ResponseEntity<List<ContratanteDTO>> buscarContratantePorNomeComecandoPor(@PathVariable String nomeContratante) {
+	    List<Contratante> contratantesFind = contratanteService.buscarContratantePorNomeComecandoPor(nomeContratante);
+		if(contratantesFind.isEmpty()) {
+			throw new PocException(HttpStatus.NOT_FOUND, "Contratante não encontrado!");
+		} else {
+		    List<ContratanteDTO> contratantesDTO = contratantesFind.stream()
+		            .map(ap -> mapper.map(ap, ContratanteDTO.class))
+		            .collect(Collectors.toList());
+		    return ResponseEntity.ok().body(contratantesDTO);
+		}
+	}
 
 	@GetMapping("/")
 	public ResponseEntity<List<ContratanteDTO>> listarContratantes() {

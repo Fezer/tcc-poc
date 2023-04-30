@@ -57,4 +57,12 @@ public class ContratanteService {
 	public Optional<Contratante> buscarPorNome(String nomeContratante) {
 		return contratanteRepository.findByNome(nomeContratante);
 	}
+
+	public List<Contratante> buscarPorNomeContendo(String nomeContratante) {
+		return contratanteRepository.findByNomeContainingIgnoreCase(nomeContratante);
+	}
+
+	public List<Contratante> buscarContratantePorNomeComecandoPor(String nomeContratante) {
+		return contratanteRepository.findByNomeStartsWithIgnoreCase(nomeContratante);
+	}
 }
