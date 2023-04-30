@@ -177,6 +177,11 @@ public class AlunoService {
 		// usado caso queira passar somente o id do estagio
 	    /*Estagio estagio = estagioRepo.findById(idEstagio)
 	        .orElseThrow(() -> new NotFoundException("Estágio não encontrado!"));*/
+		
+		//TO-DO: Considerar regras de negócio ao cancelar um estágio
+		/** Somente é possível cancelar um estágio caso ele ainda não tenha sido aprovado, então
+		 * precisamos fazer algumas validações antes de cancelar um estágio.
+		 */
 	    TermoDeEstagio termoDeCompromisso = estagio.getTermoDeCompromisso();
 	    PlanoDeAtividades planoDeAtividades = estagio.getPlanoDeAtividades();
 	    Aluno aluno = estagio.getAluno();

@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.ContratanteDTO;
+import br.ufpr.estagio.modulo.dto.EnderecoDTO;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Contratante;
+import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.service.ContratanteService;
 
 
@@ -150,4 +152,26 @@ public class ContratanteREST {
 	        return ResponseEntity.notFound().build();
 	    }
 	}
+	
+    @PostMapping("/{idContratante}/endereco/")
+	public ResponseEntity<ContratanteDTO> criarEnderecoContratante(@PathVariable Long idContratante, @RequestBody EnderecoDTO enderecoDTO){
+		try {
+			Optional<Contratante> contratanteFind = contratanteService.buscarPorId(idContratante);
+		if(contratanteFind.isEmpty()) {
+			throw new PocException(HttpStatus.NOT_FOUND, "Contratante não encontrada!");
+		} else {
+			Endereco endereco = mapper.map(enderecoDTO, Endereco.class);
+			Contratante contratante = contratanteService.criarEnderecoContratante(contratanteFind.get(), endereco);
+			ContratanteDTO contratanteDTO = mapper.map(contratante, ContratanteDTO.class);
+			return ResponseEntity.ok().body(contratanteDTO);
+		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+    
 }
