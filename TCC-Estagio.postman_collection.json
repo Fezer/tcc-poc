@@ -484,6 +484,33 @@
 					"response": []
 				},
 				{
+					"name": "listarEstagioPorStatusEstagio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio?statusEstagio=EmPreenchimento",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio"
+							],
+							"query": [
+								{
+									"key": "statusEstagio",
+									"value": "EmPreenchimento"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "solicitarAprovacaoTermo",
 					"request": {
 						"method": "PUT",
