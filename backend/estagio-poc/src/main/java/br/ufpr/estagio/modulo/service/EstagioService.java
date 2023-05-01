@@ -151,4 +151,39 @@ public class EstagioService {
 		return estagio;
 	}
 
+	public List<Estagio> buscarEstagioPorStatusEstagio(Aluno aluno, String statusEstagioString) {
+		EnumStatusEstagio statusEstagio;
+		statusEstagioString = statusEstagioString.toUpperCase();
+		switch(statusEstagioString) {
+			case "EMPREENCHIMENTO":
+				statusEstagio = EnumStatusEstagio.EmPreenchimento;
+				break;
+			case "EMAPROVACAO":
+				statusEstagio = EnumStatusEstagio.EmAprovacao;
+				break;
+			case "APROVADO":
+				statusEstagio = EnumStatusEstagio.Aprovado;
+				break;
+			case "INICIADO":
+				statusEstagio = EnumStatusEstagio.Iniciado;
+				break;
+			case "CONCLUIDO":
+				statusEstagio = EnumStatusEstagio.Concluido;
+				break;
+			case "CANCELADO":
+				statusEstagio = EnumStatusEstagio.Cancelado;
+				break;
+			case "RESCINDIDO":
+				statusEstagio = EnumStatusEstagio.Rescindido;
+				break;
+			case "REPROVADO":
+				statusEstagio = EnumStatusEstagio.Reprovado;
+				break;
+			default:
+				return null;
+		}
+		List<Estagio> estagio = estagioRepo.findByStatusEstagioAndAluno(statusEstagio, aluno);
+		return estagio;
+	}
+
 }

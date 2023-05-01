@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -46,27 +47,23 @@ import br.ufpr.estagio.modulo.wrapper.DiscenteWrapper;
 @RequestMapping("/aluno")
 public class AlunoREST {
 
+	@Autowired
 	private EstagioService estagioService;
+	
+	@Autowired
 	private TermoDeEstagioService termoDeEstagioService;
+	
+	@Autowired
 	private RelatorioDeEstagioService relatorioDeEstagioService;
+	
+	@Autowired
 	private SigaApiAlunoService sigaApiAlunoService;
+	
+	@Autowired
 	private AlunoService alunoService;
-
-	public AlunoREST(EstagioService estagioService, TermoDeEstagioService termoDeEstagioService,
-			RelatorioDeEstagioService relatorioDeEstagioService, SigaApiAlunoService sigaApiAlunoService,
-			AlunoService alunoService) {
-		this.estagioService = estagioService;
-		this.termoDeEstagioService = termoDeEstagioService;
-		this.relatorioDeEstagioService = relatorioDeEstagioService;
-		this.sigaApiAlunoService = sigaApiAlunoService;
-		this.alunoService = alunoService;
-	}
 
 	@Autowired
 	private ModelMapper mapper;
-
-	@Autowired
-	private TermoPocRepository repo;
 
 	@GetMapping("/{grrAlunoURL}")
 	public ResponseEntity<Aluno> listarTermo(@PathVariable String grrAlunoURL) {
@@ -162,7 +159,7 @@ public class AlunoREST {
 				} else {
 					Optional<TermoDeEstagio> termofind = Optional
 							.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
-					if (termofind.isEmpty()) {
+					if (termofind == null || termofind.isEmpty()) {
 						throw new NotFoundException("Termo não encontrado!");
 					} else {
 						TermoDeEstagio termo = alunoService.solicitarAprovacaoTermo(termofind);
@@ -196,7 +193,7 @@ public class AlunoREST {
 					List<Estagio> estagio = estagioService.buscarEstagioEmPreenchimentoPorAluno(aluno);
 					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
 					EstagioDTO estagioDTO = new EstagioDTO();
-					if (estagio.isEmpty()) {
+					if (estagio == null || estagio.isEmpty()) {
 						estagioDTO = null;
 					} else {
 						for (Estagio e : estagio) {
@@ -231,7 +228,7 @@ public class AlunoREST {
 					List<Estagio> estagio = estagioService.buscarEstagioEmAprovacaoPorAluno(aluno);
 					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
 					EstagioDTO estagioDTO = new EstagioDTO();
-					if (estagio.isEmpty()) {
+					if (estagio == null || estagio.isEmpty()) {
 						estagioDTO = null;
 					} else {
 						for (Estagio e : estagio) {
@@ -269,7 +266,42 @@ public class AlunoREST {
 					List<Estagio> estagio = estagioService.buscarEstagioEmProgressoPorAluno(aluno);
 					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
 					EstagioDTO estagioDTO = new EstagioDTO();
-					if (estagio.isEmpty()) {
+					if (estagio == null || estagio.isEmpty()) {
+						estagioDTO = null;
+					} else {
+						for (Estagio e : estagio) {
+							estagioDTO = estagioService.toEstagioDTO(e);
+							listEstagioDTO.add(estagioDTO);
+						}
+					}
+					return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/{grrAlunoURL}/estagio")
+	public ResponseEntity<List<EstagioDTO>> buscarEstagioPorStatus(@PathVariable String grrAlunoURL, @RequestParam String statusEstagio) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					List<Estagio> estagio = estagioService.buscarEstagioPorStatusEstagio(aluno, statusEstagio);
+					List<EstagioDTO> listEstagioDTO = new ArrayList<EstagioDTO>();
+					EstagioDTO estagioDTO = new EstagioDTO();
+					if (estagio == null || estagio.isEmpty()) {
 						estagioDTO = null;
 					} else {
 						for (Estagio e : estagio) {
