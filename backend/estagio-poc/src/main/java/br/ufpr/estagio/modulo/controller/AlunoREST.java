@@ -1,5 +1,9 @@
 package br.ufpr.estagio.modulo.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,10 +11,12 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +29,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
 
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
@@ -321,6 +332,21 @@ public class AlunoREST {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
+	}
+	
+	@GetMapping("/gerar-termo")
+	public ResponseEntity<byte[]> gerarPdf() throws IOException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    PdfWriter writer = new PdfWriter(outputStream);
+	    PdfDocument pdf = new PdfDocument(writer);
+	    ConverterProperties props = new ConverterProperties();
+	    HtmlConverter.convertToPdf(new FileInputStream(new File(classLoader.getResource("naoObrigatorio-ufpr-externo.html").getFile())), pdf, props);
+	    pdf.close();
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_PDF);
+	    headers.setContentDisposition(ContentDisposition.builder("inline").filename("arquivo.pdf").build());
+	    return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
 	}
 	
 	//endpoint de dados auxiliares. so get

@@ -1,12 +1,24 @@
 package br.ufpr.estagio.modulo;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import com.itextpdf.html2pdf.HtmlConverter;
+
+import br.ufpr.estagio.modulo.service.GeradorDePdfService;
+import jakarta.annotation.PostConstruct;
+
 @SpringBootApplication
 public class PocServiceApplication {
+	
+	@Autowired
+	private GeradorDePdfService geradorDePdfService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(PocServiceApplication.class, args);
@@ -17,4 +29,19 @@ public class PocServiceApplication {
 		return new ModelMapper();
 	}
 
+	/*@PostConstruct
+	public void init() {
+		geradorDePdfService.gerarPdf();
+	}*/
+	
+	/*@PostConstruct
+	public void init() {
+		ClassLoader classLoader = getClass().getClassLoader();
+		try {
+			HtmlConverter.convertToPdf(new File(classLoader.getResource("naoObrigatorio-ufpr-externo.html").getFile()),new File("html-virou-pdf.pdf"));
+			System.out.println("Arquivo criado.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}*/
 }
