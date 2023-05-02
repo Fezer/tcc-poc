@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "9f5950df-e509-4fb4-ac06-39b2e2a58008",
+		"_postman_id": "7da4bcc9-13e9-4eeb-b3d3-135406de83b8",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18567474"
+		"_exporter_id": "17301767"
 	},
 	"item": [
 		{
@@ -528,6 +528,26 @@
 								"termo",
 								"12",
 								"solicitarAprovacaoTermo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gerarPdfTermo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/gerar-termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"gerar-termo"
 							]
 						}
 					},
