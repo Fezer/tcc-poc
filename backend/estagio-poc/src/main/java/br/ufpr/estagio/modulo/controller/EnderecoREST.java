@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.EnderecoDTO;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Endereco;
+import br.ufpr.estagio.modulo.model.Pessoa;
 import br.ufpr.estagio.modulo.service.EnderecoService;
 
 @CrossOrigin
@@ -38,6 +40,27 @@ public class EnderecoREST {
 	@PostMapping("/")
 	public ResponseEntity<EnderecoDTO> inserir(@RequestBody EnderecoDTO enderecoDTO){
 		try {
+		
+			if (enderecoDTO.getLogradouro().isBlank() || enderecoDTO.getLogradouro().isEmpty())
+	    		throw new InvalidFieldException("Logradouro inválido.");
+	    	
+	    	if (enderecoDTO.getNumero() < 1)
+	    		throw new InvalidFieldException("Número inválido.");
+	    	
+	    	if (enderecoDTO.getComplemento().isBlank() || enderecoDTO.getComplemento().isEmpty())
+	    		throw new InvalidFieldException("Complemento inválido.");
+	    	
+	    	if (enderecoDTO.getCidade().isBlank() || enderecoDTO.getCidade().isEmpty())
+	    		throw new InvalidFieldException("Cidade inválida.");
+	    	
+	    	if (enderecoDTO.getEstado().isBlank() || enderecoDTO.getEstado().isEmpty())
+	    		throw new InvalidFieldException("Estado inválido.");
+	    	
+	    	if (enderecoDTO.getCep().isBlank() || enderecoDTO.getCep().isEmpty())
+	    		throw new InvalidFieldException("CEP inválido.");
+			
+	    	// TO-DO: Validação de pessoa -> enderecoDTO.getPessoa()getCadaAtributo()...
+	    	
 		Endereco newEndereco = enderecoService.criarEndereco(mapper.map(enderecoDTO, Endereco.class));
 		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newEndereco, EnderecoDTO.class));
 		} catch (IllegalArgumentException e) {
@@ -71,7 +94,7 @@ public class EnderecoREST {
 		try {
 			Optional<Endereco> enderecoFind = enderecoService.buscarEndercoPorId(id);
 		if(enderecoFind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Endereço não encontrado!");
+			throw new NotFoundException("Endereço não encontrado!");
 		} else {
 			Endereco endereco = enderecoFind.get();
 			EnderecoDTO enderecoDTO = mapper.map(endereco, EnderecoDTO.class);
@@ -91,7 +114,7 @@ public class EnderecoREST {
 		try {
 			Optional<Endereco> enderecoFind = enderecoService.buscarEndercoPorId(id);
 		if(enderecoFind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Endereço não encontrado!");
+			throw new NotFoundException("Endereço não encontrado!");
 		} else {
 			Endereco enderecoAtualizado = enderecoService.atualizarEndereco(enderecoFind.get(), endereco);
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(enderecoAtualizado, EnderecoDTO.class));
@@ -110,7 +133,7 @@ public class EnderecoREST {
 		try {
 			Optional<Endereco> enderecoFind = enderecoService.buscarEndercoPorId(id);
 		if(enderecoFind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Endereço não encontrado!");
+			throw new NotFoundException("Endereço não encontrado!");
 		} else {
 			enderecoService.excluirEndereco(enderecoFind.get());
 			return ResponseEntity.status(HttpStatus.OK).body(null);

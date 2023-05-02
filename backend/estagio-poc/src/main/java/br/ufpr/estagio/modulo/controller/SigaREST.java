@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
+import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Discente;
@@ -57,13 +58,13 @@ public class SigaREST {
 	public ResponseEntity<Discente> listarAluno(@RequestParam String grr){
 		try {
 			if(grr.isBlank() || grr.isEmpty()) {
-				throw new PocException(HttpStatus.BAD_REQUEST, "GRR do aluno não informado!");
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
 				Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(grr);
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(discente, Discente.class));
 			}
 		}catch (NumberFormatException e) {
-			throw new PocException(HttpStatus.BAD_REQUEST, "O GRR informado para o aluno não é do tipo de dado esperado!");
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;
@@ -77,13 +78,13 @@ public class SigaREST {
 	public ResponseEntity<DocentesData> listarDocentes(@RequestParam String idPrograma){
 		try {
 			if(idPrograma.isBlank() || idPrograma.isEmpty()) {
-				throw new PocException(HttpStatus.BAD_REQUEST, "ID do programa não informado!");
+				throw new BadRequestException("ID do programa não informado!");
 			} else {
 				DocentesData docentesData = sigaApiDiscentesService.buscarDiscentesPorIdPrograma(idPrograma);
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(docentesData, DocentesData.class));
 			}
 		}catch (NumberFormatException e) {
-			throw new PocException(HttpStatus.BAD_REQUEST, "O ID informado para o programa não é do tipo de dado esperado!");
+			throw new BadRequestException("O ID informado para o programa não é do tipo de dado esperado!");
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;

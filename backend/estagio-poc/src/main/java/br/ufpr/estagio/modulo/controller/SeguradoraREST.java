@@ -22,6 +22,8 @@ import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTOv2;
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
 import br.ufpr.estagio.modulo.dto.ConvenioDTO;
 import br.ufpr.estagio.modulo.dto.SeguradoraDTO;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
+import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
@@ -57,6 +59,12 @@ public class SeguradoraREST {
 		try {
 			Seguradora seguradora = mapper.map(seguradoraDTO, Seguradora.class);
 			
+			if (seguradoraDTO.getNome().isBlank() || seguradoraDTO.getNome().isEmpty())
+	    		throw new InvalidFieldException("Nome inválido.");
+	    	
+	    	if (seguradoraDTO.isSeguradoraUfpr() != true && seguradoraDTO.isSeguradoraUfpr() != false)
+	    		throw new InvalidFieldException("Selecione se a seguradora é uma seguradora UFPR.");
+			
 		    seguradora.setApolice(seguradoraDTO.getApolice());
 		    seguradora.setTermoDeEstagio(seguradoraDTO.getTermoDeEstagio());
 		    seguradora.setEstagio(seguradoraDTO.getEstagio());
@@ -77,6 +85,13 @@ public class SeguradoraREST {
 	public ResponseEntity<SeguradoraDTO> criarSeguradora(@RequestBody SeguradoraDTO seguradoraDTO){
 		try {
 			Seguradora seguradora = mapper.map(seguradoraDTO, Seguradora.class);
+			
+			if (seguradoraDTO.getNome().isBlank() || seguradoraDTO.getNome().isEmpty())
+	    		throw new InvalidFieldException("Nome inválido.");
+	    	
+	    	if (seguradoraDTO.isSeguradoraUfpr() != true && seguradoraDTO.isSeguradoraUfpr() != false)
+	    		throw new InvalidFieldException("Selecione se a seguradora é uma seguradora UFPR.");
+			
 			seguradora = seguradoraService.criarSeguradora(seguradora);
 			seguradoraDTO = mapper.map(seguradora, SeguradoraDTO.class);
 			return new ResponseEntity<>(seguradoraDTO, HttpStatus.CREATED);
@@ -90,9 +105,9 @@ public class SeguradoraREST {
 	public ResponseEntity<ApoliceDTO> criarApolice(@PathVariable Integer idSeguradora, @RequestBody ApoliceDTO apolice){
 		try {
 			Optional<Seguradora> seguradoraFind = seguradoraService.buscarSeguradoraPorId(idSeguradora);
-			if(seguradoraFind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Seguradora não encontrada!");
-			}
+			
+			// copiar de apólice
+			
 			Seguradora seguradora = seguradoraFind.get();
 			Apolice apoliceNovo = mapper.map(apolice, Apolice.class);
 			apoliceNovo = apoliceService.criarApolice(apoliceNovo);
@@ -108,6 +123,11 @@ public class SeguradoraREST {
     @GetMapping("/{id}")
 	public ResponseEntity<SeguradoraDTO> buscarPorId(@PathVariable Integer id) {
 	    Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(id);
+	    
+	    if (seguradora.isEmpty()) {
+			throw new NotFoundException("Seguradora não encontrada!");
+		}
+	    
 	    SeguradoraDTO seguradoraDTO = mapper.map(seguradora, SeguradoraDTO.class);
 	    return ResponseEntity.status(HttpStatus.OK).body(seguradoraDTO);
 	}
@@ -132,7 +152,7 @@ public class SeguradoraREST {
             SeguradoraDTO seguradoraDTOAtualizada = mapper.map(seguradoraAtualizada, SeguradoraDTO.class);
             return ResponseEntity.ok().body(seguradoraDTOAtualizada);
         } else {
-            return ResponseEntity.notFound().build();
+			throw new NotFoundException("Seguradora não encontrada!");
         }
     }
 
@@ -143,7 +163,7 @@ public class SeguradoraREST {
             seguradoraService.excluirSeguradora(seguradora.get());
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.notFound().build();
+        	throw new NotFoundException("Seguradora não encontrada!");
         }
     }
 }

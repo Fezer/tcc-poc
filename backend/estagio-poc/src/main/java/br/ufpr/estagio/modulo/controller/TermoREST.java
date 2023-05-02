@@ -92,7 +92,7 @@ public class TermoREST {
 		try {
 			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
 		if(termoOptional.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
@@ -113,7 +113,7 @@ public class TermoREST {
 		try {
 			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
 		if(termofind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termoAtualizado = termoDeEstagioService.atualizarDados(termofind, termo);
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
@@ -132,7 +132,7 @@ public class TermoREST {
 		try {
 			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
 		if(termofind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termoAtualizado = termoDeEstagioService.atualizarPlanoAtividades(termofind, planoAtividades);
 			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
@@ -151,11 +151,11 @@ public class TermoREST {
 		try {
 			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
 			if(termofind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+				throw new NotFoundException("Termo não encontrado!");
 			}
 			Optional<Orientador> orientadorFind = Optional.ofNullable(orientadorService.buscarOrientadorPorId(orientadorId));
 			if(orientadorFind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Orientador não encontrado!");			
+				throw new NotFoundException("Orientador não encontrado!");			
 			} else {
 				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarOrientadorAoTermo(termofind.get(), orientadorFind.get());
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
@@ -174,11 +174,11 @@ public class TermoREST {
 		try {
 			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
 			if(termofind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+				throw new NotFoundException("Termo não encontrado!");
 			}
 			Optional<AgenteIntegrador> agenteFind = agenteIntegradorService.buscarPorId(agenteId);
 			if(agenteFind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Agente integrador não encontrado!");			
+				throw new NotFoundException("Agente integrador não encontrado!");			
 			} else {
 				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarAgenteIntegradorAoTermo(termofind.get(), agenteFind.get());
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
@@ -220,11 +220,11 @@ public class TermoREST {
 		try {
 			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
 			if(termofind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+				throw new NotFoundException("Termo não encontrado!");
 			}
 			Optional<Apolice> apoliceFind = apoliceService.buscarPorId(apoliceId);
 			if(apoliceFind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Apolice não encontrada!");			
+				throw new NotFoundException("Apolice não encontrada!");			
 			} else {
 				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarApoliceAoTermo(termofind.get(), apoliceFind.get());
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
@@ -266,7 +266,7 @@ public class TermoREST {
 		try {
 			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
 		if(termofind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			termoDeEstagioService.deletar(id);
 			return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -285,7 +285,7 @@ public class TermoREST {
 		try {
 			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
 			if(termofind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+				throw new NotFoundException("Termo não encontrado!");
 			} else {
 				TermoDeEstagio termo = new TermoDeEstagio();
 				termo = termofind.get();
@@ -311,10 +311,10 @@ public class TermoREST {
 			String justificativa = requestBody.getJustificativa();
 			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
 			if(termofind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
+				throw new NotFoundException("Termo não encontrado!");
 			} else {
 				if (justificativa.isBlank() || justificativa.isEmpty()){
-					throw new PocException(HttpStatus.BAD_REQUEST, "O motivo do indeferimento deve ser informado!");
+					throw new NotFoundException("O motivo do indeferimento deve ser informado!");
 				} else {
 					TermoDeEstagio termo = new TermoDeEstagio();
 					termo = termofind.get();

@@ -28,6 +28,8 @@ import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.TermoPocDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
+import br.ufpr.estagio.modulo.exception.BadRequestException;
+import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
@@ -85,7 +87,7 @@ public class EstagioREST {
 		try {
 			List<Estagio> lista = estagioService.listarTodosEstagios();
 			if(lista.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Nenhum estágio encontrado!");
+				throw new NotFoundException("Nenhum estágio encontrado!");
 			} else {
 				List<EstagioDTO> listaDTO = new ArrayList<EstagioDTO>();
 				for(Estagio l : lista) {
@@ -107,7 +109,7 @@ public class EstagioREST {
 		try {
 			Estagio estagio = estagioService.buscarEstagioPorId(id);
 		if(estagio == null) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Estágio não encontrado!");
+			throw new NotFoundException("Estágio não encontrado!");
 		} else {
 			EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
 			return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
@@ -124,12 +126,12 @@ public class EstagioREST {
 	@PutMapping("/tipo/{id}")
 	public ResponseEntity<EstagioDTO> definirTipoEstagio(@PathVariable Long id, @RequestParam EnumTipoEstagio tipoEstagio){
 		if(tipoEstagio == null) {
-			throw new PocException(HttpStatus.BAD_REQUEST, "Tipo do estágio não informado");
+			throw new BadRequestException("Tipo do estágio não informado");
 		}
 		try {
 			Estagio estagio = estagioService.buscarEstagioPorId(id);
 		if(estagio == null) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Estágio não encontrado!");
+			throw new NotFoundException("Estágio não encontrado!");
 		} else {
 			estagio = estagioService.definirTipoEstagio(estagio, tipoEstagio);
 			EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
@@ -147,12 +149,12 @@ public class EstagioREST {
 	@PutMapping("/ufpr/{id}")
 	public ResponseEntity<EstagioDTO> isUfpr(@PathVariable Long id, @RequestParam Boolean estagioUfpr){
 		if(estagioUfpr == null) {
-			throw new PocException(HttpStatus.BAD_REQUEST, "isUfpr não informado");
+			throw new BadRequestException("isUfpr não informado");
 		}
 		try {
 			Estagio estagio = estagioService.buscarEstagioPorId(id);
 		if(estagio == null) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Estágio não encontrado!");
+			throw new NotFoundException("Estágio não encontrado!");
 		} else {
 			estagio = estagioService.definirEstagioUfpr(estagio, estagioUfpr);
 			EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
@@ -170,12 +172,12 @@ public class EstagioREST {
 	@PutMapping("/seed/{id}")
 	public ResponseEntity<EstagioDTO> isSeed(@PathVariable Long id, @RequestParam Boolean estagioSeed){
 		if(estagioSeed == null) {
-			throw new PocException(HttpStatus.BAD_REQUEST, "isSeed não informado");
+			throw new BadRequestException("isSeed não informado");
 		}
 		try {
 			Estagio estagio = estagioService.buscarEstagioPorId(id);
 		if(estagio == null) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Estágio não encontrado!");
+			throw new NotFoundException("Estágio não encontrado!");
 		} else {
 			estagio = estagioService.definirEstagioSeed(estagio, estagioSeed);
 			EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);

@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.ContratanteDTO;
 import br.ufpr.estagio.modulo.dto.EnderecoDTO;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
+import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Endereco;
@@ -62,6 +64,23 @@ public class ContratanteREST {
 		try {
 			Contratante contratante = mapper.map(contratanteDTO, Contratante.class);
 		    
+			if (contratante.getNome().isBlank())
+	    		throw new InvalidFieldException("Preencha o nome.");
+			
+			if (contratante.getTelefone().isBlank())
+	    		throw new InvalidFieldException("Preencha o telefone.");
+			
+			if (contratante.getCnpj().isBlank() && contratante.getCpf().isBlank())
+	    		throw new InvalidFieldException("Preencha o CNPJ ou o CPF.");
+	    	
+			if (!contratante.getCnpj().isBlank() && !contratante.getCpf().isBlank())
+	    		throw new InvalidFieldException("Contratante só pode ter CNPJ ou CPF.");
+	    	
+			if (contratante.getRepresentanteEmpresa().isBlank())
+	    		throw new InvalidFieldException("Preencha o nome do representante da empresa.");
+			
+			// TO-DO: adicionar validações para endereço
+			
 			contratante = contratanteService.criarContratante(contratante);
 			
 			contratanteDTO = mapper.map(contratante, ContratanteDTO.class);
@@ -77,6 +96,9 @@ public class ContratanteREST {
     @GetMapping("/{id}")
 	public ResponseEntity<ContratanteDTO> buscarContratantePorId(@PathVariable Long id) {
 	    Optional<Contratante> contratante = contratanteService.buscarPorId(id);
+	    if(contratante.isEmpty()) {
+            throw new NotFoundException("Contratante não encontrado!");
+        }
 	    ContratanteDTO contratanteDTO = mapper.map(contratante, ContratanteDTO.class);
 	    return ResponseEntity.status(HttpStatus.OK).body(contratanteDTO);
 	}
@@ -85,7 +107,7 @@ public class ContratanteREST {
 	public ResponseEntity<ContratanteDTO> buscarContratanteNome(@PathVariable String nomeContratante) {
 	    Optional<Contratante> contratanteFind = contratanteService.buscarPorNome(nomeContratante);
 		if(contratanteFind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Contratante não encontrado!");
+			throw new NotFoundException("Contratante não encontrado!");
 		} else {
 		    ContratanteDTO contratanteDTO = mapper.map(contratanteFind.get(), ContratanteDTO.class);
 		    return ResponseEntity.status(HttpStatus.OK).body(contratanteDTO);
@@ -96,7 +118,7 @@ public class ContratanteREST {
 	public ResponseEntity<List<ContratanteDTO>> buscarContratantePorNomeSimilar(@PathVariable String nomeContratante) {
 	    List<Contratante> contratantesFind = contratanteService.buscarPorNomeContendo(nomeContratante);
 		if(contratantesFind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Contratante não encontrado!");
+			throw new NotFoundException("Contratante não encontrado!");
 		} else {
 		    List<ContratanteDTO> contratantesDTO = contratantesFind.stream()
 		            .map(ap -> mapper.map(ap, ContratanteDTO.class))
@@ -109,7 +131,7 @@ public class ContratanteREST {
 	public ResponseEntity<List<ContratanteDTO>> buscarContratantePorNomeComecandoPor(@PathVariable String nomeContratante) {
 	    List<Contratante> contratantesFind = contratanteService.buscarContratantePorNomeComecandoPor(nomeContratante);
 		if(contratantesFind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Contratante não encontrado!");
+			throw new NotFoundException("Contratante não encontrado!");
 		} else {
 		    List<ContratanteDTO> contratantesDTO = contratantesFind.stream()
 		            .map(ap -> mapper.map(ap, ContratanteDTO.class))
@@ -138,7 +160,8 @@ public class ContratanteREST {
 	        ContratanteDTO contratanteDTOAtualizado = mapper.map(contratanteAtualizado, ContratanteDTO.class);
 	        return ResponseEntity.ok().body(contratanteDTOAtualizado);
 	    } else {
-	        return ResponseEntity.notFound().build();
+	        //return ResponseEntity.notFound().build();
+	    	throw new NotFoundException("Contratante não encontrado!");
 	    }
 	}
 	
@@ -149,7 +172,8 @@ public class ContratanteREST {
 	    	contratanteService.excluirContratante(contratante.get());
 	        return ResponseEntity.noContent().build();
 	    } else {
-	        return ResponseEntity.notFound().build();
+	        //return ResponseEntity.notFound().build();
+	    	throw new NotFoundException("Contratante não encontrado!");
 	    }
 	}
 	
@@ -158,7 +182,7 @@ public class ContratanteREST {
 		try {
 			Optional<Contratante> contratanteFind = contratanteService.buscarPorId(idContratante);
 		if(contratanteFind.isEmpty()) {
-			throw new PocException(HttpStatus.NOT_FOUND, "Contratante não encontrada!");
+			throw new NotFoundException("Contratante não encontrada!");
 		} else {
 			Endereco endereco = mapper.map(enderecoDTO, Endereco.class);
 			Contratante contratante = contratanteService.criarEnderecoContratante(contratanteFind.get(), endereco);

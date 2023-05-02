@@ -119,6 +119,7 @@ public class ApoliceREST {
 	        Optional<Apolice> apolice = apoliceService.buscarPorId(id);
 
 	        if (apolice.isEmpty() || apolice == null) {
+	        	// Não é legal, mas do jeito legal não funcionou
 	            throw new PocException(HttpStatus.NOT_FOUND, "A apólice não foi encontrada.");
 	        }
 

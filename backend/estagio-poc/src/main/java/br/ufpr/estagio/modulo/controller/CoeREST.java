@@ -67,7 +67,7 @@ public class CoeREST {
 		try {
 			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosPendenteAprovacaoCoe();
 			if(listaTermos == null || listaTermos.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Nenhum estágio encontrado!");
+				throw new NotFoundException("Nenhum estágio encontrado!");
 			} else {
 				List<TermoDeEstagioDTO> listaTermosDTO = new ArrayList<TermoDeEstagioDTO>();
 				return new ResponseEntity<>(listaTermosDTO, HttpStatus.OK);

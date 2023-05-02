@@ -120,7 +120,7 @@ public class AgenteIntegradorREST {
     	try {
 			Optional<AgenteIntegrador> agenteFind = agenteIntegradorService.buscarPorId(idAgente);
 			if(agenteFind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Agente integrador não encontrado!");
+				throw new NotFoundException("Agente integrador não encontrado!");
 			}
 			AgenteIntegrador agente = agenteFind.get();
 			Convenio convenioNovo = mapper.map(convenio, Convenio.class);
@@ -130,7 +130,7 @@ public class AgenteIntegradorREST {
 			return new ResponseEntity<>(convenio, HttpStatus.CREATED);
 		}catch(Exception e) {
 			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao criar convenio!");
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao criar agente integrador!");
 		}
 	}
     
@@ -153,6 +153,7 @@ public class AgenteIntegradorREST {
 	public ResponseEntity<List<ApoliceDTO>> listarApolices() {
 		try {
 			List<AgenteIntegrador> agentesIntegradores = agenteIntegradorService.listarAgentesIntegradores();
+			
 			List<ApoliceDTO> agentesIntegradoresDTO = agentesIntegradores.stream()
 					.map(ap -> mapper.map(ap, ApoliceDTO.class))
 					.collect(Collectors.toList());

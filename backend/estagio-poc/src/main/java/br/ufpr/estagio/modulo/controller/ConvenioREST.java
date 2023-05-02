@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTO;
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
 import br.ufpr.estagio.modulo.dto.ConvenioDTO;
+import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Convenio;
@@ -60,8 +61,11 @@ public class ConvenioREST {
 	}
     
     @GetMapping("/{id}")
-	public ResponseEntity<ConvenioDTO> buscarAgenteIntegradorPorId(@PathVariable Long id) {
+	public ResponseEntity<ConvenioDTO> buscarConvenioPorId(@PathVariable Long id) {
 	    Optional<Convenio> convenio = convenioService.buscarPorId(id);
+	    if(convenio.isEmpty()) {
+            throw new NotFoundException("Convênio não encontrado!");
+        }
 	    ConvenioDTO convenioDTO = mapper.map(convenio, ConvenioDTO.class);
 	    return ResponseEntity.status(HttpStatus.OK).body(convenioDTO);
 	}
@@ -86,7 +90,8 @@ public class ConvenioREST {
 	    	ConvenioDTO convenioDTOAtualizado = mapper.map(convenioAtualizado, ConvenioDTO.class);
 	        return ResponseEntity.ok().body(convenioDTOAtualizado);
 	    } else {
-	        return ResponseEntity.notFound().build();
+//	        return ResponseEntity.notFound().build();
+	        throw new NotFoundException("Convênio não encontrado!");
 	    }
 	}
 	
@@ -97,7 +102,8 @@ public class ConvenioREST {
 	    	convenioService.excluirConvenio(convenio.get());
 	        return ResponseEntity.noContent().build();
 	    } else {
-	        return ResponseEntity.notFound().build();
+	//        return ResponseEntity.notFound().build();
+	    	throw new NotFoundException("Convênio não encontrado!");
 	    }
 	}
 }

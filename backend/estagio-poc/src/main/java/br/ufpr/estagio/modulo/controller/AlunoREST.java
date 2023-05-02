@@ -336,6 +336,9 @@ public class AlunoREST {
 	
 	@GetMapping("/gerar-termo")
 	public ResponseEntity<byte[]> gerarPdf() throws IOException {
+		
+		// TO-DO: Jogar dentro de um try-catch
+		
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    PdfWriter writer = new PdfWriter(outputStream);
