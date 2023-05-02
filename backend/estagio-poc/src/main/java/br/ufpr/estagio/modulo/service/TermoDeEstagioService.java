@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import br.ufpr.estagio.modulo.dto.PlanoDeAtividadesDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
+import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Contratante;
@@ -301,5 +303,16 @@ public class TermoDeEstagioService {
 		termoDeEstagio = termoRepo.save(termoDeEstagio);
 		
 		return termoDeEstagio;
+	}
+
+	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoe() {
+    	EnumStatusTermo statusTermo = EnumStatusTermo.EmPreenchimento;
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COE;
+    	EnumTipoEstagio tipoEstagio = EnumTipoEstagio.NaoObrigatorio;
+    	
+    	//Specification<TermoDeEstagio> specification = hasEstagioWithTipoEstagio(tipoEstagio);
+    	//https://www.baeldung.com/spring-jpa-joining-tables
+    	
+		return null;
 	}
 }
