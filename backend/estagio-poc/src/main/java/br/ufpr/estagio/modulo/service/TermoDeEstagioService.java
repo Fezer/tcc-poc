@@ -31,6 +31,8 @@ import br.ufpr.estagio.modulo.repository.OrientadorRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
 import br.ufpr.estagio.modulo.repository.SeguradoraRepository;
 import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
  
 @Service
 @Transactional
@@ -310,9 +312,34 @@ public class TermoDeEstagioService {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COE;
     	EnumTipoEstagio tipoEstagio = EnumTipoEstagio.NaoObrigatorio;
     	
+    	/*SELECT * FROM termo_de_estagio t, estagio e 
+    	 WHERE t.estagio_id = e.id
+    	   AND t.status_termo = 'EmPreenchimento'
+    	   AND t.etapa_fluxo = 'COE'
+    	   AND e.tipo_estagio = 'NaoObrigatorio';*/
+    	
     	//Specification<TermoDeEstagio> specification = hasEstagioWithTipoEstagio(tipoEstagio);
     	//https://www.baeldung.com/spring-jpa-joining-tables
     	
-		return null;
+    	//List<TermoDeEstagio> termosPendenteAprovacaoCoe = termoRepo.listarTermosPendenteAprovacaoCoe(statusTermo, etapaFluxo, tipoEstagio);
+    	
+		//return termosPendenteAprovacaoCoe;
+		
+    	return termoRepo.findAll((root, query, builder) -> {
+    		// 1) Mudar Join<Object, Object>
+    		// 2) Retirar o `JoinType.INNER`
+    		// 3) Tomei 404 por não haver estágio encontrado. Retestar com pelo menos um termo pendente de aprovação.
+            Join<Object, Object> estagioJoin = root.join("estagio", JoinType.INNER);
+            query.where(
+                builder.and(
+                    builder.equal(root.get("statusTermo"), statusTermo),
+                    builder.equal(root.get("etapaFluxo"), etapaFluxo),
+                    builder.equal(estagioJoin.get("tipoEstagio"), tipoEstagio)
+                )
+            );
+            return query.getRestriction();
+        });
+    	
+		//return null;
 	}
 }
