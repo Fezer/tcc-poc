@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7da4bcc9-13e9-4eeb-b3d3-135406de83b8",
+		"_postman_id": "88acdc85-eecb-4264-98f6-81171f523faf",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "17301767"
@@ -2045,6 +2045,31 @@
 									"key": "idPrograma",
 									"value": "40001016111G0"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "COE",
+			"item": [
+				{
+					"name": "listarTermosPendenteAprovacao",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coe/termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coe",
+								"termo"
 							]
 						}
 					},
