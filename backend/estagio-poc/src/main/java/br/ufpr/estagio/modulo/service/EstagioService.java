@@ -186,4 +186,9 @@ public class EstagioService {
 		return estagio;
 	}
 
+	public List<Estagio> listarTodosEstagiosPendenteAprovacaoCoe() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
