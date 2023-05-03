@@ -48,6 +48,12 @@ export default defineComponent({
       return "Teste";
     };
 
+    const handleDownloadTermo = async () => {
+      await $fetch("http://localhost:5000/aluno/gerar-termo").then((res) => {
+        console.log(res);
+      });
+    };
+
     return {
       parseStatus,
       percentage,
@@ -93,11 +99,13 @@ export default defineComponent({
           <span>{{ parseDate(termo?.dataCriacao) }}</span>
         </div>
         <div class="col-4 flex items-center justify-end">
-          <Button
-            label="Ver documento"
-            class="p-button-secondary self-center"
-            icon="pi pi-file"
-          />
+          <a href="http://localhost:5000/aluno/gerar-termo" target="_blank">
+            <Button
+              label="Baixar documento"
+              class="p-button-secondary self-center"
+              icon="pi pi-file"
+            />
+          </a>
         </div>
       </div>
       <div v-if="motivo">

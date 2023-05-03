@@ -170,15 +170,19 @@ export default defineComponent({
               nome: state.nomeContratante,
               cnpj: state.cnpjContratante,
               cpf: state.cpfContratante,
-              cep: state.cepContratante,
-              cidade: state.cidadeContratante,
-              estado: state.estadoContratante,
-              endereco: state.enderecoContratante,
               telefone: state.telefoneContratante,
               tipo: state.tipoContratante,
             },
             termo.value.id
           );
+
+          const { id: enderecoID } =
+            await contratanteService.criarEnderecoContratante(novoID, {
+              cep: state.cepContratante,
+              cidade: state.cidadeContratante,
+              estado: state.estadoContratante,
+              endereco: state.enderecoContratante,
+            });
 
           contratanteID = novoID;
         }

@@ -47,6 +47,8 @@ export default defineComponent({
       indeferimentoConfirm: false,
       cancelationConfirm: false,
       justificativa: "",
+
+      uploadModalVisible: false,
     });
     const checkIfTermoCompleto = () => {
       const necessaryValues = [
@@ -212,11 +214,51 @@ export default defineComponent({
           Editar termo
         </Button>
 
-        <Button class="p-button-primary" @click="handleSolicitarAprovacao">
+        <Button
+          class="p-button-primary"
+          @click="state.uploadModalVisible = true"
+        >
           Solicitar Aprovação
         </Button>
       </template>
     </div>
+
+    <Dialog
+      :visible="state.uploadModalVisible"
+      header="Upload do termo assinado."
+      :closable="false"
+      style="width: 600px"
+      :modal="true"
+    >
+      <p>
+        Para solicitar a aprovação do seu termo de compromisso, por favor faça o
+        upload do termo assinado pelo supervisor do estágio (na contratante),
+        seu professor(a) orientador(a) e por você.
+      </p>
+
+      <FileUpload
+        accept=".pdf"
+        :multiple="false"
+        :maxFileSize="1000000"
+        chooseLabel="Adicionar termo"
+        mode="basic"
+      />
+      <template #footer>
+        <Button
+          label="Fechar"
+          icon="pi pi-times"
+          class="p-button-secondary"
+          @click="state.uploadModalVisible = false"
+        />
+        <Button
+          label="Solicitar Aprovação"
+          icon="pi pi-check"
+          class="p-button-primary"
+          disabled
+          @click="handleSolicitarAprovacao"
+        />
+      </template>
+    </Dialog>
 
     <Dialog
       :visible="state.cancelationConfirm"
