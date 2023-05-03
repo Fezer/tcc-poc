@@ -74,7 +74,7 @@ public class CursoService {
     }
 
 	public Curso mapearCursoDiscente(Discente discente) {
-		Optional<Curso> cursoFind = cursoRepo.findByNome(discente.getCurso().getNome());
+		/*Optional<Curso> cursoFind = cursoRepo.findByNome(cursoRepo.findById(discente.getCursoId()));
 		Curso curso = new Curso();
 		CursoSiga cursoSiga = discente.getCurso();
 		if(cursoFind.isEmpty()) {
@@ -84,7 +84,8 @@ public class CursoService {
 		} else {
 			curso = cursoFind.get();
 		}
-		return curso;
+		return curso;*/
+		return null;
 	}
 
 	public List<Orientador> buscarOrientadoresPorIdPrograma(String idPrograma) {

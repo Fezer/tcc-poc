@@ -102,7 +102,7 @@ public class AgenteIntegradorREST {
     @PostMapping("/{idAgente}/convenio")
 	public ResponseEntity<ConvenioDTO> criarConvenio(@PathVariable Integer idAgente, @RequestBody ConvenioDTO convenio){
 		
-    	if (convenio.getNumero() < 1)
+    	/*if (convenio.getNumero() < 1)
     		throw new InvalidFieldException("Número inválido.");
     	
     	if (convenio.getDescricao().isBlank() || convenio.getDescricao().isEmpty())
@@ -115,7 +115,7 @@ public class AgenteIntegradorREST {
     		throw new InvalidFieldException("Insira uma data de fim.");
     	
     	if (convenio.getDataFim().before(convenio.getDataInicio()))
-    		throw new InvalidFieldException("A data de fim deve ser posterior à data de início");
+    		throw new InvalidFieldException("A data de fim deve ser posterior à data de início");*/
     	
     	try {
 			Optional<AgenteIntegrador> agenteFind = agenteIntegradorService.buscarPorId(idAgente);

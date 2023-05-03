@@ -3,7 +3,11 @@ package br.ufpr.estagio.modulo.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,13 +50,15 @@ public class Discente implements Serializable{
 	@Column(name = "rg")
 	private String rg;
 	
-    @ManyToOne
-    @JoinColumn(name = "curso_id")
-    private CursoSiga curso;
+//03-05-2023 - ApiSiga não retorna mais objeto curso
+//	@ManyToOne
+//  @JoinColumn(name = "curso_id")
+//    private CursoSiga curso;
 
 //15-04-2023 - Atributo dataNascimento não existe na versão da API do SIGA nesta data.	
-//	@Column(name = "dataNascimento")
-//	private Date dataNascimento;
+//03-05-2023 - Atributo adicionado
+	@Column(name = "dataNascimento")
+	private Date dataNascimento;
 	
 	@Column(name = "turno")
 	private String turno;
@@ -67,14 +73,35 @@ public class Discente implements Serializable{
 	@Column(name = "idPrograma")
 	private String idPrograma;
 	
+	@OneToOne
+	@JoinColumn(name = "curso_id")
+	private CursoSiga curso;
+	
+	@OneToOne
+    @JoinColumn(name = "endereco_id")
+	private Endereco endereco;
+	
+	@OneToOne
+    @JoinColumn(name = "dadosAuxiliares_id")
+	private DadosAuxiliares dadosAuxiliares;
+	
+	@Column(name = "ira")
+	private String ira;
+	
+	@Column(name = "isMatriculado")
+	private boolean isMatriculado;
+	
 	public Discente() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	
+
 	public Discente(long idDiscente, String nome, boolean isPcD, String documento, String grr, int periodoAtual,
-			String email, String rg, CursoSiga curso, String turno, DadosComplementaresSiga dadosComplementares, String coordenador,
-			String idPrograma) {
+			String email, String rg, Date dataNascimento, String turno, DadosComplementaresSiga dadosComplementares,
+			String coordenador, String idPrograma, CursoSiga curso, Endereco endereco, DadosAuxiliares dadosAuxiliares,
+			String ira, boolean isMatriculado) {
 		super();
 		this.idDiscente = idDiscente;
 		this.nome = nome;
@@ -84,12 +111,19 @@ public class Discente implements Serializable{
 		this.periodoAtual = periodoAtual;
 		this.email = email;
 		this.rg = rg;
-		this.curso = curso;
+		this.dataNascimento = dataNascimento;
 		this.turno = turno;
 		this.dadosComplementares = dadosComplementares;
 		this.coordenador = coordenador;
 		this.idPrograma = idPrograma;
+		this.curso = curso;
+		this.endereco = endereco;
+		this.dadosAuxiliares = dadosAuxiliares;
+		this.ira = ira;
+		this.isMatriculado = isMatriculado;
 	}
+
+
 
 	public long getIdDiscente() {
 		return idDiscente;
@@ -155,14 +189,6 @@ public class Discente implements Serializable{
 		this.rg = rg;
 	}
 
-	public CursoSiga getCurso() {
-		return curso;
-	}
-
-	public void setCurso(CursoSiga curso) {
-		this.curso = curso;
-	}
-
 	public String getTurno() {
 		return turno;
 	}
@@ -195,8 +221,58 @@ public class Discente implements Serializable{
 		this.idPrograma = idPrograma;
 	}
 
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public DadosAuxiliares getDadosAuxiliares() {
+		return dadosAuxiliares;
+	}
+
+	public void setDadosAuxiliares(DadosAuxiliares dadosAuxiliares) {
+		this.dadosAuxiliares = dadosAuxiliares;
+	}
+
+	public String getIra() {
+		return ira;
+	}
+
+	public void setIra(String ira) {
+		this.ira = ira;
+	}
+
+	public boolean isMatriculado() {
+		return isMatriculado;
+	}
+
+	public void setMatriculado(boolean isMatriculado) {
+		this.isMatriculado = isMatriculado;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public CursoSiga getCurso() {
+		return curso;
+	}
+
+
+
+	public void setCurso(CursoSiga curso) {
+		this.curso = curso;
 	}
 
 }

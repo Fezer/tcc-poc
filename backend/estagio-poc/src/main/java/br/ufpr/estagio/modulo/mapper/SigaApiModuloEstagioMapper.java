@@ -63,7 +63,7 @@ public class SigaApiModuloEstagioMapper {
 			aluno = alunoFind.get();
 		}
 		
-		Curso curso = cursoService.mapearCursoDiscente(discente);
+		//¹¹¹¹Curso curso = cursoService.mapearCursoDiscente(discente);
 		
 		Coordenador coordenador = coordenadorService.mapearCoordenadorDiscente(discente);
 		
