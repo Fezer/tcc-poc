@@ -34,6 +34,7 @@ import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.lowagie.text.DocumentException;
 
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
@@ -48,6 +49,7 @@ import br.ufpr.estagio.modulo.model.TermoPoc;
 import br.ufpr.estagio.modulo.repository.TermoPocRepository;
 import br.ufpr.estagio.modulo.service.AlunoService;
 import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.GeradorDePdfService;
 import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 import br.ufpr.estagio.modulo.service.siga.SigaApiAlunoService;
@@ -73,6 +75,9 @@ public class AlunoREST {
 	@Autowired
 	private AlunoService alunoService;
 
+	@Autowired
+	private GeradorDePdfService geradorService;
+	
 	@Autowired
 	private ModelMapper mapper;
 
@@ -335,7 +340,7 @@ public class AlunoREST {
 	}
 	
 	@GetMapping("/gerar-termo")
-	public ResponseEntity<byte[]> gerarPdf() throws IOException {
+	public ResponseEntity<byte[]> gerarPdf() throws IOException, DocumentException {
 		
 		// TO-DO: Jogar dentro de um try-catch
 		
@@ -343,8 +348,16 @@ public class AlunoREST {
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    PdfWriter writer = new PdfWriter(outputStream);
 	    PdfDocument pdf = new PdfDocument(writer);
+	    
+	    // Linhas abaixo provisórias para fazer o uso do Flying Saucer, a fim de utilizar certas unidades de medida
+	    geradorService.generatePdfFromClasspath("TermoCompromisso-Obrigatorio-Ufpr-EstudanteUfpr.html", "OUTPUT.pdf");
+	    
+	    /* // Utilizar as linhas abaixo para fazer o uso do Itext. Foram comentadas por causa da incompatibilidade
+	     * // algumas unidades de medida.
 	    ConverterProperties props = new ConverterProperties();
-	    HtmlConverter.convertToPdf(new FileInputStream(new File(classLoader.getResource("naoObrigatorio-ufpr-externo.html").getFile())), pdf, props);
+	    HtmlConverter.convertToPdf(new FileInputStream(new File(classLoader.getResource("TermoCompromisso-Obrigatorio-Ufpr-EstudanteUfpr.html").getFile())), pdf, props);
+	    */
+	    
 	    pdf.close();
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_PDF);
