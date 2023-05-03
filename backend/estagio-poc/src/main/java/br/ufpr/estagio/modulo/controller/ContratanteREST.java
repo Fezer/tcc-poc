@@ -64,7 +64,7 @@ public class ContratanteREST {
 		try {
 			Contratante contratante = mapper.map(contratanteDTO, Contratante.class);
 		    
-			if (contratante.getNome().isBlank())
+			/*if (contratante.getNome().isBlank())
 	    		throw new InvalidFieldException("Preencha o nome.");
 			
 			if (contratante.getTelefone().isBlank())
@@ -77,7 +77,7 @@ public class ContratanteREST {
 	    		throw new InvalidFieldException("Contratante só pode ter CNPJ ou CPF.");
 	    	
 			if (contratante.getRepresentanteEmpresa().isBlank())
-	    		throw new InvalidFieldException("Preencha o nome do representante da empresa.");
+	    		throw new InvalidFieldException("Preencha o nome do representante da empresa.");*/
 			
 			// TO-DO: adicionar validações para endereço
 			
