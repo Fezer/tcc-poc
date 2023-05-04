@@ -6,14 +6,14 @@ public class CursoSigaData implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private CursoSiga cursoSiga;
+	private CursoSiga curso;
 
-	public CursoSiga getCursoSiga() {
-		return cursoSiga;
+	public CursoSiga getCurso() {
+		return curso;
 	}
 
-	public void setCursoSiga(CursoSiga cursoSiga) {
-		this.cursoSiga = cursoSiga;
+	public void setCurso(CursoSiga curso) {
+		this.curso = curso;
 	}
 
 }

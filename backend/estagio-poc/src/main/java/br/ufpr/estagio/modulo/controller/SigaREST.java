@@ -22,8 +22,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
+import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.CursoSiga;
 import br.ufpr.estagio.modulo.model.CursoSigaData;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.DocentesData;
@@ -100,13 +102,16 @@ public class SigaREST {
 	}
 	
 	@GetMapping("/cursos")
-	public ResponseEntity<CursoSigaData> listarCursos(@RequestParam String idCurso){
+	public ResponseEntity<CursoSiga> listarCursos(@RequestParam Long idCurso){
 		try {
-			if(idCurso.isBlank() || idCurso.isEmpty()) {
+			if(idCurso < 1) {
 				throw new BadRequestException("ID do curso não informado!");
 			} else {
-				CursoSigaData cursoSigaData = sigaApiCursoSigaService.buscarCursoSigaPorId(idCurso);
-				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(cursoSigaData, CursoSigaData.class));
+				CursoSiga cursoSiga = sigaApiCursoSigaService.buscarCursoSigaPorIdCurso(idCurso);
+				if(cursoSiga == null) {
+					throw new NotFoundException("Curso não encontrado!");
+				}
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(cursoSiga, CursoSiga.class));
 			}
 		}catch (NumberFormatException e) {
 			throw new BadRequestException("O ID informado para o curso não é do tipo de dado esperado!");

@@ -14,4 +14,6 @@ public interface CursoRepository extends JpaRepository<Curso, Long>{
 
 	Optional<Curso> getById(Curso id);
 
+	Optional<Curso> findByIdCurso(Long idCurso);
+
 }

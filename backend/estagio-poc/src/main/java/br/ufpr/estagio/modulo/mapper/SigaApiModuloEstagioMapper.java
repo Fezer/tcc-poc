@@ -6,9 +6,12 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Coordenador;
 import br.ufpr.estagio.modulo.model.Curso;
@@ -16,12 +19,14 @@ import br.ufpr.estagio.modulo.model.CursoSiga;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Disciplina;
 import br.ufpr.estagio.modulo.model.Orientador;
+import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CoordenadorRepository;
 import br.ufpr.estagio.modulo.repository.CursoRepository;
 import br.ufpr.estagio.modulo.repository.CursoSigaRepository;
 import br.ufpr.estagio.modulo.service.CoordenadorService;
 import br.ufpr.estagio.modulo.service.CursoService;
+import br.ufpr.estagio.modulo.service.siga.SigaApiCursoSigaService;
 
 @Service
 @Transactional
@@ -34,6 +39,9 @@ public class SigaApiModuloEstagioMapper {
 	
 	private CursoService cursoService;
 	private CoordenadorService coordenadorService;
+	
+	@Autowired
+	private SigaApiCursoSigaService sigaApiCursoSigaService;
 
 	@Autowired
 	private CursoSigaRepository cursoSigaRepo;
@@ -70,6 +78,7 @@ public class SigaApiModuloEstagioMapper {
 		}else {
 			aluno = alunoFind.get();
 		}
+		
 		
 		Curso curso = mapearCursoSigaEmCurso(discente);
 		
@@ -108,11 +117,16 @@ public class SigaApiModuloEstagioMapper {
 		//Optional<CursoSiga> cursoSigaFind = cursoSigaRepo.findById(discente.getIdCurso());
 		//System.out.println(cursoSigaFind.get());
 		
-		Optional<Curso> curso = cursoRepo.findById(discente.getIdCurso());
-		System.out.println(curso.get());
+		Optional<Curso> cursoFind = cursoRepo.findByIdCurso(discente.getIdCurso());
+		if(cursoFind.isEmpty()) {
+			CursoSiga cursoSiga = sigaApiCursoSigaService.buscarCursoSigaPorIdCurso(discente.getIdCurso());
+			Curso curso = new Curso();
+			curso = mapper.map(cursoSiga, Curso.class);
+			return curso;
+		} else
 		
 	    
-		return null;
+		return cursoFind.get();
 	}
 	
 	public List<Orientador> mapearDocentesEmListaOrientadores(ArrayList<String> listaDocentes) {

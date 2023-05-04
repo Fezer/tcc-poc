@@ -31,6 +31,9 @@ public class Curso implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private long id;
+	
+	@Column(name = "idCurso")
+	private long idCurso;
 
 	@Column(name = "nome")
 	private String nome;
@@ -78,11 +81,14 @@ public class Curso implements Serializable{
 		this.orientador = new ArrayList<Orientador>();
 	}
 
-	public Curso(long id, String nome, String matricula, String idPrograma, String nivel, int peridiocidade,
-			String turno, List<Coordenador> coordenador, List<Orientador> orientador, List<Disciplina> disciplina,
-			List<Aluno> aluno) {
+
+
+	public Curso(long id, long idCurso, String nome, String matricula, String idPrograma, String nivel,
+			int peridiocidade, String turno, List<Coordenador> coordenador, List<Orientador> orientador,
+			List<Disciplina> disciplina, List<Aluno> aluno) {
 		super();
 		this.id = id;
+		this.idCurso = idCurso;
 		this.nome = nome;
 		this.matricula = matricula;
 		this.idPrograma = idPrograma;
@@ -95,12 +101,23 @@ public class Curso implements Serializable{
 		this.aluno = aluno;
 	}
 
+
+
 	public long getId() {
 		return id;
 	}
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public long getIdCurso() {
+		return idCurso;
+	}
+
+
+	public void setIdCurso(long idCurso) {
+		this.idCurso = idCurso;
 	}
 
 	public String getNome() {
