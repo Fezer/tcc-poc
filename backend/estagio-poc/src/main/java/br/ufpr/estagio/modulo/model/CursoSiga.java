@@ -44,6 +44,9 @@ public class CursoSiga implements Serializable{
 
     @Column(name = "id_pessoal_coordenador")
     private int idPessoalCoordenador;
+    
+    @Column(name = "id_programa")
+    private int idPrograma;
 
     @Column(name = "ano_inicio")
     private int anoInicio;
