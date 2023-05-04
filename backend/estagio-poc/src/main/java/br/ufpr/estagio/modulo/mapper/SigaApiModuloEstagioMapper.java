@@ -4,21 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Coordenador;
 import br.ufpr.estagio.modulo.model.Curso;
 import br.ufpr.estagio.modulo.model.CursoSiga;
 import br.ufpr.estagio.modulo.model.Discente;
+import br.ufpr.estagio.modulo.model.Disciplina;
 import br.ufpr.estagio.modulo.model.Orientador;
+import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CoordenadorRepository;
 import br.ufpr.estagio.modulo.repository.CursoRepository;
+import br.ufpr.estagio.modulo.repository.CursoSigaRepository;
 import br.ufpr.estagio.modulo.service.CoordenadorService;
 import br.ufpr.estagio.modulo.service.CursoService;
+import br.ufpr.estagio.modulo.service.siga.SigaApiCursoSigaService;
 
 @Service
 @Transactional
@@ -31,7 +39,15 @@ public class SigaApiModuloEstagioMapper {
 	
 	private CursoService cursoService;
 	private CoordenadorService coordenadorService;
+	
+	@Autowired
+	private SigaApiCursoSigaService sigaApiCursoSigaService;
 
+	@Autowired
+	private CursoSigaRepository cursoSigaRepo;
+	
+	@Autowired
+	private ModelMapper mapper;
 	
 	public SigaApiModuloEstagioMapper(AlunoRepository alunoRepo,
 			CursoRepository cursoRepo,
@@ -46,7 +62,6 @@ public class SigaApiModuloEstagioMapper {
 	}
 
 	public Aluno mapearDiscenteEmAluno (Discente discente) {
-		
 		Optional<Aluno> alunoFind = alunoRepo.findByMatricula(discente.getGrr());
 		Aluno aluno = new Aluno();
 		if(alunoFind.isEmpty()) {
@@ -58,12 +73,16 @@ public class SigaApiModuloEstagioMapper {
 			aluno.setPeriodoAtual(discente.getPeriodoAtual());
 			aluno.setEmail(discente.getEmail());
 			aluno.setRg(discente.getRg());
+			
 			//dadosauxiliares
 		}else {
 			aluno = alunoFind.get();
 		}
 		
-		//¹¹¹¹Curso curso = cursoService.mapearCursoDiscente(discente);
+		
+		Curso curso = mapearCursoSigaEmCurso(discente);
+		
+		//Curso curso = cursoService.mapearCursoDiscente(discente);
 		
 		Coordenador coordenador = coordenadorService.mapearCoordenadorDiscente(discente);
 		
@@ -91,11 +110,23 @@ public class SigaApiModuloEstagioMapper {
 		cursoRepo.save(curso);
 		
 		return aluno;
+		//return null;
 	}
 	
-	public Curso mapearCursoSigaEmCurso(CursoSiga cursoSiga) {
+	public Curso mapearCursoSigaEmCurso(Discente discente) {
+		//Optional<CursoSiga> cursoSigaFind = cursoSigaRepo.findById(discente.getIdCurso());
+		//System.out.println(cursoSigaFind.get());
 		
-		return null;
+		Optional<Curso> cursoFind = cursoRepo.findByIdCurso(discente.getIdCurso());
+		if(cursoFind.isEmpty()) {
+			CursoSiga cursoSiga = sigaApiCursoSigaService.buscarCursoSigaPorIdCurso(discente.getIdCurso());
+			Curso curso = new Curso();
+			curso = mapper.map(cursoSiga, Curso.class);
+			return curso;
+		} else
+		
+	    
+		return cursoFind.get();
 	}
 	
 	public List<Orientador> mapearDocentesEmListaOrientadores(ArrayList<String> listaDocentes) {

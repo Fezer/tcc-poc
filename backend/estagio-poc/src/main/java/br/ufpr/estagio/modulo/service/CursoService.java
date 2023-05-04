@@ -74,9 +74,13 @@ public class CursoService {
     }
 
 	public Curso mapearCursoDiscente(Discente discente) {
-		/*Optional<Curso> cursoFind = cursoRepo.findByNome(cursoRepo.findById(discente.getCursoId()));
+		System.out.println("ID === " + discente.getIdCurso());
+		
+		/*Optional<Curso> cursoFind = cursoRepo.findById(discente.getIdCurso());
 		Curso curso = new Curso();
-		CursoSiga cursoSiga = discente.getCurso();
+		System.out.println(cursoSigaRepo.findAll());
+		Optional<CursoSiga> cursoSiga = cursoSigaRepo.findById(discente.getIdCurso());
+		System.out.println("Siga: " + cursoSiga);
 		if(cursoFind.isEmpty()) {
 			curso = mapper.map(cursoSiga, Curso.class);
 			curso.setIdPrograma(discente.getIdPrograma());
@@ -84,6 +88,8 @@ public class CursoService {
 		} else {
 			curso = cursoFind.get();
 		}
+		System.out.println(curso.getId());
+		System.out.println(curso.getNome());
 		return curso;*/
 		return null;
 	}

@@ -23,7 +23,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "CursoSiga", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "CursoSiga", uniqueConstraints = { @UniqueConstraint(columnNames = { "idCurso" }) })
 public class CursoSiga implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -31,19 +31,25 @@ public class CursoSiga implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Long id;   
+    
+    @Column(name = "idCurso")
+    private Long idCurso;
 
     @Column(name = "ano_base")
     private int anoBase;
 
     @Column(name = "sequencial")
     private int sequencial;
+	
+    @Column(name = "id_programa")
+    private String idPrograma;
 
     @Column(name = "nome")
     private String nome;
 
     @Column(name = "id_pessoal_coordenador")
-    private int idPessoalCoordenador;
+    private int IdPessoalCoordenador;
 
     @Column(name = "ano_inicio")
     private int anoInicio;
@@ -67,10 +73,16 @@ public class CursoSiga implements Serializable{
     private int equivalenciaCredCargaHoraria;
 
     @Column(name = "id_pessoal_secretaria")
-    private int idPessoalSecretaria;
+    private int IdPessoalSecretaria;
 
     @Column(name = "id_pessoal_vice_coordenador")
-    private int idPessoalViceCoordenador;
+    private int IdPessoalViceCoordenador;
+
+    @Column(name = "setor")
+    private String setor;
+	
+    @Column(name = "departamento")
+    private String departamento;
 
     @Column(name = "num_total_vagas")
     private int numTotalVagas;
@@ -86,10 +98,6 @@ public class CursoSiga implements Serializable{
 
     @Column(name = "carga_horaria_total")
     private int cargaHorariaTotal;
-
-    @ManyToOne
-    @JoinColumn(name = "tipo_id")
-    private TipoSiga tipo;
 
     @Column(name = "carga_horaria_obrigatoria")
     private int cargaHorariaObrigatoria;
@@ -132,26 +140,28 @@ public class CursoSiga implements Serializable{
 
     @Column(name = "disciplinas")
     private List<String> disciplinas;
-
+    
 	public CursoSiga() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public CursoSiga(Long id, int anoBase, int sequencial, String nome, int idPessoalCoordenador, int anoInicio,
-			int creditosDisciplinas, int creditosObrigatorios, int creditosEletivos, int creditosTeses,
-			int creditosOutros, int equivalenciaCredCargaHoraria, int idPessoalSecretaria, int idPessoalViceCoordenador,
-			int numTotalVagas, int duracao, int duracaoMaxima, int status, int cargaHorariaTotal, TipoSiga tipo,
-			int cargaHorariaObrigatoria, int cargaHorariaOptativa, int cargaHorariaAtividadeFormativa,
-			List<String> estruturas, int historicoCorrecaoIdPessoal, List<String> periodos, int totalAlunos,
-			int totalComprovantesVacinacao, Double porcentagemAlunosComprovante, int versao, String nomeVersao,
-			int anoVersao, String vigencia, List<String> disciplinas) {
+	
+	public CursoSiga(Long idCurso, int anoBase, int sequencial, String idPrograma, String nome,
+			int idPessoalCoordenador, int anoInicio, int creditosDisciplinas, int creditosObrigatorios,
+			int creditosEletivos, int creditosTeses, int creditosOutros, int equivalenciaCredCargaHoraria,
+			int idPessoalSecretaria, int idPessoalViceCoordenador, String setor, String departamento, int numTotalVagas,
+			int duracao, int duracaoMaxima, int status, int cargaHorariaTotal, int cargaHorariaObrigatoria,
+			int cargaHorariaOptativa, int cargaHorariaAtividadeFormativa, List<String> estruturas,
+			int historicoCorrecaoIdPessoal, List<String> periodos, int totalAlunos, int totalComprovantesVacinacao,
+			Double porcentagemAlunosComprovante, int versao, String nomeVersao, int anoVersao, String vigencia,
+			List<String> disciplinas) {
 		super();
-		this.id = id;
+		this.idCurso = idCurso;
 		this.anoBase = anoBase;
 		this.sequencial = sequencial;
+		this.idPrograma = idPrograma;
 		this.nome = nome;
-		this.idPessoalCoordenador = idPessoalCoordenador;
+		IdPessoalCoordenador = idPessoalCoordenador;
 		this.anoInicio = anoInicio;
 		this.creditosDisciplinas = creditosDisciplinas;
 		this.creditosObrigatorios = creditosObrigatorios;
@@ -159,14 +169,15 @@ public class CursoSiga implements Serializable{
 		this.creditosTeses = creditosTeses;
 		this.creditosOutros = creditosOutros;
 		this.equivalenciaCredCargaHoraria = equivalenciaCredCargaHoraria;
-		this.idPessoalSecretaria = idPessoalSecretaria;
-		this.idPessoalViceCoordenador = idPessoalViceCoordenador;
+		IdPessoalSecretaria = idPessoalSecretaria;
+		IdPessoalViceCoordenador = idPessoalViceCoordenador;
+		this.setor = setor;
+		this.departamento = departamento;
 		this.numTotalVagas = numTotalVagas;
 		this.duracao = duracao;
 		this.duracaoMaxima = duracaoMaxima;
 		this.status = status;
 		this.cargaHorariaTotal = cargaHorariaTotal;
-		this.tipo = tipo;
 		this.cargaHorariaObrigatoria = cargaHorariaObrigatoria;
 		this.cargaHorariaOptativa = cargaHorariaOptativa;
 		this.cargaHorariaAtividadeFormativa = cargaHorariaAtividadeFormativa;
@@ -191,6 +202,14 @@ public class CursoSiga implements Serializable{
 		this.id = id;
 	}
 
+	public Long getIdCurso() {
+		return idCurso;
+	}
+
+	public void setIdCurso(Long idCurso) {
+		this.idCurso = idCurso;
+	}
+
 	public int getAnoBase() {
 		return anoBase;
 	}
@@ -207,6 +226,14 @@ public class CursoSiga implements Serializable{
 		this.sequencial = sequencial;
 	}
 
+	public String getIdPrograma() {
+		return idPrograma;
+	}
+
+	public void setIdPrograma(String idPrograma) {
+		this.idPrograma = idPrograma;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -216,11 +243,11 @@ public class CursoSiga implements Serializable{
 	}
 
 	public int getIdPessoalCoordenador() {
-		return idPessoalCoordenador;
+		return IdPessoalCoordenador;
 	}
 
 	public void setIdPessoalCoordenador(int idPessoalCoordenador) {
-		this.idPessoalCoordenador = idPessoalCoordenador;
+		IdPessoalCoordenador = idPessoalCoordenador;
 	}
 
 	public int getAnoInicio() {
@@ -280,19 +307,35 @@ public class CursoSiga implements Serializable{
 	}
 
 	public int getIdPessoalSecretaria() {
-		return idPessoalSecretaria;
+		return IdPessoalSecretaria;
 	}
 
 	public void setIdPessoalSecretaria(int idPessoalSecretaria) {
-		this.idPessoalSecretaria = idPessoalSecretaria;
+		IdPessoalSecretaria = idPessoalSecretaria;
 	}
 
 	public int getIdPessoalViceCoordenador() {
-		return idPessoalViceCoordenador;
+		return IdPessoalViceCoordenador;
 	}
 
 	public void setIdPessoalViceCoordenador(int idPessoalViceCoordenador) {
-		this.idPessoalViceCoordenador = idPessoalViceCoordenador;
+		IdPessoalViceCoordenador = idPessoalViceCoordenador;
+	}
+
+	public String getSetor() {
+		return setor;
+	}
+
+	public void setSetor(String setor) {
+		this.setor = setor;
+	}
+
+	public String getDepartamento() {
+		return departamento;
+	}
+
+	public void setDepartamento(String departamento) {
+		this.departamento = departamento;
 	}
 
 	public int getNumTotalVagas() {
@@ -333,14 +376,6 @@ public class CursoSiga implements Serializable{
 
 	public void setCargaHorariaTotal(int cargaHorariaTotal) {
 		this.cargaHorariaTotal = cargaHorariaTotal;
-	}
-
-	public TipoSiga getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(TipoSiga tipo) {
-		this.tipo = tipo;
 	}
 
 	public int getCargaHorariaObrigatoria() {

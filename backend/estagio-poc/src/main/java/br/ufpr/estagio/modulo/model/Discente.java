@@ -74,10 +74,6 @@ public class Discente implements Serializable{
 	private String idPrograma;
 	
 	@OneToOne
-	@JoinColumn(name = "curso_id")
-	private CursoSiga curso;
-	
-	@OneToOne
     @JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 	
@@ -88,6 +84,9 @@ public class Discente implements Serializable{
 	@Column(name = "ira")
 	private String ira;
 	
+	@Column(name = "idCurso")
+	private Long idCurso;
+	
 	@Column(name = "isMatriculado")
 	private boolean isMatriculado;
 	
@@ -96,11 +95,9 @@ public class Discente implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
 	public Discente(long idDiscente, String nome, boolean isPcD, String documento, String grr, int periodoAtual,
 			String email, String rg, Date dataNascimento, String turno, DadosComplementaresSiga dadosComplementares,
-			String coordenador, String idPrograma, CursoSiga curso, Endereco endereco, DadosAuxiliares dadosAuxiliares,
+			String coordenador, String idPrograma, Long idCurso, Endereco endereco, DadosAuxiliares dadosAuxiliares,
 			String ira, boolean isMatriculado) {
 		super();
 		this.idDiscente = idDiscente;
@@ -116,14 +113,12 @@ public class Discente implements Serializable{
 		this.dadosComplementares = dadosComplementares;
 		this.coordenador = coordenador;
 		this.idPrograma = idPrograma;
-		this.curso = curso;
+		this.idCurso = idCurso;
 		this.endereco = endereco;
 		this.dadosAuxiliares = dadosAuxiliares;
 		this.ira = ira;
 		this.isMatriculado = isMatriculado;
 	}
-
-
 
 	public long getIdDiscente() {
 		return idDiscente;
@@ -261,18 +256,16 @@ public class Discente implements Serializable{
 		this.isMatriculado = isMatriculado;
 	}
 
+	public Long getIdCurso() {
+		return idCurso;
+	}
+
+	public void setIdCurso(Long idCurso) {
+		this.idCurso = idCurso;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	public CursoSiga getCurso() {
-		return curso;
-	}
-
-
-
-	public void setCurso(CursoSiga curso) {
-		this.curso = curso;
 	}
 
 }

@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "88acdc85-eecb-4264-98f6-81171f523faf",
+		"_postman_id": "9f5950df-e509-4fb4-ac06-39b2e2a58008",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17301767"
+		"_exporter_id": "18567474"
 	},
 	"item": [
 		{
@@ -105,7 +105,7 @@
 							"raw": "{\r\n    \"dataInicio\": \"2023-05-05\",\r\n    \"dataTermino\": \"2023-12-05\", \r\n    \"jornadaDiaria\": 6,\r\n    \"jornadaSemanal\": 30,\r\n    \"valorBolsa\": 2000,\r\n    \"valorTransporte\": 200,\r\n    \"dataFimSuspensao\": \"\",\r\n    \"dataInicioRetomada\": \"\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/12",
+							"raw": "http://localhost:5000/termo/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -113,7 +113,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"12"
+								"1"
 							]
 						}
 					},
@@ -135,7 +135,7 @@
 							"raw": "{\r\n    \"local\": \"Qualquer\",\r\n    \"nomeSupervisor\": \"SuperVitor\",\r\n    \"telefoneSupervisor\": \"41999990000\",\r\n    \"cpfSupervisor\": \"11111111134\",\r\n    \"formacaoSupervisor\": \"TADS\",\r\n    \"descricaoAtividades\": \"atividades Bacanas\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/12/planoAtividades",
+							"raw": "http://localhost:5000/termo/1/planoAtividades",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -143,7 +143,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"12",
+								"1",
 								"planoAtividades"
 							]
 						}
@@ -166,7 +166,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/12/associarOrientador/552",
+							"raw": "http://localhost:5000/termo/1/associarOrientador/106",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -174,9 +174,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"12",
+								"1",
 								"associarOrientador",
-								"552"
+								"106"
 							]
 						}
 					},
@@ -198,7 +198,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/12/associarAgenteIntegrador/602",
+							"raw": "http://localhost:5000/termo/1/associarAgenteIntegrador/104",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -206,9 +206,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"12",
+								"1",
 								"associarAgenteIntegrador",
-								"602"
+								"104"
 							]
 						}
 					},
@@ -230,7 +230,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/12/associarApolice/1",
+							"raw": "http://localhost:5000/termo/1/associarApolice/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -238,7 +238,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"12",
+								"1",
 								"associarApolice",
 								"1"
 							]
@@ -252,7 +252,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/termo/12/associarContratante/802",
+							"raw": "http://localhost:5000/termo/1/associarContratante/105",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -260,9 +260,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"12",
+								"1",
 								"associarContratante",
-								"802"
+								"105"
 							]
 						}
 					},
@@ -516,7 +516,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/termo/12/solicitarAprovacaoTermo",
+							"raw": "http://localhost:5000/aluno/GRR20175486/termo/1/solicitarAprovacaoTermo",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -526,28 +526,8 @@
 								"aluno",
 								"GRR20175486",
 								"termo",
-								"12",
+								"1",
 								"solicitarAprovacaoTermo"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "gerarPdfTermo",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/gerar-termo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"gerar-termo"
 							]
 						}
 					},
@@ -656,6 +636,56 @@
 			]
 		},
 		{
+			"name": "API SIGA - Curso",
+			"item": [
+				{
+					"name": "listCurso",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/cursos?idCurso=229",
+							"protocol": "http",
+							"host": [
+								"siga",
+								"ufpr",
+								"br"
+							],
+							"port": "8380",
+							"path": [
+								"siga",
+								"api",
+								"graduacao",
+								"cursos"
+							],
+							"query": [
+								{
+									"key": "idCurso",
+									"value": "229"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Token",
 			"item": [
 				{
@@ -748,7 +778,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/tipo/12?tipoEstagio=Obrigatorio",
+							"raw": "http://localhost:5000/estagio/tipo/1?tipoEstagio=Obrigatorio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -757,7 +787,7 @@
 							"path": [
 								"estagio",
 								"tipo",
-								"12"
+								"1"
 							],
 							"query": [
 								{
@@ -775,7 +805,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/ufpr/12?estagioUfpr=false",
+							"raw": "http://localhost:5000/estagio/ufpr/1?estagioUfpr=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -784,7 +814,7 @@
 							"path": [
 								"estagio",
 								"ufpr",
-								"12"
+								"1"
 							],
 							"query": [
 								{
@@ -802,7 +832,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/seed/12?estagioSeed=false",
+							"raw": "http://localhost:5000/estagio/seed/1?estagioSeed=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -811,7 +841,7 @@
 							"path": [
 								"estagio",
 								"seed",
-								"12"
+								"1"
 							],
 							"query": [
 								{
@@ -1017,35 +1047,6 @@
 			"name": "Seguradora",
 			"item": [
 				{
-					"name": "novoSeguradora",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Seguradora A\",\n    \"apolice\": null,\n    \"termoDeEstagio\": [{\n        \"id\": 1,\n        \"nome\": \"Termo de Estágio A\"\n    }],\n    \"estagio\": [{\n        \"id\": 1,\n        \"nome\": \"Estágio A\"\n    }]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/seguradora/novo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"seguradora",
-								"novo"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "criarSeguradora",
 					"request": {
 						"method": "POST",
@@ -1151,7 +1152,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Seguradora Atualizada\",\n    \"apolice\": null,\n    \"termoDeEstagio\": null,\n    \"estagio\": null\n}",
+							"raw": "{\n    \"nome\": \"Seguradora Atualizada\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1445,35 +1446,6 @@
 			"name": "AgenteIntegrador",
 			"item": [
 				{
-					"name": "novoAgenteIntegrador",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"cnpj\": \"00010001\",\n    \"convenio\": [{\n        \"numero\": \"1212\",\n        \"descricao\": \"Inconveniente\",\n        \"dataInicio\": \"2022-01-01\",\n        \"dataFim\": \"2022-12-31\",\n        \"agenteIntegrador\": null\n    }],\n    \"termoDeEstagio\": null,\n    \"estagio\": null\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/agente-integrador/novo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"agente-integrador",
-								"novo"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "criarAgenteIntegrador",
 					"request": {
 						"method": "POST",
@@ -1517,7 +1489,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/602/convenio",
+							"raw": "http://localhost:5000/agente-integrador/104/convenio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1525,7 +1497,7 @@
 							"port": "5000",
 							"path": [
 								"agente-integrador",
-								"602",
+								"104",
 								"convenio"
 							]
 						}
@@ -1538,7 +1510,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/602",
+							"raw": "http://localhost:5000/agente-integrador/104",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1546,7 +1518,7 @@
 							"port": "5000",
 							"path": [
 								"agente-integrador",
-								"602"
+								"104"
 							]
 						}
 					},
@@ -1661,7 +1633,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/contratante/802",
+							"raw": "http://localhost:5000/contratante/105",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1669,7 +1641,7 @@
 							"port": "5000",
 							"path": [
 								"contratante",
-								"802"
+								"105"
 							]
 						}
 					},
@@ -2049,33 +2021,53 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "COE",
-			"item": [
+				},
 				{
-					"name": "listarTermosPendenteAprovacao",
+					"name": "listCurso",
 					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/coe/termo",
+							"raw": "http://localhost:5000/siga/cursos?idCurso=229",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "5000",
 							"path": [
-								"coe",
-								"termo"
+								"siga",
+								"cursos"
+							],
+							"query": [
+								{
+									"key": "idCurso",
+									"value": "229"
+								}
 							]
 						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "COE",
+			"item": []
 		}
 	],
 	"auth": {
