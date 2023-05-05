@@ -42,6 +42,9 @@ public class Coordenador extends Pessoa implements Serializable{
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
 	
+	/*@Column(name = "idCurso")
+	private Long idCurso;*/
+	
 	@JsonIgnore
 	@OneToMany(mappedBy="coordenador", cascade=CascadeType.REMOVE)
 	private List<TermoDeEstagio> termoDeEstagio;
@@ -64,6 +67,14 @@ public class Coordenador extends Pessoa implements Serializable{
 		this.curso = curso;
 		this.termoDeEstagio = termoDeEstagio;
 	}
+	
+	/*public Coordenador(long id, String nome, String telefone, String cpf, Long idCurso,
+			List<TermoDeEstagio> termoDeEstagio) {
+		super(id, nome, telefone);
+		this.cpf = cpf;
+		this.idCurso = idCurso;
+		this.termoDeEstagio = termoDeEstagio;
+	}*/
 	
 	public String getNome() {
 		return super.getNome();
@@ -108,6 +119,14 @@ public class Coordenador extends Pessoa implements Serializable{
 	public List<TermoDeEstagio> getTermoDeEstagio() {
 		return termoDeEstagio;
 	}
+
+	/*public Long getIdCurso() {
+		return idCurso;
+	}
+
+	public void setIdCurso(Long idCurso) {
+		this.idCurso = idCurso;
+	}*/
 
 	public void setTermoDeEstagio(List<TermoDeEstagio> termoDeEstagio) {
 		this.termoDeEstagio = termoDeEstagio;

@@ -112,6 +112,8 @@ public class SigaApiModuloEstagioMapper {
 		endereco.setNumero(discente.getEndereco().getNumero());
 		endereco.setPessoa(aluno);
 		
+		System.out.println(discente.getEndereco().getLogradouro());
+		
 		aluno.setEndereco(endereco);
 		
 		//Dados auxiliares aqui
