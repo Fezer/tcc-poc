@@ -76,16 +76,16 @@ public class AlunoService {
     }
     
     public Aluno buscarAlunoPorGrr(String matricula) {
-    	//Optional<Aluno> alunoFind = alunoRepo.findByMatricula(matricula);
+    	Optional<Aluno> alunoFind = alunoRepo.findByMatricula(matricula);
     	Aluno aluno = new Aluno();
 
-    	//if(alunoFind.isEmpty()) {
+    	if(alunoFind.isEmpty()) {
     		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula);
     		aluno = sigaApiModuloEstagioMapping.mapearDiscenteEmAluno(discente);
     		aluno = this.salvarAluno(aluno);
-    	/*} else {
+    	} else {
     		aluno = alunoFind.get();
-    	}*/
+    	}
         return aluno;
     }
      

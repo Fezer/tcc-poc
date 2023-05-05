@@ -68,9 +68,9 @@ public class SigaApiModuloEstagioMapper {
 	}
 
 	public Aluno mapearDiscenteEmAluno (Discente discente) {
-		//Optional<Aluno> alunoFind = alunoRepo.findByMatricula(discente.getGrr());
+		Optional<Aluno> alunoFind = alunoRepo.findByMatricula(discente.getGrr());
 		Aluno aluno = new Aluno();
-		//if(alunoFind.isEmpty()) {
+		if(alunoFind.isEmpty()) {
 			aluno.setNome(discente.getNome());
 			aluno.setIdDiscente(discente.getIdDiscente());
 			aluno.setPcd(discente.isPcD());
@@ -90,10 +90,10 @@ public class SigaApiModuloEstagioMapper {
 			aluno.setTelefone("TELEFONE");
 			
 			//dadosauxiliares
-		/*}else {
+		}else {
 			System.out.println("Entrou");
 			aluno = alunoFind.get();
-		}*/
+		}
 		
 		
 		Curso curso = mapearCursoSigaEmCurso(discente);
