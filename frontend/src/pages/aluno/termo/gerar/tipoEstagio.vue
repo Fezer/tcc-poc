@@ -37,6 +37,7 @@ export default defineComponent({
       { label: "Obrigatório", value: "Obrigatorio" },
       { label: "Não obrigatório", value: "NaoObrigatorio" },
     ];
+
     const dadosTipoEstagio = reactive({
       tipoEstagio: null as TipoEstagio | null,
       localEstagio: null as "UFPR" | "EXTERNO" | null,
@@ -54,7 +55,7 @@ export default defineComponent({
           if (!termo?.value?.id) {
             const termo = await novoEstagioService.criarNovoEstagio();
 
-            setTermo(termo)
+            setTermo(termo);
           }
           const { id } = termo?.value;
 
@@ -132,6 +133,13 @@ export default defineComponent({
           optionValue="value"
           :class="{ 'p-invalid': error }"
         />
+        <small class="text-rose-600">{{ error }}</small>
+      </div>
+      <div class="card p-fluid col-12">
+        <h5>Estágio SEED</h5>
+        <InputSwitch v-model="dadosTipoEstagio.localEstagio"
+          >É estágio SEED</InputSwitch
+        >
         <small class="text-rose-600">{{ error }}</small>
       </div>
     </div>

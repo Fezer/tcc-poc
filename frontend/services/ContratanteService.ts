@@ -3,16 +3,10 @@ import BaseService from "./BaseService";
 
 export default class ContratanteService extends BaseService {
   async criarContratante(contratante: Contratante, termoID: number) {
-    const response = await $fetch(this.BASE_URL + "/contratante/novo", {
+    const response = await $fetch(this.BASE_URL + "/contratante/", {
       method: "POST",
       body: {
         ...contratante,
-        representanteEmpresa: "Teste",
-        estagio: [
-          {
-            id: termoID,
-          },
-        ],
       },
     });
 
@@ -35,7 +29,7 @@ export default class ContratanteService extends BaseService {
     }
   ) {
     const response = await $fetch(
-      this.BASE_URL + `/contratante/${contratanteID}/endereco`,
+      this.BASE_URL + `/contratante/${contratanteID}/endereco/`,
       {
         method: "POST",
         body: {
