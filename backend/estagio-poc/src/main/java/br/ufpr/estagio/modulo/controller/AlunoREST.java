@@ -81,6 +81,7 @@ public class AlunoREST {
 	@Autowired
 	private ModelMapper mapper;
 
+	// Isso é um listarAluno
 	@GetMapping("/{grrAlunoURL}")
 	public ResponseEntity<Aluno> listarTermo(@PathVariable String grrAlunoURL) {
 		try {

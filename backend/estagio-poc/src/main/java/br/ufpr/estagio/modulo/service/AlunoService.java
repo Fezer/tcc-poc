@@ -19,6 +19,7 @@ import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.mapper.SigaApiModuloEstagioMapper;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
+import br.ufpr.estagio.modulo.model.Coordenador;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
@@ -75,15 +76,16 @@ public class AlunoService {
     }
     
     public Aluno buscarAlunoPorGrr(String matricula) {
-    	Optional<Aluno> alunoFind = alunoRepo.findByMatricula(matricula);
+    	//Optional<Aluno> alunoFind = alunoRepo.findByMatricula(matricula);
     	Aluno aluno = new Aluno();
-    	if(alunoFind.isEmpty()) {
+
+    	//if(alunoFind.isEmpty()) {
     		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula);
     		aluno = sigaApiModuloEstagioMapping.mapearDiscenteEmAluno(discente);
     		aluno = this.salvarAluno(aluno);
-    	} else {
+    	/*} else {
     		aluno = alunoFind.get();
-    	}
+    	}*/
         return aluno;
     }
      
@@ -128,7 +130,8 @@ public class AlunoService {
 		estagio.setTermoDeCompromisso(termoDeCompromisso);
 		CienciaCoordenacao cienciaCoordenacao = new CienciaCoordenacao();
 		termoDeCompromisso.setCienciaCoordenacao(cienciaCoordenacao);
-		termoDeCompromisso.setCoordenador(aluno.getCurso().getCoordenador().get(0));
+		//termoDeCompromisso.setCoordenador(aluno.getCurso().getCoordenador().get(0));
+		termoDeCompromisso.setCoordenador(new Coordenador(1, aluno.getCoordenador(), null, null));
 		
 		//Bloco de criação do Plano De Atividades com as devidas associações entre Termo De Estágio e Estagio.
 		PlanoDeAtividades planoDeAtividades = new PlanoDeAtividades();

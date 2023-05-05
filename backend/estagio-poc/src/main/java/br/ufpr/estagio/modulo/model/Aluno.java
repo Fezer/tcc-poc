@@ -60,6 +60,24 @@ public class Aluno extends Pessoa implements Serializable {
 	@Column(name = "dataNascimento")
 	private Date dataNascimento;
 	
+	@Column(name = "turno")
+	private String turno;
+	
+	@Column(name = "coordenador")
+	private String coordenador;
+	
+	@Column(name = "idPrograma")
+	private String idPrograma;
+	
+	@Column(name = "ira")
+	private String ira;
+	
+	@Column(name = "idCurso")
+	private Long idCurso;
+	
+	/*@Column(name = "isMatriculado")
+	private boolean isMatriculado;*/
+	
 	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
@@ -75,6 +93,10 @@ public class Aluno extends Pessoa implements Serializable {
 	@JoinColumn(name="dados_bancarios_id", referencedColumnName="id", nullable=true)
 	private DadosBancarios dadosBancarios;
 	
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="endereco_id", referencedColumnName="id", nullable=true)
+	private Endereco endereco;
+	
 	@JsonIgnore
 	@ManyToMany(mappedBy = "aluno", cascade=CascadeType.REMOVE)
 	private List<Disciplina> disciplina;
@@ -88,10 +110,13 @@ public class Aluno extends Pessoa implements Serializable {
 		this.disciplina = new ArrayList<Disciplina>();
 		this.estagio = new ArrayList<Estagio>();
 	}
-	
-	public Aluno(long id, long idDiscente, boolean isPcd, String matricula, int periodoAtual, String rg, String cpf, String email, Date dataNascimento,
-			Curso curso, DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, List<Disciplina> disciplina,
-			List<Estagio> estagio, String nome, String telefone) {
+
+
+	public Aluno(long id, String nome, String telefone, long idDiscente, boolean isPcd, String matricula,
+			int periodoAtual, String rg, String cpf, String email, Date dataNascimento, String turno,
+			String coordenador, String idPrograma, String ira, Long idCurso, Curso curso,
+			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, Endereco endereco,
+			List<Disciplina> disciplina, List<Estagio> estagio) {
 		super(id, nome, telefone);
 		this.idDiscente = idDiscente;
 		this.isPcd = isPcd;
@@ -101,14 +126,20 @@ public class Aluno extends Pessoa implements Serializable {
 		this.cpf = cpf;
 		this.email = email;
 		this.dataNascimento = dataNascimento;
+		this.turno = turno;
+		this.coordenador = coordenador;
+		this.idPrograma = idPrograma;
+		this.ira = ira;
+		this.idCurso = idCurso;
 		this.curso = curso;
 		this.dadosAuxiliares = dadosAuxiliares;
 		this.dadosBancarios = dadosBancarios;
+		this.endereco = endereco;
 		this.disciplina = disciplina;
 		this.estagio = estagio;
 	}
 
-	
+
 	public long getId() {
 		return super.getId();
 	}
@@ -197,13 +228,75 @@ public class Aluno extends Pessoa implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public Curso getCurso() {
-		return curso;
+	public String getTurno() {
+		return turno;
 	}
 
-	public void setCurso(Curso curso) {
-		this.curso = curso;
+
+	public void setTurno(String turno) {
+		this.turno = turno;
 	}
+
+
+	public String getCoordenador() {
+		return coordenador;
+	}
+
+
+	public void setCoordenador(String coordenador) {
+		this.coordenador = coordenador;
+	}
+
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+
+	public String getIdPrograma() {
+		return idPrograma;
+	}
+
+
+	public void setIdPrograma(String idPrograma) {
+		this.idPrograma = idPrograma;
+	}
+
+
+	public String getIra() {
+		return ira;
+	}
+
+
+	public void setIra(String ira) {
+		this.ira = ira;
+	}
+
+
+	public Long getIdCurso() {
+		return idCurso;
+	}
+
+
+	public void setIdCurso(Long idCurso) {
+		this.idCurso = idCurso;
+	}
+
+
+	/*public boolean isMatriculado() {
+		return isMatriculado;
+	}
+
+
+	public void setMatriculado(boolean isMatriculado) {
+		this.isMatriculado = isMatriculado;
+	}*/
+
 
 	public DadosAuxiliares getDadosAuxiliares() {
 		return dadosAuxiliares;
@@ -240,6 +333,16 @@ public class Aluno extends Pessoa implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
+
 
 	public Estagio novoEstagio() {
 		Estagio estagio = new Estagio();

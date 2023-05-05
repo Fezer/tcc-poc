@@ -18,12 +18,14 @@ import br.ufpr.estagio.modulo.model.Curso;
 import br.ufpr.estagio.modulo.model.CursoSiga;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Disciplina;
+import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CoordenadorRepository;
 import br.ufpr.estagio.modulo.repository.CursoRepository;
 import br.ufpr.estagio.modulo.repository.CursoSigaRepository;
+import br.ufpr.estagio.modulo.repository.EnderecoRepository;
 import br.ufpr.estagio.modulo.service.CoordenadorService;
 import br.ufpr.estagio.modulo.service.CursoService;
 import br.ufpr.estagio.modulo.service.siga.SigaApiCursoSigaService;
@@ -47,6 +49,9 @@ public class SigaApiModuloEstagioMapper {
 	private CursoSigaRepository cursoSigaRepo;
 	
 	@Autowired
+	private EnderecoRepository enderecoRepo;
+	
+	@Autowired
 	private ModelMapper mapper;
 	
 	public SigaApiModuloEstagioMapper(AlunoRepository alunoRepo,
@@ -62,9 +67,9 @@ public class SigaApiModuloEstagioMapper {
 	}
 
 	public Aluno mapearDiscenteEmAluno (Discente discente) {
-		Optional<Aluno> alunoFind = alunoRepo.findByMatricula(discente.getGrr());
+		//Optional<Aluno> alunoFind = alunoRepo.findByMatricula(discente.getGrr());
 		Aluno aluno = new Aluno();
-		if(alunoFind.isEmpty()) {
+		//if(alunoFind.isEmpty()) {
 			aluno.setNome(discente.getNome());
 			aluno.setIdDiscente(discente.getIdDiscente());
 			aluno.setPcd(discente.isPcD());
@@ -73,11 +78,21 @@ public class SigaApiModuloEstagioMapper {
 			aluno.setPeriodoAtual(discente.getPeriodoAtual());
 			aluno.setEmail(discente.getEmail());
 			aluno.setRg(discente.getRg());
+			aluno.setCoordenador(discente.getCoordenador());
+			aluno.setDataNascimento(discente.getDataNascimento());
+			aluno.setIdCurso(discente.getIdCurso());
+			aluno.setIdPrograma(discente.getIdPrograma());
+			aluno.setIra(discente.getIra());
+			//aluno.setMatriculado(discente.isMatriculado());
+			aluno.setTurno(discente.getTurno());
+			
+			aluno.setTelefone("TELEFONE");
 			
 			//dadosauxiliares
-		}else {
+		/*}else {
+			System.out.println("Entrou");
 			aluno = alunoFind.get();
-		}
+		}*/
 		
 		
 		Curso curso = mapearCursoSigaEmCurso(discente);
@@ -85,6 +100,19 @@ public class SigaApiModuloEstagioMapper {
 		//Curso curso = cursoService.mapearCursoDiscente(discente);
 		
 		Coordenador coordenador = coordenadorService.mapearCoordenadorDiscente(discente);
+		
+		// Jogar isso para dentro de algum método mapeador
+		Endereco endereco = new Endereco();
+		endereco.setCep(discente.getEndereco().getCep());
+		endereco.setCidade(discente.getEndereco().getCidade());
+		endereco.setComplemento(discente.getEndereco().getComplemento());
+		endereco.setEstado(discente.getEndereco().getEstado());
+		endereco.setId(discente.getEndereco().getId());
+		endereco.setLogradouro(discente.getEndereco().getLogradouro());
+		endereco.setNumero(discente.getEndereco().getNumero());
+		endereco.setPessoa(aluno);
+		
+		aluno.setEndereco(endereco);
 		
 		//Dados auxiliares aqui
 //		DadosAuxiliares dados...;
@@ -105,6 +133,7 @@ public class SigaApiModuloEstagioMapper {
 			curso.setCoordenador(listCoordenador);
 		}
 		
+		enderecoRepo.save(endereco);
 		alunoRepo.save(aluno);
 		coordenadorRepo.save(coordenador);
 		cursoRepo.save(curso);
