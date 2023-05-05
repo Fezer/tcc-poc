@@ -46,8 +46,10 @@ public class EnderecoService {
 		enderecoAtual.setCep(endereco.getCep());
 		enderecoAtual.setCidade(endereco.getCidade());
 		enderecoAtual.setComplemento(endereco.getComplemento());
-		enderecoAtual.setEstado(endereco.getEstado());
-		enderecoAtual.setLogradouro(endereco.getLogradouro());
+		//enderecoAtual.setEstado(endereco.getEstado());
+		enderecoAtual.setUf(endereco.getUf());
+		//enderecoAtual.setLogradouro(endereco.getLogradouro());
+		enderecoAtual.setRua(endereco.getRua());
 		enderecoAtual.setNumero(endereco.getNumero());
 		return enderecoRepo.save(enderecoAtual);
 	}

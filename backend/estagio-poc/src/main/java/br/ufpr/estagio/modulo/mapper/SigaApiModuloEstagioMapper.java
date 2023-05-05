@@ -16,6 +16,7 @@ import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Coordenador;
 import br.ufpr.estagio.modulo.model.Curso;
 import br.ufpr.estagio.modulo.model.CursoSiga;
+import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Disciplina;
 import br.ufpr.estagio.modulo.model.Endereco;
@@ -106,13 +107,14 @@ public class SigaApiModuloEstagioMapper {
 		endereco.setCep(discente.getEndereco().getCep());
 		endereco.setCidade(discente.getEndereco().getCidade());
 		endereco.setComplemento(discente.getEndereco().getComplemento());
-		endereco.setEstado(discente.getEndereco().getEstado());
+		endereco.setUf(discente.getEndereco().getUf());
 		endereco.setId(discente.getEndereco().getId());
-		endereco.setLogradouro(discente.getEndereco().getLogradouro());
+		endereco.setRua(discente.getEndereco().getRua());
 		endereco.setNumero(discente.getEndereco().getNumero());
 		endereco.setPessoa(aluno);
 		
-		System.out.println(discente.getEndereco().getLogradouro());
+		DadosAuxiliares dadosAuxiliares = new DadosAuxiliares();
+		dadosAuxiliares.setAluno(aluno);
 		
 		aluno.setEndereco(endereco);
 		

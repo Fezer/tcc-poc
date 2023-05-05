@@ -26,8 +26,11 @@ public class Endereco implements Serializable{
 	@Column(name = "id")
 	private long id;
 	
-	@Column(name = "logradouro")
-	private String logradouro;
+	/*@Column(name = "logradouro")
+	private String logradouro;*/
+	
+	@Column(name = "rua")
+	private String rua;
 	
 	@Column(name = "numero")
 	private int numero;
@@ -38,8 +41,11 @@ public class Endereco implements Serializable{
 	@Column(name = "cidade")
 	private String cidade;
 	
-	@Column(name = "estado")
-	private String estado;
+	/*@Column(name = "estado")
+	private String estado;*/
+	
+	@Column(name = "uf")
+	private String uf;
 	
 	@Column(name = "cep")
 	private String cep;
@@ -54,7 +60,7 @@ public class Endereco implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Endereco(long id, String logradouro, int numero, String complemento, String cidade, String estado,
+	/*public Endereco(long id, String logradouro, int numero, String complemento, String cidade, String estado,
 			String cep, Pessoa pessoa) {
 		super();
 		this.id = id;
@@ -65,8 +71,21 @@ public class Endereco implements Serializable{
 		this.estado = estado;
 		this.cep = cep;
 		this.pessoa = pessoa;
-	}
+	}*/
 
+	public Endereco(long id, String rua, int numero, String complemento, String cidade, String uf, String cep,
+			Pessoa pessoa) {
+		super();
+		this.id = id;
+		this.rua = rua;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.cidade = cidade;
+		this.uf = uf;
+		this.cep = cep;
+		this.pessoa = pessoa;
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -75,16 +94,24 @@ public class Endereco implements Serializable{
 		this.id = id;
 	}
 
-	public String getLogradouro() {
+	/*public String getLogradouro() {
 		return logradouro;
 	}
 
 	public void setLogradouro(String logradouro) {
 		this.logradouro = logradouro;
-	}
+	}*/
 
 	public int getNumero() {
 		return numero;
+	}
+
+	public String getRua() {
+		return rua;
+	}
+
+	public void setRua(String rua) {
+		this.rua = rua;
 	}
 
 	public void setNumero(int numero) {
@@ -107,12 +134,20 @@ public class Endereco implements Serializable{
 		this.cidade = cidade;
 	}
 
-	public String getEstado() {
+	/*public String getEstado() {
 		return estado;
 	}
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}*/
+	
+	public String getUf() {
+		return uf;
+	}
+
+	public void setUf(String uf) {
+		this.uf = uf;
 	}
 
 	public String getCep() {

@@ -12,11 +12,13 @@ public class EnderecoDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private long id;
-	private String logradouro;
+	//private String logradouro;
+	private String rua;
 	private int numero;
 	private String complemento;
 	private String cidade;
-	private String estado;
+	//private String estado;
+	private String uf;
 	private String cep;
 	private Pessoa pessoa;
 	
@@ -27,7 +29,7 @@ public class EnderecoDTO implements Serializable{
 	}
 
 
-	public EnderecoDTO(long id, String logradouro, int numero, String complemento, String cidade, String estado,
+	/*public EnderecoDTO(long id, String logradouro, int numero, String complemento, String cidade, String estado,
 			String cep, Pessoa pessoa) {
 		super();
 		this.id = id;
@@ -38,9 +40,21 @@ public class EnderecoDTO implements Serializable{
 		this.estado = estado;
 		this.cep = cep;
 		this.pessoa = pessoa;
+	}*/
+
+	public EnderecoDTO(long id, String rua, int numero, String complemento, String cidade, String uf, String cep,
+			Pessoa pessoa) {
+		super();
+		this.id = id;
+		this.rua = rua;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.cidade = cidade;
+		this.uf = uf;
+		this.cep = cep;
+		this.pessoa = pessoa;
 	}
-
-
+	
 	public long getId() {
 		return id;
 	}
@@ -48,16 +62,6 @@ public class EnderecoDTO implements Serializable{
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-
-	public String getLogradouro() {
-		return logradouro;
-	}
-
-
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
 	}
 
 
@@ -91,13 +95,23 @@ public class EnderecoDTO implements Serializable{
 	}
 
 
-	public String getEstado() {
-		return estado;
+	public String getRua() {
+		return rua;
 	}
 
 
-	public void setEstado(String estado) {
-		this.estado = estado;
+	public void setRua(String rua) {
+		this.rua = rua;
+	}
+
+
+	public String getUf() {
+		return uf;
+	}
+
+
+	public void setUf(String uf) {
+		this.uf = uf;
 	}
 
 

@@ -27,8 +27,8 @@ public class DadosAuxiliares implements Serializable{
 	@Column(name = "id")
 	private long id;
 
-	@Column(name = "nomeDoPai")
-	private String nomeDoPai;
+	@Column(name = "nomePai")
+	private String nomePai;
 	
 	@Column(name = "estadoCivil")
 	private String estadoCivil;
@@ -45,8 +45,8 @@ public class DadosAuxiliares implements Serializable{
 	@Column(name = "sexo")
 	private String sexo;
 	
-	@Column(name = "nomeDaMae")
-	private String nomeDaMae;
+	@Column(name = "nomeMae")
+	private String nomeMae;
 	
 	@Column(name = "nacionalidade")
 	private String nacionalidade;
@@ -87,8 +87,8 @@ public class DadosAuxiliares implements Serializable{
 	@Column(name = "estadoNascimento")
 	private String estadoNascimento;
 	
-	@Column(name = "cidadeDeNascimento")
-	private String cidadeDeNascimento;
+	@Column(name = "cidadeNascimento")
+	private String cidadeNascimento;
 	
 	@Column(name = "corRaca")
 	private String corRaca;
@@ -115,21 +115,21 @@ public class DadosAuxiliares implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public DadosAuxiliares(long id, String nomeDoPai, String estadoCivil, int dependentes, String grupoSanguineo,
-			String corDaPele, String sexo, String nomeDaMae, String nacionalidade, Date dataDeChegadaNoPais,
+	public DadosAuxiliares(long id, String nomePai, String estadoCivil, int dependentes, String grupoSanguineo,
+			String corDaPele, String sexo, String nomeMae, String nacionalidade, Date dataDeChegadaNoPais,
 			String orgaoEmissor, String uf, Date dataExpedicao, String tituloEleitoral, int zona, int secao,
 			String certificadoMilitar, String orgaoDeExpedicao, String serie, Date dataDeEmissao,
-			String estadoNascimento, String cidadeDeNascimento, String corRaca, String expressaoGenero,
+			String estadoNascimento, String cidadeNascimento, String corRaca, String expressaoGenero,
 			String autoIdentificacaoGenero, String orientacaoSexual, String emailInstitucional, Aluno aluno) {
 		super();
 		this.id = id;
-		this.nomeDoPai = nomeDoPai;
+		this.nomePai = nomePai;
 		this.estadoCivil = estadoCivil;
 		this.dependentes = dependentes;
 		this.grupoSanguineo = grupoSanguineo;
 		this.corDaPele = corDaPele;
 		this.sexo = sexo;
-		this.nomeDaMae = nomeDaMae;
+		this.nomeMae = nomeMae;
 		this.nacionalidade = nacionalidade;
 		this.dataDeChegadaNoPais = dataDeChegadaNoPais;
 		this.orgaoEmissor = orgaoEmissor;
@@ -143,7 +143,7 @@ public class DadosAuxiliares implements Serializable{
 		this.serie = serie;
 		this.dataDeEmissao = dataDeEmissao;
 		this.estadoNascimento = estadoNascimento;
-		this.cidadeDeNascimento = cidadeDeNascimento;
+		this.cidadeNascimento = cidadeNascimento;
 		this.corRaca = corRaca;
 		this.expressaoGenero = expressaoGenero;
 		this.autoIdentificacaoGenero = autoIdentificacaoGenero;
@@ -158,14 +158,6 @@ public class DadosAuxiliares implements Serializable{
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getNomeDoPai() {
-		return nomeDoPai;
-	}
-
-	public void setNomeDoPai(String nomeDoPai) {
-		this.nomeDoPai = nomeDoPai;
 	}
 
 	public String getEstadoCivil() {
@@ -206,14 +198,6 @@ public class DadosAuxiliares implements Serializable{
 
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
-	}
-
-	public String getNomeDaMae() {
-		return nomeDaMae;
-	}
-
-	public void setNomeDaMae(String nomeDaMae) {
-		this.nomeDaMae = nomeDaMae;
 	}
 
 	public String getNacionalidade() {
@@ -320,12 +304,28 @@ public class DadosAuxiliares implements Serializable{
 		this.estadoNascimento = estadoNascimento;
 	}
 
-	public String getCidadeDeNascimento() {
-		return cidadeDeNascimento;
+	public String getNomePai() {
+		return nomePai;
 	}
 
-	public void setCidadeDeNascimento(String cidadeDeNascimento) {
-		this.cidadeDeNascimento = cidadeDeNascimento;
+	public void setNomePai(String nomePai) {
+		this.nomePai = nomePai;
+	}
+
+	public String getNomeMae() {
+		return nomeMae;
+	}
+
+	public void setNomeMae(String nomeMae) {
+		this.nomeMae = nomeMae;
+	}
+
+	public String getCidadeNascimento() {
+		return cidadeNascimento;
+	}
+
+	public void setCidadeNascimento(String cidadeNascimento) {
+		this.cidadeNascimento = cidadeNascimento;
 	}
 
 	public String getCorRaca() {

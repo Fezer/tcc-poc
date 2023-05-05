@@ -41,7 +41,7 @@ public class EnderecoREST {
 	public ResponseEntity<EnderecoDTO> inserir(@RequestBody EnderecoDTO enderecoDTO){
 		try {
 		
-			if (enderecoDTO.getLogradouro().isBlank() || enderecoDTO.getLogradouro().isEmpty())
+			if (enderecoDTO.getRua().isBlank() || enderecoDTO.getRua().isEmpty())
 	    		throw new InvalidFieldException("Logradouro inválido.");
 	    	
 	    	if (enderecoDTO.getNumero() < 1)
@@ -53,7 +53,7 @@ public class EnderecoREST {
 	    	if (enderecoDTO.getCidade().isBlank() || enderecoDTO.getCidade().isEmpty())
 	    		throw new InvalidFieldException("Cidade inválida.");
 	    	
-	    	if (enderecoDTO.getEstado().isBlank() || enderecoDTO.getEstado().isEmpty())
+	    	if (enderecoDTO.getUf().isBlank() || enderecoDTO.getUf().isEmpty())
 	    		throw new InvalidFieldException("Estado inválido.");
 	    	
 	    	if (enderecoDTO.getCep().isBlank() || enderecoDTO.getCep().isEmpty())
