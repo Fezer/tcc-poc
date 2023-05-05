@@ -1,21 +1,44 @@
-<script>
+<script lang="ts">
 import dayjs from "dayjs";
+import { defineComponent, onMounted, reactive } from "vue";
+import AlunoService from "~~/services/AlunoService";
 
-export default {};
-</script>
+export default defineComponent({
+  setup() {
+    const { aluno, setAluno } = useAluno();
+    const route = useRoute();
 
-<script setup>
-const route = useRoute();
+    const alunoService = new AlunoService();
 
-const { id } = route.params;
+    const { id } = route.params;
 
-const grr = "GRR20201212";
+    const grr = "GRR20201212";
 
-const { data: aluno } = await useFetch(
-  `http://localhost:5000/siga/aluno?grr=${grr}`
-);
+    const curso = reactive({});
 
-// console.log(aluno)
+    const handleFetchCurso = async (cursoID: string) => {
+      const response = await alunoService.getCursoAlunoFromSiga(cursoID);
+      curso.value = response;
+      console.log(curso.value);
+    };
+
+    useAsyncData("aluno", async () => {
+      if (aluno?.nome) return aluno;
+      const response = await alunoService.getAlunoFromSiga(grr);
+      setAluno(response);
+
+      await handleFetchCurso(response?.idPrograma);
+      return response;
+    });
+
+    return {
+      aluno,
+      curso,
+      dayjs,
+    };
+  },
+  // console.log(aluno)
+});
 </script>
 
 <template>
@@ -50,7 +73,7 @@ const { data: aluno } = await useFetch(
       </div>
       <div class="col-4">
         <strong>GRR</strong>
-        <p>{{ aluno?.grr }}</p>
+        <p>{{ aluno?.matricula }}</p>
       </div>
 
       <div class="col-4">
@@ -75,7 +98,7 @@ const { data: aluno } = await useFetch(
 
       <div class="col-6">
         <strong>Curso</strong>
-        <p>{{ aluno?.curso?.nome }}</p>
+        <p>{{ curso?.value?.nome }}</p>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
 import AlunoService from "~~/services/AlunoService";
 
 export default defineComponent({
@@ -23,21 +23,30 @@ export default defineComponent({
     const { aluno, setAluno } = useAluno();
     const alunoService = new AlunoService();
 
+    const curso = reactive({});
+
     const grr = "GRR20201212";
 
-    const { data: alunoData, error: errAluno } = useAsyncData(
-      "aluno",
-      async () => {
-        const response = await alunoService.getAlunoFromSiga(grr);
-        setAluno(response);
-        return response;
-      }
-    );
+    const handleFetchCurso = async (cursoID: string) => {
+      const response = await alunoService.getCursoAlunoFromSiga(cursoID);
+      curso.value = response;
+      console.log(curso.value);
+    };
+
+    useAsyncData("aluno", async () => {
+      const response = await alunoService.getAlunoFromSiga(grr);
+      setAluno(response);
+      console.log(response);
+
+      await handleFetchCurso(response?.idPrograma);
+      return response;
+    });
 
     return {
       advanceStep,
       backStep,
       aluno,
+      curso,
     };
   },
 });
@@ -74,7 +83,7 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label for="email2">CPF</label>
-            <InputText disabled type="text" :value="aluno?.documento" />
+            <InputText disabled type="text" :value="aluno?.cpf" />
           </div>
         </div>
         <div class="formgrid grid">
@@ -103,32 +112,32 @@ export default defineComponent({
         <h5>Endereço</h5>
         <div class="formgrid grid">
           <div class="field col">
-            <label for="name2">Rua</label>
-            <InputText disabled id="name2" type="text" value="teste" />
+            <label for="name2">Logradouro</label>
+            <InputText disabled :value="aluno?.endereco.logradouro" />
           </div>
           <div class="field col">
             <label for="email2">Número</label>
-            <InputText disabled id="email2" type="text" value="teste" />
+            <InputText disabled :value="aluno?.endereco?.numero" />
           </div>
         </div>
         <div class="formgrid grid">
           <div class="field col">
             <label for="name2">Complemento</label>
-            <InputText disabled id="name2" type="text" value="teste" />
+            <InputText disabled :value="aluno?.endereco?.complemento" />
           </div>
           <div class="field col">
             <label for="email2">Cidade</label>
-            <InputText disabled id="email2" type="text" value="teste" />
+            <InputText disabled :value="aluno?.endereco?.cidade" />
           </div>
         </div>
         <div class="formgrid grid">
           <div class="field col">
             <label for="name2">CEP</label>
-            <InputText disabled id="name2" type="text" value="teste" />
+            <InputText disabled :value="aluno?.endereco?.cep" />
           </div>
           <div class="field col">
             <label for="email2">Estado</label>
-            <InputText disabled id="email2" type="text" value="teste" />
+            <InputText disabled :value="aluno?.endereco?.estado" />
           </div>
         </div>
       </div>
@@ -142,14 +151,19 @@ export default defineComponent({
               disabled
               id="name2"
               type="text"
-              :value="aluno?.curso?.nome"
+              :value="curso?.value?.nome"
             />
           </div>
         </div>
         <div class="formgrid grid">
           <div class="field col">
             <label for="name2">Matrícula (GRR)</label>
-            <InputText disabled id="name2" type="text" :value="aluno?.grr" />
+            <InputText
+              disabled
+              id="name2"
+              type="text"
+              :value="aluno?.matricula"
+            />
           </div>
           <div class="field col">
             <label for="email2">Nível</label>
