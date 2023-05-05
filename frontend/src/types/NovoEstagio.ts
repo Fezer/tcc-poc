@@ -6,6 +6,7 @@ export default interface NovoEstagio
   tipoEstagio: TipoEstagio;
   estagioUfpr: boolean;
   supervisor: Supervisor;
+  estagioSeed: boolean;
 }
 
 export interface PlanoAtividades {

@@ -136,4 +136,22 @@ export default class NovoEstagioService extends BaseService {
       }
     );
   }
+
+  public async setEstagioSeed(id: string) {
+    return await $fetch(
+      this.BASE_URL + `/estagio/seed/${id}?estagioSeed=true`,
+      {
+        method: "PUT",
+      }
+    );
+  }
+
+  public async removeEstagioSeed(id: string) {
+    return await $fetch(
+      this.BASE_URL + `/estagio/seed/${id}?estagioSeed=false`,
+      {
+        method: "PUT",
+      }
+    );
+  }
 }

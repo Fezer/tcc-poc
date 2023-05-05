@@ -41,6 +41,7 @@ export default defineComponent({
     const dadosTipoEstagio = reactive({
       tipoEstagio: null as TipoEstagio | null,
       localEstagio: null as "UFPR" | "EXTERNO" | null,
+      estagioSeed: false as boolean,
     });
 
     const novoEstagioService = new NovoEstagioService();
@@ -48,7 +49,7 @@ export default defineComponent({
     const error = ref(null as string | null);
 
     const handleValidateAndAdvanceStep = async () => {
-      const { localEstagio, tipoEstagio } = dadosTipoEstagio;
+      const { localEstagio, tipoEstagio, estagioSeed } = dadosTipoEstagio;
 
       if (localEstagio && tipoEstagio) {
         try {
@@ -62,6 +63,14 @@ export default defineComponent({
           await novoEstagioService.setTipoEstagio(id, tipoEstagio);
 
           await novoEstagioService.setEstagioUfpr(id, localEstagio === "UFPR");
+
+          if (estagioSeed) {
+            await novoEstagioService.setEstagioSeed(id);
+          }
+
+          if (!estagioSeed && termo?.value?.estagioSeed) {
+            await novoEstagioService.removeEstagioSeed(id);
+          }
         } catch (error) {
           toast.add({
             severity: "error",
@@ -91,6 +100,7 @@ export default defineComponent({
           ? "UFPR"
           : termo.value?.estagioUfpr === false && "EXTERNO";
         dadosTipoEstagio.tipoEstagio = termo.value?.tipoEstagio;
+        dadosTipoEstagio.estagioSeed = termo.value?.estagioSeed;
       }
     });
 
@@ -137,10 +147,7 @@ export default defineComponent({
       </div>
       <div class="card p-fluid col-12">
         <h5>Estágio SEED</h5>
-        <InputSwitch v-model="dadosTipoEstagio.localEstagio"
-          >É estágio SEED</InputSwitch
-        >
-        <small class="text-rose-600">{{ error }}</small>
+        <InputSwitch v-model="dadosTipoEstagio.estagioSeed" />
       </div>
     </div>
     <div class="w-full flex justify-end gap-2">
