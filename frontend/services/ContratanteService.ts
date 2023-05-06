@@ -50,4 +50,12 @@ export default class ContratanteService extends BaseService {
 
     return response;
   }
+
+  async getContratantePerNome(nome: string) {
+    const response = await $fetch(
+      this.BASE_URL + `/contratante/nome/contendo/${nome}`
+    );
+
+    return response;
+  }
 }

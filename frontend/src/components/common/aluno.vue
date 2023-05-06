@@ -17,19 +17,21 @@ export default defineComponent({
     const curso = reactive({});
 
     const handleFetchCurso = async (cursoID: string) => {
+      if (aluno?.curso) return;
       const response = await alunoService.getCursoAlunoFromSiga(cursoID);
       curso.value = response;
+      setAluno({ ...aluno, curso: response });
       console.log(curso.value);
     };
 
-    useAsyncData("aluno", async () => {
-      if (aluno?.nome) return aluno;
-      const response = await alunoService.getAlunoFromSiga(grr);
-      setAluno(response);
+    // useAsyncData("aluno", async () => {
+    //   if (aluno?.value) return aluno;
+    //   const response = await alunoService.getAlunoFromSiga(grr);
+    //   setAluno(response);
 
-      await handleFetchCurso(response?.idPrograma);
-      return response;
-    });
+    //   await handleFetchCurso(response?.idPrograma);
+    //   return response;
+    // });
 
     return {
       aluno,

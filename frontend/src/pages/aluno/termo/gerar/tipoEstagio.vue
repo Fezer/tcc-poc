@@ -3,6 +3,7 @@ import { reactive, ref, defineComponent, onMounted } from "vue";
 import NovoEstagioService from "../../../../../services/NovoEstagioService";
 import { TipoEstagio } from "../../../../types/NovoEstagio";
 import { useToast } from "primevue/usetoast";
+import AlunoService from "~~/services/AlunoService";
 
 export default defineComponent({
   props: {
@@ -29,6 +30,8 @@ export default defineComponent({
     const toast = useToast();
     const { termo, setTermo } = useTermo();
 
+    const grr = "GRR20200141";
+
     const locais = [
       { label: "Empresa Externa", value: "EXTERNO" },
       { label: "UFPR", value: "UFPR" },
@@ -44,12 +47,30 @@ export default defineComponent({
       estagioSeed: false as boolean,
     });
 
+    const alunoService = new AlunoService();
+    const { data: aluno, error: errAluno } = useAsyncData("aluno", async () => {
+      const response = await alunoService.getAlunoFromSiga(grr);
+
+      return response;
+    });
+
     const novoEstagioService = new NovoEstagioService();
 
     const error = ref(null as string | null);
 
     const handleValidateAndAdvanceStep = async () => {
       const { localEstagio, tipoEstagio, estagioSeed } = dadosTipoEstagio;
+
+      if (tipoEstagio === "Obrigatorio" && !aluno?.matriculado) {
+        toast.add({
+          severity: "error",
+          summary: "Aluno não está matriculado!",
+          detail:
+            "Você precisa estar matriculado na disciplina de Estágio Obrigatório no SIGA para poder realizar um estágio obrigatório",
+          life: 3000,
+        });
+        return;
+      }
 
       if (localEstagio && tipoEstagio) {
         try {
@@ -111,6 +132,7 @@ export default defineComponent({
       error,
       handleValidateAndAdvanceStep,
       backStep,
+      aluno,
     };
   },
 });

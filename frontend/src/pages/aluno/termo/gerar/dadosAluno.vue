@@ -20,7 +20,7 @@ export default defineComponent({
     advanceStep: Function;
     backStep: Function;
   }) {
-    const { aluno, setAluno } = useAluno();
+    const { aluno: alunoData, setAluno } = useAluno();
     const alunoService = new AlunoService();
 
     const curso = reactive({});
@@ -28,14 +28,16 @@ export default defineComponent({
     const grr = "GRR20200141";
 
     const handleFetchCurso = async (cursoID: string) => {
+      // if (aluno?.curso) return;
       const response = await alunoService.getCursoAlunoFromSiga(cursoID);
       curso.value = response;
-      console.log(curso.value);
+      // console.log(curso.value);
     };
 
-    useAsyncData("aluno", async () => {
-      const response = await alunoService.getAlunoFromSiga(grr);
-      setAluno(response);
+    const { data: aluno } = useAsyncData("aluno", async () => {
+      // if (aluno?.value) return aluno;
+      const response = await alunoService.getAlunoFullFromSiga(grr);
+      // setAluno(response);
       console.log(response);
 
       await handleFetchCurso(response?.idPrograma);
@@ -79,11 +81,16 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="name2">RG</label>
-            <InputText disabled id="name2" type="text" :value="aluno?.rg" />
+            <InputText
+              disabled
+              id="name2"
+              type="text"
+              :value="aluno?.documento"
+            />
           </div>
           <div class="field col">
             <label for="email2">CPF</label>
-            <InputText disabled type="text" :value="aluno?.documento" />
+            <InputText disabled type="text" :value="aluno?.cpf" />
           </div>
         </div>
         <div class="formgrid grid">
@@ -113,7 +120,7 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="name2">Logradouro</label>
-            <InputText disabled :value="aluno?.endereco.rua" />
+            <InputText disabled :value="aluno?.endereco?.rua" />
           </div>
           <div class="field col">
             <label for="email2">Número</label>
@@ -158,12 +165,7 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="name2">Matrícula (GRR)</label>
-            <InputText
-              disabled
-              id="name2"
-              type="text"
-              :value="aluno?.matricula"
-            />
+            <InputText disabled id="name2" type="text" :value="aluno?.grr" />
           </div>
           <div class="field col">
             <label for="email2">Nível</label>

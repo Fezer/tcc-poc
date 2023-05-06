@@ -35,9 +35,31 @@ export default defineComponent({
     const novoEstagioService = new NovoEstagioService();
     const { termo, setTermo } = useTermo();
 
-    const { data: contratantes } = useFetch(
-      "http://localhost:5000/contratante/"
-    );
+    const contratanteLoading = ref(false);
+    const contratantes = reactive({});
+
+    const handleSearchContratante = async (name: string) => {
+      if (contratanteLoading.value) return;
+      if (name.length < 3) {
+        toast.add({
+          severity: "warn",
+          summary: "Atenção",
+          detail: "Digite pelo menos 3 caracteres para buscar uma contratante!",
+        });
+        return;
+      }
+      contratanteLoading.value = true;
+
+      try {
+        await contratanteService.getContratantePerNome(name).then((res) => {
+          contratantes.value = res;
+        });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        contratanteLoading.value = false;
+      }
+    };
 
     onMounted(() => {
       console.log("mounted");
@@ -56,23 +78,13 @@ export default defineComponent({
         state.telefoneContratante = contratante?.telefone || null;
         state.cpfContratante = contratante?.cpf || null;
         state.cnpjContratante = contratante?.cnpj || null;
-        state.enderecoContratante = contratante?.endereco || null;
-        state.cepContratante = contratante?.cep || null;
-        state.cidadeContratante = contratante?.cidade || null;
-        state.estadoContratante = contratante?.estado || null;
+        state.enderecoContratante = contratante?.endereco?.logradouro || null;
+        state.cepContratante = contratante?.endereco?.cep || null;
+        state.cidadeContratante = contratante?.endereco?.cidade || null;
+        state.estadoContratante = contratante?.endereco?.estado || null;
 
         state.nomeSeguradora = seguradora?.nome || null;
         state.apoliceSeguradora = apolice?.numero || null;
-
-        // state.telefoneContratante = telefoneContratante;
-        // state.cpfContratante = cpfContratante;
-        // state.cnpjContratante = cnpjContratante;
-        // state.enderecoContratante = enderecoContratante;
-        // state.cepContratante = cepContratante;
-        // state.cidadeContratante = cidadeContratante;
-        // state.estadoContratante = estadoContratante;
-        // state.nomeSeguradora = nomeSeguradora;
-        // state.apoliceSeguradora = apoliceSeguradora;
       }
     });
 
@@ -176,8 +188,9 @@ export default defineComponent({
             termo.value.id
           );
 
+          contratanteID = contratante.id;
           const endereco = await contratanteService.criarEnderecoContratante(
-            novoID,
+            contratanteID,
             {
               cep: state.cepContratante,
               cidade: state.cidadeContratante,
@@ -185,8 +198,6 @@ export default defineComponent({
               endereco: state.enderecoContratante,
             }
           );
-
-          contratanteID = contratante.id;
 
           setTermo({
             ...termo.value,
@@ -243,6 +254,8 @@ export default defineComponent({
       backStep,
       contratantes,
       handleToggleRegisterContratante,
+      contratanteLoading,
+      handleSearchContratante,
     };
   },
 });
@@ -273,6 +286,7 @@ export default defineComponent({
         :options="contratantes"
         :optionLabel="(c) => `${c.nome} - ${c.cnpj}`"
         optionValue="id"
+        @change="handleSearchContratante"
         placeholder="Busca por contratante"
         :filter-fields="['nome', 'cnpj']"
         v-model="state.id"
@@ -450,6 +464,7 @@ export default defineComponent({
               <InputNumber
                 v-model="state.apoliceSeguradora"
                 :class="{ 'p-invalid': errors['apoliceSeguradora'] }"
+                max="9999999999"
               />
               <small class="text-rose-600">{{
                 errors["apoliceSeguradora"]

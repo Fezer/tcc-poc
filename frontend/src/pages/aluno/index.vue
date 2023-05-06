@@ -13,47 +13,41 @@ export default defineComponent({
     const novoEstagioService = new NovoEstagioService();
     const router = useRouter();
 
-    const { setAluno } = useAluno();
+    const { setAluno, alunoData } = useAluno();
     const { setTermo } = useTermo();
 
     const { data: aluno, error: errAluno } = useAsyncData("aluno", async () => {
-      const response = await alunoService.getAlunoFromSiga(grr);
-      setAluno(response);
-      return response;
-    });
-
-    const { data: termo, error: errTermo } = useAsyncData("termo", async () => {
-      const response = await novoEstagioService.getTermoEmPreenchimento(grr);
-      console.log(response);
-
-      if (response && response.length > 0) {
-        router.push({
-          path: "/termo/" + response[0].id,
-        });
-      }
-
-      return response;
-    });
-
-    const { data: termoEmAprovação } = useAsyncData(
-      "termoEmAprovação",
-      async () => {
-        const response = await novoEstagioService.getTermoEmAprovacao(grr);
-        console.log(response);
-
-        if (response && response.length > 0) {
-          router.push({
-            path: "/termo/" + response[0].id,
+      if (alunoData?.value) return alunoData.value;
+      const response = await alunoService
+        .getAlunoFromSiga(grr)
+        .then(async (res) => {
+          setAluno(res);
+          await novoEstagioService.getTermoEmPreenchimento(grr).then((res) => {
+            if (res && res.length > 0) {
+              setTermo(res[0]);
+              router.push({
+                path: "/termo/" + res[0].id,
+              });
+            }
           });
-        }
 
-        return response;
-      }
-    );
+          await novoEstagioService.getTermoEmAprovacao(grr).then((res) => {
+            if (res && res.length > 0) {
+              setTermo(res[0]);
+              router.push({
+                path: "/termo/" + res[0].id,
+              });
+            }
+          });
+
+          return res;
+        });
+      return response;
+    });
 
     return {
       aluno,
-      termo,
+      termo: [],
     };
   },
 });
