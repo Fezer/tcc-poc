@@ -337,4 +337,26 @@ public class TermoDeEstagioService {
 		
     	return termoRepo.save(termo);
 	}
+
+	public TermoDeEstagio aprovarTermoDeCompromissoCoe(TermoDeEstagio termo) {
+		
+    	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
+    	
+    	//Uma vez que a COE aprava o termo de compromisso, deve ser encaminhado para análise da coordenação
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
+    	
+    	EnumParecerAprovadores parecerCoe = EnumParecerAprovadores.Aprovado;
+    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
+    	Estagio estagio = termo.getEstagio();
+    	estagio.setStatusEstagio(statusEstagio);
+    	termo.setStatusTermo(statusTermo);
+    	termo.setParecerCOE(parecerCoe);
+    	
+    	//Uma vez que a COE aprava o termo de compromisso, deve ser encaminhado para análise da coordenação
+    	termo.setEtapaFluxo(etapaFluxo);
+    	
+    	estagioRepo.save(estagio);
+		
+    	return termoRepo.save(termo);
+	}
 }

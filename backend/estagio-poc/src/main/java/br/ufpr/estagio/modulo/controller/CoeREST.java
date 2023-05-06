@@ -126,5 +126,26 @@ public class CoeREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
+	
+	@PutMapping("/termo/{idTermo}/aprovar")
+	public ResponseEntity<TermoDeEstagioDTO> aprovarTermoDeCompromisso(@PathVariable Long idTermo){
+		try {
+			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
+		if(termoOptional.isEmpty()) {
+			throw new NotFoundException("Termo não encontrado!");
+		} else {
+			TermoDeEstagio termo = termoOptional.get();
+			termo = termoDeEstagioService.aprovarTermoDeCompromissoCoe(termo);
+			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
+			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
+		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
 
 }
