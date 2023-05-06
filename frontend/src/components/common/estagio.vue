@@ -44,6 +44,12 @@ export default defineComponent({
         <p>{{ termo?.estagio?.estagioUfpr ? "Sim" : "Não" }}</p>
       </div>
       <div class="col-4">
+        <strong>Estágio SEED</strong>
+        <p>
+          {{ termo?.estagio?.estagioSeed ? "Sim" : "Não" }}
+        </p>
+      </div>
+      <div class="col-4">
         <strong>Jornada Diária</strong>
         <p>{{ termo?.jornadaDiaria }} horas</p>
       </div>

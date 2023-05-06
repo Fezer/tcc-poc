@@ -5,6 +5,10 @@ export default {
       type: Object,
       required: true,
     },
+    planoAtividades: {
+      type: Object,
+      required: true,
+    },
   },
 };
 </script>
@@ -16,15 +20,15 @@ export default {
     <div class="grid">
       <div class="col-4">
         <strong>Nome do Supervisor no Local de Estágio</strong>
-        <p>{{ termo?.planoAtividades?.nomeSupervisor }}</p>
+        <p>{{ planoAtividades?.nomeSupervisor }}</p>
       </div>
       <div class="col-4">
         <strong>Telefone do Supervisor</strong>
-        <p>{{ termo?.planoAtividades?.telefoneSupervisor }}</p>
+        <p>{{ planoAtividades?.telefoneSupervisor }}</p>
       </div>
       <div class="col-4">
         <strong>Formação do Supervisor</strong>
-        <p>{{ termo?.planoAtividades?.formacaoSupervisor }}o</p>
+        <p>{{ planoAtividades?.formacaoSupervisor }}o</p>
       </div>
       <div class="col-4">
         <strong>Nome Professor Orientador UFPR</strong>
@@ -36,7 +40,7 @@ export default {
       </div>
       <div class="col-12">
         <strong>Atividades a serem desenvolvidas</strong>
-        <p>{{ termo?.planoAtividades?.descricaoAtividades }}</p>
+        <p>{{ planoAtividades?.descricaoAtividades }}</p>
       </div>
     </div>
   </div>

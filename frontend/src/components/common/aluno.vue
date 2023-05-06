@@ -12,7 +12,7 @@ export default defineComponent({
 
     const { id } = route.params;
 
-    const grr = "GRR20201212";
+    const grr = "GRR20200141";
 
     const curso = reactive({});
 
@@ -73,7 +73,7 @@ export default defineComponent({
       </div>
       <div class="col-4">
         <strong>GRR</strong>
-        <p>{{ aluno?.matricula }}</p>
+        <p>{{ aluno?.grr }}</p>
       </div>
 
       <div class="col-4">

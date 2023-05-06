@@ -6,7 +6,7 @@ import {
 import BaseService from "./BaseService";
 
 export default class NovoEstagioService extends BaseService {
-  ALUNO = "GRR20201212";
+  ALUNO = "GRR20200141";
 
   async criarNovoEstagio(): Promise<{ id: number }> {
     const response = await $fetch(
@@ -52,6 +52,16 @@ export default class NovoEstagioService extends BaseService {
   public async getTermoEmPreenchimento(grr: string) {
     return await $fetch(
       `http://localhost:5000/aluno/${grr}/estagio/emPreenchimento`
+    ).catch((err) => {
+      console.error(err);
+    });
+  }
+
+  public async getTermoEmAprovacao(grr: string) {
+    // http://localhost:5000/aluno/GRR20200141/estagio/emAprovacao
+
+    return await $fetch(
+      `http://localhost:5000/aluno/${grr}/estagio/emAprovacao`
     ).catch((err) => {
       console.error(err);
     });
@@ -109,7 +119,7 @@ export default class NovoEstagioService extends BaseService {
   }
 
   public async solicitarAprovacaoTermo(id: string) {
-    const grr = "GRR20201212";
+    const grr = "GRR20200141";
 
     return await $fetch(
       this.BASE_URL + `/aluno/${grr}/termo/${id}/solicitarAprovacaoTermo`,

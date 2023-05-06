@@ -25,7 +25,7 @@ export default defineComponent({
 
     const curso = reactive({});
 
-    const grr = "GRR20201212";
+    const grr = "GRR20200141";
 
     const handleFetchCurso = async (cursoID: string) => {
       const response = await alunoService.getCursoAlunoFromSiga(cursoID);
@@ -83,7 +83,7 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label for="email2">CPF</label>
-            <InputText disabled type="text" :value="aluno?.cpf" />
+            <InputText disabled type="text" :value="aluno?.documento" />
           </div>
         </div>
         <div class="formgrid grid">
@@ -113,7 +113,7 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="name2">Logradouro</label>
-            <InputText disabled :value="aluno?.endereco.logradouro" />
+            <InputText disabled :value="aluno?.endereco.rua" />
           </div>
           <div class="field col">
             <label for="email2">Número</label>
@@ -137,7 +137,7 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label for="email2">Estado</label>
-            <InputText disabled :value="aluno?.endereco?.estado" />
+            <InputText disabled :value="aluno?.endereco?.uf" />
           </div>
         </div>
       </div>
