@@ -26,8 +26,8 @@ import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/coe")
-public class CoeREST {
+@RequestMapping("/coordenacao")
+public class CoordenacaoREST {
 
 	@Autowired
 	private TermoDeEstagioService termoDeEstagioService;
@@ -35,10 +35,10 @@ public class CoeREST {
 	@Autowired
 	private ModelMapper mapper;
 
-	@GetMapping("/termo/pendenteAprovacaoCoe")
+	@GetMapping("/termo/pendenteAprovacaoCoordenacao")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacao(){
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosPendenteAprovacaoCoe();
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosPendenteAprovacaoCoordenacao();
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
@@ -79,7 +79,7 @@ public class CoeREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.indeferirTermoDeCompromissoCoe(termo, justificativa);
+			termo = termoDeEstagioService.indeferirTermoDeCompromissoCoordenacao(termo, justificativa);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}

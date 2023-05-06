@@ -372,4 +372,93 @@ public class TermoDeEstagioService {
         return query.getResultList();
         
 	}
+
+	public TermoDeEstagio indeferirTermoDeCompromissoCoordenacao(TermoDeEstagio termo, JustificativaDTO justificativa) {
+		
+		EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
+		
+    	/**Uma vez que a Coordenação reprove o termo de compromisso, o fluxo se encerra, 
+    	 * esse encerramento do fluxo é representado com o Termo de Compromisso
+    	 * retornato para o Aluno.
+    	 */
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
+    	
+    	EnumParecerAprovadores parecerCoordenacao = EnumParecerAprovadores.Reprovado;
+    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
+    	Estagio estagio = termo.getEstagio();
+    	estagio.setStatusEstagio(statusEstagio);
+    	termo.setStatusTermo(statusTermo);
+    	termo.setParecerCOE(parecerCoordenacao);
+    	termo.setMotivoIndeferimento(justificativa.getJustificativa());
+    	
+    	/**Uma vez que a Coordenação reprove o termo de compromisso, o fluxo se encerra, 
+    	 * esse encerramento do fluxo é representado com o Termo de Compromisso
+    	 * retornato para o Aluno.
+    	 */
+    	termo.setEtapaFluxo(etapaFluxo);
+    	
+    	estagioRepo.save(estagio);
+    	
+		return termoRepo.save(termo);
+	}
+
+	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoordenacao() {
+		
+    	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
+		
+        String jpql = "SELECT t FROM TermoDeEstagio t"
+        		+ "WHERE t.etapaFluxo = :etapaFluxo "
+        		+ "AND t.statusTermo = :statusTermo";
+        
+        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
+        query.setParameter("etapaFluxo", etapaFluxo);
+        query.setParameter("statusTermo", statusTermo);
+        return query.getResultList();
+	}
+
+	public TermoDeEstagio aprovarTermoDeCompromissoCoordenacao(TermoDeEstagio termo) {
+    	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
+    	
+    	//Uma vez que a Coorenacao aprava o termo de compromisso, deve ser encaminhado para análise da COAFE
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COAFE;
+    	
+    	EnumParecerAprovadores parecerCoordenacao = EnumParecerAprovadores.Aprovado;
+    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
+    	Estagio estagio = termo.getEstagio();
+    	estagio.setStatusEstagio(statusEstagio);
+    	termo.setStatusTermo(statusTermo);
+    	termo.setParecerCOE(parecerCoordenacao);
+    	
+    	//Uma vez que a COE aprava o termo de compromisso, deve ser encaminhado para análise da coordenação
+    	termo.setEtapaFluxo(etapaFluxo);
+    	
+    	estagioRepo.save(estagio);
+		
+    	return termoRepo.save(termo);
+	}
+
+	public TermoDeEstagio solicitarAjutesTermoDeCompromissoCoordenacao(TermoDeEstagio termo,
+			DescricaoAjustesDTO descricaoAjustes) {
+		
+    	EnumStatusTermo statusTermo = EnumStatusTermo.EmRevisao;
+    	
+    	//Uma vez que a Coordenação solicita ajustes no termo de compromisso, deve ser encaminhado para revisão do Aluno
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
+    	
+    	EnumParecerAprovadores parecerCoordenacao = EnumParecerAprovadores.Ajustar;
+    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
+    	Estagio estagio = termo.getEstagio();
+    	estagio.setStatusEstagio(statusEstagio);
+    	termo.setStatusTermo(statusTermo);
+    	termo.setParecerCOE(parecerCoordenacao);
+    	termo.setDescricaoAjustes(descricaoAjustes.getDescricaoAjustes());
+    	
+    	//Uma vez que a Coordenação solicita ajustes no termo de compromisso, deve ser encaminhado para revisão do Aluno
+    	termo.setEtapaFluxo(etapaFluxo);
+    	
+    	estagioRepo.save(estagio);
+		
+    	return termoRepo.save(termo);
+	}
 }
