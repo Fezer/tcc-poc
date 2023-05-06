@@ -46,7 +46,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo/1",
+							"raw": "http://localhost:5000/termo/8",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -54,7 +54,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"1"
+								"8"
 							]
 						}
 					},
@@ -105,7 +105,7 @@
 							"raw": "{\r\n    \"dataInicio\": \"2023-05-05\",\r\n    \"dataTermino\": \"2023-12-05\", \r\n    \"jornadaDiaria\": 6,\r\n    \"jornadaSemanal\": 30,\r\n    \"valorBolsa\": 2000,\r\n    \"valorTransporte\": 200,\r\n    \"dataFimSuspensao\": \"\",\r\n    \"dataInicioRetomada\": \"\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/2",
+							"raw": "http://localhost:5000/termo/8",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -113,7 +113,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"2"
+								"8"
 							]
 						}
 					},
@@ -135,7 +135,7 @@
 							"raw": "{\r\n    \"local\": \"Qualquer\",\r\n    \"nomeSupervisor\": \"SuperVitor\",\r\n    \"telefoneSupervisor\": \"41999990000\",\r\n    \"cpfSupervisor\": \"11111111134\",\r\n    \"formacaoSupervisor\": \"TADS\",\r\n    \"descricaoAtividades\": \"atividades Bacanas\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/2/planoAtividades",
+							"raw": "http://localhost:5000/termo/8/planoAtividades",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -143,7 +143,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"2",
+								"8",
 								"planoAtividades"
 							]
 						}
@@ -166,7 +166,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/1/associarOrientador/106",
+							"raw": "http://localhost:5000/termo/8/associarOrientador/106",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -174,7 +174,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"1",
+								"8",
 								"associarOrientador",
 								"106"
 							]
@@ -198,7 +198,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/1/associarAgenteIntegrador/104",
+							"raw": "http://localhost:5000/termo/8/associarAgenteIntegrador/104",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -206,7 +206,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"1",
+								"8",
 								"associarAgenteIntegrador",
 								"104"
 							]
@@ -230,7 +230,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/1/associarApolice/1",
+							"raw": "http://localhost:5000/termo/8/associarApolice/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -238,7 +238,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"1",
+								"8",
 								"associarApolice",
 								"1"
 							]
@@ -252,7 +252,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/termo/1/associarContratante/105",
+							"raw": "http://localhost:5000/termo/8/associarContratante/105",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -260,73 +260,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"1",
+								"8",
 								"associarContratante",
 								"105"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "aprovarTermoCOAFE",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://localhost:5000/termo/aprovar/coafe/102",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"termo",
-								"aprovar",
-								"coafe",
-								"102"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "reprovarTermoCOAFE",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"justificativa\": \"Não pode fazer estágio\"\r\n}"
-						},
-						"url": {
-							"raw": "http://localhost:5000/termo/reprovar/coafe/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"termo",
-								"reprovar",
-								"coafe",
-								"1"
 							]
 						}
 					},
@@ -516,7 +452,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/termo/2/solicitarAprovacaoTermo",
+							"raw": "http://localhost:5000/aluno/GRR20175486/termo/8/solicitarAprovacaoTermo",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -526,7 +462,7 @@
 								"aluno",
 								"GRR20175486",
 								"termo",
-								"2",
+								"8",
 								"solicitarAprovacaoTermo"
 							]
 						}
@@ -758,7 +694,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/12",
+							"raw": "http://localhost:5000/estagio/8",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -766,7 +702,7 @@
 							"port": "5000",
 							"path": [
 								"estagio",
-								"12"
+								"8"
 							]
 						}
 					},
@@ -778,7 +714,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/tipo/3?tipoEstagio=NaoObrigatorio",
+							"raw": "http://localhost:5000/estagio/tipo/8?tipoEstagio=NaoObrigatorio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -787,7 +723,7 @@
 							"path": [
 								"estagio",
 								"tipo",
-								"3"
+								"8"
 							],
 							"query": [
 								{
@@ -805,7 +741,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/ufpr/1?estagioUfpr=false",
+							"raw": "http://localhost:5000/estagio/ufpr/8?estagioUfpr=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -814,7 +750,7 @@
 							"path": [
 								"estagio",
 								"ufpr",
-								"1"
+								"8"
 							],
 							"query": [
 								{
@@ -832,7 +768,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/seed/1?estagioSeed=false",
+							"raw": "http://localhost:5000/estagio/seed/8?estagioSeed=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -841,7 +777,7 @@
 							"path": [
 								"estagio",
 								"seed",
-								"1"
+								"8"
 							],
 							"query": [
 								{
@@ -2187,7 +2123,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coe/termo/3/aprovar",
+							"raw": "http://localhost:5000/coe/termo/8/aprovar",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2196,7 +2132,7 @@
 							"path": [
 								"coe",
 								"termo",
-								"3",
+								"8",
 								"aprovar"
 							]
 						}
@@ -2292,7 +2228,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/3/cienciaFormacaoSupervisor",
+							"raw": "http://localhost:5000/coordenacao/termo/8/cienciaFormacaoSupervisor",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2301,7 +2237,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"3",
+								"8",
 								"cienciaFormacaoSupervisor"
 							]
 						}
@@ -2323,7 +2259,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/3/cienciaPlanoAtividades",
+							"raw": "http://localhost:5000/coordenacao/termo/8/cienciaPlanoAtividades",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2332,7 +2268,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"3",
+								"8",
 								"cienciaPlanoAtividades"
 							]
 						}
@@ -2354,7 +2290,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/3/cienciaIra",
+							"raw": "http://localhost:5000/coordenacao/termo/8/cienciaIra",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2363,7 +2299,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"3",
+								"8",
 								"cienciaIra"
 							]
 						}
@@ -2447,7 +2383,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/1/aprovar",
+							"raw": "http://localhost:5000/coordenacao/termo/8/aprovar",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2456,7 +2392,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"1",
+								"8",
 								"aprovar"
 							]
 						}
@@ -2510,6 +2446,195 @@
 								"termo",
 								"1",
 								"cienciaIndeferimento"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "COAFE",
+			"item": [
+				{
+					"name": "listarTermosPendenteAprovacaoCoafe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/termo/pendenteAprovacaoCoafe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"termo",
+								"pendenteAprovacaoCoafe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarTermosPendenteAprovacaoCoafeFiltroTipo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/termo/pendenteAprovacaoCoafeFiltro?tipoEstagio=NaoObrigatorio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"termo",
+								"pendenteAprovacaoCoafeFiltro"
+							],
+							"query": [
+								{
+									"key": "tipoEstagio",
+									"value": "NaoObrigatorio"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarTermosIndeferidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/termo/indeferido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"termo",
+								"indeferido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarAgenteIntegradorAssociadoAoTermo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/termo/8/agenteIntegrador",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"termo",
+								"8",
+								"agenteIntegrador"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "indeferirTermoDeCompromissoCoafe",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"justificativa\": \"Não pode fazer estágio porque não pode.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/coafe/termo/3/indeferir",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"termo",
+								"3",
+								"indeferir"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "solicitarAjutesTermoDeCompromissoCoafe",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricaoAjustes\": \"Precisa alterar isso, isso e aquilo.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/coafe/termo/1/solicitarAjustes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"termo",
+								"1",
+								"solicitarAjustes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "aprovarTermoDeCompromissoCoafe",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/coafe/termo/8/aprovar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"termo",
+								"8",
+								"aprovar"
 							]
 						}
 					},
