@@ -42,7 +42,8 @@ const { data: termos } = await useFetch(`http://localhost:5000/termo`);
       </Column>
       <Column field="contratante" header="Contratante" style="min-width: 12rem">
         <template #body="{ data }">
-          {{ data.nomeContratante }}
+          {{ data?.contratante?.nome }} -
+          {{ data?.contratante?.cnpj || data?.contratante?.cpf }}
         </template>
       </Column>
       <Column

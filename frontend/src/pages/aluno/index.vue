@@ -8,7 +8,7 @@ import NovoEstagioService from "../../../services/NovoEstagioService";
 export default defineComponent({
   components: { DataTable, Column },
   async setup() {
-    const grr = "GRR20201212";
+    const grr = "GRR20200141";
     const alunoService = new AlunoService();
     const novoEstagioService = new NovoEstagioService();
     const router = useRouter();
@@ -47,8 +47,8 @@ export default defineComponent({
   <div>
     <div class="flex flex-col">
       <h2 class="m-0">{{ aluno?.nome }}</h2>
-      <p class="m-0">{{ aluno?.grr }}</p>
-      <p>{{ aluno?.curso?.nome }}</p>
+      <p class="m-0">{{ aluno?.matricula }}</p>
+      <p>{{ aluno?.email }}</p>
     </div>
     <div
       class="h-full w-full flex items-center justify-center flex-col pt-3"

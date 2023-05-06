@@ -163,7 +163,7 @@ export default defineComponent({
             ? state.id
             : "";
         if (!contratanteID) {
-          const { id: novoID } = await contratanteService.criarContratante(
+          const contratante = await contratanteService.criarContratante(
             {
               ...state,
               id: 0,
@@ -176,15 +176,25 @@ export default defineComponent({
             termo.value.id
           );
 
-          const { id: enderecoID } =
-            await contratanteService.criarEnderecoContratante(novoID, {
+          const endereco = await contratanteService.criarEnderecoContratante(
+            novoID,
+            {
               cep: state.cepContratante,
               cidade: state.cidadeContratante,
               estado: state.estadoContratante,
               endereco: state.enderecoContratante,
-            });
+            }
+          );
 
-          contratanteID = novoID;
+          contratanteID = contratante.id;
+
+          setTermo({
+            ...termo.value,
+            contratante: {
+              ...contratante,
+              endereco: endereco,
+            },
+          });
         }
 
         await novoEstagioService.setContratante(termo.value.id, contratanteID);
@@ -207,7 +217,11 @@ export default defineComponent({
 
         await novoEstagioService.setApolice(termo.value.id, apolice?.id);
 
-        console.log(contratanteID, seguradora, apolice);
+        setTermo({
+          ...termo.value,
+          seguradora: seguradora,
+          apolice: apolice,
+        });
 
         advanceStep();
       } catch (err) {
