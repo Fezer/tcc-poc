@@ -7,6 +7,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.ufpr.estagio.modulo.dto.ConvenioDTO;
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
+import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
@@ -62,16 +66,36 @@ public class CoeREST {
 	@Autowired
 	private ModelMapper mapper;
 
-	@GetMapping("/termo")
+	@GetMapping("/termo/pendenteAprovacaoCoe")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacao(){
 		try {
 			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosPendenteAprovacaoCoe();
 			if(listaTermos == null || listaTermos.isEmpty()) {
-				throw new NotFoundException("Nenhum estágio encontrado!");
+				return null;
 			} else {
-				List<TermoDeEstagioDTO> listaTermosDTO = new ArrayList<TermoDeEstagioDTO>();
-				return new ResponseEntity<>(listaTermosDTO, HttpStatus.OK);
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
 			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/termo/{idTermo}/indeferir")
+	public ResponseEntity<TermoDeEstagioDTO> indeferirTermoDeCompromisso(@PathVariable Long idTermo, @RequestBody JustificativaDTO justificativa){
+		try {
+			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
+		if(termoOptional.isEmpty()) {
+			throw new NotFoundException("Termo não encontrado!");
+		} else {
+			TermoDeEstagio termo = termoOptional.get();
+			termo = termoDeEstagioService.indeferirTermoDeCompromissoCoe(termo, justificativa);
+			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
+			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
+		}
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;

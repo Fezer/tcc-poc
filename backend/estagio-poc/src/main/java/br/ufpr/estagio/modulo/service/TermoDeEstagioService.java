@@ -10,11 +10,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.PlanoDeAtividadesDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
+import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
+import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Contratante;
@@ -31,6 +34,9 @@ import br.ufpr.estagio.modulo.repository.OrientadorRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
 import br.ufpr.estagio.modulo.repository.SeguradoraRepository;
 import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
  
@@ -40,22 +46,30 @@ public class TermoDeEstagioService {
 	
 	@Autowired
 	private TermoDeEstagioRepository termoRepo;
+	
 	@Autowired
 	private PlanoDeAtividadesRepository planoRepo;
+	
 	@Autowired
 	private OrientadorRepository orientadorRepo;
+	
 	@Autowired
 	private EstagioRepository estagioRepo;
+	
 	@Autowired
 	private AgenteIntegradorRepository agenteIntegradorRepo;
-	/*@Autowired
-	private SupervisorRepository supervisorRepo;*/
+	
 	@Autowired
 	private ApoliceRepository apoliceRepo;
+	
 	@Autowired
 	private SeguradoraRepository seguradoraRepo;
+	
 	@Autowired
 	private ContratanteRepository contratanteRepo;
+	
+    @PersistenceContext
+    private EntityManager em;
 	
     public TermoDeEstagioService(TermoDeEstagioRepository termoRepo,
     		PlanoDeAtividadesRepository planoRepo,
@@ -182,54 +196,6 @@ public class TermoDeEstagioService {
 		return termoDeEstagio;
 	}
 
-	/*public TermoDeEstagio associarSupervisorAoTermo(TermoDeEstagio termoDeEstagio, Supervisor supervisor) {
-		//Associa o supervisor ao termo;
-		termoDeEstagio.setSupervisor(supervisor);
-		
-		//Associa o supervisor ao Estagio;
-		termoDeEstagio.getEstagio().setSupervisor(supervisor);
-		
-		//Associa o supervisor ao Plano de Atividades;
-		termoDeEstagio.getPlanoAtividades().setSupervisor(supervisor);
-		
-		//Associa o termo ao supervisor;
-		List<TermoDeEstagio> listaTermos = supervisor.getTermoDeEstagio();
-		if(listaTermos == null) {
-			listaTermos = new ArrayList<TermoDeEstagio>();
-		}
-		if(!listaTermos.contains(termoDeEstagio)) {
-			listaTermos.add(termoDeEstagio);
-			supervisor.setTermoDeEstagio(listaTermos);
-		}
-		
-		//Associa o estagio ao supervisor;
-		List<Estagio> listaEstagios = supervisor.getEstagio();
-		if(listaEstagios == null) {
-			listaEstagios = new ArrayList<Estagio>();
-		}
-		if(!listaEstagios.contains(termoDeEstagio.getEstagio())) {
-			listaEstagios.add(termoDeEstagio.getEstagio());
-			supervisor.setEstagio(listaEstagios);
-		}
-		
-		//Associa o plano de atividades ao supervisor;
-		List<PlanoDeAtividades> listaPlanoDeAtividades = supervisor.getPlanoDeAtividades();
-		if(listaPlanoDeAtividades == null) {
-			listaPlanoDeAtividades = new ArrayList<PlanoDeAtividades>();
-		}
-		if(!listaPlanoDeAtividades.contains(termoDeEstagio.getPlanoAtividades())) {
-			listaPlanoDeAtividades.add(termoDeEstagio.getPlanoAtividades());
-			supervisor.setPlanoDeAtividades(listaPlanoDeAtividades);
-		}
-				
-		supervisorRepo.save(supervisor);
-		estagioRepo.save(termoDeEstagio.getEstagio());
-		planoRepo.save(termoDeEstagio.getPlanoAtividades());
-		termoDeEstagio = termoRepo.save(termoDeEstagio);
-		
-		return termoDeEstagio;
-	}*/
-
 	public TermoDeEstagio associarApoliceAoTermo(TermoDeEstagio termoDeEstagio, Apolice apolice) {
 		//Associa o apolice e seguradora ao termo;
 		termoDeEstagio.setApolice(apolice);
@@ -309,22 +275,41 @@ public class TermoDeEstagioService {
 
 	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoe() {
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
-    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
-    	EnumTipoEstagio tipoEstagio = EnumTipoEstagio.Obrigatorio;
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COE;
+    	EnumTipoEstagio tipoEstagio = EnumTipoEstagio.NaoObrigatorio;
 		
-    	// o `return termoRepo.findAll()` já não funciona. verificar a partir daí.
-    	return termoRepo.findAll((root, query, builder) -> {
+        String jpql = "SELECT t FROM TermoDeEstagio t INNER JOIN t.estagio e "
+        		+ "WHERE e.tipoEstagio = :tipoEstagio "
+        		+ "AND t.etapaFluxo = :etapaFluxo "
+        		+ "AND t.statusTermo = :statusTermo";
+        
+        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
+        query.setParameter("tipoEstagio", tipoEstagio);
+        query.setParameter("etapaFluxo", etapaFluxo);
+        query.setParameter("statusTermo", statusTermo);
+        return query.getResultList();
 
-            Join<TermoDeEstagio, Object> estagioJoin = root.join("estagio", JoinType.INNER);
-            query.where(
-                builder.and(
-                    builder.equal(root.get("statusTermo"), statusTermo),
-                    builder.equal(root.get("etapaFluxo"), etapaFluxo),
-                    builder.equal(estagioJoin.get("tipoEstagio"), tipoEstagio)
-                )
-            );
-            return query.getRestriction();
-        });
+	}
 
+	public TermoDeEstagio indeferirTermoDeCompromissoCoe(TermoDeEstagio termo, JustificativaDTO justificativa) {
+    	EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
+    	
+    	//Uma vez que a COE reprove o termo de compromisso, deve ser encaminhado para ciencia da coordenação
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
+    	
+    	EnumParecerAprovadores parecerCoe = EnumParecerAprovadores.Reprovado;
+    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
+    	Estagio estagio = termo.getEstagio();
+    	estagio.setStatusEstagio(statusEstagio);
+    	termo.setStatusTermo(statusTermo);
+    	termo.setParecerCOE(parecerCoe);
+    	termo.setMotivoIndeferimento(justificativa.getJustificativa());
+    	
+    	//Uma vez que a COE reprove o termo de compromisso, deve ser encaminhado para ciencia da coordenação
+    	termo.setEtapaFluxo(etapaFluxo);
+    	
+    	estagioRepo.save(estagio);
+    	
+		return termoRepo.save(termo);
 	}
 }
