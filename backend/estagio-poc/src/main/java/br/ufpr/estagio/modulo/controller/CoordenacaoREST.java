@@ -90,6 +90,24 @@ public class CoordenacaoREST {
 		}
 	}
 	
+	@GetMapping("/termo/pendenteCienciaCoordenacao")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosIndeferidosPendentesCienciaCoordenacao(){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosIndeferidosPendentesCienciaCoordenacao();
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
 	@PutMapping("/termo/{idTermo}/indeferir")
 	public ResponseEntity<TermoDeEstagioDTO> indeferirTermoDeCompromisso(@PathVariable Long idTermo, @RequestBody JustificativaDTO justificativa){
 		try {
@@ -183,6 +201,27 @@ public class CoordenacaoREST {
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
 			termo = termoDeEstagioService.darCienciaIraCoordenacao(termo);
+			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
+			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
+		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/termo/{idTermo}/cienciaIndeferimento")
+	public ResponseEntity<TermoDeEstagioDTO> darCienciaTermoIndeferido(@PathVariable Long idTermo){
+		try {
+			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
+		if(termoOptional.isEmpty()) {
+			throw new NotFoundException("Termo não encontrado!");
+		} else {
+			TermoDeEstagio termo = termoOptional.get();
+			termo = termoDeEstagioService.darCienciaIndeferimentoCoordenacao(termo);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}

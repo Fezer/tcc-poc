@@ -507,5 +507,47 @@ public class TermoDeEstagioService {
 		termo.getCienciaCoordenacao().setCienciaIRA(true);
 		return termoRepo.save(termo);
 	}
+
+	public TermoDeEstagio darCienciaIndeferimentoCoordenacao(TermoDeEstagio termo) {
+    	EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
+    	
+    	//Uma vez que a Coordenação da ciencia no indeferimento da COE ou COAFE, o fluxo se encerra e o termo deve ser encaminhado ao Aluno.
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
+    	
+    	EnumParecerAprovadores parecerCoordenacao = EnumParecerAprovadores.Ciente;
+    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
+    	Estagio estagio = termo.getEstagio();
+    	estagio.setStatusEstagio(statusEstagio);
+    	termo.setStatusTermo(statusTermo);
+    	termo.setParecerCoordenacao(parecerCoordenacao);
+    	
+    	//Uma vez que a Coordenação da ciencia no indeferimento da COE ou COAFE, o fluxo se encerra e o termo deve ser encaminhado ao Aluno.
+    	termo.setEtapaFluxo(etapaFluxo);
+    	
+    	estagioRepo.save(estagio);
+		
+    	return termoRepo.save(termo);
+	}
+
+	public List<TermoDeEstagio> listarTermosIndeferidosPendentesCienciaCoordenacao() {
+		
+    	EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
+    	EnumParecerAprovadores parecerCOE = EnumParecerAprovadores.Reprovado;
+    	EnumParecerAprovadores parecerCOAFE = EnumParecerAprovadores.Reprovado;
+    	
+		        
+        String jpql = "SELECT t FROM TermoDeEstagio t "
+        		+ "WHERE t.etapaFluxo = :etapaFluxo "
+        		+ "AND t.statusTermo = :statusTermo "
+        		+ "AND (t.parecerCOAFE = :parecerCOAFE OR t.parecerCOE = :parecerCOE)";
+        
+        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
+        query.setParameter("etapaFluxo", etapaFluxo);
+        query.setParameter("statusTermo", statusTermo);
+        query.setParameter("parecerCOE", parecerCOE);
+        query.setParameter("parecerCOAFE", parecerCOAFE);
+        return query.getResultList();
+	}
 	
 }
