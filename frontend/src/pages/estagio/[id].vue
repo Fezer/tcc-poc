@@ -27,6 +27,8 @@ export default defineComponent({
       `http://localhost:5000/estagio/${id}`
     );
 
+    console.log(estagio);
+
     // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 
     const tipoUsuario = ref("ALUNO" as TipoUsuario);
@@ -49,7 +51,10 @@ export default defineComponent({
     <small class="m-0">Estágios > Ver estágio</small>
     <h2 class="m-0 mb-4">Estágio</h2>
 
-    <div class="card" v-if="tipoUsuario === 'ALUNO'">
+    <div
+      class="card"
+      v-if="tipoUsuario === 'ALUNO' && estagio?.status === 'Ativo'"
+    >
       <h4>Ações</h4>
       <div class="flex gap-2">
         <Button
@@ -75,13 +80,16 @@ export default defineComponent({
 
     <Estagio :termo="estagio" />
 
-    <PlanoAtividades :termo="estagio" />
+    <PlanoAtividades
+      :termo="estagio"
+      :planoAtividades="estagio?.planoDeAtividades"
+    />
 
     <Contratante :termo="estagio" />
 
-    <HistoricoDeMudancas />
+    <!-- <HistoricoDeMudancas  /> -->
 
-    <Relatorios />
+    <!-- <Relatorios /> -->
 
     <Dialog
       :visible="cancelationConfirm"

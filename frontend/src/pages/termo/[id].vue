@@ -119,6 +119,7 @@ export default defineComponent({
     };
 
     const handleSolicitarAprovacao = async () => {
+      state.uploadModalVisible = false;
       // if (!checkIfTermoCompleto()) {
       //   return toast.add({
       //     severity: "error",
@@ -254,7 +255,6 @@ export default defineComponent({
           label="Solicitar Aprovação"
           icon="pi pi-check"
           class="p-button-primary"
-          disabled
           @click="handleSolicitarAprovacao"
         />
       </template>

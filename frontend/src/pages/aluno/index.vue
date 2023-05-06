@@ -35,6 +35,22 @@ export default defineComponent({
       return response;
     });
 
+    const { data: termoEmAprovação } = useAsyncData(
+      "termoEmAprovação",
+      async () => {
+        const response = await novoEstagioService.getTermoEmAprovacao(grr);
+        console.log(response);
+
+        if (response && response.length > 0) {
+          router.push({
+            path: "/termo/" + response[0].id,
+          });
+        }
+
+        return response;
+      }
+    );
+
     return {
       aluno,
       termo,

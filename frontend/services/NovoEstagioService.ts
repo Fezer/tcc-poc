@@ -57,6 +57,16 @@ export default class NovoEstagioService extends BaseService {
     });
   }
 
+  public async getTermoEmAprovacao(grr: string) {
+    // http://localhost:5000/aluno/GRR20200141/estagio/emAprovacao
+
+    return await $fetch(
+      `http://localhost:5000/aluno/${grr}/estagio/emAprovacao`
+    ).catch((err) => {
+      console.error(err);
+    });
+  }
+
   public async setDadosEstagio(
     id: number,
     dadosEstagio: {

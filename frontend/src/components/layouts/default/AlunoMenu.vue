@@ -1,40 +1,49 @@
 <script lang="ts">
-export default {
-  data() {
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  setup() {
+    const route = useRoute();
+    const { aluno } = useAluno();
+    const menu = [
+      {
+        label: "Estágio",
+        link: "/aluno",
+        icon: "pi-briefcase",
+      },
+      {
+        label: "Processos",
+        link: "/aluno/processos",
+        icon: "pi-envelope",
+      },
+      {
+        label: "Certificados",
+        link: "/aluno/certificados",
+        icon: "pi-file",
+      },
+    ];
+
+    const getIsTabActive = (
+      tab: "aluno" | "aluno/processos" | "aluno/certificados"
+    ) => {
+      console.log(route.path);
+
+      return route.path === tab;
+    };
+
     return {
-      menu: [
-        {
-          label: "Estágio",
-          link: "/aluno",
-          icon: "pi-briefcase",
-        },
-        {
-          label: "Processos",
-          link: "/aluno/processos",
-          icon: "pi-envelope",
-        },
-        {
-          label: "Certificados",
-          link: "/aluno/certificados",
-          icon: "pi-file",
-        },
-      ],
+      aluno,
+      menu,
+      getIsTabActive,
     };
   },
-  methods: {
-    getIsTabActive(tab: "aluno" | "aluno/processos" | "aluno/certificados") {
-      console.log(this.$route.path);
-
-      return this.$route.path === tab;
-    },
-  },
-};
+});
 </script>
 
 <template>
   <div>
     <div class="h-full w-full flex items-center justify-center flex-col">
-      <strong>João Feliz da Silva</strong>
+      <strong>{{ aluno?.nome }}</strong>
       <p>Discente</p>
     </div>
     <div v-for="item in menu" :key="item.label">
