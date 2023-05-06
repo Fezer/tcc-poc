@@ -388,7 +388,7 @@ public class TermoDeEstagioService {
     	Estagio estagio = termo.getEstagio();
     	estagio.setStatusEstagio(statusEstagio);
     	termo.setStatusTermo(statusTermo);
-    	termo.setParecerCOE(parecerCoordenacao);
+    	termo.setParecerCoordenacao(parecerCoordenacao);
     	termo.setMotivoIndeferimento(justificativa.getJustificativa());
     	
     	/**Uma vez que a Coordenação reprove o termo de compromisso, o fluxo se encerra, 
@@ -407,7 +407,7 @@ public class TermoDeEstagioService {
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
 		
-        String jpql = "SELECT t FROM TermoDeEstagio t"
+        String jpql = "SELECT t FROM TermoDeEstagio t "
         		+ "WHERE t.etapaFluxo = :etapaFluxo "
         		+ "AND t.statusTermo = :statusTermo";
         
@@ -428,7 +428,7 @@ public class TermoDeEstagioService {
     	Estagio estagio = termo.getEstagio();
     	estagio.setStatusEstagio(statusEstagio);
     	termo.setStatusTermo(statusTermo);
-    	termo.setParecerCOE(parecerCoordenacao);
+    	termo.setParecerCoordenacao(parecerCoordenacao);
     	
     	//Uma vez que a COE aprava o termo de compromisso, deve ser encaminhado para análise da coordenação
     	termo.setEtapaFluxo(etapaFluxo);
@@ -451,7 +451,7 @@ public class TermoDeEstagioService {
     	Estagio estagio = termo.getEstagio();
     	estagio.setStatusEstagio(statusEstagio);
     	termo.setStatusTermo(statusTermo);
-    	termo.setParecerCOE(parecerCoordenacao);
+    	termo.setParecerCoordenacao(parecerCoordenacao);
     	termo.setDescricaoAjustes(descricaoAjustes.getDescricaoAjustes());
     	
     	//Uma vez que a Coordenação solicita ajustes no termo de compromisso, deve ser encaminhado para revisão do Aluno
@@ -460,5 +460,36 @@ public class TermoDeEstagioService {
     	estagioRepo.save(estagio);
 		
     	return termoRepo.save(termo);
+	}
+
+	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoordenacaoPorTipoEstagio(String tipoEstagioString) {
+		
+		EnumTipoEstagio tipoEstagio;
+		tipoEstagioString = tipoEstagioString.toUpperCase();
+		
+		switch(tipoEstagioString) {
+		case "OBRIGATORIO":
+			tipoEstagio = EnumTipoEstagio.Obrigatorio;
+			break;
+		case "NAOOBRIGATORIO":
+			tipoEstagio = EnumTipoEstagio.NaoObrigatorio;
+			break;
+		default:
+			return null;
+		}
+		
+    	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
+		        
+        String jpql = "SELECT t FROM TermoDeEstagio t INNER JOIN t.estagio e "
+        		+ "WHERE e.tipoEstagio = :tipoEstagio "
+        		+ "AND t.etapaFluxo = :etapaFluxo "
+        		+ "AND t.statusTermo = :statusTermo";
+        
+        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
+        query.setParameter("tipoEstagio", tipoEstagio);
+        query.setParameter("etapaFluxo", etapaFluxo);
+        query.setParameter("statusTermo", statusTermo);
+        return query.getResultList();
 	}
 }

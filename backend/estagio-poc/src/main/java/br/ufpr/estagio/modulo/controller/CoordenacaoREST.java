@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
@@ -39,6 +40,24 @@ public class CoordenacaoREST {
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacao(){
 		try {
 			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosPendenteAprovacaoCoordenacao();
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termo/pendenteAprovacaoCoordenacaoFiltro")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacaoPorTipoEstagio(@RequestParam String tipoEstagio){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosPendenteAprovacaoCoordenacaoPorTipoEstagio(tipoEstagio);
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
@@ -100,7 +119,7 @@ public class CoordenacaoREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.solicitarAjutesTermoDeCompromissoCoe(termo, descricaoAjustes);
+			termo = termoDeEstagioService.solicitarAjutesTermoDeCompromissoCoordenacao(termo, descricaoAjustes);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
@@ -121,7 +140,7 @@ public class CoordenacaoREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.aprovarTermoDeCompromissoCoe(termo);
+			termo = termoDeEstagioService.aprovarTermoDeCompromissoCoordenacao(termo);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
