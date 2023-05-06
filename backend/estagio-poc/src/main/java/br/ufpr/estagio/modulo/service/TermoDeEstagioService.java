@@ -492,4 +492,20 @@ public class TermoDeEstagioService {
         query.setParameter("statusTermo", statusTermo);
         return query.getResultList();
 	}
+
+	public TermoDeEstagio darCienciaFormacaoSupervisorCoordenacao(TermoDeEstagio termo) {
+		termo.getCienciaCoordenacao().setCienciaFormacaoSupervisor(true);
+		return termoRepo.save(termo);
+	}
+
+	public TermoDeEstagio darCienciaPlanoAtividadesCoordenacao(TermoDeEstagio termo) {
+		termo.getCienciaCoordenacao().setCienciaPlanoAtividades(true);
+		return termoRepo.save(termo);
+	}
+	
+	public TermoDeEstagio darCienciaIraCoordenacao(TermoDeEstagio termo) {
+		termo.getCienciaCoordenacao().setCienciaIRA(true);
+		return termoRepo.save(termo);
+	}
+	
 }

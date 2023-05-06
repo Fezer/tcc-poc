@@ -112,7 +112,7 @@ public class CoeREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-	
+		
 	@PutMapping("/termo/{idTermo}/aprovar")
 	public ResponseEntity<TermoDeEstagioDTO> aprovarTermoDeCompromisso(@PathVariable Long idTermo){
 		try {
