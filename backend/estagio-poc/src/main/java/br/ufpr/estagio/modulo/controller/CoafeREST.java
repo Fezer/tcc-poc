@@ -17,11 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTO;
+import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTOv2;
+import br.ufpr.estagio.modulo.dto.AgenteIntegradorResumidoDTO;
 import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
@@ -80,6 +84,27 @@ public class CoafeREST {
 				return null;
 			} else {
 				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termo/{idTermo}/agenteIntegrador")
+	public ResponseEntity<AgenteIntegradorResumidoDTO> listarAgenteIntegradorAssociadoAoTermo(@PathVariable Long idTermo){
+		try {
+			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
+			if(termoOptional.isEmpty()) {
+				throw new NotFoundException("Termo não encontrado!");
+			} else {
+				TermoDeEstagio termo = termoOptional.get();
+				AgenteIntegrador agente = termo.getAgenteIntegrador();
+				AgenteIntegradorResumidoDTO agenteDTO = mapper.map(agente, AgenteIntegradorResumidoDTO.class);
+				return new ResponseEntity<>(agenteDTO, HttpStatus.OK);
 			}
 		}catch(PocException e) {
 			e.printStackTrace();
