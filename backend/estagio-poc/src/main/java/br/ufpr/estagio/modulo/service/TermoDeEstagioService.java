@@ -359,4 +359,17 @@ public class TermoDeEstagioService {
 		
     	return termoRepo.save(termo);
 	}
+
+	public List<TermoDeEstagio> listarTermosIndeferidos() {
+		
+    	EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
+
+        String jpql = "SELECT t FROM TermoDeEstagio t "
+        		+ "WHERE t.statusTermo = :statusTermo";
+        
+        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
+        query.setParameter("statusTermo", statusTermo);
+        return query.getResultList();
+        
+	}
 }

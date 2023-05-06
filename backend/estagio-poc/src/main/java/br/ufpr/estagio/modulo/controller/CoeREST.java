@@ -85,6 +85,24 @@ public class CoeREST {
 		}
 	}
 	
+	@GetMapping("/termo/indeferido")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosIndeferidos(){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosIndeferidos();
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
 	@PutMapping("/termo/{idTermo}/indeferir")
 	public ResponseEntity<TermoDeEstagioDTO> indeferirTermoDeCompromisso(@PathVariable Long idTermo, @RequestBody JustificativaDTO justificativa){
 		try {
