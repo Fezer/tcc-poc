@@ -2526,7 +2526,7 @@
 					"response": []
 				},
 				{
-					"name": "listarAgenteIntegradorAssociadoAoTermo",
+					"name": "consultarAgenteIntegradorAssociadoAoTermo",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2542,6 +2542,50 @@
 								"termo",
 								"8",
 								"agenteIntegrador"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultarSeguradoraAssociadaAoTermo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/termo/8/seguradora",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"termo",
+								"8",
+								"seguradora"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultarApoliceAssociadaAoTermo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/termo/8/apolice",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"termo",
+								"8",
+								"apolice"
 							]
 						}
 					},
