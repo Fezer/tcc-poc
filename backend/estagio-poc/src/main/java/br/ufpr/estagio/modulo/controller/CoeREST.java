@@ -30,6 +30,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.ufpr.estagio.modulo.dto.ConvenioDTO;
+import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
@@ -93,6 +94,27 @@ public class CoeREST {
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
 			termo = termoDeEstagioService.indeferirTermoDeCompromissoCoe(termo, justificativa);
+			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
+			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
+		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/termo/{idTermo}/solicitarAjustes")
+	public ResponseEntity<TermoDeEstagioDTO> solicitarAjutesTermoDeCompromisso(@PathVariable Long idTermo, @RequestBody DescricaoAjustesDTO descricaoAjustes){
+		try {
+			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
+		if(termoOptional.isEmpty()) {
+			throw new NotFoundException("Termo não encontrado!");
+		} else {
+			TermoDeEstagio termo = termoOptional.get();
+			termo = termoDeEstagioService.solicitarAjutesTermoDeCompromissoCoe(termo, descricaoAjustes);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}

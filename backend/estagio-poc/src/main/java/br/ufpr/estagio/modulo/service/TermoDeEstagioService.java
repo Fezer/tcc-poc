@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.PlanoDeAtividadesDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
@@ -311,5 +312,29 @@ public class TermoDeEstagioService {
     	estagioRepo.save(estagio);
     	
 		return termoRepo.save(termo);
+	}
+
+	public TermoDeEstagio solicitarAjutesTermoDeCompromissoCoe(TermoDeEstagio termo,
+			DescricaoAjustesDTO descricaoAjustes) {
+
+    	EnumStatusTermo statusTermo = EnumStatusTermo.EmRevisao;
+    	
+    	//Uma vez que a COE solicita ajustes no termo de compromisso, deve ser encaminhado para revisão do Aluno
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
+    	
+    	EnumParecerAprovadores parecerCoe = EnumParecerAprovadores.Ajustar;
+    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
+    	Estagio estagio = termo.getEstagio();
+    	estagio.setStatusEstagio(statusEstagio);
+    	termo.setStatusTermo(statusTermo);
+    	termo.setParecerCOE(parecerCoe);
+    	termo.setDescricaoAjustes(descricaoAjustes.getDescricaoAjustes());
+    	
+    	//Uma vez que a COE solicita ajustes no termo de compromisso, deve ser encaminhado para revisão do Aluno
+    	termo.setEtapaFluxo(etapaFluxo);
+    	
+    	estagioRepo.save(estagio);
+		
+    	return termoRepo.save(termo);
 	}
 }
