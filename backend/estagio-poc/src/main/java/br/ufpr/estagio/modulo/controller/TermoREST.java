@@ -192,29 +192,6 @@ public class TermoREST {
 		}
 	}
 	
-	/*@PutMapping("/{termoId}/associarSupervisor/{supervisorId}")
-	public ResponseEntity<TermoDeEstagioDTO> associarSupervisor(@PathVariable Long termoId, @PathVariable Long supervisorId){
-		try {
-			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
-			if(termofind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Termo não encontrado!");
-			}
-			Optional<Supervisor> supervisorFind = supervisorService.buscarSupervisorPorId(supervisorId);
-			if(supervisorFind.isEmpty()) {
-				throw new PocException(HttpStatus.NOT_FOUND, "Supervisor não encontrado!");			
-			} else {
-				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarSupervisorAoTermo(termofind.get(), supervisorFind.get());
-				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
-			}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}*/
-	
 	@PutMapping("/{termoId}/associarApolice/{apoliceId}")
 	public ResponseEntity<TermoDeEstagioDTO> associarApolice(@PathVariable Long termoId, @PathVariable Long apoliceId){
 		try {
