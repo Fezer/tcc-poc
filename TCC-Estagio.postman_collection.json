@@ -166,7 +166,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/8/associarOrientador/106",
+							"raw": "http://localhost:5000/termo/14/associarOrientador/106",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -174,7 +174,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"8",
+								"14",
 								"associarOrientador",
 								"106"
 							]
@@ -338,7 +338,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20200141/estagio",
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -346,7 +346,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20200141",
+								"GRR20175486",
 								"estagio"
 							]
 						}
@@ -359,7 +359,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20200141/estagio/emPreenchimento",
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/emPreenchimento",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -367,7 +367,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20200141",
+								"GRR20175486",
 								"estagio",
 								"emPreenchimento"
 							]
@@ -381,7 +381,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20200141/estagio/emProgresso",
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/emProgresso",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -389,7 +389,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20200141",
+								"GRR20175486",
 								"estagio",
 								"emProgresso"
 							]
@@ -452,7 +452,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/termo/8/solicitarAprovacaoTermo",
+							"raw": "http://localhost:5000/aluno/GRR20175486/termo/14/solicitarAprovacaoTermo",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -462,7 +462,7 @@
 								"aluno",
 								"GRR20175486",
 								"termo",
-								"8",
+								"14",
 								"solicitarAprovacaoTermo"
 							]
 						}
@@ -675,14 +675,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio",
+							"raw": "http://localhost:5000/estagio/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "5000",
 							"path": [
-								"estagio"
+								"estagio",
+								""
 							]
 						}
 					},
@@ -819,7 +820,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/curso/40001016111G0",
+							"raw": "http://localhost:5000/curso/40001016030G0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -827,7 +828,7 @@
 							"port": "5000",
 							"path": [
 								"curso",
-								"40001016111G0"
+								"40001016030G0"
 							]
 						}
 					},
@@ -2679,6 +2680,76 @@
 								"termo",
 								"8",
 								"aprovar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orientadror",
+			"item": [
+				{
+					"name": "listarEstagiosDeOrientandos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/orientador/106/estagio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"orientador",
+								"106",
+								"estagio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarEstagiosDeOrientandosPendenteAprovacao",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/orientador/106/estagio/pendenteAprovacao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"orientador",
+								"106",
+								"estagio",
+								"pendenteAprovacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarEstagiosDeOrientandosIndeferido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/orientador/106/estagio/indeferido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"orientador",
+								"106",
+								"estagio",
+								"indeferido"
 							]
 						}
 					},

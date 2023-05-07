@@ -15,18 +15,26 @@ import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
  
 @Service
 @Transactional
 public class EstagioService {
+	
+	private static final String selectEstagiosPorIdOrientador = "SELECT e FROM Estagio e INNER JOIN e.orientador o "
+    		+ "WHERE o.id = :idOrientador";
+	private static final String selectPorIdOrientadorFiltroStatusEstagio = "SELECT e FROM Estagio e INNER JOIN e.orientador o "
+    		+ "WHERE o.id = :idOrientador "
+    		+ "and e.statusEstagio = :statusEstagio"; 
 
 	@Autowired
 	private EstagioRepository estagioRepo;
 	
-    public EstagioService(EstagioRepository estagioRepo) {
-        this.estagioRepo = estagioRepo;
-    }
-     
+    @PersistenceContext
+    private EntityManager em;
+	     
     public List<Estagio> listarTodosEstagios() {
         return estagioRepo.findAll();
     }
@@ -181,6 +189,39 @@ public class EstagioService {
 	public List<Estagio> listarTodosEstagiosPendenteAprovacaoCoe() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public List<Estagio> listarEstagiosPorIdOrientador(long idOrientador) {
+				        
+        TypedQuery<Estagio> query = em.createQuery(selectEstagiosPorIdOrientador, Estagio.class);
+        
+        query.setParameter("idOrientador", idOrientador);
+        
+        return query.getResultList();
+	}
+
+	public List<Estagio> listarEstagiosPendenteAprovacaoPorIdOrientador(long idOrientador) {
+		
+		EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
+        
+        TypedQuery<Estagio> query = em.createQuery(selectPorIdOrientadorFiltroStatusEstagio, Estagio.class);
+        
+        query.setParameter("idOrientador", idOrientador);
+        query.setParameter("statusEstagio", statusEstagio);
+        
+        return query.getResultList();
+	}
+
+	public List<Estagio> listarEstagiosIndeferidosPorIdOrientador(long idOrientador) {
+		
+		EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
+        
+        TypedQuery<Estagio> query = em.createQuery(selectPorIdOrientadorFiltroStatusEstagio, Estagio.class);
+        
+        query.setParameter("idOrientador", idOrientador);
+        query.setParameter("statusEstagio", statusEstagio);
+        
+        return query.getResultList();
 	}
 
 }
