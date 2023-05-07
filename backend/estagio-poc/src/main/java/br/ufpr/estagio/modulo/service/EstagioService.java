@@ -25,7 +25,7 @@ public class EstagioService {
 	
 	private static final String selectEstagiosPorIdOrientador = "SELECT e FROM Estagio e INNER JOIN e.orientador o "
     		+ "WHERE o.id = :idOrientador";
-	private static final String selectEstagiosPendenteAprovacaoPorIdOrientador = "SELECT e FROM Estagio e INNER JOIN e.orientador o "
+	private static final String selectPorIdOrientadorFiltroStatusEstagio = "SELECT e FROM Estagio e INNER JOIN e.orientador o "
     		+ "WHERE o.id = :idOrientador "
     		+ "and e.statusEstagio = :statusEstagio"; 
 
@@ -204,7 +204,19 @@ public class EstagioService {
 		
 		EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
         
-        TypedQuery<Estagio> query = em.createQuery(selectEstagiosPendenteAprovacaoPorIdOrientador, Estagio.class);
+        TypedQuery<Estagio> query = em.createQuery(selectPorIdOrientadorFiltroStatusEstagio, Estagio.class);
+        
+        query.setParameter("idOrientador", idOrientador);
+        query.setParameter("statusEstagio", statusEstagio);
+        
+        return query.getResultList();
+	}
+
+	public List<Estagio> listarEstagiosIndeferidosPorIdOrientador(long idOrientador) {
+		
+		EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
+        
+        TypedQuery<Estagio> query = em.createQuery(selectPorIdOrientadorFiltroStatusEstagio, Estagio.class);
         
         query.setParameter("idOrientador", idOrientador);
         query.setParameter("statusEstagio", statusEstagio);
