@@ -4,6 +4,7 @@ public enum EnumEtapaFluxo {
 	Aluno,
 	Coordenacao,
 	COE,
-	COAFE
+	COAFE,
+	Orientador
 
 }

@@ -1,15 +1,23 @@
 package br.ufpr.estagio.modulo.dto;
 
+import java.io.Serializable;
+
 import br.ufpr.estagio.modulo.enums.EnumAvaliacao;
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAtividades;
+import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
 import br.ufpr.estagio.modulo.model.Estagio;
 
-public class RelatorioDeEstagioDTO {
+public class RelatorioDeEstagioDTO implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private Estagio estagio;
 	private boolean cienciaOrientador;
+	private EnumEtapaFluxo etapaFluxo;
 	private EnumTipoRelatorio tipoRelatorio;
 	private EnumAvaliacaoAtividades avalAtividades;
 	private EnumAvaliacao avalFormacaoProfissional;
@@ -24,14 +32,16 @@ public class RelatorioDeEstagioDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public RelatorioDeEstagioDTO(long id, Estagio estagio, boolean cienciaOrientador, EnumTipoRelatorio tipoRelatorio,
-			EnumAvaliacaoAtividades avalAtividades, EnumAvaliacao avalFormacaoProfissional, EnumAvaliacao avalRelacoesInterpessoais,
-			EnumAvaliacao avalDesenvolvimentoAtividades, EnumAvaliacao avalContribuicaoEstagio, EnumAvaliacao avalEfetivacao,
-			String consideracoes) {
+	public RelatorioDeEstagioDTO(long id, Estagio estagio, boolean cienciaOrientador, EnumEtapaFluxo etapaFluxo,
+			EnumTipoRelatorio tipoRelatorio, EnumAvaliacaoAtividades avalAtividades,
+			EnumAvaliacao avalFormacaoProfissional, EnumAvaliacao avalRelacoesInterpessoais,
+			EnumAvaliacao avalDesenvolvimentoAtividades, EnumAvaliacao avalContribuicaoEstagio,
+			EnumAvaliacao avalEfetivacao, String consideracoes) {
 		super();
 		this.id = id;
 		this.estagio = estagio;
 		this.cienciaOrientador = cienciaOrientador;
+		this.etapaFluxo = etapaFluxo;
 		this.tipoRelatorio = tipoRelatorio;
 		this.avalAtividades = avalAtividades;
 		this.avalFormacaoProfissional = avalFormacaoProfissional;
@@ -64,6 +74,14 @@ public class RelatorioDeEstagioDTO {
 
 	public void setCienciaOrientador(boolean cienciaOrientador) {
 		this.cienciaOrientador = cienciaOrientador;
+	}
+
+	public EnumEtapaFluxo getEtapaFluxo() {
+		return etapaFluxo;
+	}
+
+	public void setEtapaFluxo(EnumEtapaFluxo etapaFluxo) {
+		this.etapaFluxo = etapaFluxo;
 	}
 
 	public EnumTipoRelatorio getTipoRelatorio() {

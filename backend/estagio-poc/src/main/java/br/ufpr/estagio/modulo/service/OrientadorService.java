@@ -31,8 +31,8 @@ public class OrientadorService {
         return orientadorRepo.save(orientador);
     }
     
-    public Orientador buscarOrientadorPorId(long id) {
-        return orientadorRepo.findById(id).get();
+    public Optional<Orientador> buscarOrientadorPorId(long id) {
+        return orientadorRepo.findById(id);
     }
      
     public Orientador salvarOrientador(Orientador orientador) {

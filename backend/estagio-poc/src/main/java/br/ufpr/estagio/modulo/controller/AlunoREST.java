@@ -28,16 +28,19 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.lowagie.text.DocumentException;
 
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
+import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.AlunoService;
 import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
+import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
@@ -50,6 +53,9 @@ public class AlunoREST {
 	
 	@Autowired
 	private TermoDeEstagioService termoDeEstagioService;
+	
+	@Autowired
+	private RelatorioDeEstagioService relatorioDeEstagioService;
 		
 	@Autowired
 	private AlunoService alunoService;
@@ -347,5 +353,83 @@ public class AlunoREST {
 	}
 	
 	//endpoint de dados auxiliares. so get
+	
+	
+	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/relatorioDeEstagio")
+	public ResponseEntity<RelatorioDeEstagioDTO> criarRelatorioDeEstagio(@PathVariable String grrAlunoURL, @PathVariable long idEstagio) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Optional<Estagio> estagioFind = estagioService.buscarEstagioPorId(idEstagio);
+					if (estagioFind.isEmpty()) {
+						throw new NotFoundException("Estágio não encontrado!");
+					}
+					Estagio estagio = estagioFind.get();
+					if (estagio.getAluno().getId() != aluno.getId()) {
+						throw new NotFoundException("Estágio não pertence ao aluno!");
+					} else {
+						RelatorioDeEstagio relatorioEstagio = relatorioDeEstagioService.criarRelatorioDeEstagio(estagio);
+						return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(relatorioEstagio, RelatorioDeEstagioDTO.class));
+					}
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/relatorioDeEstagio/{idRelatorio}/solicitarCiencia")
+	public ResponseEntity<RelatorioDeEstagioDTO> solicitarCienciaRelatorioDeEstagio(@PathVariable String grrAlunoURL, @PathVariable long idEstagio, @PathVariable long idRelatorio) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Optional<Estagio> estagioFind = estagioService.buscarEstagioPorId(idEstagio);
+					if (estagioFind.isEmpty()) {
+						throw new NotFoundException("Estágio não encontrado!");
+					}
+					Optional<RelatorioDeEstagio> relatorioFind = relatorioDeEstagioService.buscarRelatorioPorId(idRelatorio);
+					if (relatorioFind.isEmpty()) {
+						throw new NotFoundException("Relatório não encontrado!");
+					}
+					Estagio estagio = estagioFind.get();
+					if (estagio.getAluno().getId() != aluno.getId()) {
+						throw new NotFoundException("Estágio não pertence ao aluno!");
+					} else {
+						RelatorioDeEstagio relatorioEstagio = relatorioFind.get();
+						if (relatorioEstagio.getEstagio().getId() != estagio.getId()) {
+							throw new NotFoundException("Relatório de estágio não pertence ao estágio!");
+						} else {
+							relatorioEstagio = relatorioDeEstagioService.solicitarCienciaRelatorioDeEstagioAluno(relatorioEstagio);
+							return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(relatorioEstagio, RelatorioDeEstagioDTO.class));
+						}
+					}
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
 
 }

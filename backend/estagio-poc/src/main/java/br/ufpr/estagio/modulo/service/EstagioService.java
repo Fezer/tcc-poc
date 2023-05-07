@@ -2,6 +2,7 @@ package br.ufpr.estagio.modulo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,8 +46,8 @@ public class EstagioService {
         return estagioRepo.save(estagio);
     }
     
-    public Estagio buscarEstagioPorId(long id) {
-        return estagioRepo.findById(id).get();
+    public Optional<Estagio> buscarEstagioPorId(long id) {
+        return estagioRepo.findById(id);
     }
      
     public Estagio salvarEstagio(Estagio estagio) {
@@ -98,7 +99,7 @@ public class EstagioService {
 				relatorioDeEstagio.add(r.getId());
 			}
 		} else {
-			termoAditivo.add((long) 0);
+			relatorioDeEstagio.add((long) 0);
 		}
 		estagioDTO.setRelatorioDeEstagio(relatorioDeEstagio);
 		estagioDTO.setFichaDeAvaliacao(estagio.getFichaDeAvaliacao() == null ? 0 : estagio.getFichaDeAvaliacao().getId());
