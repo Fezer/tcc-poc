@@ -3,16 +3,7 @@ package br.ufpr.estagio.modulo.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 public class ConvenioDTO implements Serializable{
 	private static final long serialVersionUID = 1L;

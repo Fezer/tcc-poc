@@ -3,16 +3,11 @@ package br.ufpr.estagio.modulo.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.ufpr.estagio.modulo.dto.OrientadorDTO;
-import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Curso;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.repository.OrientadorRepository;

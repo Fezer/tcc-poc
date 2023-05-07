@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.ContratanteDTO;
 import br.ufpr.estagio.modulo.dto.EnderecoDTO;
-import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Contratante;
@@ -38,26 +37,7 @@ public class ContratanteREST {
         
     @Autowired
 	private ModelMapper mapper;
-    
-  /*  @PostMapping("/novo")
-	public ResponseEntity<ContratanteDTO> novoContratante(@RequestBody ContratanteDTO contratanteDTO){
-		try {
-			Contratante contratante = mapper.map(contratanteDTO, Contratante.class);
-			
-			contratante.setEstagio(contratanteDTO.getEstagio());
-		    
-			contratante = contratanteService.criarContratante(contratante);
-			
-			contratanteDTO = mapper.map(contratante, ContratanteDTO.class);
-			
-			return new ResponseEntity<>(contratanteDTO, HttpStatus.CREATED);	
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}*/
-    
+        
     // TO-DO: Adicionar validação para garantir que contratante tem CPF **OU** CNPJ
     @PostMapping("/")
 	public ResponseEntity<ContratanteDTO> criarContratante(@RequestBody ContratanteDTO contratanteDTO){

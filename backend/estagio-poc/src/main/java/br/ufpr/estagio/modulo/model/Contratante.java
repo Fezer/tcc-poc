@@ -9,28 +9,15 @@ import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity
-//@Table(name = "contratante", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
 @Table(name = "contratante")
-//@Inheritance(strategy = InheritanceType.JOINED)
 public class Contratante extends Pessoa implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
-//	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
-//	@Column(name = "id")
-//	private long id;
-	
+		
 	@Column(name = "tipo")
 	private EnumTipoContratante tipo;
 	

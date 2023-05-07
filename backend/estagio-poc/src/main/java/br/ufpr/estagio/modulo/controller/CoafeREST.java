@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTO;
-import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTOv2;
 import br.ufpr.estagio.modulo.dto.AgenteIntegradorResumidoDTO;
 import br.ufpr.estagio.modulo.dto.ApoliceResumidoDTO;
 import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
