@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.http.HttpStatus;
 
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
-import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
-import br.ufpr.estagio.modulo.exception.NotFoundException;
 
 @RestControllerAdvice
 public class InvalidFieldControllerAdvice {

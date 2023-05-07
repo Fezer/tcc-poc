@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import br.ufpr.estagio.modulo.model.Apolice;
-import br.ufpr.estagio.modulo.model.Estagio;
-import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 
 public class SeguradoraResumidoDTO implements Serializable {
 	

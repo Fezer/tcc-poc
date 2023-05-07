@@ -1,11 +1,7 @@
 package br.ufpr.estagio.modulo.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-
-import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
-import br.ufpr.estagio.modulo.model.Estagio;
 
 public class CursoDTO implements Serializable{
 	/**

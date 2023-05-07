@@ -3,9 +3,7 @@ package br.ufpr.estagio.modulo.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Seguradora;
-import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 
 public class ApoliceResumidoDTO implements Serializable {
 

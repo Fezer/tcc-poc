@@ -3,17 +3,9 @@ package br.ufpr.estagio.modulo.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 public class AgenteIntegradorDTOv2 implements Serializable {
 	private static final long serialVersionUID = 1L;
