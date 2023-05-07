@@ -11,11 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.ufpr.estagio.modulo.mapper.SigaApiModuloEstagioMapper;
-import br.ufpr.estagio.modulo.model.Aluno;
-import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.DocentesData;
-import br.ufpr.estagio.modulo.wrapper.DiscenteWrapper;
 import br.ufpr.estagio.modulo.wrapper.DocentesWrapper;
 
 

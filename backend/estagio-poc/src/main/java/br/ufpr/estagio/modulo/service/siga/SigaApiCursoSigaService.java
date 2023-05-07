@@ -2,7 +2,6 @@ package br.ufpr.estagio.modulo.service.siga;
 
 import java.net.URI;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,11 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.ufpr.estagio.modulo.model.CursoSiga;
-import br.ufpr.estagio.modulo.model.CursoSigaData;
-import br.ufpr.estagio.modulo.model.Discente;
-import br.ufpr.estagio.modulo.service.CursoSigaService;
 import br.ufpr.estagio.modulo.wrapper.CursoSigaWrapper;
-import br.ufpr.estagio.modulo.wrapper.DiscenteWrapper;
 
 @Service
 @Transactional
