@@ -12,9 +12,13 @@ import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
  
 @Service
 @Transactional
@@ -22,6 +26,10 @@ public class EstagioService {
 
 	@Autowired
 	private EstagioRepository estagioRepo;
+	
+	
+    @PersistenceContext
+    private EntityManager em;
 	
     public EstagioService(EstagioRepository estagioRepo) {
         this.estagioRepo = estagioRepo;
@@ -181,6 +189,18 @@ public class EstagioService {
 	public List<Estagio> listarTodosEstagiosPendenteAprovacaoCoe() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public List<Estagio> listarEstagiosPorIdOrientador(Orientador orientador) {
+		
+		long idOrientador = orientador.getId();
+		
+        String jpql = "SELECT e FROM Estagio e INNER JOIN e.orientador o "
+        		+ "WHERE o.id = :idOrientador";
+        
+        TypedQuery<Estagio> query = em.createQuery(jpql, Estagio.class);
+        query.setParameter("idOrientador", idOrientador);
+        return query.getResultList();
 	}
 
 }
