@@ -166,7 +166,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/14/associarOrientador/106",
+							"raw": "http://localhost:5000/termo/17/associarOrientador/452",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -174,9 +174,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"14",
+								"17",
 								"associarOrientador",
-								"106"
+								"452"
 							]
 						}
 					},
@@ -468,6 +468,54 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "novoRelatorioDeEstagio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/17/relatorioDeEstagio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"17",
+								"relatorioDeEstagio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "solicitarCienciaRelatorioDeEstagio",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/17/relatorioDeEstagio/7/solicitarCiencia",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"17",
+								"relatorioDeEstagio",
+								"7",
+								"solicitarCiencia"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -695,7 +743,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/8",
+							"raw": "http://localhost:5000/estagio/16",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -703,7 +751,7 @@
 							"port": "5000",
 							"path": [
 								"estagio",
-								"8"
+								"16"
 							]
 						}
 					},
@@ -793,6 +841,157 @@
 			]
 		},
 		{
+			"name": "RelatorioDeEstagio",
+			"item": [
+				{
+					"name": "(Não usar no fluxo)criarRelatorioDeEstagio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/relatorioDeEstagio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"relatorioDeEstagio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarRelatorioDeEstagio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/relatorioDeEstagio/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"relatorioDeEstagio",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarRelatoriosDeEstagio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/relatorioDeEstagio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"relatorioDeEstagio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "definirTipoDeRelatorioDeEstagio",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/relatorioDeEstagio/5/definirTipo?tipoRelatorio=RelatorioParcial",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"relatorioDeEstagio",
+								"5",
+								"definirTipo"
+							],
+							"query": [
+								{
+									"key": "tipoRelatorio",
+									"value": "RelatorioParcial",
+									"description": "Pode ser: RelatorioParcial ou RelatorioFinal"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizarRelatorioDeEstagioAvaliacao",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"avalAtividades\": \"Integralmente\",\n    \"avalFormacaoProfissional\": \"Ruim\",\n    \"avalRelacoesInterpessoais\": \"Razoavel\",\n    \"avalDesenvolvimentoAtividades\": \"Bom\",\n    \"avalContribuicaoEstagio\": \"Excelente\",\n    \"avalEfetivacao\": \"Excelente\",\n    \"consideracoes\": \"Olha, foi um estágio bacana...\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/relatorioDeEstagio/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"relatorioDeEstagio",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletarRelatorioDeEstagio",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/relatorioDeEstagio/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"relatorioDeEstagio",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Curso",
 			"item": [
 				{
@@ -820,7 +1019,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/curso/40001016030G0",
+							"raw": "http://localhost:5000/curso/40001016111G0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -828,7 +1027,7 @@
 							"port": "5000",
 							"path": [
 								"curso",
-								"40001016030G0"
+								"40001016111G0"
 							]
 						}
 					},
@@ -2750,6 +2949,73 @@
 								"106",
 								"estagio",
 								"indeferido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarRelatoriosDeOrientandos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/orientador/452/relatorioDeEstagio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"orientador",
+								"452",
+								"relatorioDeEstagio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarRelatoriosDeOrientandosPendenteCiencia",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/orientador/452/relatorioDeEstagio/pendenteCiencia",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"orientador",
+								"452",
+								"relatorioDeEstagio",
+								"pendenteCiencia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "darCienciaRelatorioDeEstagio",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/orientador/452/relatorioDeEstagio/7/darCiencia",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"orientador",
+								"452",
+								"relatorioDeEstagio",
+								"7",
+								"darCiencia"
 							]
 						}
 					},

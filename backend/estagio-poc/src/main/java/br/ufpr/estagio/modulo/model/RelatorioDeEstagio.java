@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.ufpr.estagio.modulo.enums.EnumAvaliacao;
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAtividades;
+import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
 import jakarta.persistence.*;
 
@@ -27,6 +28,9 @@ public class RelatorioDeEstagio implements Serializable{
 	
 	@Column(name = "ciencia_orientador")
 	private boolean cienciaOrientador;
+	
+	@Column(name = "etapa_fluxo")
+	private EnumEtapaFluxo etapaFluxo;
 	
 	@Column(name = "tipo_relatorio")
 	private EnumTipoRelatorio tipoRelatorio;
@@ -57,14 +61,16 @@ public class RelatorioDeEstagio implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public RelatorioDeEstagio(long id, Estagio estagio, boolean cienciaOrientador, EnumTipoRelatorio tipoRelatorio,
-			EnumAvaliacaoAtividades avalAtividades, EnumAvaliacao avalFormacaoProfissional, EnumAvaliacao avalRelacoesInterpessoais,
-			EnumAvaliacao avalDesenvolvimentoAtividades, EnumAvaliacao avalContribuicaoEstagio, EnumAvaliacao avalEfetivacao,
-			String consideracoes) {
+	public RelatorioDeEstagio(long id, Estagio estagio, boolean cienciaOrientador, EnumEtapaFluxo etapaFluxo,
+			EnumTipoRelatorio tipoRelatorio, EnumAvaliacaoAtividades avalAtividades,
+			EnumAvaliacao avalFormacaoProfissional, EnumAvaliacao avalRelacoesInterpessoais,
+			EnumAvaliacao avalDesenvolvimentoAtividades, EnumAvaliacao avalContribuicaoEstagio,
+			EnumAvaliacao avalEfetivacao, String consideracoes) {
 		super();
 		this.id = id;
 		this.estagio = estagio;
 		this.cienciaOrientador = cienciaOrientador;
+		this.etapaFluxo = etapaFluxo;
 		this.tipoRelatorio = tipoRelatorio;
 		this.avalAtividades = avalAtividades;
 		this.avalFormacaoProfissional = avalFormacaoProfissional;
@@ -97,6 +103,14 @@ public class RelatorioDeEstagio implements Serializable{
 
 	public void setCienciaOrientador(boolean cienciaOrientador) {
 		this.cienciaOrientador = cienciaOrientador;
+	}
+
+	public EnumEtapaFluxo getEtapaFluxo() {
+		return etapaFluxo;
+	}
+
+	public void setEtapaFluxo(EnumEtapaFluxo etapaFluxo) {
+		this.etapaFluxo = etapaFluxo;
 	}
 
 	public EnumTipoRelatorio getTipoRelatorio() {
@@ -161,6 +175,10 @@ public class RelatorioDeEstagio implements Serializable{
 
 	public void setConsideracoes(String consideracoes) {
 		this.consideracoes = consideracoes;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 }

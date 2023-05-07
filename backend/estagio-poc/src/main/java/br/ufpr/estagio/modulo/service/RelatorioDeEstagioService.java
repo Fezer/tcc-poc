@@ -1,46 +1,168 @@
 package br.ufpr.estagio.modulo.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
+import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
+import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
+import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
+import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
+import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.RelatorioDeEstagioRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
  
 @Service
 @Transactional
 public class RelatorioDeEstagioService {
 	
+    @PersistenceContext
+    private EntityManager em;
+		
 	@Autowired
-	private RelatorioDeEstagioRepository repo;
+	private RelatorioDeEstagioRepository relatorioRepo;
 	
-    public RelatorioDeEstagioService(RelatorioDeEstagioRepository repo) {
-        this.repo = repo;
-    }
+	@Autowired
+	private EstagioRepository estagioRepo;
+	
+	private static final String selectPorIdOrientadorFiltroPendenteCiencia = "SELECT r FROM RelatorioDeEstagio r "
+			+ "INNER JOIN r.estagio e "
+			+ "INNER JOIN e.orientador o "
+    		+ "WHERE o.id = :idOrientador "
+    		+ "AND r.etapaFluxo = :etapaFluxo "
+    		+ "AND r.cienciaOrientador = :cienciaOrientador";
+	
+	private static final String selectPorIdOrientador = "SELECT r FROM RelatorioDeEstagio r "
+			+ "INNER JOIN r.estagio e "
+			+ "INNER JOIN e.orientador o "
+    		+ "WHERE o.id = :idOrientador";
      
     public List<RelatorioDeEstagio> listarTodosRelatorios() {
-        return repo.findAll();
+        return relatorioRepo.findAll();
     }
      
     public RelatorioDeEstagio novoRelatorio(RelatorioDeEstagio relatorioDeEstagio) {
-        return repo.save(relatorioDeEstagio);
+        return relatorioRepo.save(relatorioDeEstagio);
     }
     
-    public RelatorioDeEstagio buscarRelatorioPorId(long id) {
-        return repo.findById(id).get();
+    public Optional<RelatorioDeEstagio> buscarRelatorioPorId(long id) {
+        return relatorioRepo.findById(id);
     }
      
     public RelatorioDeEstagio salvarRelatorio(RelatorioDeEstagio relatorioDeEstagio) {
-        return repo.save(relatorioDeEstagio);
+        return relatorioRepo.save(relatorioDeEstagio);
     }
      
-    public RelatorioDeEstagio atualizarRelatorio(RelatorioDeEstagio relatorioDeEstagio) {
-    	return repo.save(relatorioDeEstagio);
+    public RelatorioDeEstagio atualizarRelatorioAvaliacao(RelatorioDeEstagio relatorioDeEstagio, RelatorioDeEstagioDTO relatorioDeEstagioDTO) {
+    	
+    	relatorioDeEstagio.setAvalAtividades(relatorioDeEstagioDTO.getAvalAtividades() == null ? 
+    			relatorioDeEstagio.getAvalAtividades() : relatorioDeEstagioDTO.getAvalAtividades());
+    	relatorioDeEstagio.setAvalContribuicaoEstagio(relatorioDeEstagioDTO.getAvalContribuicaoEstagio() == null ? 
+    			relatorioDeEstagio.getAvalContribuicaoEstagio() : relatorioDeEstagioDTO.getAvalContribuicaoEstagio());
+    	relatorioDeEstagio.setAvalDesenvolvimentoAtividades(relatorioDeEstagioDTO.getAvalDesenvolvimentoAtividades() == null ? 
+    			relatorioDeEstagio.getAvalDesenvolvimentoAtividades() : relatorioDeEstagioDTO.getAvalDesenvolvimentoAtividades());
+    	relatorioDeEstagio.setAvalEfetivacao(relatorioDeEstagioDTO.getAvalEfetivacao() == null ? 
+    			relatorioDeEstagio.getAvalEfetivacao() : relatorioDeEstagioDTO.getAvalEfetivacao());
+    	relatorioDeEstagio.setAvalFormacaoProfissional(relatorioDeEstagioDTO.getAvalFormacaoProfissional() == null ? 
+    			relatorioDeEstagio.getAvalFormacaoProfissional() : relatorioDeEstagioDTO.getAvalFormacaoProfissional());
+    	relatorioDeEstagio.setAvalRelacoesInterpessoais(relatorioDeEstagioDTO.getAvalRelacoesInterpessoais() == null ? 
+    			relatorioDeEstagio.getAvalRelacoesInterpessoais() : relatorioDeEstagioDTO.getAvalRelacoesInterpessoais());
+    	relatorioDeEstagio.setConsideracoes(relatorioDeEstagioDTO.getConsideracoes() == null ? 
+    			relatorioDeEstagio.getConsideracoes() : relatorioDeEstagioDTO.getConsideracoes());
+    	
+    	return relatorioRepo.save(relatorioDeEstagio);
     }
      
     public void deletarRelatorio(long id) {
-        repo.deleteById(id);
+        relatorioRepo.deleteById(id);
     }
+
+	public RelatorioDeEstagio criarRelatorioDeEstagio(Estagio estagio) {
+		RelatorioDeEstagio relatorioEstagio = new RelatorioDeEstagio();
+		relatorioEstagio.setEstagio(estagio);
+		relatorioEstagio.setCienciaOrientador(false);
+		EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
+		relatorioEstagio.setEtapaFluxo(etapaFluxo);
+		
+		List<RelatorioDeEstagio> listaRelatorios = estagio.getRelatorioDeEstagio();
+		
+		if (listaRelatorios == null) {
+			listaRelatorios = new ArrayList<RelatorioDeEstagio>();
+		}
+		
+		listaRelatorios.add(relatorioEstagio);
+		estagio.setRelatorioDeEstagio(listaRelatorios);
+		
+		estagioRepo.save(estagio);
+		relatorioRepo.save(relatorioEstagio);
+		
+		return relatorioEstagio;
+	}
+
+	public void deletarRelatorioDoEstagio(RelatorioDeEstagio relatorioDeEstagio) {
+		Estagio estagio = relatorioDeEstagio.getEstagio();
+
+		List<RelatorioDeEstagio> listaRelatorios = estagio.getRelatorioDeEstagio();
+		if(listaRelatorios != null) {
+			listaRelatorios.remove(relatorioDeEstagio);
+			estagio.setRelatorioDeEstagio(listaRelatorios);
+		}
+		
+		relatorioDeEstagio.setEstagio(null);
+		estagioRepo.save(estagio);
+		relatorioRepo.delete(relatorioDeEstagio);
+	}
+
+	public RelatorioDeEstagio definirTipoDeRelatorioDeEstagio(RelatorioDeEstagio relatorioDeEstagio,
+			EnumTipoRelatorio tipoRelatorio) {
+		relatorioDeEstagio.setTipoRelatorio(tipoRelatorio);
+		return relatorioRepo.save(relatorioDeEstagio);
+	}
+
+	public RelatorioDeEstagio solicitarCienciaRelatorioDeEstagioAluno(RelatorioDeEstagio relatorioEstagio) {
+		EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Orientador;
+		relatorioEstagio.setEtapaFluxo(etapaFluxo);
+		return relatorioRepo.save(relatorioEstagio);
+	}
+
+	public List<RelatorioDeEstagio> listarRelatoriosPendenteCienciaPorIdOrientador(long idOrientador) {
+		
+		EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Orientador;
+		boolean cienciaOrientador = false;
+        
+        TypedQuery<RelatorioDeEstagio> query = em.createQuery(selectPorIdOrientadorFiltroPendenteCiencia, RelatorioDeEstagio.class);
+        
+        query.setParameter("idOrientador", idOrientador);
+        query.setParameter("etapaFluxo", etapaFluxo);
+        query.setParameter("cienciaOrientador", cienciaOrientador);
+        
+        return query.getResultList();
+	}
+
+	public List<RelatorioDeEstagio> listarRelatoriosPorIdOrientador(long idOrientador) {
+        
+        TypedQuery<RelatorioDeEstagio> query = em.createQuery(selectPorIdOrientador, RelatorioDeEstagio.class);
+        
+        query.setParameter("idOrientador", idOrientador);
+        
+        return query.getResultList();
+	}
+
+	public RelatorioDeEstagio darCienciaRelatorioDeEstagioOrientador(RelatorioDeEstagio relatorioEstagio) {
+		
+		EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
+		
+		relatorioEstagio.setCienciaOrientador(true);
+		relatorioEstagio.setEtapaFluxo(etapaFluxo);
+		
+		return relatorioRepo.save(relatorioEstagio); 
+	}
 }

@@ -153,7 +153,7 @@ public class TermoREST {
 			if(termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
-			Optional<Orientador> orientadorFind = Optional.ofNullable(orientadorService.buscarOrientadorPorId(orientadorId));
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(orientadorId);
 			if(orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");			
 			} else {

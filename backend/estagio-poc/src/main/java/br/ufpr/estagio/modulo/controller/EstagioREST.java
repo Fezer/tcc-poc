@@ -5,6 +5,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,7 @@ public class EstagioREST {
 			
 			estagioDTO.add(linkTo(methodOn(EstagioREST.class).listarEstagio(estagio.getId())).withSelfRel());
 			return new ResponseEntity<>(estagioDTO, HttpStatus.CREATED);			
-		}catch(Exception e) {
+			}catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
@@ -85,13 +86,13 @@ public class EstagioREST {
 	@GetMapping("{id}")
 	public ResponseEntity<EstagioDTO> listarEstagio(@PathVariable Long id){
 		try {
-			Estagio estagio = estagioService.buscarEstagioPorId(id);
-		if(estagio == null) {
-			throw new NotFoundException("Estágio não encontrado!");
-		} else {
-			EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
-			return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
-		}
+			Optional<Estagio> estagio = estagioService.buscarEstagioPorId(id);
+			if(estagio.isEmpty()) {
+				throw new NotFoundException("Estágio não encontrado!");
+			} else {
+				EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio.get());
+				return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
+			}
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;
@@ -107,10 +108,11 @@ public class EstagioREST {
 			throw new BadRequestException("Tipo do estágio não informado");
 		}
 		try {
-			Estagio estagio = estagioService.buscarEstagioPorId(id);
-		if(estagio == null) {
+			Optional<Estagio> estagioFind = estagioService.buscarEstagioPorId(id);
+		if(estagioFind.isEmpty()) {
 			throw new NotFoundException("Estágio não encontrado!");
 		} else {
+			Estagio estagio = estagioFind.get();
 			estagio = estagioService.definirTipoEstagio(estagio, tipoEstagio);
 			EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
 			return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
@@ -130,10 +132,11 @@ public class EstagioREST {
 			throw new BadRequestException("isUfpr não informado");
 		}
 		try {
-			Estagio estagio = estagioService.buscarEstagioPorId(id);
-		if(estagio == null) {
+			Optional<Estagio> estagioFind = estagioService.buscarEstagioPorId(id);
+		if(estagioFind.isEmpty()) {
 			throw new NotFoundException("Estágio não encontrado!");
 		} else {
+			Estagio estagio = estagioFind.get();
 			estagio = estagioService.definirEstagioUfpr(estagio, estagioUfpr);
 			EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
 			return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
@@ -153,10 +156,11 @@ public class EstagioREST {
 			throw new BadRequestException("isSeed não informado");
 		}
 		try {
-			Estagio estagio = estagioService.buscarEstagioPorId(id);
-		if(estagio == null) {
+			Optional<Estagio> estagioFind = estagioService.buscarEstagioPorId(id);
+		if(estagioFind.isEmpty()) {
 			throw new NotFoundException("Estágio não encontrado!");
 		} else {
+			Estagio estagio = estagioFind.get();
 			estagio = estagioService.definirEstagioSeed(estagio, estagioSeed);
 			EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
 			return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
