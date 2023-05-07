@@ -54,7 +54,7 @@ public class OrientadorREST {
 			if(orientador == null) {
 				return null;
 			} else {
-				List<Estagio> listaEstagios = estagioService.listarEstagiosPorIdOrientador(orientador);
+				List<Estagio> listaEstagios = estagioService.listarEstagiosPorIdOrientador(orientador.getId());
 				List<EstagioDTO> listaDTO = new ArrayList<EstagioDTO>();
 				for(Estagio l : listaEstagios) {
 					listaDTO.add(estagioService.toEstagioDTO(l));
@@ -70,78 +70,20 @@ public class OrientadorREST {
 		}
 	}
 	
-	@GetMapping("/termo/indeferido")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosIndeferidos(){
+	@GetMapping("/{idOrientador}/estagio/pendenteAprovacao")
+	public ResponseEntity<List<EstagioDTO>> listarEstagiosDeOrientandosPendenteAprovacao(@PathVariable Long idOrientador){
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosIndeferidos();
-			if(listaTermos == null || listaTermos.isEmpty()) {
+			Orientador orientador = orientadorService.buscarOrientadorPorId(idOrientador);
+			if(orientador == null) {
 				return null;
 			} else {
-				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+				List<Estagio> listaEstagios = estagioService.listarEstagiosPendenteAprovacaoPorIdOrientador(orientador.getId());
+				List<EstagioDTO> listaDTO = new ArrayList<EstagioDTO>();
+				for(Estagio l : listaEstagios) {
+					listaDTO.add(estagioService.toEstagioDTO(l));
+				}
+				return new ResponseEntity<>(listaDTO, HttpStatus.OK);
 			}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-	
-	@PutMapping("/termo/{idTermo}/indeferir")
-	public ResponseEntity<TermoDeEstagioDTO> indeferirTermoDeCompromisso(@PathVariable Long idTermo, @RequestBody JustificativaDTO justificativa){
-		try {
-			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
-		if(termoOptional.isEmpty()) {
-			throw new NotFoundException("Termo não encontrado!");
-		} else {
-			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.indeferirTermoDeCompromissoCoe(termo, justificativa);
-			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
-			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
-		}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-	
-	@PutMapping("/termo/{idTermo}/solicitarAjustes")
-	public ResponseEntity<TermoDeEstagioDTO> solicitarAjutesTermoDeCompromisso(@PathVariable Long idTermo, @RequestBody DescricaoAjustesDTO descricaoAjustes){
-		try {
-			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
-		if(termoOptional.isEmpty()) {
-			throw new NotFoundException("Termo não encontrado!");
-		} else {
-			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.solicitarAjutesTermoDeCompromissoCoe(termo, descricaoAjustes);
-			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
-			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
-		}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-		
-	@PutMapping("/termo/{idTermo}/aprovar")
-	public ResponseEntity<TermoDeEstagioDTO> aprovarTermoDeCompromisso(@PathVariable Long idTermo){
-		try {
-			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
-		if(termoOptional.isEmpty()) {
-			throw new NotFoundException("Termo não encontrado!");
-		} else {
-			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.aprovarTermoDeCompromissoCoe(termo);
-			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
-			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
-		}
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;
