@@ -1,10 +1,7 @@
 package br.ufpr.estagio.modulo.controller;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +9,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.lowagie.text.DocumentException;
@@ -42,18 +33,12 @@ import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
-import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
-import br.ufpr.estagio.modulo.model.TermoPoc;
-import br.ufpr.estagio.modulo.repository.TermoPocRepository;
 import br.ufpr.estagio.modulo.service.AlunoService;
 import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
-import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
-import br.ufpr.estagio.modulo.service.siga.SigaApiAlunoService;
-import br.ufpr.estagio.modulo.wrapper.DiscenteWrapper;
 
 @CrossOrigin
 @RestController
@@ -65,13 +50,7 @@ public class AlunoREST {
 	
 	@Autowired
 	private TermoDeEstagioService termoDeEstagioService;
-	
-	@Autowired
-	private RelatorioDeEstagioService relatorioDeEstagioService;
-	
-	@Autowired
-	private SigaApiAlunoService sigaApiAlunoService;
-	
+		
 	@Autowired
 	private AlunoService alunoService;
 
@@ -81,7 +60,8 @@ public class AlunoREST {
 	@Autowired
 	private ModelMapper mapper;
 
-	// Isso é um listarAluno
+	// Isso é um listarAluno.
+	//É só mudar então.
 	@GetMapping("/{grrAlunoURL}")
 	public ResponseEntity<Aluno> listarTermo(@PathVariable String grrAlunoURL) {
 		try {

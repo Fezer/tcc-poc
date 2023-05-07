@@ -5,37 +5,27 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
-import br.ufpr.estagio.modulo.dto.JustificativaDTO;
-import br.ufpr.estagio.modulo.dto.TermoPocDTO;
-import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
-import br.ufpr.estagio.modulo.repository.TermoPocRepository;
 import br.ufpr.estagio.modulo.service.EstagioService;
-import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
@@ -43,23 +33,11 @@ import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 @RequestMapping("/estagio")
 public class EstagioREST {
 	
+	@Autowired
     private EstagioService estagioService;
+	
+	@Autowired
     private TermoDeEstagioService termoDeEstagioService;
-    private RelatorioDeEstagioService relatorioDeEstagioService;
-    
-    public EstagioREST(EstagioService estagioService, 
-    		TermoDeEstagioService termoDeEstagioService, 
-    		RelatorioDeEstagioService relatorioDeEstagioService) {
-        this.estagioService = estagioService;
-        this.termoDeEstagioService = termoDeEstagioService;
-        this.relatorioDeEstagioService = relatorioDeEstagioService;
-    }
-    
-	@Autowired
-	private TermoPocRepository repo;
-
-	@Autowired
-	private ModelMapper mapper;
 	
 	@PostMapping("/novo")
 	public ResponseEntity<EstagioDTO> novoEstagio(){

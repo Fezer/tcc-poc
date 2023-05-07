@@ -9,25 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufpr.estagio.modulo.dto.ContratanteDTO;
 import br.ufpr.estagio.modulo.dto.CursoDTO;
 import br.ufpr.estagio.modulo.dto.OrientadorDTO;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
-import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Curso;
 import br.ufpr.estagio.modulo.model.Orientador;
-import br.ufpr.estagio.modulo.service.ContratanteService;
 import br.ufpr.estagio.modulo.service.CursoService;
 
 

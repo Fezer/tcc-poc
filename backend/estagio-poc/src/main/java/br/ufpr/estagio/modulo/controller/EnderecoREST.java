@@ -23,7 +23,6 @@ import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Endereco;
-import br.ufpr.estagio.modulo.model.Pessoa;
 import br.ufpr.estagio.modulo.service.EnderecoService;
 
 @CrossOrigin

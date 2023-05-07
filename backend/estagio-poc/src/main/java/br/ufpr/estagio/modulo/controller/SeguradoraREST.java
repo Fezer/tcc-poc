@@ -18,21 +18,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTOv2;
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
-import br.ufpr.estagio.modulo.dto.ConvenioDTO;
 import br.ufpr.estagio.modulo.dto.SeguradoraDTO;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
-import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
-import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.service.ApoliceService;
-import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.SeguradoraService;
-import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
 @RestController
@@ -44,12 +38,6 @@ public class SeguradoraREST {
     
     @Autowired
     private SeguradoraService seguradoraService;
-    
-    @Autowired
-    private EstagioService estagioService;
-
-    @Autowired
-    private TermoDeEstagioService termoDeEstagioService;
     
     @Autowired
 	private ModelMapper mapper;
