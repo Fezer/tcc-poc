@@ -5,6 +5,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class PocException extends ResponseStatusException {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public PocException(HttpStatus status) {
 		super(status);
 	}
