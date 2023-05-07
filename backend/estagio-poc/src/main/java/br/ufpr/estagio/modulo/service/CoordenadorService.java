@@ -3,7 +3,6 @@ package br.ufpr.estagio.modulo.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +14,6 @@ import br.ufpr.estagio.modulo.repository.CoordenadorRepository;
 @Service
 @Transactional
 public class CoordenadorService {
-	
-	@Autowired
-	private ModelMapper mapper;
 
 	@Autowired
 	private CoordenadorRepository coordenadorRepo;

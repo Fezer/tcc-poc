@@ -15,11 +15,9 @@ import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
-import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.mapper.SigaApiModuloEstagioMapper;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
-import br.ufpr.estagio.modulo.model.Coordenador;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
@@ -28,7 +26,6 @@ import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CienciaCoordenacaoRepository;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
-import br.ufpr.estagio.modulo.repository.RelatorioDeEstagioRepository;
 import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
 import br.ufpr.estagio.modulo.service.siga.SigaApiAlunoService;
 
@@ -40,29 +37,25 @@ public class AlunoService {
 
 	@Autowired
 	private AlunoRepository alunoRepo;
+	
+	@Autowired
 	private EstagioRepository estagioRepo;
+	
+	@Autowired
 	private PlanoDeAtividadesRepository planoAtividadesRepo;
+	
+	@Autowired
 	private TermoDeEstagioRepository termoRepo;
+	
+	@Autowired
 	private CienciaCoordenacaoRepository cienciaRepo;
+	
+	@Autowired
 	private SigaApiAlunoService sigaApiAlunoService;
+	
+	@Autowired
 	private SigaApiModuloEstagioMapper sigaApiModuloEstagioMapping;
-		
-    public AlunoService(AlunoRepository alunoRepo,
-    		SigaApiAlunoService sigaApiAlunoService,
-    		EstagioRepository estagioRepo,
-    		PlanoDeAtividadesRepository planoAtividadesRepo,
-    		CienciaCoordenacaoRepository cienciaRepo,
-    		TermoDeEstagioRepository termoRepo,
-    		SigaApiModuloEstagioMapper sigaApiModuloEstagioMapping) {
-        this.alunoRepo = alunoRepo;
-        this.sigaApiAlunoService = sigaApiAlunoService;
-        this.estagioRepo = estagioRepo;
-        this.planoAtividadesRepo = planoAtividadesRepo;
-        this.cienciaRepo = cienciaRepo;
-        this.termoRepo = termoRepo;
-        this.sigaApiModuloEstagioMapping = sigaApiModuloEstagioMapping;
-    }
-     
+
     public List<Aluno> listarTodosAlunos() {
         return alunoRepo.findAll();
     }

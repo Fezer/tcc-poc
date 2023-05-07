@@ -1,8 +1,6 @@
 package br.ufpr.estagio.modulo.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.ufpr.estagio.modulo.dto.EnderecoDTO;
-import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Endereco;
-import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
 import br.ufpr.estagio.modulo.repository.EnderecoRepository;
 
 @Service

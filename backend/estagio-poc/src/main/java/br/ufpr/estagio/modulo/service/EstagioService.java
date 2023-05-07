@@ -2,12 +2,8 @@ package br.ufpr.estagio.modulo.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +15,6 @@ import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
-import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
  
 @Service
 @Transactional
@@ -27,9 +22,6 @@ public class EstagioService {
 
 	@Autowired
 	private EstagioRepository estagioRepo;
-	
-	@Autowired
-	private TermoDeEstagioRepository termoDeEstagioRepo;
 	
     public EstagioService(EstagioRepository estagioRepo) {
         this.estagioRepo = estagioRepo;

@@ -1,12 +1,10 @@
 package br.ufpr.estagio.modulo.service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +20,6 @@ import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Contratante;
-import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
@@ -38,8 +35,6 @@ import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
  
 @Service
 @Transactional
@@ -71,17 +66,7 @@ public class TermoDeEstagioService {
 	
     @PersistenceContext
     private EntityManager em;
-	
-    public TermoDeEstagioService(TermoDeEstagioRepository termoRepo,
-    		PlanoDeAtividadesRepository planoRepo,
-    		OrientadorRepository orientadorRepo,
-    		EstagioRepository estagioRepo) {
-        this.termoRepo = termoRepo;
-        this.planoRepo = planoRepo;
-        this.orientadorRepo = orientadorRepo;
-        this.estagioRepo = estagioRepo;
-    }
-     
+	     
     public List<TermoDeEstagio> listarTodos() {
         return termoRepo.findAll();
     }
