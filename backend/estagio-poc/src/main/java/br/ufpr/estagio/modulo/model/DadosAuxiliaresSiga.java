@@ -1,7 +1,6 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
