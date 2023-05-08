@@ -36,32 +36,34 @@ export default defineComponent({
     const { termo, setTermo } = useTermo();
 
     const contratanteLoading = ref(false);
-    const contratantes = reactive({});
+    const contratantes = ref([]);
 
-    const handleSearchContratante = async (name: string) => {
-      if (contratanteLoading.value) return;
-      if (name.length < 3) {
-        toast.add({
-          severity: "warn",
-          summary: "Atenção",
-          detail: "Digite pelo menos 3 caracteres para buscar uma contratante!",
-        });
-        return;
-      }
-      contratanteLoading.value = true;
+    // const handleSearchContratante = async (e: any) => {
+    //   console.log(e.target.value);
+    //   const name = e.target.value;
+    //   if (contratanteLoading.value) return;
+    //   if (name.length < 3) {
+    //     toast.add({
+    //       severity: "warn",
+    //       summary: "Atenção",
+    //       detail: "Digite pelo menos 3 caracteres para buscar uma contratante!",
+    //     });
+    //     return;
+    //   }
+    //   contratanteLoading.value = true;
 
-      try {
-        await contratanteService.getContratantePerNome(name).then((res) => {
-          contratantes.value = res;
-        });
-      } catch (err) {
-        console.log(err);
-      } finally {
-        contratanteLoading.value = false;
-      }
-    };
+    //   try {
+    //     await contratanteService.getContratantePerNome(name).then((res) => {
+    //       contratantes.value = res;
+    //     });
+    //   } catch (err) {
+    //     console.log(err);
+    //   } finally {
+    //     contratanteLoading.value = false;
+    //   }
+    // };
 
-    onMounted(() => {
+    onMounted(async () => {
       console.log("mounted");
 
       if (termo) {
@@ -86,6 +88,20 @@ export default defineComponent({
         state.nomeSeguradora = seguradora?.nome || null;
         state.apoliceSeguradora = apolice?.numero || null;
       }
+
+      await fetch(`http://localhost:5000/contratante/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          contratantes.value = res;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
 
     const tipos = [
@@ -255,7 +271,6 @@ export default defineComponent({
       contratantes,
       handleToggleRegisterContratante,
       contratanteLoading,
-      handleSearchContratante,
     };
   },
 });
@@ -286,7 +301,6 @@ export default defineComponent({
         :options="contratantes"
         :optionLabel="(c) => `${c.nome} - ${c.cnpj}`"
         optionValue="id"
-        @change="handleSearchContratante"
         placeholder="Busca por contratante"
         :filter-fields="['nome', 'cnpj']"
         v-model="state.id"
