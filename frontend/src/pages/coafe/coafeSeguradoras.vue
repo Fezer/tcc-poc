@@ -45,8 +45,11 @@
           </template>
         </Column>
         <Column field="button">
-          <template #body>
-            <Button label="Ver"></Button>
+          <template #body="{ data }">
+            <NuxtLink :to="`seguradora/seguradoraVisualizar/`">
+              <!-- <NuxtLink :to="`seguradora/seguradoraVisualizar/${data.id}`"> -->
+              <Button label="Ver" />
+            </NuxtLink>
           </template>
         </Column>
       </DataTable>
@@ -63,12 +66,14 @@ export default {
     return {
       Seguradoras: [
         {
+          id: 1,
           seguradora: "Seguradora de Seguros",
           numeroApolice: "12421421214",
           cnpj: "124412142",
           situação: "ATIVO",
         },
         {
+          id: 2,
           seguradora: "Seguros Seguros",
           numeroApolice: "124900824",
           cnpj: "89024908",
