@@ -1,87 +1,82 @@
-<template>
-  <div>
-    <h1>Coordenação
-      <h6>Economia - UFPR</h6>
-    </h1>
-  </div>
-  <div>
-      <DataTable :value="processes" rowHover stripedRows>
-        <template #header>
-            <div class="flex justify-content-between">
-                <span class="p-input-icon-left">
-               <h4><b>Processos pendentes de definição</b></h4>
-            </span>
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search" />
-                    <InputText placeholder="Keyword Search" />
-                </span>
-            </div>        
-        </template>
-      <Column field="process" header="Processo">
-        <template #body="{ data }">
-            {{ data.process }}
-        </template>
-      </Column>
-      <Column field="process_type" header="Tipo de Processo">
-        <template #body="{ data }">
-            {{ data.process_type }}
-        </template>
-      </Column>
-      <Column field="student_name" header="Nome do Aluno">
-        <template #body="{ data }">
-            {{ data.student_name }}
-        </template>      
-      </Column>
-      <Column field="curse" header="Curso">
-        <template #body="{ data }">
-            {{ data.curse }}
-        </template>
-      </Column>
-      <Column field="action" header="Ação necessária" bodyStyle="color:orange;">
-        <template #body="{ data }">
-            {{ data.action }}
-        </template>        
-      </Column>
-      <Column field="button">
-        <template #body>
-          <Button label="Ver contato"></Button>
-        </template>
-        
-      </Column>
-      
-    </DataTable>
-  </div>
-</template>
-
 <script>
-import Column from "primevue/column";
-import DataTable from "primevue/datatable";
-import Button from "primevue/button";
 export default {
-  data() {
+  setup() {
+    const { data: processes } = useFetch(
+      "http://localhost:5000/coordenacao/termo/pendenteAprovacaoCoordenacao"
+    );
+
+    console.log(processes);
+
     return {
-      processes:[{
-      process:'#3124',
-      process_type:'Termo de Compromisso',
-      student_name:'João da Silva',
-      curse:'Economia',
-      action: 'Parecer estágio'
-      },
-    {
-      process:'#3120',
-      process_type:'Termo Aditivo',
-      student_name:'Maria da Silva Ferreira',
-      curse:'Economia',
-      action: 'Parecer termo',
-      },
-    {
-      process:'#4242',
-      process_type:'Certificado de Estágio',
-      student_name:'João da Silva',
-      curse:'Economia',
-      action: 'Parecer certificado'}
-    ],
+      processes,
     };
   },
 };
 </script>
+
+<template>
+  <div>
+    <div>
+      <h1>
+        COE
+        <h6>Comissão Orientadora de Estágio</h6>
+      </h1>
+    </div>
+    <div>
+      <DataTable :value="processes" rowHover stripedRows>
+        <template #header>
+          <div class="flex items-center justify-content-between">
+            <span class="p-input-icon-left">
+              <h4 class="font-bold">Processos pendentes de parecer</h4>
+            </span>
+            <span class="p-input-icon-left">
+              <i class="pi pi-search" />
+              <InputText placeholder="Keyword Search" />
+            </span>
+          </div>
+        </template>
+        <Column field="process" header="Processo">
+          <template #body="{ data }">
+            {{ data.id }}
+          </template>
+        </Column>
+        <Column field="process_type" header="Tipo de Processo">
+          <template #body="{ data }">
+            {{ data.tipoTermoDeEstagio }}
+          </template>
+        </Column>
+        <Column field="student_name" header="Nome do Aluno">
+          <template #body="{ data }">
+            {{ data?.aluno?.nome }}
+          </template>
+        </Column>
+        <Column field="curse" header="Curso">
+          <template #body="{ data }">
+            {{ data.curse }}
+          </template>
+        </Column>
+        <Column field="contratante" header="Contratante">
+          <template #body="{ data }">
+            {{ data?.contratante?.nome }}
+          </template>
+        </Column>
+        <Column
+          field="action"
+          header="Ação necessária"
+          bodyStyle="color:orange;"
+        >
+          <template #body="{ data }">
+            Parecer {{ data.tipoTermoDeEstagio }}
+          </template>
+        </Column>
+        <Column field="button">
+          <template #body="{ data }">
+            <NuxtLink :to="`/coord/termo/${data.id}`">
+              <Button label="Ver contato"></Button>
+            </NuxtLink>
+          </template>
+        </Column>
+      </DataTable>
+    </div>
+  </div>
+</template>
