@@ -36,7 +36,7 @@ export default defineComponent({
         if (etapa === "COAFE") return 90;
       }
 
-      return 0;
+      return 100;
     };
 
     const percentage = getPercentageByEtapa();

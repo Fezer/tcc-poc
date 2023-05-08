@@ -22,13 +22,6 @@ export default defineComponent({
   <div class="card">
     <h4>Andamento do Estágio</h4>
 
-    <ProgressBar
-      :value="100"
-      :show-value="false"
-      style="height: 15px"
-      class="mb-3"
-    />
-
     <div>
       <div class="grid">
         <div class="text-box col-3">

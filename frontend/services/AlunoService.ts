@@ -18,4 +18,10 @@ export default class AlunoService extends BaseService {
       console.error(err)
     );
   }
+
+  public async getEstagioEmAndamento(grr: string) {
+    return await $fetch(
+      `${this.BASE_URL}/aluno/${grr}/estagio/emProgresso`
+    ).catch((err) => console.error(err));
+  }
 }
