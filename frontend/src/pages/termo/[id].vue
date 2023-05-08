@@ -175,7 +175,7 @@ export default defineComponent({
 
     <DadosAuxiliares :termo="termo" />
 
-    <PlanoAtividades :termo="termo" />
+    <PlanoAtividades :termo="termo" :planoAtividades="termo?.planoAtividades" />
 
     <Contratante :termo="termo" />
 

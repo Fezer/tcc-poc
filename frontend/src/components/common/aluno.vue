@@ -20,26 +20,24 @@ export default defineComponent({
       if (aluno?.curso) return;
       const response = await alunoService.getCursoAlunoFromSiga(cursoID);
       curso.value = response;
-      setAluno({ ...aluno, curso: response });
       console.log(curso.value);
     };
 
-    // useAsyncData("aluno", async () => {
-    //   if (aluno?.value) return aluno;
-    //   const response = await alunoService.getAlunoFromSiga(grr);
-    //   setAluno(response);
+    const { data: dadosAluno } = useAsyncData("aluno", async () => {
+      const response = await alunoService.getAlunoFromSiga(grr);
+      setAluno(response);
 
-    //   await handleFetchCurso(response?.idPrograma);
-    //   return response;
-    // });
+      await handleFetchCurso(response?.idPrograma);
+      return response;
+    });
+    console.log(aluno);
 
     return {
-      aluno,
+      aluno: dadosAluno,
       curso,
       dayjs,
     };
   },
-  // console.log(aluno)
 });
 </script>
 
@@ -75,7 +73,7 @@ export default defineComponent({
       </div>
       <div class="col-4">
         <strong>GRR</strong>
-        <p>{{ aluno?.grr }}</p>
+        <p>{{ aluno?.matricula }}</p>
       </div>
 
       <div class="col-4">
