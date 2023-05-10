@@ -70,7 +70,6 @@ public class Aluno extends Pessoa implements Serializable {
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
 	
-	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="dados_auxiliares_id", referencedColumnName="id", nullable=true)
 	private DadosAuxiliares dadosAuxiliares;

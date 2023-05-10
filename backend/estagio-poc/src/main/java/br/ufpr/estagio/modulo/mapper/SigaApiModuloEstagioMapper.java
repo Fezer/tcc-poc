@@ -20,6 +20,7 @@ import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CoordenadorRepository;
 import br.ufpr.estagio.modulo.repository.CursoRepository;
+import br.ufpr.estagio.modulo.repository.DadosAuxiliaresRepository;
 import br.ufpr.estagio.modulo.repository.EnderecoRepository;
 import br.ufpr.estagio.modulo.service.CoordenadorService;
 import br.ufpr.estagio.modulo.service.siga.SigaApiCursoSigaService;
@@ -47,11 +48,15 @@ public class SigaApiModuloEstagioMapper {
 	private EnderecoRepository enderecoRepo;
 	
 	@Autowired
+	private DadosAuxiliaresRepository dadosAuxiliaresRepo;
+	
+	@Autowired
 	private ModelMapper mapper;
 	
 	public Aluno mapearDiscenteEmAluno (Discente discente) {
 		Optional<Aluno> alunoFind = alunoRepo.findByMatricula(discente.getGrr());
 		Aluno aluno = new Aluno();
+		
 		if(alunoFind.isEmpty()) {
 			aluno.setNome(discente.getNome());
 			aluno.setIdDiscente(discente.getIdDiscente());
@@ -68,6 +73,8 @@ public class SigaApiModuloEstagioMapper {
 			aluno.setIra(discente.getIra());
 			//aluno.setMatriculado(discente.isMatriculado());
 			aluno.setTurno(discente.getTurno());
+			// CRIAR GRR EM ALUNO
+			//aluno.setGrr(discente.getGrr());
 			
 			aluno.setTelefone("TELEFONE");
 			
@@ -95,13 +102,9 @@ public class SigaApiModuloEstagioMapper {
 		endereco.setNumero(discente.getEndereco().getNumero());
 		endereco.setPessoa(aluno);
 		
-		DadosAuxiliares dadosAuxiliares = new DadosAuxiliares();
-		dadosAuxiliares.setAluno(aluno);
-		
 		aluno.setEndereco(endereco);
 		
-		//Dados auxiliares aqui
-//		DadosAuxiliares dados...;
+		DadosAuxiliares dados = mapearDadosAuxiliaresAluno(discente, aluno);
 		
 		aluno.setCurso(curso);
 		//TO-DO: Avaliar se não é melhor colocar essa lógica dentro da classe Curso.
@@ -120,6 +123,7 @@ public class SigaApiModuloEstagioMapper {
 		}
 		
 		enderecoRepo.save(endereco);
+		dadosAuxiliaresRepo.save(dados);
 		alunoRepo.save(aluno);
 		coordenadorRepo.save(coordenador);
 		cursoRepo.save(curso);
@@ -147,6 +151,59 @@ public class SigaApiModuloEstagioMapper {
 	public List<Orientador> mapearDocentesEmListaOrientadores(ArrayList<String> listaDocentes) {
 		
 		return null;
+	}
+	
+	/*public Endereco mapearEnderecoAluno(Discente discente, Aluno aluno) {
+		Endereco endereco = new Endereco();
+		endereco.setCep(discente.getEndereco().getCep());
+		endereco.setCidade(discente.getEndereco().getCidade());
+		endereco.setComplemento(discente.getEndereco().getComplemento());
+		endereco.setUf(discente.getEndereco().getUf());
+		endereco.setId(discente.getEndereco().getId());
+		endereco.setRua(discente.getEndereco().getRua());
+		endereco.setNumero(discente.getEndereco().getNumero());
+		endereco.setPessoa(aluno);
+		
+		return endereco;
+	}*/
+	
+	public DadosAuxiliares mapearDadosAuxiliaresAluno(Discente discente, Aluno aluno) {
+		DadosAuxiliares dadosAuxiliares = new DadosAuxiliares();
+		
+		dadosAuxiliares.setAutoIdentificacaoGenero(discente.getDadosAuxiliares().getAutoIdentificacaoGenero());
+		dadosAuxiliares.setCertificadoMilitar(discente.getDadosAuxiliares().getCertificadoMilitar());
+		dadosAuxiliares.setCidadeNascimento(discente.getDadosAuxiliares().getCidadeNascimento());
+		dadosAuxiliares.setAutoIdentificacaoGenero(discente.getDadosAuxiliares().getAutoIdentificacaoGenero());
+		dadosAuxiliares.setCorDaPele(discente.getDadosAuxiliares().getCorDaPele());
+		dadosAuxiliares.setCorRaca(discente.getDadosAuxiliares().getCorRaca());
+		dadosAuxiliares.setDataDeChegadaNoPais(discente.getDadosAuxiliares().getDataDeChegadaNoPais());
+		dadosAuxiliares.setDataDeEmissao(discente.getDadosAuxiliares().getDataDeEmissao());
+		dadosAuxiliares.setDataExpedicao(discente.getDadosAuxiliares().getDataExpedicao());
+		dadosAuxiliares.setDependentes(discente.getDadosAuxiliares().getDependentes());
+		dadosAuxiliares.setEmailInstitucional(discente.getDadosAuxiliares().getEmailInstitucional());
+		dadosAuxiliares.setEstadoCivil(discente.getDadosAuxiliares().getEstadoCivil());
+		dadosAuxiliares.setEstadoNascimento(discente.getDadosAuxiliares().getEstadoNascimento());
+		dadosAuxiliares.setExpressaoGenero(discente.getDadosAuxiliares().getExpressaoGenero());
+		dadosAuxiliares.setGrupoSanguineo(discente.getDadosAuxiliares().getGrupoSanguineo());
+		dadosAuxiliares.setId(discente.getDadosAuxiliares().getId());
+		dadosAuxiliares.setNacionalidade(discente.getDadosAuxiliares().getNacionalidade());
+		dadosAuxiliares.setNomeMae(discente.getDadosAuxiliares().getNomeMae());
+		dadosAuxiliares.setNomePai(discente.getDadosAuxiliares().getNomePai());
+		dadosAuxiliares.setOrgaoDeExpedicao(discente.getDadosAuxiliares().getOrgaoDeExpedicao());
+		dadosAuxiliares.setOrgaoEmissor(discente.getDadosAuxiliares().getOrgaoEmissor());
+		dadosAuxiliares.setOrientacaoSexual(discente.getDadosAuxiliares().getOrientacaoSexual());
+		dadosAuxiliares.setSecao(discente.getDadosAuxiliares().getSecao());
+		dadosAuxiliares.setSerie(discente.getDadosAuxiliares().getSerie());
+		dadosAuxiliares.setSexo(discente.getDadosAuxiliares().getSexo());
+		dadosAuxiliares.setTituloEleitoral(discente.getDadosAuxiliares().getTituloEleitoral());
+		dadosAuxiliares.setUf(discente.getDadosAuxiliares().getUf());
+		dadosAuxiliares.setZona(discente.getDadosAuxiliares().getZona());
+		dadosAuxiliares.setAluno(aluno);
+		
+		aluno.setDadosAuxiliares(dadosAuxiliares);
+		
+		
+		return dadosAuxiliares;
 	}
 	
 }
