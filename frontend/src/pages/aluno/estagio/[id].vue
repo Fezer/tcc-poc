@@ -39,6 +39,7 @@ export default defineComponent({
       tipoUsuario,
       cancelationConfirm,
       estagio,
+      id,
     };
   },
   methods: {},
@@ -60,12 +61,11 @@ export default defineComponent({
           icon="pi pi-times"
           @click="() => (cancelationConfirm = true)"
         />
-        <NuxtLink to="/aluno/relatorio/gerar">
-
+        <NuxtLink :to="`/aluno/relatorio/gerar/${id}`">
           <Button
-          label="Novo relatório de Estágio"
-          class="p-button-danger self-center bg-orange-500"
-          icon="pi pi-file"
+            label="Novo relatório de Estágio"
+            class="p-button-danger self-center bg-orange-500"
+            icon="pi pi-file"
           />
         </NuxtLink>
         <Button
