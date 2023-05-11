@@ -15,6 +15,7 @@ import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
+import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.mapper.SigaApiModuloEstagioMapper;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
@@ -181,16 +182,30 @@ public class AlunoService {
 		/** Somente é possível cancelar um estágio caso ele ainda não tenha sido aprovado, então
 		 * precisamos fazer algumas validações antes de cancelar um estágio.
 		 */
-	    TermoDeEstagio termoDeCompromisso = estagio.getTermoDeCompromisso();
-	    PlanoDeAtividades planoDeAtividades = estagio.getPlanoDeAtividades();
+		if (estagio.getStatusEstagio() == EnumStatusEstagio.Aprovado) {
+			throw new NotFoundException("Não é possível cancelar um estágio aprovado.");
+		} else { 
+			TermoDeEstagio termoDeCompromisso = estagio.getTermoDeCompromisso();
+			estagio.setStatusEstagio(EnumStatusEstagio.Cancelado);
+			termoDeCompromisso.setStatusTermo(EnumStatusTermo.Cancelado);
+			
+			estagioRepo.save(estagio);
+		    termoRepo.save(termoDeCompromisso);
+		}
+	    /*TermoDeEstagio termoDeCompromisso = estagio.getTermoDeCompromisso();
+	    //PlanoDeAtividades planoDeAtividades = estagio.getPlanoDeAtividades();
 	    Aluno aluno = estagio.getAluno();
-	    List<Estagio> listaEstagios = aluno.getEstagio();
-	    listaEstagios.remove(estagio);
-	    aluno.setEstagio(listaEstagios);
-	    alunoRepo.save(aluno);
-	    termoRepo.delete(termoDeCompromisso);
-	    planoAtividadesRepo.delete(planoDeAtividades);
-	    estagioRepo.delete(estagio);
+	    //List<Estagio> listaEstagios = aluno.getEstagio();
+	    //listaEstagios.remove(estagio);
+	    //aluno.setEstagio(listaEstagios);
+	    estagio.setStatusEstagio(EnumStatusEstagio.Cancelado);
+	    termoDeCompromisso.setStatusTermo(EnumStatusTermo.Cancelado);
+	    
+	    alunoRepo.save(aluno);*/
+	    
+//	    termoRepo.delete(termoDeCompromisso);
+//	    planoAtividadesRepo.delete(planoDeAtividades);
+//	    estagioRepo.delete(estagio);
 	}
 
 }

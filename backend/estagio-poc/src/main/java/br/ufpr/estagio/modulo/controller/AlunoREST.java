@@ -147,6 +147,36 @@ public class AlunoREST {
 	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 	    }
 	}
+	
+	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}")
+	public ResponseEntity<Void> cancelarEstagio(@PathVariable String grrAlunoURL, @PathVariable Long idEstagio) {
+	    try {
+	        if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+	            throw new BadRequestException("GRR do aluno não informado!");
+	        } else {
+	            Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+	            if (aluno == null) {
+	                throw new NotFoundException("Aluno não encontrado!");
+	            } else {
+	                Estagio estagio = alunoService.buscarEstagioPorId(idEstagio);
+	                if (estagio == null) {
+	                    throw new NotFoundException("Estágio não encontrado!");
+	                } else {
+	                    alunoService.cancelarEstagio(estagio);
+	                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	                }
+	            }
+	        }
+	    } catch (NumberFormatException e) {
+	        throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+	    } catch (PocException e) {
+	        e.printStackTrace();
+	        throw e;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    }
+	}
 
 
 	@PutMapping("/{grrAlunoURL}/termo/{idTermo}/solicitarAprovacaoTermo")

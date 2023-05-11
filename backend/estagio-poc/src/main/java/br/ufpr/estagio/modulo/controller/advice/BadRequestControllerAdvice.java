@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class BadRequestControllerAdvice {
 	
 	@ExceptionHandler(BadRequestException.class)

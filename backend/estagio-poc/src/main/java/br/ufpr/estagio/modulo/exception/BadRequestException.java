@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
+//@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class BadRequestException extends ResponseStatusException {
 private static final long serialVersionUID = 1L;
 	
