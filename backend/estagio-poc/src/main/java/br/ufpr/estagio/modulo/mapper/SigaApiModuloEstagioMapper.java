@@ -73,7 +73,7 @@ public class SigaApiModuloEstagioMapper {
 			aluno.setIra(discente.getIra());
 			aluno.setTurno(discente.getTurno());
 			aluno.setMatriculado(discente.isMatriculado());
-			aluno.setTelefone("TELEFONE");
+			aluno.setTelefone(discente.getTelefone());
 			
 		}else {
 			aluno = alunoFind.get();
@@ -192,6 +192,9 @@ public class SigaApiModuloEstagioMapper {
 		dadosAuxiliares.setUf(discente.getDadosAuxiliares().getUf());
 		dadosAuxiliares.setZona(discente.getDadosAuxiliares().getZona());
 		dadosAuxiliares.setAluno(aluno);
+		dadosAuxiliares.setOrgaoEmissor(discente.getOrgao());
+		dadosAuxiliares.setUf(discente.getUf());
+		dadosAuxiliares.setDataDeEmissao(discente.getDataEmissao());
 		
 		aluno.setDadosAuxiliares(dadosAuxiliares);
 		

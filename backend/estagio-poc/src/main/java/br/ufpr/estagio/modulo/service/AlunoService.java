@@ -2,6 +2,7 @@ package br.ufpr.estagio.modulo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.mapper.SigaApiModuloEstagioMapper;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
+import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
@@ -65,8 +67,8 @@ public class AlunoService {
         return alunoRepo.save(aluno);
     }
     
-    public Aluno buscarAlunoPorId(long id) {   	
-        return alunoRepo.findById(id).get();
+    public Optional<Aluno> buscarAlunoPorId(long id) {   	
+        return alunoRepo.findById(id);
     }
     
     public Aluno buscarAlunoPorGrr(String matricula) {
@@ -86,9 +88,30 @@ public class AlunoService {
     public Aluno salvarAluno(Aluno aluno) {
         return alunoRepo.save(aluno);
     }
-     
-    public Aluno atualizarAluno(Aluno aluno) {
-    	return alunoRepo.save(aluno);
+    
+    /////////////////////////////////////////////// 
+    public Aluno atualizarAluno(Aluno alunoAtualizado) {
+    	Aluno alunoExistente = buscarAlunoPorId(alunoAtualizado.getId())
+    			.orElseThrow(() -> new NoSuchElementException("Aluno não encontrado para o ID informado"));
+    	
+    	DadosAuxiliares dadosExistente = alunoExistente.getDadosAuxiliares();
+    	DadosAuxiliares dadosAtualizado = alunoAtualizado.getDadosAuxiliares();
+    	
+    	dadosExistente.setEstadoCivil(dadosAtualizado.getEstadoCivil());
+    	dadosExistente.setDependentes(dadosAtualizado.getDependentes());
+    	dadosExistente.setGrupoSanguineo(dadosAtualizado.getGrupoSanguineo());
+    	dadosExistente.setDataDeChegadaNoPais(dadosAtualizado.getDataDeChegadaNoPais());
+    	dadosExistente.setDataExpedicao(dadosAtualizado.getDataExpedicao());
+    	dadosExistente.setTituloEleitoral(dadosAtualizado.getTituloEleitoral());
+    	dadosExistente.setZona(dadosAtualizado.getZona());
+    	dadosExistente.setSecao(dadosAtualizado.getSecao());
+    	dadosExistente.setCertificadoMilitar(dadosAtualizado.getCertificadoMilitar());
+    	dadosExistente.setOrgaoDeExpedicao(dadosAtualizado.getOrgaoDeExpedicao());
+    	dadosExistente.setSerie(dadosAtualizado.getSerie());
+    	dadosExistente.setEmailInstitucional(dadosAtualizado.getEmailInstitucional());
+    	
+    	//dados.save?
+    	return alunoRepo.save(alunoExistente);
     }
      
     public void deletarAluno(long id) {
@@ -171,6 +194,11 @@ public class AlunoService {
 				
 		return termoRepo.save(termoAtualizado);
 	}
+	
+	public Aluno atualizarDadosAuxiliares(Aluno aluno) {
+		
+    	return alunoRepo.save(aluno);
+    }
 	
 	public void cancelarEstagio(Estagio estagio) {
 		

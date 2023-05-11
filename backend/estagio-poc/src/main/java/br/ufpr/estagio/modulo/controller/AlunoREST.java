@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +29,8 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.lowagie.text.DocumentException;
 
+import br.ufpr.estagio.modulo.dto.ApoliceDTO;
+import br.ufpr.estagio.modulo.dto.AlunoDTO;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
@@ -185,6 +188,36 @@ public class AlunoREST {
 	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 	    }
 	}
+	
+	/*@PutMapping("/{grrAlunoURL}/dadosAuxiliares")
+	@ResponseBody
+	public ResponseEntity<Object> atualizarDadosAuxiliares(@PathVariable String grrAlunoURL, @RequestBody AlunoDTO alunoDTO) {
+	    try {
+	        //Optional<Aluno> aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+	        
+	        if (aluno.isPresent()) {
+	        	Aluno alunoAtualizado = mapper.map(alunoDTO, Aluno.class);
+	        	//alunoAtualizado.setGRR(grrAlunoURL);
+	        	
+	        	alunoAtualizado = alunoService.atualizarAluno(alunoAtualizado);
+	        	AlunoDTO alunoDTOAtualizado = mapper.map(alunoAtualizado, AlunoDTO.class);
+	        	
+	        	return ResponseEntity.ok().body(alunoDTOAtualizado);
+	        } else {
+				throw new NotFoundException("O aluno não foi encontrada.");
+			}
+	        
+	        
+	    } catch (NumberFormatException e) {
+	        throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+	    } catch (PocException e) {
+	        e.printStackTrace();
+	        throw e;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    }
+	}*/
 
 
 	@PutMapping("/{grrAlunoURL}/termo/{idTermo}/solicitarAprovacaoTermo")

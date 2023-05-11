@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "9f5950df-e509-4fb4-ac06-39b2e2a58008",
+		"_postman_id": "76045f7d-38f1-4b82-a628-d0707ab94861",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18567474"
+		"_exporter_id": "17301767"
 	},
 	"item": [
 		{
@@ -512,6 +512,58 @@
 								"relatorioDeEstagio",
 								"7",
 								"solicitarCiencia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancelarEstagio",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizaDadosAuxiliares",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"estadoCivil\": \"Solteiro\",\n    \"dependentes\": 0,\n    \"grupoSanguineo\": \"O+\",\n    \"dataDeChegadaNoPais\": \"2013-10-31T00:00:00.000+00:00\",\n    \"dataExpedicao\": \"2013-10-31T00:00:00.000+00:00\",\n    \"tituloEleitoral\": \"sei lá\",\n    \"zona\": 3,\n    \"secao\": 971,\n    \"certificadoMilitar\": \"2987389127389\",\n    \"orgaoDeExpedicao\": \"Quartel do Boqueirão\",\n    \"serie\": \"askjsa\",\n    \"emailInstitucional\": \"gabriel.mayer@ufpr.br\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20204481/dadosAuxiliares",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20204481",
+								"dadosAuxiliares"
 							]
 						}
 					},
@@ -1189,7 +1241,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Seguradora123\",\n    \"seguradoraUfpr\": false\n}",
+							"raw": "{\n    \"nome\": \"Seguradora123\",\n    \"seguradoraUfpr\": false,\n    \"ativa\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1288,7 +1340,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Seguradora Atualizada\"\n}",
+							"raw": "{\n    \"nome\": \"Seguradora Atualizada\",\n    \"ativa\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1324,6 +1376,36 @@
 							"port": "5000",
 							"path": [
 								"seguradora",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ativarDesativarSeguradora",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ativa\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/seguradora/ativar-desativar/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"seguradora",
+								"ativar-desativar",
 								"1"
 							]
 						}
