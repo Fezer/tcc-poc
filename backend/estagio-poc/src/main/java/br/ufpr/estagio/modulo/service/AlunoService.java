@@ -182,16 +182,13 @@ public class AlunoService {
 		/** Somente é possível cancelar um estágio caso ele ainda não tenha sido aprovado, então
 		 * precisamos fazer algumas validações antes de cancelar um estágio.
 		 */
-		if (estagio.getStatusEstagio() == EnumStatusEstagio.Aprovado) {
-			throw new NotFoundException("Não é possível cancelar um estágio aprovado.");
-		} else { 
-			TermoDeEstagio termoDeCompromisso = estagio.getTermoDeCompromisso();
-			estagio.setStatusEstagio(EnumStatusEstagio.Cancelado);
-			termoDeCompromisso.setStatusTermo(EnumStatusTermo.Cancelado);
+		TermoDeEstagio termoDeCompromisso = estagio.getTermoDeCompromisso();
+		estagio.setStatusEstagio(EnumStatusEstagio.Cancelado);
+		termoDeCompromisso.setStatusTermo(EnumStatusTermo.Cancelado);
 			
-			estagioRepo.save(estagio);
-		    termoRepo.save(termoDeCompromisso);
-		}
+		estagioRepo.save(estagio);
+	    termoRepo.save(termoDeCompromisso);
+
 	    /*TermoDeEstagio termoDeCompromisso = estagio.getTermoDeCompromisso();
 	    //PlanoDeAtividades planoDeAtividades = estagio.getPlanoDeAtividades();
 	    Aluno aluno = estagio.getAluno();

@@ -21,15 +21,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.lowagie.text.DocumentException;
 
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
+import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
@@ -149,7 +152,8 @@ public class AlunoREST {
 	}
 	
 	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}")
-	public ResponseEntity<Void> cancelarEstagio(@PathVariable String grrAlunoURL, @PathVariable Long idEstagio) {
+	@ResponseBody
+	public ResponseEntity<Object> cancelarEstagio(@PathVariable String grrAlunoURL, @PathVariable Long idEstagio) {
 	    try {
 	        if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 	            throw new BadRequestException("GRR do aluno não informado!");
@@ -162,7 +166,11 @@ public class AlunoREST {
 	                if (estagio == null) {
 	                    throw new NotFoundException("Estágio não encontrado!");
 	                } else {
-	                    alunoService.cancelarEstagio(estagio);
+	                	if (estagio.getStatusEstagio() == EnumStatusEstagio.Aprovado) {
+	                		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Não é possível cancelar um estágio aprovado."));
+	            		} else {
+	            			alunoService.cancelarEstagio(estagio);
+	            		}
 	                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	                }
 	            }
