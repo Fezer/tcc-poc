@@ -80,6 +80,9 @@ public class SeguradoraREST {
 	    	if (seguradoraDTO.isSeguradoraUfpr() != true && seguradoraDTO.isSeguradoraUfpr() != false)
 	    		throw new InvalidFieldException("Selecione se a seguradora é uma seguradora UFPR.");
 			
+	    	if (seguradoraDTO.isAtiva() != true && seguradoraDTO.isAtiva() != false)
+	    		seguradoraDTO.setAtiva(true);
+	    	
 			seguradora = seguradoraService.criarSeguradora(seguradora);
 			seguradoraDTO = mapper.map(seguradora, SeguradoraDTO.class);
 			return new ResponseEntity<>(seguradoraDTO, HttpStatus.CREATED);
@@ -134,9 +137,40 @@ public class SeguradoraREST {
         Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(id);
         
         if(seguradora.isPresent()) {
-            Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO, Seguradora.class);
+
+        	/*if (seguradoraDTO.getNome() == null && (seguradoraDTO.isSeguradoraUfpr() != false && seguradoraDTO.isSeguradoraUfpr() != true)) {
+        		Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO, Seguradora.class);
+                seguradoraAtualizada.setId(id);
+                System.out.println(seguradoraAtualizada.isAtiva());
+                seguradoraAtualizada = seguradoraService.ativarDesativarSeguradora(seguradoraAtualizada);
+                SeguradoraDTO seguradoraDTOAtualizada = mapper.map(seguradoraAtualizada, SeguradoraDTO.class);
+                return ResponseEntity.ok().body(seguradoraDTOAtualizada);
+        	}*/
+        	
+        	Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO, Seguradora.class);
             seguradoraAtualizada.setId(id);
             seguradoraAtualizada = seguradoraService.atualizarSeguradora(seguradoraAtualizada);
+            SeguradoraDTO seguradoraDTOAtualizada = mapper.map(seguradoraAtualizada, SeguradoraDTO.class);
+            return ResponseEntity.ok().body(seguradoraDTOAtualizada);
+
+        } else {
+			throw new NotFoundException("Seguradora não encontrada!");
+        }
+    }
+    
+    @PutMapping("/ativar-desativar/{id}")
+    public ResponseEntity<SeguradoraDTO> ativarDesativarSeguradora(@PathVariable Integer id, @RequestBody SeguradoraDTO seguradoraDTO){
+        Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(id);
+        
+        if(seguradora.isPresent()) {
+            Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO, Seguradora.class);
+                        
+            seguradoraAtualizada.setId(id);
+            seguradoraAtualizada = seguradoraService.ativarDesativarSeguradora(seguradoraAtualizada);
+
+            if (seguradoraAtualizada.getError() != null)
+            	throw new InvalidFieldException(seguradoraAtualizada.getError());
+            
             SeguradoraDTO seguradoraDTOAtualizada = mapper.map(seguradoraAtualizada, SeguradoraDTO.class);
             return ResponseEntity.ok().body(seguradoraDTOAtualizada);
         } else {

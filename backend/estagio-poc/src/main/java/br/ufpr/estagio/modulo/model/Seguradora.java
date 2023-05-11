@@ -34,6 +34,11 @@ public class Seguradora extends RepresentationModel<Seguradora> implements Seria
 	@Column(name = "seguradoraUfpr")
 	private boolean seguradoraUfpr;
 	
+	@Column(name = "isAtiva")
+	private boolean isAtiva;
+	
+	private String error;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy="seguradora", cascade=CascadeType.REMOVE)
 	private List<Apolice> apolice;
@@ -51,15 +56,21 @@ public class Seguradora extends RepresentationModel<Seguradora> implements Seria
 		// TODO Auto-generated constructor stub
 	}
 
-	public Seguradora(long id, String nome, boolean seguradoraUfpr, List<Apolice> apolice,
+	public Seguradora(long id, String nome, boolean seguradoraUfpr, boolean isAtiva, List<Apolice> apolice,
 			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.seguradoraUfpr = seguradoraUfpr;
+		this.isAtiva = isAtiva;
 		this.apolice = apolice;
 		this.termoDeEstagio = termoDeEstagio;
 		this.estagio = estagio;
+	}
+
+	public Seguradora(String error) {
+		super();
+		this.error = error;
 	}
 
 	public long getId() {
@@ -84,6 +95,22 @@ public class Seguradora extends RepresentationModel<Seguradora> implements Seria
 
 	public void setSeguradoraUfpr(boolean seguradoraUfpr) {
 		this.seguradoraUfpr = seguradoraUfpr;
+	}
+
+	public boolean isAtiva() {
+		return isAtiva;
+	}
+
+	public void setAtiva(boolean isAtiva) {
+		this.isAtiva = isAtiva;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
 	}
 
 	public List<Apolice> getApolice() {

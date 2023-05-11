@@ -38,8 +38,29 @@ public class SeguradoraService {
 	    seguradoraExistente.setApolice(seguradoraAtualizada.getApolice());
 	    seguradoraExistente.setTermoDeEstagio(seguradoraAtualizada.getTermoDeEstagio());
 	    seguradoraExistente.setEstagio(seguradoraAtualizada.getEstagio());
+	    seguradoraExistente.setAtiva(seguradoraAtualizada.isAtiva());
 
 	    return seguradoraRepository.save(seguradoraExistente);
+	}
+	
+	public Seguradora ativarDesativarSeguradora(Seguradora seguradoraAtualizada) {
+		Seguradora seguradoraExistente = buscarSeguradoraPorId(seguradoraAtualizada.getId())
+	            .orElseThrow(() -> new NoSuchElementException("Seguradora não encontrada para o ID informado"));
+		
+		if (seguradoraExistente.isAtiva() == true && seguradoraAtualizada.isAtiva() == true) {
+			seguradoraExistente.setError("Seguradora já está ativa.");
+			return seguradoraExistente;
+		}
+		
+		if (seguradoraExistente.isAtiva() == false && seguradoraAtualizada.isAtiva() == false) {
+			seguradoraExistente.setError("Seguradora já está inativa.");
+			return seguradoraExistente;
+		}
+		
+		seguradoraExistente.setError(null);
+		seguradoraExistente.setAtiva(seguradoraAtualizada.isAtiva());
+	
+		return seguradoraRepository.save(seguradoraExistente);
 	}
 
 	public void excluirSeguradora(Seguradora seguradora) {
