@@ -33,6 +33,9 @@ export default {
       <NuxtLink to="/coord">
         <Button class="p-button-secondary" label="Coord (dev)" />
       </NuxtLink>
+      <NuxtLink to="/orientador">
+        <Button class="p-button-secondary" label="Orientador (dev)" />
+      </NuxtLink>
       <NuxtLink to="/coe">
         <Button class="p-button-secondary" label="COE (dev)" />
       </NuxtLink>

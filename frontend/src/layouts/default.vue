@@ -5,6 +5,7 @@ import AlunoMenu from "../components/layouts/default/AlunoMenu.vue";
 import COEMenuVue from "../components/layouts/default/COEMenu.vue";
 import COAFEmenuVue from "../components/layouts/default/COAFEmenu.vue";
 import CoordMenuVue from "../components/layouts/default/CoordMenu.vue";
+import OrientadorMenuVue from "../components/layouts/default/OrientadorMenu.vue";
 
 export default defineComponent({
   components: {
@@ -13,6 +14,7 @@ export default defineComponent({
     CoeMenu: COEMenuVue,
     CoafeMenu: COAFEmenuVue,
     CoordMenu: CoordMenuVue,
+    OrientadorMenu: OrientadorMenuVue,
   },
   data() {
     return {
@@ -151,6 +153,10 @@ export default defineComponent({
 
     <div class="layout-sidebar" v-else-if="$route.path.includes('coafe')">
       <CoafeMenu :model="menu" @menuitem-click="onMenuItemClick" />
+    </div>
+
+    <div class="layout-sidebar" v-else-if="$route.path.includes('orientador')">
+      <OrientadorMenu :model="menu" @menuitem-click="onMenuItemClick" />
     </div>
 
     <div class="layout-sidebar" @click="onSidebarClick" v-else>
