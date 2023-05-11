@@ -79,11 +79,24 @@ public class Discente implements Serializable{
 	@Column(name = "ira")
 	private String ira;
 	
+	@Column(name = "telefone")
+	private String telefone;
+	
 	@Column(name = "idCurso")
 	private Long idCurso;
 	
 	@Column(name = "isMatriculado")
 	private boolean isMatriculado;
+	
+	// Atributos de dados auxiliares que estao vindo diretamente em Discente, via SIGA:
+	@Column(name = "orgao")
+	private String orgao;
+	
+	@Column(name = "uf")
+	private String uf;
+	
+	@Column(name = "dataEmissao")
+	private Date dataEmissao;
 	
 	public Discente() {
 		super();
@@ -92,8 +105,8 @@ public class Discente implements Serializable{
 
 	public Discente(long idDiscente, String nome, boolean isPcD, String documento, String grr, int periodoAtual,
 			String email, String rg, Date dataNascimento, String turno, DadosComplementaresSiga dadosComplementares,
-			String coordenador, String idPrograma, Long idCurso, Endereco endereco, DadosAuxiliares dadosAuxiliares,
-			String ira, boolean isMatriculado) {
+			String coordenador, String idPrograma, Endereco endereco, DadosAuxiliares dadosAuxiliares, String ira,
+			String telefone, Long idCurso, boolean isMatriculado, String orgao, String uf, Date dataEmissao) {
 		super();
 		this.idDiscente = idDiscente;
 		this.nome = nome;
@@ -108,11 +121,15 @@ public class Discente implements Serializable{
 		this.dadosComplementares = dadosComplementares;
 		this.coordenador = coordenador;
 		this.idPrograma = idPrograma;
-		this.idCurso = idCurso;
 		this.endereco = endereco;
 		this.dadosAuxiliares = dadosAuxiliares;
 		this.ira = ira;
+		this.telefone = telefone;
+		this.idCurso = idCurso;
 		this.isMatriculado = isMatriculado;
+		this.orgao = orgao;
+		this.uf = uf;
+		this.dataEmissao = dataEmissao;
 	}
 
 	public long getIdDiscente() {
@@ -261,6 +278,38 @@ public class Discente implements Serializable{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getOrgao() {
+		return orgao;
+	}
+
+	public void setOrgao(String orgao) {
+		this.orgao = orgao;
+	}
+
+	public String getUf() {
+		return uf;
+	}
+
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+
+	public Date getDataEmissao() {
+		return dataEmissao;
+	}
+
+	public void setDataEmissao(Date dataEmissao) {
+		this.dataEmissao = dataEmissao;
 	}
 
 }
