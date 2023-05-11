@@ -10,7 +10,7 @@ export default class RelatorioEstagioService extends BaseService {
     return $fetch(`${this.BASE_URL}/relatorioDeEstagio/${id}`, {
       method: "PUT",
       body: {
-        relatorio,
+        ...relatorio,
       },
     });
   }
@@ -25,5 +25,11 @@ export default class RelatorioEstagioService extends BaseService {
         method: "PUT",
       }
     );
+  }
+
+  public async cancelarRelatorioDeEstagio(id: number) {
+    return $fetch(`${this.BASE_URL}/relatorioDeEstagio/${id}`, {
+      method: "DELETE",
+    });
   }
 }

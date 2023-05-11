@@ -34,4 +34,18 @@ export default class AlunoService extends BaseService {
       }
     );
   }
+
+  // http://localhost:5000/aluno/GRR20175486/estagio/17/relatorioDeEstagio/7/solicitarCiencia
+  public async solicitarCienciaDeRelatorioDeEstagio(
+    grr: string,
+    estagio: number,
+    relatorio: number
+  ) {
+    return await $fetch(
+      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/relatorioDeEstagio/${relatorio}/solicitarCiencia`,
+      {
+        method: "PUT",
+      }
+    );
+  }
 }

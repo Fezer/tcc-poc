@@ -87,6 +87,19 @@ export default defineComponent({
 
     <Contratante :termo="estagio" />
 
+    <h3>Relatórios de Estágio</h3>
+
+    <div
+      class="card flex items-center justify-between"
+      v-for="relatorio in estagio?.relatorioDeEstagio"
+      :key="relatorio"
+    >
+      <h5>Relatório {{ relatorio }}</h5>
+      <NuxtLink :to="`/aluno/relatorio/${relatorio}`">
+        <Button label="Ver relatório" class="p-button-secondary"></Button>
+      </NuxtLink>
+    </div>
+
     <Dialog
       :visible="cancelationConfirm"
       header="Confirmar Termo de Recisão"

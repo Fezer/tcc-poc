@@ -2,7 +2,7 @@
 export default {
   setup() {
     const { data: processes } = useFetch(
-      "http://localhost:5000/coordenacao/termo/pendenteAprovacaoCoordenacao"
+      "http://localhost:5000/orientador/6/relatorioDeEstagio/pendenteCiencia"
     );
 
     console.log(processes);
@@ -42,7 +42,7 @@ export default {
         </Column>
         <Column field="process_type" header="Tipo de Processo">
           <template #body="{ data }">
-            {{ data.tipoTermoDeEstagio }}
+            {{ data.tipoRelatorio }}
           </template>
         </Column>
         <Column field="student_name" header="Nome do Aluno">
@@ -65,13 +65,11 @@ export default {
           header="Ação necessária"
           bodyStyle="color:orange;"
         >
-          <template #body="{ data }">
-            Parecer {{ data.tipoTermoDeEstagio }}
-          </template>
+          <template #body="{ data }"> Ciência Relatório Estágio </template>
         </Column>
         <Column field="button">
           <template #body="{ data }">
-            <NuxtLink :to="`/orientador/termo/${data.id}`">
+            <NuxtLink :to="`/orientador/relatorio/${data.id}`">
               <Button label="Ver contato"></Button>
             </NuxtLink>
           </template>

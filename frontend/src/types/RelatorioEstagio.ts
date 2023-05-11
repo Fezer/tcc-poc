@@ -7,4 +7,10 @@ export default interface RelatorioEstagio {
   avalEfetivacao: string;
   consideracoes: string;
   tipo: "RelatorioParcial" | "RelatorioFinal";
+
+  cienciaOrientador?: boolean;
+
+  estagio?: {
+    id: number;
+  };
 }

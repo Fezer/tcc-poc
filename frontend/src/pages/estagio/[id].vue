@@ -63,6 +63,14 @@ export default defineComponent({
     />
 
     <Contratante :termo="estagio" />
+
+    <!-- v-for relatorio in estagio?.relatorios -->
+    <!-- <div v-for="relatorio in estagio?.relatorioDeEstagio" :key="relatorio">
+      <h3>Relatório {{ relatorio }}</h3>
+      <NuxtLink :to="`/relatorio/${relatorio}`">
+        <Button label="Ver relatório" class="p-button-secondary"></Button>
+      </NuxtLink>
+    </div> -->
   </div>
 </template>
 

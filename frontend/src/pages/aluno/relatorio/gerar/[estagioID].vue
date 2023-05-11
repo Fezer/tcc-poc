@@ -10,8 +10,8 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const completionOptions = ["Não", "Parcialmente", "Integralmente"];
-    const evaluateOptions = ["Péssimo", "Ruim", "Razoável", "Bom", "Excelente"];
+    const completionOptions = ["Nao", "Parcialmente", "Integralmente"];
+    const evaluateOptions = ["Pessimo", "Ruim", "Razoavel", "Bom", "Excelente"];
 
     const { estagioID } = route.params;
     const grr = "GRR20200141";
@@ -59,9 +59,16 @@ export default defineComponent({
           estagioID
         );
 
-        await relatorioService.atualizarRelatorioDeEstagio(relatorioID, state);
-
         await relatorioService.definirTipoRelatorio(relatorioID, state.tipo);
+        const updateRelatorio = {
+          ...state,
+          tipo: undefined,
+        };
+
+        await relatorioService.atualizarRelatorioDeEstagio(
+          relatorioID,
+          updateRelatorio
+        );
 
         toast.add({
           severity: "success",
@@ -72,7 +79,7 @@ export default defineComponent({
         });
 
         setTimeout(() => {
-          router.push("/aluno");
+          router.push("/aluno/relatorio/" + relatorioID);
         }, 3000);
       } catch (error) {
         console.log(error);
