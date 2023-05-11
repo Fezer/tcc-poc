@@ -24,7 +24,7 @@ export default defineComponent({
           toast.add({
             severity: "success",
             summary: "Sucesso",
-            detail: "Relatório de estágio cienciado com sucesso",
+            detail: "Ciência de relatório de estágio realizada com sucesso",
           });
           setTimeout(() => {
             router.push("/orientador");

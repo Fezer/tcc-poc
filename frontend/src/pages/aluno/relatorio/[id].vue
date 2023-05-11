@@ -162,7 +162,7 @@ export default defineComponent({
       ></Button>
 
       <Button
-        label="Pedir aprovação orientador"
+        label="Pedir ciência orientador"
         icon="pi pi-check"
         class="p-button-success"
         @click="handlePedirCienciaOrientador"

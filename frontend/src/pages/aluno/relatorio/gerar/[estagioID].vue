@@ -74,7 +74,7 @@ export default defineComponent({
           severity: "success",
           summary: "Sucesso",
           detail:
-            "Relatório criado com sucesso. Agora seu relatório precisa da ciência do seu orientador para ser validado.",
+            "Relatório criado com sucesso. Agora você precisa pedir a ciência do seu orientador, através da tela do relatório.",
           life: 3000,
         });
 
