@@ -62,8 +62,8 @@ public class Aluno extends Pessoa implements Serializable {
 	@Column(name = "idCurso")
 	private Long idCurso;
 	
-	/*@Column(name = "isMatriculado")
-	private boolean isMatriculado;*/
+	@Column(name = "isMatriculado")
+	private boolean isMatriculado;
 	
 	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
@@ -100,7 +100,7 @@ public class Aluno extends Pessoa implements Serializable {
 
 	public Aluno(long id, String nome, String telefone, long idDiscente, boolean isPcd, String matricula,
 			int periodoAtual, String rg, String cpf, String email, Date dataNascimento, String turno,
-			String coordenador, String idPrograma, String ira, Long idCurso, Curso curso,
+			String coordenador, String idPrograma, String ira, Long idCurso, boolean isMatriculado, Curso curso,
 			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, Endereco endereco,
 			List<Disciplina> disciplina, List<Estagio> estagio) {
 		super(id, nome, telefone);
@@ -117,6 +117,7 @@ public class Aluno extends Pessoa implements Serializable {
 		this.idPrograma = idPrograma;
 		this.ira = ira;
 		this.idCurso = idCurso;
+		this.isMatriculado = isMatriculado;
 		this.curso = curso;
 		this.dadosAuxiliares = dadosAuxiliares;
 		this.dadosBancarios = dadosBancarios;
@@ -274,14 +275,14 @@ public class Aluno extends Pessoa implements Serializable {
 	}
 
 
-	/*public boolean isMatriculado() {
+	public boolean isMatriculado() {
 		return isMatriculado;
 	}
 
 
 	public void setMatriculado(boolean isMatriculado) {
 		this.isMatriculado = isMatriculado;
-	}*/
+	}
 
 
 	public DadosAuxiliares getDadosAuxiliares() {

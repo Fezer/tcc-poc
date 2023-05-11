@@ -71,16 +71,11 @@ public class SigaApiModuloEstagioMapper {
 			aluno.setIdCurso(discente.getIdCurso());
 			aluno.setIdPrograma(discente.getIdPrograma());
 			aluno.setIra(discente.getIra());
-			//aluno.setMatriculado(discente.isMatriculado());
 			aluno.setTurno(discente.getTurno());
-			// CRIAR GRR EM ALUNO
-			//aluno.setGrr(discente.getGrr());
-			
+			aluno.setMatriculado(discente.isMatriculado());
 			aluno.setTelefone("TELEFONE");
 			
-			//dadosauxiliares
 		}else {
-			System.out.println("Entrou");
 			aluno = alunoFind.get();
 		}
 		
@@ -133,8 +128,6 @@ public class SigaApiModuloEstagioMapper {
 	}
 	
 	public Curso mapearCursoSigaEmCurso(Discente discente) {
-		//Optional<CursoSiga> cursoSigaFind = cursoSigaRepo.findById(discente.getIdCurso());
-		//System.out.println(cursoSigaFind.get());
 		
 		Optional<Curso> cursoFind = cursoRepo.findByIdCurso(discente.getIdCurso());
 		if(cursoFind.isEmpty()) {
