@@ -1,3 +1,4 @@
+import RelatorioEstagio from "~~/src/types/RelatorioEstagio";
 import BaseService from "./BaseService";
 
 export default class AlunoService extends BaseService {
@@ -23,5 +24,14 @@ export default class AlunoService extends BaseService {
     return await $fetch(
       `${this.BASE_URL}/aluno/${grr}/estagio/emProgresso`
     ).catch((err) => console.error(err));
+  }
+
+  public async novoRelatorioDeEstagio(grr: string, estagio: number) {
+    return await $fetch(
+      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/relatorioDeEstagio`,
+      {
+        method: "POST",
+      }
+    );
   }
 }

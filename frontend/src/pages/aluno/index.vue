@@ -43,7 +43,7 @@ export default defineComponent({
           await alunoService.getEstagioEmAndamento(grr).then((res) => {
             if (res && res.length > 0) {
               router.push({
-                path: "/estagio/" + res[0].id,
+                path: "/aluno/estagio/" + res[0].id,
               });
             }
           });
