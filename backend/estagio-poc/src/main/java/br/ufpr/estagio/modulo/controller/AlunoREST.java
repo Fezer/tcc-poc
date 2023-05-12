@@ -1,6 +1,5 @@
 package br.ufpr.estagio.modulo.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.lowagie.text.DocumentException;
+
 
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
 import br.ufpr.estagio.modulo.dto.DadosAuxiliaresDTO;
@@ -442,33 +439,29 @@ public class AlunoREST {
 		}
 	}
 	
-	@GetMapping("/gerar-termo")
-	public ResponseEntity<byte[]> gerarPdf() throws IOException, DocumentException {
+	@GetMapping("/{grrAlunoURL}/gerar-termo")
+	public ResponseEntity<byte[]> gerarPdf(@PathVariable String grrAlunoURL) throws IOException {
 		
 		// TO-DO: Jogar dentro de um try-catch
 		
-	    ClassLoader classLoader = getClass().getClassLoader();
-	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-	    PdfWriter writer = new PdfWriter(outputStream);
-	    PdfDocument pdf = new PdfDocument(writer);
-	    
-	    // Linhas abaixo provisórias para fazer o uso do Flying Saucer, a fim de utilizar certas unidades de medida
-	    geradorService.generatePdfFromClasspath("TermoCompromisso-Obrigatorio-Ufpr-EstudanteUfpr.html", "OUTPUT.pdf");
-	    
-	    /* // Utilizar as linhas abaixo para fazer o uso do Itext. Foram comentadas por causa da incompatibilidade
-	     * // algumas unidades de medida.
-	    ConverterProperties props = new ConverterProperties();
-	    HtmlConverter.convertToPdf(new FileInputStream(new File(classLoader.getResource("TermoCompromisso-Obrigatorio-Ufpr-EstudanteUfpr.html").getFile())), pdf, props);
-	    */
-	    
-	    pdf.close();
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_PDF);
-	    headers.setContentDisposition(ContentDisposition.builder("inline").filename("arquivo.pdf").build());
-	    return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
+		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+			throw new BadRequestException("GRR do aluno não informado!");
+		} else {
+			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+			if (aluno == null) {
+				throw new NotFoundException("Aluno não encontrado!");
+			} else {
+				byte[] pdf = geradorService.gerarPdf(aluno);
+				
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.APPLICATION_PDF);
+				headers.setContentDisposition(ContentDisposition.builder("inline").filename("arquivo.pdf").build());
+		
+				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+			}
+		}
+
 	}
-	
-	//endpoint de dados auxiliares. so get
 	
 	
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/relatorioDeEstagio")

@@ -18,7 +18,7 @@
         <script src="TermoCompromisso-Obrigatorio-Ufpr-EstudanteUfpr_files/script.js"></script>
         <style>
             * {
-                font-size: 1.17vw;
+                font-size: 3.1mm;
                 text-align: justify;
                  
             }
@@ -91,7 +91,7 @@
                         <h5 class="title2" style="margin: 0rem 1rem 0rem 0rem; font-size: 1.450vw">OBRIGATÓRIO NO ÂMBITO DA UFPR – Para estudantes da UFPR</h5>
                     </div>
                     <div id="imgprograd" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right" style="padding-left: 0"> 
-                        <img class="img-responsive" style="padding-bottom: 4px;float: right" src="TermoCompromisso-Obrigatorio-Ufpr-EstudanteUfpr_files/prograd.png" alt="icone da prograd"></img>
+                        <img class="img-responsive" style="padding-bottom: 4px;float: right" src="./prograd.png" alt="icone da prograd"></img>
                     </div>
                 </div>
                 <div class="row">
@@ -119,54 +119,54 @@
                 <fieldset style="padding-bottom: 1%">
                     <legend id="legend_color" style="background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px; border: solid 1px; border-bottom: 0px; font-size: 1.525vw">CONCEDENTE</legend>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; padding: 0px;">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Razão Social:</b> </span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px; padding: 0% 0% 0% 1%"><b>CNPJ:</b> </span>
+                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Razão Social:</b> {{razaoSocial}}</span>
+                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px; padding: 0% 0% 0% 1%"><b>CNPJ:</b> {{cnpj}}</span>
                     </span>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Representante:</b> </span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Tel:</b> </span>
+                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Representante:</b> {{representante}}</span>
+                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Tel:</b> {{telefoneContratante}}</span>
                     </span>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Endereço:</b> </span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Nº:</b> </span>
+                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Endereço:</b> {{ruaContratante}}</span>
+                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Nº:</b> {{numeroContratante}}</span>
                     </span>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0% 0% 0% 1%"><b>Cidade:</b> </span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>UF:</b> </span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>CEP:</b> </span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0% 0% 0% 1%"><b>Cidade:</b> {{cidadeContratante}}</span>
+                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>UF:</b> {{ufContratante}}</span>
+                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>CEP:</b> {{cepContratante}}</span>
                     </span>
                 </fieldset>
                 
                 <fieldset style="padding-bottom: 1%">
                     <legend style="background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px;border: solid 1px; border-bottom: 0px; font-size: 1.525vw">ESTUDANTE</legend>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; padding: 0px">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Nome:</b> </span>
+                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Nome:</b> {{nome}}</span>
                     </span>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-right: solid 1px; padding: 0% 0% 0% 1%"><b>RG:</b> </span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0% 0% 0% 1%"><b>Data de Nascimento:</b> </span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Tel:</b> </span>
+                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-right: solid 1px; padding: 0% 0% 0% 1%"><b>RG:</b> {{rg}}</span>
+                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0% 0% 0% 1%"><b>Data de Nascimento:</b> {{dataNascimento}}</span>
+                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Tel:</b> {{telefone}}</span>
                     </span>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Email:</b> </span>
+                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Email:</b> {{email}}</span>
                     </span>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="padding: 0% 0% 0% 1%"><b>Endereço:</b> </span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Nº:</b> </span>
-                        <span class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border-left: solid 1px;padding: 0% 0% 0% 1%;padding: 0% 0% 0% 1%"><b>Comp.:</b> </span>
+                        <span class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="padding: 0% 0% 0% 1%"><b>Endereço:</b> {{rua}}</span>
+                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Nº:</b> {{numeroEndereco}}</span>
+                        <span class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border-left: solid 1px;padding: 0% 0% 0% 1%;padding: 0% 0% 0% 1%"><b>Comp.:</b> {{complemento}}</span>
                     </span>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="padding: 0% 0% 0% 1%"><b>Cidade:</b> </span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>UF:</b> </span>
-                        <span class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>CEP:</b> </span>
+                        <span class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="padding: 0% 0% 0% 1%"><b>Cidade:</b> {{cidade}}</span>
+                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>UF:</b> {{uf}}</span>
+                        <span class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>CEP:</b> {{cep}}</span>
                     </span>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="padding: 0% 0% 0% 1%"><b>Curso: </b></span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Matrícula:</b> <span style="text-transform: uppercase;"> </span></span>
-                        <span class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Nível:</b> <span style="text-transform: uppercase;"></span></span>
+                        <span class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="padding: 0% 0% 0% 1%"><b>Curso: </b>{{curso}}</span>
+                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Matrícula:</b> {{matricula}}<span style="text-transform: uppercase;"> </span></span>
+                        <span class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Nível:</b> {{nivel}}<span style="text-transform: uppercase;"></span></span>
                     </span>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0% 0% 0% 1%"><b>Instituição de Ensino:</b> </span>
+                        <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0% 0% 0% 1%"><b>Instituição de Ensino:</b> {{instituicao}}</span>
                     </span>
                 </fieldset>
             </div>
@@ -324,7 +324,7 @@ escrita.
 
                 <div class="row" style="padding-bottom: 10%">
                     <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 text-center">
-                        <span>____________________________________</span><br></br></br>
+                        <span>____________________________________</span><br></br>
                         <span>COORDENAÇÃO DO CURSO<br></br></span>
                         <span>(assinatura e carimbo)</span>
                     </div>
