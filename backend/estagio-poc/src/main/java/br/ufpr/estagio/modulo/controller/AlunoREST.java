@@ -1,5 +1,6 @@
 package br.ufpr.estagio.modulo.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-
+import org.springframework.web.multipart.MultipartFile;
 
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
 import br.ufpr.estagio.modulo.dto.DadosAuxiliaresDTO;
@@ -48,6 +48,11 @@ import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
 import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 
 @CrossOrigin
 @RestController
@@ -440,7 +445,7 @@ public class AlunoREST {
 	}
 	
 	@GetMapping("/{grrAlunoURL}/gerar-termo")
-	public ResponseEntity<byte[]> gerarPdf(@PathVariable String grrAlunoURL) throws IOException {
+	public ResponseEntity<byte[]> gerarTermoPdf(@PathVariable String grrAlunoURL) throws IOException {
 		
 		// TO-DO: Jogar dentro de um try-catch
 		
@@ -462,6 +467,39 @@ public class AlunoREST {
 		}
 
 	}
+	
+	@PostMapping("/{grrAlunoURL}/upload-termo")
+	public ResponseEntity<String> uploadTermo(@PathVariable String grrAlunoURL,
+	                                           @RequestParam("file") MultipartFile file) {
+	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+	        throw new BadRequestException("GRR do aluno não informado!");
+	    } else {
+	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+	        if (aluno == null) {
+	            throw new NotFoundException("Aluno não encontrado!");
+	        } else {
+	            if (file.isEmpty()) {
+	                throw new BadRequestException("Arquivo não informado!");
+	            } else {
+	                try {
+	                    // Cria um objeto File para representar o arquivo no sistema de arquivos do servidor
+	                	String path = getClass().getClassLoader().getResource("arquivos").getPath();
+	                	String nomeArquivo = grrAlunoURL + "-" + file.getOriginalFilename();
+	                    File dest = new File(path, nomeArquivo);
+
+	                    // Salva o arquivo no sistema de arquivos do servidor
+	                    file.transferTo(dest);
+
+	                    return ResponseEntity.ok("Termo de compromisso salvo com sucesso!");
+	                } catch (Exception e) {
+	                    e.printStackTrace();
+	                    throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	                }
+	            }
+	        }
+	    }
+	}
+
 	
 	
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/relatorioDeEstagio")
