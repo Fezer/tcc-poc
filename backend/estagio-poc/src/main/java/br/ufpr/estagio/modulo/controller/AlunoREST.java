@@ -30,6 +30,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.lowagie.text.DocumentException;
 
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
+import br.ufpr.estagio.modulo.dto.DadosAuxiliaresDTO;
 import br.ufpr.estagio.modulo.dto.AlunoDTO;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
@@ -40,10 +41,12 @@ import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.AlunoService;
+import br.ufpr.estagio.modulo.service.DadosAuxiliaresService;
 import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
 import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
@@ -65,6 +68,9 @@ public class AlunoREST {
 		
 	@Autowired
 	private AlunoService alunoService;
+	
+	@Autowired
+	private DadosAuxiliaresService dadosService;
 
 	@Autowired
 	private GeradorDePdfService geradorService;
@@ -189,22 +195,61 @@ public class AlunoREST {
 	    }
 	}
 	
-	/*@PutMapping("/{grrAlunoURL}/dadosAuxiliares")
+	@GetMapping("/{grrAlunoURL}/dadosAuxiliares")
 	@ResponseBody
-	public ResponseEntity<Object> atualizarDadosAuxiliares(@PathVariable String grrAlunoURL, @RequestBody AlunoDTO alunoDTO) {
+	public ResponseEntity<Object> listarDadosAuxiliares(@PathVariable String grrAlunoURL) {
 	    try {
-	        //Optional<Aluno> aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+	    	if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Optional<Aluno> alunoOptional = alunoService.buscarAlunoGrr(grrAlunoURL);
+		        Aluno aluno = alunoOptional.get();
+		        
+		        if (aluno == null)
+					throw new NotFoundException("Aluno não encontrado!");
+		        
+				DadosAuxiliares dados = new DadosAuxiliares();
+				
+				dados.setId(aluno.getDadosAuxiliares().getId());
+				
+				dados = dadosService.buscarDadosAuxiliaresPorId(dados.getId());
+				
+				if (dados == null)
+					throw new NotFoundException("Dados não encontrados!");
+				
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(dados, DadosAuxiliares.class));
+			}
+	    	
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/{grrAlunoURL}/dadosAuxiliares")
+	@ResponseBody
+	public ResponseEntity<Object> atualizarDadosAuxiliares(@PathVariable String grrAlunoURL, @RequestBody DadosAuxiliaresDTO dadosDTO) {
+	    try {
+	        Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL);
+	        Aluno alunoAntigo = aluno.get();
 	        
 	        if (aluno.isPresent()) {
-	        	Aluno alunoAtualizado = mapper.map(alunoDTO, Aluno.class);
-	        	//alunoAtualizado.setGRR(grrAlunoURL);
+	        	DadosAuxiliares dadosAtualizado = mapper.map(dadosDTO, DadosAuxiliares.class);
+
+	        	dadosAtualizado.setId(alunoAntigo.getDadosAuxiliares().getId());
+	        	dadosAtualizado.setAluno(alunoAntigo);
 	        	
-	        	alunoAtualizado = alunoService.atualizarAluno(alunoAtualizado);
-	        	AlunoDTO alunoDTOAtualizado = mapper.map(alunoAtualizado, AlunoDTO.class);
+	        	dadosAtualizado = dadosService.atualizarDados(dadosAtualizado);
+	        	DadosAuxiliaresDTO dadosDTOAtualizado = mapper.map(dadosAtualizado, DadosAuxiliaresDTO.class);
 	        	
-	        	return ResponseEntity.ok().body(alunoDTOAtualizado);
+	        	return ResponseEntity.ok().body(dadosDTOAtualizado);
 	        } else {
-				throw new NotFoundException("O aluno não foi encontrada.");
+				throw new NotFoundException("Os dados não foram encontrados.");
 			}
 	        
 	        
@@ -217,7 +262,7 @@ public class AlunoREST {
 	        e.printStackTrace();
 	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 	    }
-	}*/
+	}
 
 
 	@PutMapping("/{grrAlunoURL}/termo/{idTermo}/solicitarAprovacaoTermo")

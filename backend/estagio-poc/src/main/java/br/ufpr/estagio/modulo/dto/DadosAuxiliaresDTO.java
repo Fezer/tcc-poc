@@ -63,7 +63,7 @@ public class DadosAuxiliaresDTO implements Serializable{
 	
 	private String emailInstitucional;
 	
-	private Aluno aluno;
+	//private Aluno aluno;
 
 	public DadosAuxiliaresDTO() {
 		super();
@@ -75,7 +75,7 @@ public class DadosAuxiliaresDTO implements Serializable{
 			String orgaoEmissor, String uf, Date dataExpedicao, String tituloEleitoral, int zona, int secao,
 			String certificadoMilitar, String orgaoDeExpedicao, String serie, Date dataDeEmissao,
 			String estadoNascimento, String cidadeNascimento, String corRaca, String expressaoGenero,
-			String autoIdentificacaoGenero, String orientacaoSexual, String emailInstitucional, Aluno aluno) {
+			String autoIdentificacaoGenero, String orientacaoSexual, String emailInstitucional/*, Aluno aluno*/) {
 		super();
 		this.id = id;
 		this.nomePai = nomePai;
@@ -104,7 +104,7 @@ public class DadosAuxiliaresDTO implements Serializable{
 		this.autoIdentificacaoGenero = autoIdentificacaoGenero;
 		this.orientacaoSexual = orientacaoSexual;
 		this.emailInstitucional = emailInstitucional;
-		this.aluno = aluno;
+		//this.aluno = aluno;
 	}
 
 	public long getId() {
@@ -323,13 +323,13 @@ public class DadosAuxiliaresDTO implements Serializable{
 		this.emailInstitucional = emailInstitucional;
 	}
 
-	public Aluno getAluno() {
+	/*public Aluno getAluno() {
 		return aluno;
 	}
 
 	public void setAluno(Aluno aluno) {
 		this.aluno = aluno;
-	}
+	}*/
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

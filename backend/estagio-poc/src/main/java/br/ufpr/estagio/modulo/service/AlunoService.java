@@ -84,6 +84,20 @@ public class AlunoService {
     	}
         return aluno;
     }
+    
+    public Optional<Aluno> buscarAlunoGrr(String matricula) {
+    	Optional<Aluno> alunoFind = alunoRepo.findByMatricula(matricula);
+    	Aluno aluno = new Aluno();
+
+    	if(alunoFind.isEmpty()) {
+    		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula);
+    		aluno = sigaApiModuloEstagioMapping.mapearDiscenteEmAluno(discente);
+    		aluno = this.salvarAluno(aluno);
+    	} else {
+    		aluno = alunoFind.get();
+    	}
+        return Optional.ofNullable(aluno);
+    }
      
     public Aluno salvarAluno(Aluno aluno) {
         return alunoRepo.save(aluno);
@@ -91,10 +105,17 @@ public class AlunoService {
     
     /////////////////////////////////////////////// 
     public Aluno atualizarAluno(Aluno alunoAtualizado) {
-    	Aluno alunoExistente = buscarAlunoPorId(alunoAtualizado.getId())
+    	
+    	System.out.println(alunoAtualizado.getId());
+    	
+    	Aluno alunoExistente = buscarAlunoGrr(alunoAtualizado.getMatricula())
     			.orElseThrow(() -> new NoSuchElementException("Aluno não encontrado para o ID informado"));
     	
     	DadosAuxiliares dadosExistente = alunoExistente.getDadosAuxiliares();
+    	
+    	System.out.println(dadosExistente.getNacionalidade());
+    	System.out.println(alunoAtualizado.getDadosAuxiliares().getEstadoCivil());
+    	
     	DadosAuxiliares dadosAtualizado = alunoAtualizado.getDadosAuxiliares();
     	
     	dadosExistente.setEstadoCivil(dadosAtualizado.getEstadoCivil());
