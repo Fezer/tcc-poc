@@ -164,4 +164,10 @@ export default class NovoEstagioService extends BaseService {
       }
     );
   }
+
+  public async cancelarTermo(id: string) {
+    return await $fetch(this.BASE_URL + `/termo/${id}`, {
+      method: "DELETE",
+    });
+  }
 }

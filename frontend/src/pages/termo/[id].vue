@@ -118,6 +118,34 @@ export default defineComponent({
       });
     };
 
+    const handleCancelarTermo = async () => {
+      try {
+        await novoEstagioService.cancelarTermo(termo.value.id);
+        toast.add({
+          severity: "success",
+          summary: `Termo cancelado!`,
+          detail: `O termo de compromisso foi cancelado com sucesso!`,
+          life: 3000,
+        });
+        state.cancelationConfirm = false;
+
+        setTimeout(() => {
+          router.push({
+            path: "/aluno",
+          });
+        }, 3000);
+      } catch (err) {
+        toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail: "Tivemos um problema ao cancelar o termo.",
+          life: 3000,
+        });
+
+        console.error(err);
+      }
+    };
+
     const handleSolicitarAprovacao = async () => {
       state.uploadModalVisible = false;
       // if (!checkIfTermoCompleto()) {
@@ -151,6 +179,7 @@ export default defineComponent({
       responderTermo,
       handleEditarTermo,
       handleSolicitarAprovacao,
+      handleCancelarTermo,
     };
   },
 });
@@ -283,6 +312,7 @@ export default defineComponent({
           icon="pi pi-check"
           class="p-button-danger"
           autofocus
+          @click="handleCancelarTermo"
         />
       </template>
     </Dialog>
