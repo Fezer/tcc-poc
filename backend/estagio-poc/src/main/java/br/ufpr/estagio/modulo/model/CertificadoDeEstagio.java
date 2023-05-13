@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
+import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,20 +32,29 @@ public class CertificadoDeEstagio implements Serializable {
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=true)
 	private Estagio estagio;
+	
+	@Column(name = "etapa_fluxo")
+	private EnumEtapaFluxo etapaFluxo;
 
-	@Column(name = "aprovado_coe")
-	private boolean aprovadoCOE;
+	@Column(name = "parecer_coe")
+	private EnumParecerAprovadores parecerCOE;
+	
+	@Column(name = "movitvo_reprovacao")
+	private String motivoReprovacao;
 	
 	public CertificadoDeEstagio() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public CertificadoDeEstagio(long id, Estagio estagio, boolean aprovadoCOE) {
+	public CertificadoDeEstagio(long id, Estagio estagio, EnumEtapaFluxo etapaFluxo, EnumParecerAprovadores parecerCOE,
+			String motivoReprovacao) {
 		super();
 		this.id = id;
 		this.estagio = estagio;
-		this.aprovadoCOE = aprovadoCOE;
+		this.etapaFluxo = etapaFluxo;
+		this.parecerCOE = parecerCOE;
+		this.motivoReprovacao = motivoReprovacao;
 	}
 
 	public long getId() {
@@ -62,12 +73,32 @@ public class CertificadoDeEstagio implements Serializable {
 		this.estagio = estagio;
 	}
 
-	public boolean isAprovadoCOE() {
-		return aprovadoCOE;
+	public EnumEtapaFluxo getEtapaFluxo() {
+		return etapaFluxo;
 	}
 
-	public void setAprovadoCOE(boolean aprovadoCOE) {
-		this.aprovadoCOE = aprovadoCOE;
+	public void setEtapaFluxo(EnumEtapaFluxo etapaFluxo) {
+		this.etapaFluxo = etapaFluxo;
+	}
+
+	public EnumParecerAprovadores getParecerCOE() {
+		return parecerCOE;
+	}
+
+	public void setParecerCOE(EnumParecerAprovadores parecerCOE) {
+		this.parecerCOE = parecerCOE;
+	}
+
+	public String getMotivoReprovacao() {
+		return motivoReprovacao;
+	}
+
+	public void setMotivoReprovacao(String motivoReprovacao) {
+		this.motivoReprovacao = motivoReprovacao;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }

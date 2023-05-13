@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
+import br.ufpr.estagio.modulo.dto.CertificadoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.DadosAuxiliaresDTO;
 import br.ufpr.estagio.modulo.dto.AlunoDTO;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
@@ -39,12 +40,14 @@ import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.FichaDeAvaliacao;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.AlunoService;
+import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.DadosAuxiliaresService;
 import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.FichaDeAvaliacaoService;
@@ -73,6 +76,9 @@ public class AlunoREST {
 	
 	@Autowired
 	private FichaDeAvaliacaoService fichaDeAvaliacaoService;
+	
+	@Autowired
+	private CertificadoDeEstagioService certificadoDeEstagioService;
 		
 	@Autowired
 	private AlunoService alunoService;
@@ -622,5 +628,46 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-
+	
+	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/certificadoDeEstagio")
+	public ResponseEntity<CertificadoDeEstagioDTO> solicitarCertificadoDeEstagio(@PathVariable String grrAlunoURL, @PathVariable long idEstagio) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Optional<Estagio> estagioFind = estagioService.buscarEstagioPorId(idEstagio);
+					if (estagioFind.isEmpty()) {
+						throw new NotFoundException("Estágio não encontrado!");
+					}
+					Estagio estagio = estagioFind.get();
+					if (estagio.getAluno().getId() != aluno.getId()) {
+						throw new NotFoundException("Estágio não pertence ao aluno!");
+					} else {
+						if (estagio.getFichaDeAvaliacao() == null) {
+							throw new BadRequestException("Não existe uma ficha de avaliação criada pra esse estágio!");
+						} else {
+							if (estagio.getCertificadoDeEstagio() != null) {
+								throw new BadRequestException("Já existe um certificado criada pra esse estágio!");
+							} else {
+								CertificadoDeEstagio certificadoDeEstagio = certificadoDeEstagioService.criarCertificadoDeEstagio(estagio);
+								return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(certificadoDeEstagio, CertificadoDeEstagioDTO.class));
+							}
+						}
+					}
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
 }
