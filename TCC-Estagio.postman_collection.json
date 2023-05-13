@@ -591,6 +591,50 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "solicitarCertificadoDeEstagio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1/certificadoDeEstagio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"1",
+								"certificadoDeEstagio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarCertificadosDeEstagio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/certificadoDeEstagio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"certificadoDeEstagio"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1173,6 +1217,91 @@
 							"path": [
 								"fichaDeAvaliacao",
 								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CertificadoDeEstagio",
+			"item": [
+				{
+					"name": "(Não usar no fluxo)criarCertificadoDeEstagio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarCertificadoDeEstagioPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarCertificadosDeEstagio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluirCertificadoDeEstagio",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								"1"
 							]
 						}
 					},
@@ -2553,6 +2682,27 @@
 								"termo",
 								"8",
 								"aprovar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarCertificadosPendenteAprovacaoCoe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coe/certificado/pendenteAprovacaoCoe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coe",
+								"certificado",
+								"pendenteAprovacaoCoe"
 							]
 						}
 					},
