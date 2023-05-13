@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "76045f7d-38f1-4b82-a628-d0707ab94861",
+		"_postman_id": "8578bcc2-b4aa-4b53-a24a-9ab6a901e92f",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17301767"
+		"_exporter_id": "18567474"
 	},
 	"item": [
 		{
@@ -318,7 +318,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20200141",
+							"raw": "http://localhost:5000/aluno/GRR20175486",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -326,7 +326,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20200141"
+								"GRR20175486"
 							]
 						}
 					},
@@ -564,6 +564,73 @@
 								"aluno",
 								"GRR20204481",
 								"dadosAuxiliares"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "novaFichaDeAvaliacao",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1/fichaDeAvaliacao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"1",
+								"fichaDeAvaliacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "solicitarCertificadoDeEstagio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1/certificadoDeEstagio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"1",
+								"certificadoDeEstagio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarCertificadosDeEstagio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/certificadoDeEstagio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"certificadoDeEstagio"
 							]
 						}
 					},
@@ -1036,6 +1103,205 @@
 							"path": [
 								"relatorioDeEstagio",
 								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FichaDeAvaliacao",
+			"item": [
+				{
+					"name": "(Não usar no fluxo)criarFichaDeAvaliacao",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/fichaDeAvaliacao/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fichaDeAvaliacao",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarFichaDeAvaliacaoPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/fichaDeAvaliacao/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fichaDeAvaliacao",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarFichasDeAvaliacao",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/fichaDeAvaliacao/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fichaDeAvaliacao",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizarFichaDeAvaliacao",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"totalHorasEstagioEfetivamenteRealizadas\": 200,\n    \"atividadesForamRealizadas\": false,\n    \"atividadesRealizadasConsideracoes\": \"Realizei as atividades.\",\n    \"acompanhamentoOrientador\": \"Frequentemente\",\n    \"acompanhamentoOrientadorComentario\": \"O orientador foi bastante presente\",\n    \"acompanhamentoCoordenador\": \"Raramente\",\n    \"acompanhamentoCoordenadorComentario\": \"Que coordenador?\",\n    \"contribuicaoEstagio\": \"Olha, contribuiu bastante viu...\",\n    \"avalPontualidade\": \"Pessimo\",\n    \"avalCriatividade\": \"Ruim\",\n    \"avalProtagonismo\": \"Razoavel\",\n    \"avalResponsabilidade\": \"Bom\",\n    \"avalConduta\": \"Excelente\",\n    \"avalDominioTecnico\": \"Pessimo\",\n    \"avalHabilidades\": \"Ruim\",\n    \"avalEfetivacao\": \"Razoavel\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/fichaDeAvaliacao/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fichaDeAvaliacao",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluirFichaDeAvaliacao",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/fichaDeAvaliacao/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fichaDeAvaliacao",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CertificadoDeEstagio",
+			"item": [
+				{
+					"name": "(Não usar no fluxo)criarCertificadoDeEstagio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarCertificadoDeEstagioPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarCertificadosDeEstagio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluirCertificadoDeEstagio",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								"1"
 							]
 						}
 					},
@@ -2416,6 +2682,27 @@
 								"termo",
 								"8",
 								"aprovar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarCertificadosPendenteAprovacaoCoe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coe/certificado/pendenteAprovacaoCoe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coe",
+								"certificado",
+								"pendenteAprovacaoCoe"
 							]
 						}
 					},

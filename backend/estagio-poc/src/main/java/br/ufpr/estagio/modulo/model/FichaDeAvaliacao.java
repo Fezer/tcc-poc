@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.ufpr.estagio.modulo.enums.EnumAvaliacao;
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAcomp;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,21 +49,21 @@ public class FichaDeAvaliacao implements Serializable{
 	
 	private String contribuicaoEstagio;
 	
-	private EnumAvaliacaoAcomp avalPontualidade;
+	private EnumAvaliacao avalPontualidade;
 	
-	private EnumAvaliacaoAcomp avalCriatividade;
+	private EnumAvaliacao avalCriatividade;
 	
-	private EnumAvaliacaoAcomp avalProtagonismo;
+	private EnumAvaliacao avalProtagonismo;
 	
-	private EnumAvaliacaoAcomp avalResponsabilidade;
+	private EnumAvaliacao avalResponsabilidade;
 	
-	private EnumAvaliacaoAcomp avalConduta;
+	private EnumAvaliacao avalConduta;
 	
-	private EnumAvaliacaoAcomp avalDominioTecnico;
+	private EnumAvaliacao avalDominioTecnico;
 	
-	private EnumAvaliacaoAcomp avalHabilidades;
+	private EnumAvaliacao avalHabilidades;
 	
-	private EnumAvaliacaoAcomp avalEfetivacao;
+	private EnumAvaliacao avalEfetivacao;
 	
 	public FichaDeAvaliacao() {
 		super();
@@ -73,10 +74,10 @@ public class FichaDeAvaliacao implements Serializable{
 			boolean atividadesForamRealizadas, String atividadesRealizadasConsideracoes,
 			EnumAvaliacaoAcomp acompanhamentoOrientador, String acompanhamentoOrientadorComentario,
 			EnumAvaliacaoAcomp acompanhamentoCoordenador, String acompanhamentoCoordenadorComentario,
-			String contribuicaoEstagio, EnumAvaliacaoAcomp avalPontualidade, EnumAvaliacaoAcomp avalCriatividade,
-			EnumAvaliacaoAcomp avalProtagonismo, EnumAvaliacaoAcomp avalResponsabilidade,
-			EnumAvaliacaoAcomp avalConduta, EnumAvaliacaoAcomp avalDominioTecnico, EnumAvaliacaoAcomp avalHabilidades,
-			EnumAvaliacaoAcomp avalEfetivacao) {
+			String contribuicaoEstagio, EnumAvaliacao avalPontualidade, EnumAvaliacao avalCriatividade,
+			EnumAvaliacao avalProtagonismo, EnumAvaliacao avalResponsabilidade,
+			EnumAvaliacao avalConduta, EnumAvaliacao avalDominioTecnico, EnumAvaliacao avalHabilidades,
+			EnumAvaliacao avalEfetivacao) {
 		super();
 		this.id = id;
 		this.estagio = estagio;
@@ -178,68 +179,72 @@ public class FichaDeAvaliacao implements Serializable{
 		this.contribuicaoEstagio = contribuicaoEstagio;
 	}
 
-	public EnumAvaliacaoAcomp getAvalPontualidade() {
+	public EnumAvaliacao getAvalPontualidade() {
 		return avalPontualidade;
 	}
 
-	public void setAvalPontualidade(EnumAvaliacaoAcomp avalPontualidade) {
+	public void setAvalPontualidade(EnumAvaliacao avalPontualidade) {
 		this.avalPontualidade = avalPontualidade;
 	}
 
-	public EnumAvaliacaoAcomp getAvalCriatividade() {
+	public EnumAvaliacao getAvalCriatividade() {
 		return avalCriatividade;
 	}
 
-	public void setAvalCriatividade(EnumAvaliacaoAcomp avalCriatividade) {
+	public void setAvalCriatividade(EnumAvaliacao avalCriatividade) {
 		this.avalCriatividade = avalCriatividade;
 	}
 
-	public EnumAvaliacaoAcomp getAvalProtagonismo() {
+	public EnumAvaliacao getAvalProtagonismo() {
 		return avalProtagonismo;
 	}
 
-	public void setAvalProtagonismo(EnumAvaliacaoAcomp avalProtagonismo) {
+	public void setAvalProtagonismo(EnumAvaliacao avalProtagonismo) {
 		this.avalProtagonismo = avalProtagonismo;
 	}
 
-	public EnumAvaliacaoAcomp getAvalResponsabilidade() {
+	public EnumAvaliacao getAvalResponsabilidade() {
 		return avalResponsabilidade;
 	}
 
-	public void setAvalResponsabilidade(EnumAvaliacaoAcomp avalResponsabilidade) {
+	public void setAvalResponsabilidade(EnumAvaliacao avalResponsabilidade) {
 		this.avalResponsabilidade = avalResponsabilidade;
 	}
 
-	public EnumAvaliacaoAcomp getAvalConduta() {
+	public EnumAvaliacao getAvalConduta() {
 		return avalConduta;
 	}
 
-	public void setAvalConduta(EnumAvaliacaoAcomp avalConduta) {
+	public void setAvalConduta(EnumAvaliacao avalConduta) {
 		this.avalConduta = avalConduta;
 	}
 
-	public EnumAvaliacaoAcomp getAvalDominioTecnico() {
+	public EnumAvaliacao getAvalDominioTecnico() {
 		return avalDominioTecnico;
 	}
 
-	public void setAvalDominioTecnico(EnumAvaliacaoAcomp avalDominioTecnico) {
+	public void setAvalDominioTecnico(EnumAvaliacao avalDominioTecnico) {
 		this.avalDominioTecnico = avalDominioTecnico;
 	}
 
-	public EnumAvaliacaoAcomp getAvalHabilidades() {
+	public EnumAvaliacao getAvalHabilidades() {
 		return avalHabilidades;
 	}
 
-	public void setAvalHabilidades(EnumAvaliacaoAcomp avalHabilidades) {
+	public void setAvalHabilidades(EnumAvaliacao avalHabilidades) {
 		this.avalHabilidades = avalHabilidades;
 	}
 
-	public EnumAvaliacaoAcomp getAvalEfetivacao() {
+	public EnumAvaliacao getAvalEfetivacao() {
 		return avalEfetivacao;
 	}
 
-	public void setAvalEfetivacao(EnumAvaliacaoAcomp avalEfetivacao) {
+	public void setAvalEfetivacao(EnumAvaliacao avalEfetivacao) {
 		this.avalEfetivacao = avalEfetivacao;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }

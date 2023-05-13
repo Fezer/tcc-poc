@@ -16,12 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpr.estagio.modulo.dto.CertificadoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
+import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
@@ -31,6 +34,9 @@ public class CoeREST {
 
 	@Autowired
 	private TermoDeEstagioService termoDeEstagioService;
+	
+	@Autowired
+	private CertificadoDeEstagioService certificadoDeEstagioService;
 		
 	@Autowired
 	private ModelMapper mapper;
@@ -125,6 +131,24 @@ public class CoeREST {
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/certificado/pendenteAprovacaoCoe")
+	public ResponseEntity<List<CertificadoDeEstagioDTO>> listarCertificadosPendenteAprovacao(){
+		try {
+			List<CertificadoDeEstagio> listaCertificados = certificadoDeEstagioService.listarCertificadosPendentesAprovacaoCoe();
+			if(listaCertificados == null || listaCertificados.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaCertificados.stream().map(e -> mapper.map(e, CertificadoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;
