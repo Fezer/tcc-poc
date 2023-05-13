@@ -18,7 +18,7 @@ export default defineComponent({
       type: Object,
     },
   },
-  setup({
+  async setup({
     advanceStep,
     backStep,
     dados,
@@ -29,6 +29,10 @@ export default defineComponent({
   }) {
     const toast = useToast();
     const zodErrors = new ZodErrorsService().getTranslatedErrors();
+
+    const { aluno } = useAluno();
+
+    console.log(aluno);
 
     const errors = ref({} as Record<string, string>);
 
@@ -103,8 +107,15 @@ export default defineComponent({
       enderecoAgencia: null,
       bairroAgencia: null,
       certificadoMilitar: null,
-      orgaoExpedicaoCertMilitar: null,
-      serieCertMilitar: null,
+      orgaoDeExpedicao: null,
+      serie: null,
+      estadoCivil: null,
+      dependentes: null,
+      dataChegadaNoPais: null,
+      tituloEleitoral: null,
+      dataExpedicao: null,
+      zona: null,
+      secao: null,
     });
 
     const handleValidateAndAdvance = () => {
@@ -154,6 +165,7 @@ export default defineComponent({
       tiposDeVaga,
       bancos,
       gruposSanguineos,
+      aluno,
     };
   },
 });
@@ -188,41 +200,28 @@ export default defineComponent({
     <div class="col-12">
       <div class="card p-fluid col-12">
         <h5>Dados do Aluno</h5>
-        <div class="formgrid grid">
-          <div class="field col">
-            <label for="formacao">Formação em andamento</label>
-            <InputText id="formacao" type="text" disabled value="Teste" />
-          </div>
-          <div class="field col">
-            <label for="nivelVaga">Peridiocidade total do curso</label>
-            <InputText id="nivelVaga" type="text" disabled value="Teste" />
-          </div>
-        </div>
+
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="rg">RG</label>
-            <InputText id="rg" type="text" disabled value="Teste" />
+            <InputText id="rg" type="text" disabled :value="aluno?.rg" />
           </div>
           <div class="field col">
-            <label for="orgaoEmissor">Órgão Emissor</label>
-            <InputText id="orgaoEmissor" type="text" disabled value="Teste" />
+            <label for="orgaoEmissor">Órgão Emissor RG</label>
+            <InputText  v-model="state.orgaoEmissorRG" />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="uf">UF</label>
-            <InputText id="uf" type="text" disabled value="Teste" />
+            <label for="uf">UF RG</label>
+            <InputText v-model="state.ufRG"  />
           </div>
           <div class="field col">
-            <label for="dataExpedicaoRG">Data de expedição</label>
+            <label for="dataExpedicaoRG">Data de expedição RG</label>
             <InputText
-              id="dataExpedicaoRG"
-              type="text"
-              disabled
-              value="Teste"
-            />
+              v-model="state.dataExpedicaoRG" />
           </div>
         </div>
 
@@ -230,43 +229,39 @@ export default defineComponent({
           <div class="field col">
             <label for="tituloEleitoral">Título eleitoral</label>
             <InputText
-              id="tituloEleitoral"
-              type="text"
-              disabled
-              value="Teste"
+              v-model="state.tituloEleitoral"
             />
           </div>
           <div class="field col">
             <label for="dataEmissaoTitulo">Data de emissão</label>
             <InputMask
-              id="dataEmissaoTitulo"
-              type="text"
-              disabled
+            v-model="state.dataExpedicao"
               mask="99/99/9999"
-              value="Teste"
+
             />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="zonaEleitoral">Título eleitoral</label>
-            <InputText id="zonaEleitoral" type="text" disabled value="Teste" />
+            <label for="zonaEleitoral">Zona</label>
+            <InputText  v-model="state.zona" />
           </div>
           <div class="field col">
             <label for="secaoEleitora">Seção</label>
-            <InputText id="secaoEleitora" type="text" disabled value="Teste" />
+            <InputText
+              v-model="state.secao" />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="estadoCivil">Estado Civil</label>
-            <InputText id="estadoCivil" type="text" disabled value="Teste" />
+            <InputText v-model="state.estadoCivil" />
           </div>
           <div class="field col">
             <label for="dependentes">Dependentes</label>
-            <InputText id="dependentes" type="text" disabled value="Teste" />
+            <InputNumber v-model="state.dependentes" />
           </div>
         </div>
 
@@ -283,14 +278,24 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label for="corDaPele">Cor da Pele</label>
-            <InputText id="corDaPele" type="text" disabled value="Teste" />
+            <InputText
+              id="corDaPele"
+              type="text"
+              disabled
+              :value="aluno?.dadosAuxiliares?.corRaca"
+            />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="sexo">Sexo</label>
-            <InputText id="sexo" type="text" disabled value="Teste" />
+            <InputText
+              id="sexo"
+              type="text"
+              disabled
+              :value="aluno?.dadosAuxiliares?.sexo"
+            />
           </div>
           <div class="field col">
             <label for="cidadeNascimento">Cidade de Nascimento</label>
@@ -306,18 +311,33 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="nomeDoPai">Nome do pai</label>
-            <InputText id="nomeDoPai" type="text" disabled value="Teste" />
+            <InputText
+              id="nomeDoPai"
+              type="text"
+              disabled
+              :value="aluno?.dadosAuxiliares?.nomePai"
+            />
           </div>
           <div class="field col">
             <label for="nomeDaMae">Nome da mãe</label>
-            <InputText id="nomeDaMae" type="text" disabled value="Teste" />
+            <InputText
+              id="nomeDaMae"
+              type="text"
+              disabled
+              :value="aluno?.dadosAuxiliares?.nomeMae"
+            />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="nacionalidade">Nacionalidade</label>
-            <InputText id="nacionalidade" type="text" disabled value="Teste" />
+            <InputText
+              id="nacionalidade"
+              type="text"
+              disabled
+              :value="aluno?.dadosAuxiliares?.nacionalidade"
+            />
           </div>
           <div class="field col">
             <label for="dataChegadaPais">Data de chegada no pais</label>
@@ -425,7 +445,10 @@ export default defineComponent({
     </div>
 
     <div class="col-12">
-      <div class="card p-fluid col-12">
+      <div
+        class="card p-fluid col-12"
+        v-if="aluno?.dadosAuxiliares?.sexo === 'M'"
+      >
         <h5>Certificado Militar</h5>
         <div class="formgrid grid">
           <div class="field col">

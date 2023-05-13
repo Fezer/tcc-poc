@@ -23,9 +23,6 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    dados: {
-      type: Object,
-    },
   },
 
   setup({
@@ -36,7 +33,6 @@ export default defineComponent({
     advanceStep: Function;
     backStep?: Function;
     finalStep?: boolean;
-    data?: any;
   }) {
     const { termo, setTermo } = useTermo();
     const toast = useToast();
@@ -204,6 +200,7 @@ export default defineComponent({
       aluno,
       handleLoadDocentes,
       docentes,
+      finalStep,
     };
   },
 });
