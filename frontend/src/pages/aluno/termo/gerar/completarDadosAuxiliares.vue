@@ -3,6 +3,8 @@ import { useToast } from "primevue/usetoast";
 import { defineComponent, reactive, ref } from "vue";
 import { z } from "zod";
 import ZodErrorsService from "../../../../../services/ZodErrorsService";
+import AlunoService from "~~/services/AlunoService";
+import dayjs from "dayjs";
 
 export default defineComponent({
   props: {
@@ -29,6 +31,8 @@ export default defineComponent({
   }) {
     const toast = useToast();
     const zodErrors = new ZodErrorsService().getTranslatedErrors();
+
+    const alunoService = new AlunoService();
 
     const { aluno } = useAluno();
 
@@ -97,44 +101,36 @@ export default defineComponent({
     ]);
 
     const state = reactive({
-      tipoVaga: null,
-      banco: null,
-      grupoSanguineo: null,
-      numAgencia: null,
-      numConta: null,
-      nomeAgencia: null,
-      cidadeAgencia: null,
-      enderecoAgencia: null,
-      bairroAgencia: null,
-      certificadoMilitar: null,
-      orgaoDeExpedicao: null,
-      serie: null,
       estadoCivil: null,
-      dependentes: null,
-      dataChegadaNoPais: null,
-      tituloEleitoral: null,
+      dependente: null,
+      grupoSanguineo: null,
+      dataChegada: null,
       dataExpedicao: null,
+      tituloEleitoral: null,
       zona: null,
       secao: null,
+      certificadoMilitar: null,
+      orgaoExpedicao: null,
+      serie: null,
+      // tipoVaga: null,
+      // banco: null
     });
 
-    const handleValidateAndAdvance = () => {
+    const handleValidateAndAdvance = async () => {
       console.log("validating..");
       const validator = z.object({
-        banco: z.string().trim().min(1),
-        numAgencia: z.string().trim().min(1),
-        numConta: z.string().trim().min(1),
-        nomeAgencia: z.string().trim().min(1),
-        cidadeAgencia: z.string().trim().min(1),
-        enderecoAgencia: z.string().trim().min(1),
-        bairroAgencia: z.string().trim().min(1),
-        tipoVaga: z.string().trim().min(1),
-        grupoSanguineo: z.string().trim().min(1),
-        certificadoMilitar: z.string().trim().min(1),
-        orgaoExpedicaoCertMilitar: z.string().trim().min(1),
-        serieCertMilitar: z.string().trim().min(1),
+        // estadoCivil: z.string().min(1),
+        // dependente: z.number().min(0),
+        // grupoSanguineo: z.string().min(1),
+        // dataChegada: z.date(),
+        // dataExpedicao: z.date(),
+        // tituloEleitoral: z.string().min(1),
+        // zona: z.number().min(0),
+        // secao: z.number().min(0),
+        // certificadoMilitar: z.string().min(1),
+        // orgaoExpedicao: z.string().min(1),
+        // serie: z.string().min(1),
       });
-
       const result = validator.safeParse({ ...state });
 
       if (!result.success) {
@@ -153,8 +149,43 @@ export default defineComponent({
 
         return;
       }
+      const grr = "GRR20200141";
 
-      advanceStep();
+      try {
+        await alunoService
+          .atualizaDadosAuxiliares(grr, {
+            estadoCivil: state.estadoCivil,
+            dependente: state.dependente,
+            grupoSanguineo: state.grupoSanguineo,
+            dataChegada: dayjs(state.dataChegada),
+            dataExpedicao: dayjs(state.dataExpedicao),
+            tituloEleitoral: state.tituloEleitoral,
+            zona: state.zona,
+            secao: state.secao,
+            certificadoMilitar: state.certificadoMilitar,
+            orgaoExpedicao: state.orgaoExpedicao,
+            serie: state.serie,
+          })
+          .then(() => {
+            toast.add({
+              severity: "success",
+              summary: "Sucesso",
+              detail: "Dados atualizados com sucesso",
+              life: 3000,
+            });
+          });
+
+        advanceStep();
+      } catch (err) {
+        toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Erro ao atualizar dados",
+          life: 3000,
+        });
+
+        console.error(err);
+      }
     };
 
     return {
@@ -201,7 +232,6 @@ export default defineComponent({
       <div class="card p-fluid col-12">
         <h5>Dados do Aluno</h5>
 
-
         <div class="formgrid grid">
           <div class="field col">
             <label for="rg">RG</label>
@@ -209,48 +239,43 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label for="orgaoEmissor">Órgão Emissor RG</label>
-            <InputText  v-model="state.orgaoEmissorRG" />
+            <InputText
+              :value="aluno?.dadosAuxiliares?.orgaroEmissor"
+              disabled
+            />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="uf">UF RG</label>
-            <InputText v-model="state.ufRG"  />
+            <InputText :value="aluno?.dadosAuxiliares?.uf" disabled />
           </div>
           <div class="field col">
             <label for="dataExpedicaoRG">Data de expedição RG</label>
-            <InputText
-              v-model="state.dataExpedicaoRG" />
+            <InputMask v-model="state.dataExpedicao" mask="99/99/9999" />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="tituloEleitoral">Título eleitoral</label>
-            <InputText
-              v-model="state.tituloEleitoral"
-            />
+            <InputText v-model="state.tituloEleitoral" />
           </div>
           <div class="field col">
             <label for="dataEmissaoTitulo">Data de emissão</label>
-            <InputMask
-            v-model="state.dataExpedicao"
-              mask="99/99/9999"
-
-            />
+            <InputMask mask="99/99/9999" disabled />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="zonaEleitoral">Zona</label>
-            <InputText  v-model="state.zona" />
+            <InputText v-model="state.zona" />
           </div>
           <div class="field col">
             <label for="secaoEleitora">Seção</label>
-            <InputText
-              v-model="state.secao" />
+            <InputText v-model="state.secao" />
           </div>
         </div>
 
@@ -300,10 +325,8 @@ export default defineComponent({
           <div class="field col">
             <label for="cidadeNascimento">Cidade de Nascimento</label>
             <InputText
-              id="cidadeNascimento"
-              type="text"
               disabled
-              value="Teste"
+              :value="aluno?.dadosAuxiliares?.cidadeNascimento"
             />
           </div>
         </div>
@@ -339,14 +362,12 @@ export default defineComponent({
               :value="aluno?.dadosAuxiliares?.nacionalidade"
             />
           </div>
-          <div class="field col">
+          <div
+            class="field col"
+            v-if="aluno?.dadosAuxiliares?.nacionalidade !== 'BRASILEIRO'"
+          >
             <label for="dataChegadaPais">Data de chegada no pais</label>
-            <InputMask
-              id="dataChegadaPais"
-              type="text"
-              value="Teste"
-              mask="99/99/9999"
-            />
+            <InputMask mask="99/99/9999" v-model="state.dataChegada" />
           </div>
         </div>
       </div>
@@ -470,7 +491,7 @@ export default defineComponent({
             <InputText
               id="orgaoExpedicaoCertMilitar"
               type="text"
-              v-model="state.orgaoExpedicaoCertMilitar"
+              v-model="state.orgaoExpedicao"
               :class="{ 'p-invalid': errors['orgaoExpedicaoCertMilitar'] }"
             />
             <small class="text-rose-600">{{
@@ -483,7 +504,7 @@ export default defineComponent({
             <InputText
               id="serieCertMilitar"
               type="text"
-              v-model="state.serieCertMilitar"
+              v-model="state.serie"
               :class="{ 'p-invalid': errors['serieCertMilitar'] }"
             />
             <small class="text-rose-600">{{
