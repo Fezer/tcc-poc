@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -575,7 +576,7 @@ public class AlunoREST {
 							throw new NotFoundException("Relatório de estágio não pertence ao estágio!");
 						} else {
 							relatorioEstagio = relatorioDeEstagioService.solicitarCienciaRelatorioDeEstagioAluno(relatorioEstagio);
-							return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(relatorioEstagio, RelatorioDeEstagioDTO.class));
+							return ResponseEntity.status(HttpStatus.OK).body(mapper.map(relatorioEstagio, RelatorioDeEstagioDTO.class));
 						}
 					}
 				}
@@ -670,4 +671,35 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
+	
+	@GetMapping("/{grrAlunoURL}/certificadoDeEstagio")
+	public ResponseEntity<List<CertificadoDeEstagioDTO>> listarCertificadosDeEstagio(@PathVariable String grrAlunoURL) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					List<Estagio> listaEstagios = aluno.getEstagio();
+					if (listaEstagios == null || listaEstagios.isEmpty()) {
+						throw new NotFoundException("O aluno não possui nenhum estágio!");
+					} else {
+						List<CertificadoDeEstagio> listaCertificados = alunoService.listarCertificadosDeEstagioAluno(aluno);
+						return ResponseEntity.status(HttpStatus.OK).body(listaCertificados.stream().map(e -> mapper.map(e, CertificadoDeEstagioDTO.class)).collect(Collectors.toList()));
+					}
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}		
+	
 }

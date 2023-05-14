@@ -157,5 +157,47 @@ public class CoeREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
+	
+	@PutMapping("/certificado/{idCertificado}/aprovar")
+	public ResponseEntity<CertificadoDeEstagioDTO> aprovarCertificadoDeEstagio(@PathVariable Long idCertificado){
+		try {
+			Optional<CertificadoDeEstagio> certificadoOptional = certificadoDeEstagioService.buscarCertificadoDeEstagioPorId(idCertificado);
+		if(certificadoOptional.isEmpty()) {
+			throw new NotFoundException("Certificado de estágio não encontrado!");
+		} else {
+			CertificadoDeEstagio certificado = certificadoOptional.get();
+			certificado = certificadoDeEstagioService.aprovarCertificadoDeEstagioCoe(certificado);
+			CertificadoDeEstagioDTO certificadoDTO = mapper.map(certificado, CertificadoDeEstagioDTO.class);
+			return new ResponseEntity<>(certificadoDTO, HttpStatus.OK);
+		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/certificado/{idCertificado}/reprovar")
+	public ResponseEntity<CertificadoDeEstagioDTO> reprovarCertificadoDeEstagio(@PathVariable Long idCertificado, @RequestBody JustificativaDTO justificativa){
+		try {
+			Optional<CertificadoDeEstagio> certificadoOptional = certificadoDeEstagioService.buscarCertificadoDeEstagioPorId(idCertificado);
+		if(certificadoOptional.isEmpty()) {
+			throw new NotFoundException("Certificado de estágio não encontrado!");
+		} else {
+			CertificadoDeEstagio certificado = certificadoOptional.get();
+			certificado = certificadoDeEstagioService.reprovarCertificadoDeEstagioCoe(certificado, justificativa);
+			CertificadoDeEstagioDTO certificadoDTO = mapper.map(certificado, CertificadoDeEstagioDTO.class);
+			return new ResponseEntity<>(certificadoDTO, HttpStatus.OK);
+		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
 
 }

@@ -575,7 +575,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1/fichaDeAvaliacao",
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/2/fichaDeAvaliacao",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -585,7 +585,7 @@
 								"aluno",
 								"GRR20175486",
 								"estagio",
-								"1",
+								"2",
 								"fichaDeAvaliacao"
 							]
 						}
@@ -598,7 +598,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1/certificadoDeEstagio",
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/2/certificadoDeEstagio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -608,7 +608,7 @@
 								"aluno",
 								"GRR20175486",
 								"estagio",
-								"1",
+								"2",
 								"certificadoDeEstagio"
 							]
 						}
@@ -2703,6 +2703,59 @@
 								"coe",
 								"certificado",
 								"pendenteAprovacaoCoe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "aprovarCertificadoDeEstagioCoe",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coe/certificado/2/aprovar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coe",
+								"certificado",
+								"2",
+								"aprovar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reprovarCertificadoDeEstagioCoe",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"justificativa\": \"Não gostei.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/coe/certificado/3/reprovar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coe",
+								"certificado",
+								"3",
+								"reprovar"
 							]
 						}
 					},

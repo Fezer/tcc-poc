@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
+import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
+import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
@@ -81,6 +83,23 @@ public class CertificadoDeEstagioService {
 	public List<CertificadoDeEstagio> listarCertificadosPendentesAprovacaoCoe() {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COE;
 		return certificadoRepo.findByEtapaFluxo(etapaFluxo);
+	}
+
+	public CertificadoDeEstagio aprovarCertificadoDeEstagioCoe(CertificadoDeEstagio certificado) {
+		EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
+		EnumParecerAprovadores aprovacaoCoe = EnumParecerAprovadores.Aprovado;
+		certificado.setEtapaFluxo(etapaFluxo);
+		certificado.setParecerCOE(aprovacaoCoe);
+		return certificadoRepo.save(certificado);
+	}
+	
+	public CertificadoDeEstagio reprovarCertificadoDeEstagioCoe(CertificadoDeEstagio certificado, JustificativaDTO justificativa) {
+		EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
+		EnumParecerAprovadores aprovacaoCoe = EnumParecerAprovadores.Reprovado;
+		certificado.setEtapaFluxo(etapaFluxo);
+		certificado.setParecerCOE(aprovacaoCoe);
+		certificado.setMotivoReprovacao(justificativa.getJustificativa());
+		return certificadoRepo.save(certificado);
 	}
 
 }
