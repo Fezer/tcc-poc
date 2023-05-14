@@ -19,6 +19,7 @@ import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.mapper.SigaApiModuloEstagioMapper;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.Discente;
@@ -252,6 +253,18 @@ public class AlunoService {
 //	    termoRepo.delete(termoDeCompromisso);
 //	    planoAtividadesRepo.delete(planoDeAtividades);
 //	    estagioRepo.delete(estagio);
+	}
+
+	public List<CertificadoDeEstagio> listarCertificadosDeEstagioAluno(Aluno aluno) {
+		List<Estagio> listaEstagios = aluno.getEstagio();
+		if (listaEstagios == null || listaEstagios.isEmpty()) {
+			return null;
+		}
+		List<CertificadoDeEstagio> listaCertificados = new ArrayList<>();
+		for (Estagio e : listaEstagios) {
+			listaCertificados.add(e.getCertificadoDeEstagio());
+		}
+		return listaCertificados;
 	}
 
 }
