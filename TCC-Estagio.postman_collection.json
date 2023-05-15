@@ -166,7 +166,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/17/associarOrientador/452",
+							"raw": "http://localhost:5000/termo/2/associarOrientador/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -174,9 +174,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"17",
+								"2",
 								"associarOrientador",
-								"452"
+								"3"
 							]
 						}
 					},
@@ -3438,6 +3438,28 @@
 								"relatorioDeEstagio",
 								"7",
 								"darCiencia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarCertificadosDeEstagiosDoOrientador",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/orientador/3/certificadoDeEstagio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"orientador",
+								"3",
+								"certificadoDeEstagio",
+								""
 							]
 						}
 					},
