@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "8578bcc2-b4aa-4b53-a24a-9ab6a901e92f",
+		"_postman_id": "c047314e-91b5-4cbc-bc63-f3262e65c81e",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18567474"
+		"_exporter_id": "17301767"
 	},
 	"item": [
 		{
@@ -546,7 +546,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"estadoCivil\": \"Solteiro\",\n    \"dependentes\": 0,\n    \"grupoSanguineo\": \"O+\",\n    \"dataDeChegadaNoPais\": \"2013-10-31T00:00:00.000+00:00\",\n    \"dataExpedicao\": \"2013-10-31T00:00:00.000+00:00\",\n    \"tituloEleitoral\": \"sei lá\",\n    \"zona\": 3,\n    \"secao\": 971,\n    \"certificadoMilitar\": \"2987389127389\",\n    \"orgaoDeExpedicao\": \"Quartel do Boqueirão\",\n    \"serie\": \"askjsa\",\n    \"emailInstitucional\": \"gabriel.mayer@ufpr.br\"\n}",
+							"raw": "{\n    \"id\": 1,\n    \"nomePai\": \"Kleber\",\n    \"estadoCivil\": \"Solteiro\",\n    \"dependentes\": 1,\n    \"grupoSanguineo\": \"O+\",\n    \"corDaPele\": \"Branca\",\n    \"sexo\": \"Masculino\",\n    \"nomeMae\": \"Camila\",\n    \"nacionalidade\": \"BRASILEIRO\",\n    \"dataDeChegadaNoPais\": \"2013-10-31T00:00:00.000+00:00\",\n    \"orgaoEmissor\": \"SSP-PR\",\n    \"uf\": \"Paraná\",\n    \"dataExpedicao\": \"2013-10-31T00:00:00.000+00:00\",\n    \"tituloEleitoral\": \"sei lá\",\n    \"zona\": 3,\n    \"secao\": 971,\n    \"certificadoMilitar\": \"777674537\",\n    \"orgaoDeExpedicao\": \"Quartel do Boqueirão\",\n    \"serie\": \"askjsa\",\n    \"dataDeEmissao\": \"2013-10-31T00:00:00.000+00:00\",\n    \"estadoNascimento\": \"Paraná\",\n    \"cidadeNascimento\": \"Curitiba\",\n    \"corRaca\": \"Branca\",\n    \"expressaoGenero\": \"Não informado\",\n    \"autoIdentificacaoGenero\": \"Não informado\",\n    \"orientacaoSexual\": \"Não informado\",\n    \"emailInstitucional\": \"gabriel.mayer@ufpr.br\",\n    \"tipoVaga\": \"Ampla Concorrência\",\n    \"dataEmissaoTitulo\": \"2013-10-31T00:00:00.000+00:00\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -654,6 +654,66 @@
 								"estagio",
 								"2",
 								"termoAditivo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "novoDadosBancarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"banco\": \"Bantads\",\n    \"numeroDaAgencia\": 1,\n    \"numeroDaConta\": 250,\n    \"nomeDaAgencia\": \"Agência\",\n    \"cidadeDaAgencia\": \"Curitiba\",\n    \"enderecoDaAgencia\": \"Rua Agência\",\n    \"bairroDaAgencia\": \"Uberaba\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20204481/dadosBancarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20204481",
+								"dadosBancarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizaDadosBancarios",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"banco\": \"Bantads Atualizado\",\n    \"numeroDaAgencia\": 1,\n    \"numeroDaConta\": 250,\n    \"nomeDaAgencia\": \"Agência\",\n    \"cidadeDaAgencia\": \"Curitiba\",\n    \"enderecoDaAgencia\": \"Rua Agência\",\n    \"bairroDaAgencia\": \"Uberaba\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20204481/dadosBancarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20204481",
+								"dadosBancarios"
 							]
 						}
 					},
