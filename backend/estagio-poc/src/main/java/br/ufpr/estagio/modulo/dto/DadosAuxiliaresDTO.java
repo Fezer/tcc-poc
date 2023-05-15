@@ -63,6 +63,10 @@ public class DadosAuxiliaresDTO implements Serializable{
 	
 	private String emailInstitucional;
 	
+	private String tipoVaga;
+	
+	private String dataEmissaoTitulo;
+	
 	//private Aluno aluno;
 
 	public DadosAuxiliaresDTO() {
@@ -105,6 +109,45 @@ public class DadosAuxiliaresDTO implements Serializable{
 		this.orientacaoSexual = orientacaoSexual;
 		this.emailInstitucional = emailInstitucional;
 		//this.aluno = aluno;
+	}
+
+	public DadosAuxiliaresDTO(long id, String nomePai, String estadoCivil, int dependentes, String grupoSanguineo,
+			String corDaPele, String sexo, String nomeMae, String nacionalidade, Date dataDeChegadaNoPais,
+			String orgaoEmissor, String uf, Date dataExpedicao, String tituloEleitoral, int zona, int secao,
+			String certificadoMilitar, String orgaoDeExpedicao, String serie, Date dataDeEmissao,
+			String estadoNascimento, String cidadeNascimento, String corRaca, String expressaoGenero,
+			String autoIdentificacaoGenero, String orientacaoSexual, String emailInstitucional, String tipoVaga,
+			String dataEmissaoTitulo) {
+		super();
+		this.id = id;
+		this.nomePai = nomePai;
+		this.estadoCivil = estadoCivil;
+		this.dependentes = dependentes;
+		this.grupoSanguineo = grupoSanguineo;
+		this.corDaPele = corDaPele;
+		this.sexo = sexo;
+		this.nomeMae = nomeMae;
+		this.nacionalidade = nacionalidade;
+		this.dataDeChegadaNoPais = dataDeChegadaNoPais;
+		this.orgaoEmissor = orgaoEmissor;
+		this.uf = uf;
+		this.dataExpedicao = dataExpedicao;
+		this.tituloEleitoral = tituloEleitoral;
+		this.zona = zona;
+		this.secao = secao;
+		this.certificadoMilitar = certificadoMilitar;
+		this.orgaoDeExpedicao = orgaoDeExpedicao;
+		this.serie = serie;
+		this.dataDeEmissao = dataDeEmissao;
+		this.estadoNascimento = estadoNascimento;
+		this.cidadeNascimento = cidadeNascimento;
+		this.corRaca = corRaca;
+		this.expressaoGenero = expressaoGenero;
+		this.autoIdentificacaoGenero = autoIdentificacaoGenero;
+		this.orientacaoSexual = orientacaoSexual;
+		this.emailInstitucional = emailInstitucional;
+		this.tipoVaga = tipoVaga;
+		this.dataEmissaoTitulo = dataEmissaoTitulo;
 	}
 
 	public long getId() {
@@ -330,6 +373,22 @@ public class DadosAuxiliaresDTO implements Serializable{
 	public void setAluno(Aluno aluno) {
 		this.aluno = aluno;
 	}*/
+
+	public String getTipoVaga() {
+		return tipoVaga;
+	}
+
+	public void setTipoVaga(String tipoVaga) {
+		this.tipoVaga = tipoVaga;
+	}
+
+	public String getDataEmissaoTitulo() {
+		return dataEmissaoTitulo;
+	}
+
+	public void setDataEmissaoTitulo(String dataEmissaoTitulo) {
+		this.dataEmissaoTitulo = dataEmissaoTitulo;
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

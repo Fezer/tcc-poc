@@ -105,6 +105,13 @@ public class DadosAuxiliares implements Serializable{
 	@Column(name = "emailInstitucional")
 	private String emailInstitucional;
 	
+	// Colunas adicionadas a pedido do Lucas
+	@Column(name = "tipoVaga")
+	private String tipoVaga;
+	
+	@Column(name = "dataEmissaoTitulo")
+	private String dataEmissaoTitulo;
+	
 	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=true)
@@ -149,6 +156,46 @@ public class DadosAuxiliares implements Serializable{
 		this.autoIdentificacaoGenero = autoIdentificacaoGenero;
 		this.orientacaoSexual = orientacaoSexual;
 		this.emailInstitucional = emailInstitucional;
+		this.aluno = aluno;
+	}
+
+	public DadosAuxiliares(long id, String nomePai, String estadoCivil, int dependentes, String grupoSanguineo,
+			String corDaPele, String sexo, String nomeMae, String nacionalidade, Date dataDeChegadaNoPais,
+			String orgaoEmissor, String uf, Date dataExpedicao, String tituloEleitoral, int zona, int secao,
+			String certificadoMilitar, String orgaoDeExpedicao, String serie, Date dataDeEmissao,
+			String estadoNascimento, String cidadeNascimento, String corRaca, String expressaoGenero,
+			String autoIdentificacaoGenero, String orientacaoSexual, String emailInstitucional, String tipoVaga,
+			String dataEmissaoTitulo, Aluno aluno) {
+		super();
+		this.id = id;
+		this.nomePai = nomePai;
+		this.estadoCivil = estadoCivil;
+		this.dependentes = dependentes;
+		this.grupoSanguineo = grupoSanguineo;
+		this.corDaPele = corDaPele;
+		this.sexo = sexo;
+		this.nomeMae = nomeMae;
+		this.nacionalidade = nacionalidade;
+		this.dataDeChegadaNoPais = dataDeChegadaNoPais;
+		this.orgaoEmissor = orgaoEmissor;
+		this.uf = uf;
+		this.dataExpedicao = dataExpedicao;
+		this.tituloEleitoral = tituloEleitoral;
+		this.zona = zona;
+		this.secao = secao;
+		this.certificadoMilitar = certificadoMilitar;
+		this.orgaoDeExpedicao = orgaoDeExpedicao;
+		this.serie = serie;
+		this.dataDeEmissao = dataDeEmissao;
+		this.estadoNascimento = estadoNascimento;
+		this.cidadeNascimento = cidadeNascimento;
+		this.corRaca = corRaca;
+		this.expressaoGenero = expressaoGenero;
+		this.autoIdentificacaoGenero = autoIdentificacaoGenero;
+		this.orientacaoSexual = orientacaoSexual;
+		this.emailInstitucional = emailInstitucional;
+		this.tipoVaga = tipoVaga;
+		this.dataEmissaoTitulo = dataEmissaoTitulo;
 		this.aluno = aluno;
 	}
 
@@ -366,6 +413,22 @@ public class DadosAuxiliares implements Serializable{
 
 	public void setEmailInstitucional(String emailInstitucional) {
 		this.emailInstitucional = emailInstitucional;
+	}
+
+	public String getTipoVaga() {
+		return tipoVaga;
+	}
+
+	public void setTipoVaga(String tipoVaga) {
+		this.tipoVaga = tipoVaga;
+	}
+
+	public String getDataEmissaoTitulo() {
+		return dataEmissaoTitulo;
+	}
+
+	public void setDataEmissaoTitulo(String dataEmissaoTitulo) {
+		this.dataEmissaoTitulo = dataEmissaoTitulo;
 	}
 
 	public Aluno getAluno() {
