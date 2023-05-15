@@ -11,13 +11,17 @@
 
 ### Requisitos
 
-- Docker
+- Docker (banco)
+- Node v18 (front)
+- pnpm (front)
+- Spring Boot (back)
+- Java v17
 
 ### Como rodar
 
-Antes de rodar a primeira vez:
+<!-- Antes de rodar a primeira vez: -->
 
-```bash
+<!-- ```bash
 docker compose build
 ```
 
@@ -33,9 +37,9 @@ Se for preciso instalar alguma dependência, é preciso buildar novamente a imag
 
 ```bash
 docker-compose build --no-cache
-```
+``` -->
 
-Então pode rodar novamente o comando acima.
+<!-- Então pode rodar novamente o comando acima. -->
 
 ## Banco
 
@@ -62,4 +66,18 @@ Caso ocorra erro de permissão:
 
 ```bash
 chmod +x mvnw
+```
+
+## Frontend
+
+Utilizando o pnpm, instale as dependencias com:
+
+```
+pnpm i
+```
+
+E rode o projeto com:
+
+```
+pnpm run dev
 ```
