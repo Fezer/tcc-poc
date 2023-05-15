@@ -6,6 +6,8 @@ import planoAtividades from "../../../components/common/plano-atividades.vue";
 import historicoDeMudancasVue from "./historicoDeMudancas.vue";
 import relatoriosVue from "./relatorios.vue";
 import Status from "../../../components/common/statusEstagio.vue";
+import AlunoService from "~~/services/AlunoService";
+import { useToast } from "primevue/usetoast";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
 
@@ -20,6 +22,8 @@ export default defineComponent({
   },
   async setup() {
     const route = useRoute();
+    const alunoService = new AlunoService();
+    const toast = useToast();
 
     const { id } = route.params;
 
@@ -35,14 +39,38 @@ export default defineComponent({
 
     const cancelationConfirm = ref(false);
 
+    const handleSolicitarCertificado = async () => {
+      const grr = "GRR20200141";
+      await alunoService
+        .solicitarCertificadoEstagio(grr, id)
+        .then(() => {
+          toast.add({
+            severity: "success",
+            summary: "Certificado solicitado com sucesso",
+            detail:
+              "Aguarde aprovação da COE para baixar seu certificado. Você pode acompanhar o processo na aba Certificados.",
+            life: 3000,
+          });
+        })
+        .catch((err) => {
+          toast.add({
+            severity: "error",
+            summary: "Erro ao solicitar certificado",
+            detail: "Erro ao solicitar certificado",
+            life: 3000,
+          });
+          console.error(err);
+        });
+    };
+
     return {
       tipoUsuario,
       cancelationConfirm,
       estagio,
       id,
+      handleSolicitarCertificado,
     };
   },
-  methods: {},
 });
 </script>
 
@@ -68,10 +96,24 @@ export default defineComponent({
             icon="pi pi-file"
           />
         </NuxtLink>
+        <NuxtLink :to="`/aluno/avaliacao/gerar/${id}`">
+          <Button
+            label="Ficha de Avaliação"
+            class="p-button"
+            icon="pi pi-file"
+          />
+        </NuxtLink>
         <Button
           label="Termo aditivo"
           class="p-button-success"
           icon="pi pi-plus"
+        />
+        <!-- TODO: só poder solicitar certificado após ficha de avaliação -->
+        <Button
+          label="Solicitar certificado"
+          class="p-button-success"
+          icon="pi pi-file"
+          @click="handleSolicitarCertificado"
         />
       </div>
     </div>

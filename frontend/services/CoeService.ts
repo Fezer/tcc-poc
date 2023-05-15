@@ -24,4 +24,19 @@ export default class CoeService extends BaseService {
       },
     });
   }
+
+  async aprovarCertificado(id: number) {
+    return await $fetch(this.BASE_URL + `/coe/certificado/${id}/aprovar`, {
+      method: "PUT",
+    });
+  }
+
+  async reprovarCertificado(id: number, justificativa: string) {
+    return await $fetch(this.BASE_URL + `/coe/certificado/${id}/reprovar`, {
+      method: "PUT",
+      body: {
+        justificativa,
+      },
+    });
+  }
 }

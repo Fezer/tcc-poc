@@ -13,6 +13,11 @@ export default {
           link: "/coe/coeProcesses",
           icon: "pi-envelope",
         },
+        {
+          label: "Certificados",
+          link: "/coe/certificados",
+          icon: "pi-file",
+        },
       ],
     };
   },
