@@ -23,11 +23,13 @@ import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.Discente;
+import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CienciaCoordenacaoRepository;
+import br.ufpr.estagio.modulo.repository.EnderecoRepository;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
 import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
@@ -41,6 +43,9 @@ public class AlunoService {
 
 	@Autowired
 	private AlunoRepository alunoRepo;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepo;
 	
 	@Autowired
 	private EstagioRepository estagioRepo;
@@ -75,14 +80,37 @@ public class AlunoService {
     public Aluno buscarAlunoPorGrr(String matricula) {
     	Optional<Aluno> alunoFind = alunoRepo.findByMatricula(matricula);
     	Aluno aluno = new Aluno();
+    	
+    	
 
     	if(alunoFind.isEmpty()) {
     		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula);
     		aluno = sigaApiModuloEstagioMapping.mapearDiscenteEmAluno(discente);
-    		aluno = this.salvarAluno(aluno);
+    		//aluno = this.salvarAluno(aluno);
     	} else {
     		aluno = alunoFind.get();
+    		Optional<Endereco> enderecoFind = enderecoRepo.findByAlunoId(aluno.getId());
+        	Endereco endereco = new Endereco();
+        	endereco.setCep(enderecoFind.get().getCep());
+        	endereco.setCidade(enderecoFind.get().getCidade());
+        	endereco.setComplemento(enderecoFind.get().getComplemento());
+        	endereco.setId(enderecoFind.get().getId());
+        	endereco.setNumero(enderecoFind.get().getNumero());
+        	endereco.setPessoa(enderecoFind.get().getPessoa());
+        	endereco.setRua(enderecoFind.get().getRua());
+        	endereco.setUf(enderecoFind.get().getUf());
+        	
+        	endereco.setAluno(enderecoFind.get().getAluno());
+        	
+        	aluno.setEndereco(endereco);
+        	
+        	enderecoRepo.save(endereco);
+
     	}
+
+    	
+    	
+    	
         return aluno;
     }
     
