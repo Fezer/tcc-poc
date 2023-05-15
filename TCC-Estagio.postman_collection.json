@@ -635,6 +635,29 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "novoTermoAditivo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/2/termoAditivo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"2",
+								"termoAditivo"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -862,7 +885,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/16",
+							"raw": "http://localhost:5000/estagio/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -870,7 +893,7 @@
 							"port": "5000",
 							"path": [
 								"estagio",
-								"16"
+								"2"
 							]
 						}
 					},

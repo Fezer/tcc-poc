@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
+import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
@@ -63,6 +64,7 @@ public class EstagioService {
     }
 
 	public EstagioDTO toEstagioDTO(Estagio estagio) {
+		EnumTipoTermoDeEstagio tipoTermoAditivo = EnumTipoTermoDeEstagio.TermoAditivo;
 		EstagioDTO estagioDTO = new EstagioDTO();
 		estagioDTO.setId(estagio.getId());
 		estagioDTO.setTipoEstagio(estagio.getTipoEstagio());
@@ -86,7 +88,9 @@ public class EstagioService {
 		List<Long> termoAditivo = new ArrayList<Long>();
 		if(estagio.getTermoAdivito() != null) {
 			for (TermoDeEstagio t : estagio.getTermoAdivito()) {
-				termoAditivo.add(t.getId());
+				if(t.getTipoTermoDeEstagio() == tipoTermoAditivo) {
+					termoAditivo.add(t.getId());
+				}
 			}
 		} else {
 			termoAditivo.add((long) 0);

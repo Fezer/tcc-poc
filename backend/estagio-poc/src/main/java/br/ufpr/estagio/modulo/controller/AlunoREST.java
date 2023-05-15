@@ -801,6 +801,40 @@ public class AlunoREST {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
-	}		
+	}
+	
+	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoAditivo")
+	public ResponseEntity<TermoDeEstagioDTO> novoTermoAditivo(@PathVariable String grrAlunoURL, @PathVariable long idEstagio) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Optional<Estagio> estagioFind = estagioService.buscarEstagioPorId(idEstagio);
+					if (estagioFind.isEmpty()) {
+						throw new NotFoundException("Estágio não encontrado!");
+					}
+					Estagio estagio = estagioFind.get();
+					if (estagio.getAluno().getId() != aluno.getId()) {
+						throw new NotFoundException("Estágio não pertence ao aluno!");
+					} else {
+						TermoDeEstagio termoAditivo = termoDeEstagioService.novoTermoAditivo(estagio);
+						return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(termoAditivo, TermoDeEstagioDTO.class));
+					}
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
 	
 }
