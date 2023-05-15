@@ -33,6 +33,11 @@ public class CertificadoDeEstagioService {
 	
 	@Autowired
 	private EstagioRepository estagioRepo;
+	
+	private static final String selectPorIdOrientador = "SELECT c FROM CertificadoDeEstagio c "
+			+ "INNER JOIN c.estagio e "
+			+ "INNER JOIN e.orientador o "
+    		+ "WHERE o.id = :idOrientador";
      
     public List<CertificadoDeEstagio> listarTodosCertificadosDeEstagio() {
         return certificadoRepo.findAll();
@@ -100,6 +105,15 @@ public class CertificadoDeEstagioService {
 		certificado.setParecerCOE(aprovacaoCoe);
 		certificado.setMotivoReprovacao(justificativa.getJustificativa());
 		return certificadoRepo.save(certificado);
+	}
+
+	public List<CertificadoDeEstagio> listarCertificadosPorIdOrientador(long idOrientador) {
+		
+        TypedQuery<CertificadoDeEstagio> query = em.createQuery(selectPorIdOrientador, CertificadoDeEstagio.class);
+        
+        query.setParameter("idOrientador", idOrientador);
+        
+        return query.getResultList();
 	}
 
 }

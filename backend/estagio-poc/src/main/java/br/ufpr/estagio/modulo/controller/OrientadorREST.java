@@ -16,14 +16,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpr.estagio.modulo.dto.CertificadoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
-import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
+import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.OrientadorService;
 import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
@@ -44,6 +46,9 @@ public class OrientadorREST {
 	
 	@Autowired
 	private RelatorioDeEstagioService relatorioDeEstagioService;
+	
+	@Autowired
+	private CertificadoDeEstagioService certificadoDeEstagioService;
 		
 	@GetMapping("/{idOrientador}/estagio")
 	public ResponseEntity<List<EstagioDTO>> listarEstagiosDeOrientandos(@PathVariable Long idOrientador){
@@ -177,6 +182,29 @@ public class OrientadorREST {
 				RelatorioDeEstagio relatorio = relatorioFind.get();
 				relatorio = relatorioDeEstagioService.darCienciaRelatorioDeEstagioOrientador(relatorio);
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(relatorio, RelatorioDeEstagioDTO.class));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/{idOrientador}/certificadoDeEstagio/")
+	public ResponseEntity<List<CertificadoDeEstagioDTO>> listarCertificadosDeEstagio(@PathVariable Long idOrientador){
+		try {
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientador);
+			if(orientadorFind.isEmpty()) {
+				throw new NotFoundException("Orientador não encontrado!");
+			} else {
+				Orientador orientador = orientadorFind.get();
+				List<CertificadoDeEstagio> listaCertificados = certificadoDeEstagioService.listarCertificadosPorIdOrientador(orientador.getId());
+			    List<CertificadoDeEstagioDTO> listaCertificadosDTO = listaCertificados.stream()
+			            .map(ap -> mapper.map(ap, CertificadoDeEstagioDTO.class))
+			            .collect(Collectors.toList());
+			    return ResponseEntity.ok().body(listaCertificadosDTO);
 			}
 		}catch(PocException e) {
 			e.printStackTrace();
