@@ -14,6 +14,7 @@ import br.ufpr.estagio.modulo.model.Coordenador;
 import br.ufpr.estagio.modulo.model.Curso;
 import br.ufpr.estagio.modulo.model.CursoSiga;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
+import br.ufpr.estagio.modulo.model.DadosBancarios;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.model.Orientador;
@@ -84,6 +85,8 @@ public class SigaApiModuloEstagioMapper {
 			
 			System.out.println(aluno.getEndereco().getComplemento() + " B " + aluno.getEndereco().getId());
 			aluno.setEndereco(endereco);*/
+			
+			aluno.setDadosBancarios(null);
 		} else {
 			aluno = alunoFind.get();
 			/*System.out.println(aluno.getEndereco().getComplemento() + " C " + aluno.getEndereco().getId());
@@ -97,6 +100,10 @@ public class SigaApiModuloEstagioMapper {
 		Endereco endereco = mapearEnderecoAluno(discente, aluno);
 		
 		DadosAuxiliares dados = mapearDadosAuxiliaresAluno(discente, aluno);
+		
+		DadosBancarios dadosBancarios = new DadosBancarios();
+		
+		dadosBancarios.setAluno(aluno);
 		
 		aluno.setCurso(curso);
 		//TO-DO: Avaliar se não é melhor colocar essa lógica dentro da classe Curso.

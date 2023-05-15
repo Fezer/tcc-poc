@@ -29,7 +29,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
 import br.ufpr.estagio.modulo.dto.CertificadoDeEstagioDTO;
+import br.ufpr.estagio.modulo.dto.ContratanteDTO;
 import br.ufpr.estagio.modulo.dto.DadosAuxiliaresDTO;
+import br.ufpr.estagio.modulo.dto.DadosBancariosDTO;
 import br.ufpr.estagio.modulo.dto.AlunoDTO;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
@@ -42,7 +44,9 @@ import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
+import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
+import br.ufpr.estagio.modulo.model.DadosBancarios;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.FichaDeAvaliacao;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
@@ -50,6 +54,7 @@ import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.AlunoService;
 import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.DadosAuxiliaresService;
+import br.ufpr.estagio.modulo.service.DadosBancariosService;
 import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.FichaDeAvaliacaoService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
@@ -86,6 +91,9 @@ public class AlunoREST {
 	
 	@Autowired
 	private DadosAuxiliaresService dadosService;
+	
+	@Autowired
+	private DadosBancariosService dadosBancariosService;
 
 	@Autowired
 	private GeradorDePdfService geradorService;
@@ -278,7 +286,100 @@ public class AlunoREST {
 	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 	    }
 	}
+	
+	@PostMapping("/{grrAlunoURL}/dadosBancarios")
+	public ResponseEntity<DadosBancariosDTO> criarDadosBancarios(@PathVariable String grrAlunoURL, @RequestBody DadosBancariosDTO dadosBancariosDTO){
+		try {
+			Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL);
+	        Aluno alunoAntigo = aluno.get();
+	        
+	        if (aluno.isPresent()) {
+				DadosBancarios dadosBancarios = mapper.map(dadosBancariosDTO, DadosBancarios.class);
+			    
+				dadosBancarios = dadosBancariosService.criarDadosBancarios(alunoAntigo, dadosBancarios);
+				
+				dadosBancariosDTO = mapper.map(dadosBancarios, DadosBancariosDTO.class);
+				
+				return new ResponseEntity<>(dadosBancariosDTO, HttpStatus.CREATED);	
+	        } else {
+				throw new NotFoundException("Os dados não foram encontrados.");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/{grrAlunoURL}/dadosBancarios")
+	@ResponseBody
+	public ResponseEntity<Object> listarDadosBancarios(@PathVariable String grrAlunoURL) {
+	    try {
+	    	if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Optional<Aluno> alunoOptional = alunoService.buscarAlunoGrr(grrAlunoURL);
+		        Aluno aluno = alunoOptional.get();
+		        
+		        if (aluno == null)
+					throw new NotFoundException("Aluno não encontrado!");
+		        
+		        DadosBancarios dados = new DadosBancarios();
+				
+				dados.setId(aluno.getDadosBancarios().getId());
+				
+				dados = dadosBancariosService.buscarDadosBancariosPorId(dados.getId());
+				
+				if (dados == null)
+					throw new NotFoundException("Dados não encontrados!");
+				
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(dados, DadosBancarios.class));
+			}
+	    	
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
 
+	@PutMapping("/{grrAlunoURL}/dadosBancarios")
+	@ResponseBody
+	public ResponseEntity<Object> atualizarDadosBancarios(@PathVariable String grrAlunoURL, @RequestBody DadosBancariosDTO dadosDTO) {
+	    try {
+	        Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL);
+	        Aluno alunoAntigo = aluno.get();
+	        
+	        if (aluno.isPresent()) {
+	        	DadosBancarios dadosAtualizado = mapper.map(dadosDTO, DadosBancarios.class);
+	        	
+	        	dadosAtualizado.setId(alunoAntigo.getDadosBancarios().getId());
+	        	dadosAtualizado.setAluno(alunoAntigo);
+	        	
+	        	System.out.println("Dados bancários do rapaz: " + alunoAntigo.getDadosBancarios().getId());
+	        	
+	        	dadosAtualizado = dadosBancariosService.atualizarDados(dadosAtualizado);
+	        	DadosBancariosDTO dadosDTOAtualizado = mapper.map(dadosAtualizado, DadosBancariosDTO.class);
+	        	
+	        	return ResponseEntity.ok().body(dadosDTOAtualizado);
+	        } else {
+				throw new NotFoundException("Os dados não foram encontrados.");
+			}
+	        
+	        
+	    } catch (NumberFormatException e) {
+	        throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+	    } catch (PocException e) {
+	        e.printStackTrace();
+	        throw e;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    }
+	}
 
 	@PutMapping("/{grrAlunoURL}/termo/{idTermo}/solicitarAprovacaoTermo")
 	public ResponseEntity<TermoDeEstagioDTO> solicitarAprovacaoTermo(@PathVariable String grrAlunoURL,

@@ -80,8 +80,6 @@ public class AlunoService {
     public Aluno buscarAlunoPorGrr(String matricula) {
     	Optional<Aluno> alunoFind = alunoRepo.findByMatricula(matricula);
     	Aluno aluno = new Aluno();
-    	
-    	
 
     	if(alunoFind.isEmpty()) {
     		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula);
@@ -140,25 +138,31 @@ public class AlunoService {
     	Aluno alunoExistente = buscarAlunoGrr(alunoAtualizado.getMatricula())
     			.orElseThrow(() -> new NoSuchElementException("Aluno não encontrado para o ID informado"));
     	
-    	DadosAuxiliares dadosExistente = alunoExistente.getDadosAuxiliares();
+    	DadosAuxiliares dadosAuxiliaresExistente = alunoExistente.getDadosAuxiliares();
     	
-    	System.out.println(dadosExistente.getNacionalidade());
+    	System.out.println(dadosAuxiliaresExistente.getNacionalidade());
     	System.out.println(alunoAtualizado.getDadosAuxiliares().getEstadoCivil());
     	
     	DadosAuxiliares dadosAtualizado = alunoAtualizado.getDadosAuxiliares();
     	
-    	dadosExistente.setEstadoCivil(dadosAtualizado.getEstadoCivil());
-    	dadosExistente.setDependentes(dadosAtualizado.getDependentes());
-    	dadosExistente.setGrupoSanguineo(dadosAtualizado.getGrupoSanguineo());
-    	dadosExistente.setDataDeChegadaNoPais(dadosAtualizado.getDataDeChegadaNoPais());
-    	dadosExistente.setDataExpedicao(dadosAtualizado.getDataExpedicao());
-    	dadosExistente.setTituloEleitoral(dadosAtualizado.getTituloEleitoral());
-    	dadosExistente.setZona(dadosAtualizado.getZona());
-    	dadosExistente.setSecao(dadosAtualizado.getSecao());
-    	dadosExistente.setCertificadoMilitar(dadosAtualizado.getCertificadoMilitar());
-    	dadosExistente.setOrgaoDeExpedicao(dadosAtualizado.getOrgaoDeExpedicao());
-    	dadosExistente.setSerie(dadosAtualizado.getSerie());
-    	dadosExistente.setEmailInstitucional(dadosAtualizado.getEmailInstitucional());
+    	dadosAuxiliaresExistente.setEstadoCivil(dadosAtualizado.getEstadoCivil());
+    	dadosAuxiliaresExistente.setDependentes(dadosAtualizado.getDependentes());
+    	dadosAuxiliaresExistente.setGrupoSanguineo(dadosAtualizado.getGrupoSanguineo());
+    	dadosAuxiliaresExistente.setDataDeChegadaNoPais(dadosAtualizado.getDataDeChegadaNoPais());
+    	dadosAuxiliaresExistente.setDataExpedicao(dadosAtualizado.getDataExpedicao());
+    	dadosAuxiliaresExistente.setTituloEleitoral(dadosAtualizado.getTituloEleitoral());
+    	dadosAuxiliaresExistente.setZona(dadosAtualizado.getZona());
+    	dadosAuxiliaresExistente.setSecao(dadosAtualizado.getSecao());
+    	dadosAuxiliaresExistente.setCertificadoMilitar(dadosAtualizado.getCertificadoMilitar());
+    	dadosAuxiliaresExistente.setOrgaoDeExpedicao(dadosAtualizado.getOrgaoDeExpedicao());
+    	dadosAuxiliaresExistente.setSerie(dadosAtualizado.getSerie());
+    	dadosAuxiliaresExistente.setEmailInstitucional(dadosAtualizado.getEmailInstitucional());
+    	
+    	/**
+    	 * TO-DO: 
+    	 * 		-> Colocar os outros dados auxiliares no bloco acima.
+    	 *		-> Colocar os dados bancários no bloco a ser criado abaixo.
+    	 */
     	
     	//dados.save?
     	return alunoRepo.save(alunoExistente);
@@ -246,6 +250,11 @@ public class AlunoService {
 	}
 	
 	public Aluno atualizarDadosAuxiliares(Aluno aluno) {
+		
+    	return alunoRepo.save(aluno);
+    }
+	
+public Aluno atualizarDadosBancarios(Aluno aluno) {
 		
     	return alunoRepo.save(aluno);
     }
