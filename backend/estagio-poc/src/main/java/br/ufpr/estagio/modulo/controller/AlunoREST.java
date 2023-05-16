@@ -2,6 +2,10 @@ package br.ufpr.estagio.modulo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +13,8 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -100,7 +106,13 @@ public class AlunoREST {
 	
 	@Autowired
 	private ModelMapper mapper;
+	
+	private final ResourceLoader resourceLoader;
 
+	public AlunoREST(ResourceLoader resourceLoader) {
+	    this.resourceLoader = resourceLoader;
+	}
+	
 	// Isso é um listarAluno.
 	//É só mudar então.
 	@GetMapping("/{grrAlunoURL}")
@@ -583,8 +595,7 @@ public class AlunoREST {
 	}
 	
 	@PostMapping("/{grrAlunoURL}/upload-termo")
-	public ResponseEntity<String> uploadTermo(@PathVariable String grrAlunoURL,
-	                                           @RequestParam("file") MultipartFile file) {
+	public ResponseEntity<String> uploadTermo(@PathVariable String grrAlunoURL, @RequestParam("file") MultipartFile file) {
 	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 	        throw new BadRequestException("GRR do aluno não informado!");
 	    } else {
@@ -597,12 +608,19 @@ public class AlunoREST {
 	            } else {
 	                try {
 	                    // Cria um objeto File para representar o arquivo no sistema de arquivos do servidor
-	                	String path = getClass().getClassLoader().getResource("arquivos").getPath();
-	                	String nomeArquivo = grrAlunoURL + "-" + file.getOriginalFilename();
-	                    File dest = new File(path, nomeArquivo);
+	                	//Resource resource = resourceLoader.getResource("classpath:/arquivos/");
+	                    //String path = resource.getFile().getPath();
+	                	//String nomeArquivo = grrAlunoURL + "-" + file.getOriginalFilename();
+	                    //File dest = new File(path, nomeArquivo);
 
+	                	String diretorioDestino = "/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc/src/main/resources/arquivos/";
+	                	String nomeArquivo = grrAlunoURL + "-" + file.getOriginalFilename();
+	                    Path destino = Paths.get(diretorioDestino + nomeArquivo);
+	                    
+	                    Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+	                    
 	                    // Salva o arquivo no sistema de arquivos do servidor
-	                    file.transferTo(dest);
+	                    //file.transferTo(dest);
 
 	                    return ResponseEntity.ok("Termo de compromisso salvo com sucesso!");
 	                } catch (Exception e) {
