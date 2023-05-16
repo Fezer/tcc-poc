@@ -45,6 +45,7 @@ import br.ufpr.estagio.modulo.dto.FichaDeAvaliacaoDTO;
 import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
+import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
@@ -607,22 +608,15 @@ public class AlunoREST {
 	                throw new BadRequestException("Arquivo não informado!");
 	            } else {
 	                try {
-	                    // Cria um objeto File para representar o arquivo no sistema de arquivos do servidor
-	                	//Resource resource = resourceLoader.getResource("classpath:/arquivos/");
-	                    //String path = resource.getFile().getPath();
-	                	//String nomeArquivo = grrAlunoURL + "-" + file.getOriginalFilename();
-	                    //File dest = new File(path, nomeArquivo);
 
 	                	Path diretorioAtual = Paths.get("").toAbsolutePath();
-	                	//System.out.println(diretorioAtual);
+	                	
 	                	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
-	                	String nomeArquivo = grrAlunoURL + "-" + file.getOriginalFilename();
+	                	
+	                	String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso + "-" + file.getOriginalFilename();
 	                    Path destino = Paths.get(diretorioDestino + nomeArquivo);
 	                    
 	                    Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
-	                    
-	                    // Salva o arquivo no sistema de arquivos do servidor
-	                    //file.transferTo(dest);
 
 	                    return ResponseEntity.ok("Termo de compromisso salvo com sucesso!");
 	                } catch (Exception e) {
