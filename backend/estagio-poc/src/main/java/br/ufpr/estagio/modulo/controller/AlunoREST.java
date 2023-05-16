@@ -613,7 +613,9 @@ public class AlunoREST {
 	                	//String nomeArquivo = grrAlunoURL + "-" + file.getOriginalFilename();
 	                    //File dest = new File(path, nomeArquivo);
 
-	                	String diretorioDestino = "/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc/src/main/resources/arquivos/";
+	                	Path diretorioAtual = Paths.get("").toAbsolutePath();
+	                	//System.out.println(diretorioAtual);
+	                	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
 	                	String nomeArquivo = grrAlunoURL + "-" + file.getOriginalFilename();
 	                    Path destino = Paths.get(diretorioDestino + nomeArquivo);
 	                    
