@@ -47,7 +47,9 @@
         <Column field="button">
           <template #body="{ data }">
             <NuxtLink :to="`seguradora/seguradoraVisualizar/`">
-              <!-- <NuxtLink :to="`seguradora/seguradoraVisualizar/${data.id}`"> -->
+              <NuxtLink
+                :to="`seguradora/seguradoraVisualizar/${data.id}`"
+              ></NuxtLink>
               <Button label="Ver" />
             </NuxtLink>
           </template>

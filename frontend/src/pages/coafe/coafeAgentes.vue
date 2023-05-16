@@ -6,13 +6,13 @@
         <h6>Coordenação de Atividades Formativas e Estágios</h6>
       </h1>
       <span class="p-input-icon-left">
-        <NuxtLink to="/agentes-integracao/novo">
+        <NuxtLink to="/coafe/agentes-integracao/novo">
           <Button label="Cadastrar"></Button>
         </NuxtLink>
       </span>
     </div>
     <div>
-      <DataTable :value="AgentesdeIntegração" rowHover stripedRows>
+      <DataTable :value="agentes" rowHover stripedRows>
         <template #header>
           <div class="flex justify-content-between">
             <span class="p-input-icon-left">
@@ -33,7 +33,7 @@
         </Column>
         <Column field="numeroConvenio" header="Número de Convênios">
           <template #body="{ data }">
-            {{ data.numeroConvenio }}
+            {{ data.convenio }}
           </template>
         </Column>
         <Column field="button">
@@ -50,22 +50,9 @@
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Button from "primevue/button";
-export default {
-  data() {
-    return {
-      AgentesdeIntegração: [
-        {
-          nome: "Agente 1",
-          numeroConvenio: "3",
-          situação: "ATIVO",
-        },
-        {
-          nome: "Agente 2",
-          numeroConvenio: "2",
-          situação: "INATIVO",
-        },
-      ],
-    };
-  },
-};
+</script>
+<script scoped></script>
+<script setup>
+const { data: agentes } = useFetch(`http://localhost:5000/agente-integrador`);
+console.log(agentes.value);
 </script>
