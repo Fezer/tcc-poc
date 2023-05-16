@@ -672,7 +672,7 @@ public class TermoDeEstagioService {
 		EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
 		
 		TermoDeEstagio termoAditivo = new TermoDeEstagio();
-		BeanUtils.copyProperties(estagio.getTermoDeCompromisso(), termoAditivo);
+		BeanUtils.copyProperties(estagio, termoAditivo);
 		
 		TermoDeEstagio termoAditivoTemp = new TermoDeEstagio();
 		termoAditivoTemp = termoRepo.save(termoAditivoTemp);
@@ -690,7 +690,7 @@ public class TermoDeEstagioService {
 		termoAditivo.setMotivoIndeferimento(termoAditivoTemp.getMotivoIndeferimento());
 		
 		PlanoDeAtividades planoAtividade = new PlanoDeAtividades();
-		BeanUtils.copyProperties(estagio.getTermoDeCompromisso().getPlanoAtividades(), planoAtividade);
+		BeanUtils.copyProperties(estagio.getPlanoDeAtividades(), planoAtividade);
 		
 		PlanoDeAtividades planoAtividadeTemp = new PlanoDeAtividades();
 		planoAtividadeTemp = planoRepo.save(planoAtividadeTemp);
