@@ -35,9 +35,8 @@ export default defineComponent({
     };
 
     const { data: aluno } = useAsyncData("aluno", async () => {
-      // if (aluno?.value) return aluno;
-      const response = await alunoService.getAlunoFullFromSiga(grr);
-      // setAluno(response);
+      const response = await alunoService.getAlunoFromSiga(grr);
+      setAluno(response);
       console.log(response);
 
       await handleFetchCurso(response?.idPrograma);
@@ -81,16 +80,11 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="name2">RG</label>
-            <InputText
-              disabled
-              id="name2"
-              type="text"
-              :value="aluno?.documento"
-            />
+            <InputText disabled id="name2" type="text" :value="aluno?.rg" />
           </div>
           <div class="field col">
             <label for="email2">CPF</label>
-            <InputText disabled type="text" :value="aluno?.cpf" />
+            <InputText disabled type="text" :value="aluno?.documento" />
           </div>
         </div>
         <div class="formgrid grid">
@@ -165,7 +159,12 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="name2">Matrícula (GRR)</label>
-            <InputText disabled id="name2" type="text" :value="aluno?.grr" />
+            <InputText
+              disabled
+              id="name2"
+              type="text"
+              :value="aluno?.matricula"
+            />
           </div>
           <div class="field col">
             <label for="email2">Nível</label>

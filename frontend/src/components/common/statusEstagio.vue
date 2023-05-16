@@ -14,9 +14,18 @@ export default defineComponent({
     estagio: any;
     tipoUsuario: "ALUNO" | "OUTRO";
   }) {
+    const getStatusColor = () => {
+      const status = estagio?.statusEstagio;
+
+      if (status === "Aprovado") return "text-green-500";
+      if (status === "Reprovado") return "text-red-500";
+      return "text-orange-500";
+    };
+
     return {
       parseDate,
       tipoUsuario,
+      getStatusColor,
     };
   },
 });
@@ -30,7 +39,9 @@ export default defineComponent({
       <div class="grid">
         <div class="text-box col-3">
           <strong>Status</strong>
-          <p class="text-orange-500 font-bold">{{ estagio?.statusEstagio }}</p>
+          <p :class="'font-bold text-xl '.concat(getStatusColor())">
+            {{ estagio?.statusEstagio?.toUpperCase() }}
+          </p>
         </div>
         <div class="text-box col-3 flex flex-col">
           <strong>Data de Início do Estágio</strong>

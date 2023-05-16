@@ -3,6 +3,8 @@ import { useToast } from "primevue/usetoast";
 import { defineComponent, reactive, ref } from "vue";
 import { z } from "zod";
 import ZodErrorsService from "../../../../../services/ZodErrorsService";
+import AlunoService from "~~/services/AlunoService";
+import dayjs from "dayjs";
 
 export default defineComponent({
   props: {
@@ -18,7 +20,7 @@ export default defineComponent({
       type: Object,
     },
   },
-  setup({
+  async setup({
     advanceStep,
     backStep,
     dados,
@@ -29,6 +31,12 @@ export default defineComponent({
   }) {
     const toast = useToast();
     const zodErrors = new ZodErrorsService().getTranslatedErrors();
+
+    const alunoService = new AlunoService();
+
+    const { aluno } = useAluno();
+
+    console.log(aluno);
 
     const errors = ref({} as Record<string, string>);
 
@@ -93,37 +101,36 @@ export default defineComponent({
     ]);
 
     const state = reactive({
-      tipoVaga: null,
-      banco: null,
+      estadoCivil: null,
+      dependente: null,
       grupoSanguineo: null,
-      numAgencia: null,
-      numConta: null,
-      nomeAgencia: null,
-      cidadeAgencia: null,
-      enderecoAgencia: null,
-      bairroAgencia: null,
+      dataChegada: null,
+      dataExpedicao: null,
+      tituloEleitoral: null,
+      zona: null,
+      secao: null,
       certificadoMilitar: null,
-      orgaoExpedicaoCertMilitar: null,
-      serieCertMilitar: null,
+      orgaoExpedicao: null,
+      serie: null,
+      // tipoVaga: null,
+      // banco: null
     });
 
-    const handleValidateAndAdvance = () => {
+    const handleValidateAndAdvance = async () => {
       console.log("validating..");
       const validator = z.object({
-        banco: z.string().trim().min(1),
-        numAgencia: z.string().trim().min(1),
-        numConta: z.string().trim().min(1),
-        nomeAgencia: z.string().trim().min(1),
-        cidadeAgencia: z.string().trim().min(1),
-        enderecoAgencia: z.string().trim().min(1),
-        bairroAgencia: z.string().trim().min(1),
-        tipoVaga: z.string().trim().min(1),
-        grupoSanguineo: z.string().trim().min(1),
-        certificadoMilitar: z.string().trim().min(1),
-        orgaoExpedicaoCertMilitar: z.string().trim().min(1),
-        serieCertMilitar: z.string().trim().min(1),
+        // estadoCivil: z.string().min(1),
+        // dependente: z.number().min(0),
+        // grupoSanguineo: z.string().min(1),
+        // dataChegada: z.date(),
+        // dataExpedicao: z.date(),
+        // tituloEleitoral: z.string().min(1),
+        // zona: z.number().min(0),
+        // secao: z.number().min(0),
+        // certificadoMilitar: z.string().min(1),
+        // orgaoExpedicao: z.string().min(1),
+        // serie: z.string().min(1),
       });
-
       const result = validator.safeParse({ ...state });
 
       if (!result.success) {
@@ -142,8 +149,43 @@ export default defineComponent({
 
         return;
       }
+      const grr = "GRR20200141";
 
-      advanceStep();
+      try {
+        await alunoService
+          .atualizaDadosAuxiliares(grr, {
+            estadoCivil: state.estadoCivil,
+            dependente: state.dependente,
+            grupoSanguineo: state.grupoSanguineo,
+            dataChegada: dayjs(state.dataChegada),
+            dataExpedicao: dayjs(state.dataExpedicao),
+            tituloEleitoral: state.tituloEleitoral,
+            zona: state.zona,
+            secao: state.secao,
+            certificadoMilitar: state.certificadoMilitar,
+            orgaoExpedicao: state.orgaoExpedicao,
+            serie: state.serie,
+          })
+          .then(() => {
+            toast.add({
+              severity: "success",
+              summary: "Sucesso",
+              detail: "Dados atualizados com sucesso",
+              life: 3000,
+            });
+          });
+
+        advanceStep();
+      } catch (err) {
+        toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Erro ao atualizar dados",
+          life: 3000,
+        });
+
+        console.error(err);
+      }
     };
 
     return {
@@ -154,6 +196,7 @@ export default defineComponent({
       tiposDeVaga,
       bancos,
       gruposSanguineos,
+      aluno,
     };
   },
 });
@@ -188,85 +231,62 @@ export default defineComponent({
     <div class="col-12">
       <div class="card p-fluid col-12">
         <h5>Dados do Aluno</h5>
-        <div class="formgrid grid">
-          <div class="field col">
-            <label for="formacao">Formação em andamento</label>
-            <InputText id="formacao" type="text" disabled value="Teste" />
-          </div>
-          <div class="field col">
-            <label for="nivelVaga">Peridiocidade total do curso</label>
-            <InputText id="nivelVaga" type="text" disabled value="Teste" />
-          </div>
-        </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="rg">RG</label>
-            <InputText id="rg" type="text" disabled value="Teste" />
+            <InputText id="rg" type="text" disabled :value="aluno?.rg" />
           </div>
           <div class="field col">
-            <label for="orgaoEmissor">Órgão Emissor</label>
-            <InputText id="orgaoEmissor" type="text" disabled value="Teste" />
+            <label for="orgaoEmissor">Órgão Emissor RG</label>
+            <InputText
+              :value="aluno?.dadosAuxiliares?.orgaroEmissor"
+              disabled
+            />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="uf">UF</label>
-            <InputText id="uf" type="text" disabled value="Teste" />
+            <label for="uf">UF RG</label>
+            <InputText :value="aluno?.dadosAuxiliares?.uf" disabled />
           </div>
           <div class="field col">
-            <label for="dataExpedicaoRG">Data de expedição</label>
-            <InputText
-              id="dataExpedicaoRG"
-              type="text"
-              disabled
-              value="Teste"
-            />
+            <label for="dataExpedicaoRG">Data de expedição RG</label>
+            <InputMask v-model="state.dataExpedicao" mask="99/99/9999" />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="tituloEleitoral">Título eleitoral</label>
-            <InputText
-              id="tituloEleitoral"
-              type="text"
-              disabled
-              value="Teste"
-            />
+            <InputText v-model="state.tituloEleitoral" />
           </div>
           <div class="field col">
             <label for="dataEmissaoTitulo">Data de emissão</label>
-            <InputMask
-              id="dataEmissaoTitulo"
-              type="text"
-              disabled
-              mask="99/99/9999"
-              value="Teste"
-            />
+            <InputMask mask="99/99/9999" disabled />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="zonaEleitoral">Título eleitoral</label>
-            <InputText id="zonaEleitoral" type="text" disabled value="Teste" />
+            <label for="zonaEleitoral">Zona</label>
+            <InputText v-model="state.zona" />
           </div>
           <div class="field col">
             <label for="secaoEleitora">Seção</label>
-            <InputText id="secaoEleitora" type="text" disabled value="Teste" />
+            <InputText v-model="state.secao" />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="estadoCivil">Estado Civil</label>
-            <InputText id="estadoCivil" type="text" disabled value="Teste" />
+            <InputText v-model="state.estadoCivil" />
           </div>
           <div class="field col">
             <label for="dependentes">Dependentes</label>
-            <InputText id="dependentes" type="text" disabled value="Teste" />
+            <InputNumber v-model="state.dependentes" />
           </div>
         </div>
 
@@ -283,22 +303,30 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label for="corDaPele">Cor da Pele</label>
-            <InputText id="corDaPele" type="text" disabled value="Teste" />
+            <InputText
+              id="corDaPele"
+              type="text"
+              disabled
+              :value="aluno?.dadosAuxiliares?.corRaca"
+            />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="sexo">Sexo</label>
-            <InputText id="sexo" type="text" disabled value="Teste" />
+            <InputText
+              id="sexo"
+              type="text"
+              disabled
+              :value="aluno?.dadosAuxiliares?.sexo"
+            />
           </div>
           <div class="field col">
             <label for="cidadeNascimento">Cidade de Nascimento</label>
             <InputText
-              id="cidadeNascimento"
-              type="text"
               disabled
-              value="Teste"
+              :value="aluno?.dadosAuxiliares?.cidadeNascimento"
             />
           </div>
         </div>
@@ -306,27 +334,40 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="nomeDoPai">Nome do pai</label>
-            <InputText id="nomeDoPai" type="text" disabled value="Teste" />
+            <InputText
+              id="nomeDoPai"
+              type="text"
+              disabled
+              :value="aluno?.dadosAuxiliares?.nomePai"
+            />
           </div>
           <div class="field col">
             <label for="nomeDaMae">Nome da mãe</label>
-            <InputText id="nomeDaMae" type="text" disabled value="Teste" />
+            <InputText
+              id="nomeDaMae"
+              type="text"
+              disabled
+              :value="aluno?.dadosAuxiliares?.nomeMae"
+            />
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="nacionalidade">Nacionalidade</label>
-            <InputText id="nacionalidade" type="text" disabled value="Teste" />
-          </div>
-          <div class="field col">
-            <label for="dataChegadaPais">Data de chegada no pais</label>
-            <InputMask
-              id="dataChegadaPais"
+            <InputText
+              id="nacionalidade"
               type="text"
-              value="Teste"
-              mask="99/99/9999"
+              disabled
+              :value="aluno?.dadosAuxiliares?.nacionalidade"
             />
+          </div>
+          <div
+            class="field col"
+            v-if="aluno?.dadosAuxiliares?.nacionalidade !== 'BRASILEIRO'"
+          >
+            <label for="dataChegadaPais">Data de chegada no pais</label>
+            <InputMask mask="99/99/9999" v-model="state.dataChegada" />
           </div>
         </div>
       </div>
@@ -425,7 +466,10 @@ export default defineComponent({
     </div>
 
     <div class="col-12">
-      <div class="card p-fluid col-12">
+      <div
+        class="card p-fluid col-12"
+        v-if="aluno?.dadosAuxiliares?.sexo === 'M'"
+      >
         <h5>Certificado Militar</h5>
         <div class="formgrid grid">
           <div class="field col">
@@ -447,7 +491,7 @@ export default defineComponent({
             <InputText
               id="orgaoExpedicaoCertMilitar"
               type="text"
-              v-model="state.orgaoExpedicaoCertMilitar"
+              v-model="state.orgaoExpedicao"
               :class="{ 'p-invalid': errors['orgaoExpedicaoCertMilitar'] }"
             />
             <small class="text-rose-600">{{
@@ -460,7 +504,7 @@ export default defineComponent({
             <InputText
               id="serieCertMilitar"
               type="text"
-              v-model="state.serieCertMilitar"
+              v-model="state.serie"
               :class="{ 'p-invalid': errors['serieCertMilitar'] }"
             />
             <small class="text-rose-600">{{

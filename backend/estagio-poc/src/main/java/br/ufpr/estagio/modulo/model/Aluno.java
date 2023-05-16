@@ -74,7 +74,6 @@ public class Aluno extends Pessoa implements Serializable {
 	@JoinColumn(name="dados_auxiliares_id", referencedColumnName="id", nullable=true)
 	private DadosAuxiliares dadosAuxiliares;
 	
-	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="dados_bancarios_id", referencedColumnName="id", nullable=true)
 	private DadosBancarios dadosBancarios;

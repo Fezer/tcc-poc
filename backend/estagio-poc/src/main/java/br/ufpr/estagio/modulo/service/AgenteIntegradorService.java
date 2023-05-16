@@ -39,6 +39,8 @@ public class AgenteIntegradorService {
                 .orElseThrow(() -> new NoSuchElementException("Agente integrador não encontrado para o ID informado"));
 
         agenteIntegradorExistente.setCnpj(agenteIntegradorAtualizado.getCnpj());
+        agenteIntegradorExistente.setNome(agenteIntegradorAtualizado.getNome());
+        agenteIntegradorExistente.setTelefone(agenteIntegradorAtualizado.getTelefone());
         agenteIntegradorExistente.setConvenio(agenteIntegradorAtualizado.getConvenio());
         agenteIntegradorExistente.setTermoDeEstagio(agenteIntegradorAtualizado.getTermoDeEstagio());
         agenteIntegradorExistente.setEstagio(agenteIntegradorAtualizado.getEstagio());

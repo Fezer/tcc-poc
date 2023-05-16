@@ -24,6 +24,7 @@ public class DadosAuxiliaresService {
     	DadosAuxiliares dadosExistente = buscarDadosAuxiliaresId(dadosAtualizado.getId())
     			.orElseThrow(() -> new NoSuchElementException("Dados não encontrados para o ID informado"));
     	
+    	// Bloco de campos que não vêm pelo SIGA
     	dadosExistente.setEstadoCivil(dadosAtualizado.getEstadoCivil());
     	dadosExistente.setDependentes(dadosAtualizado.getDependentes());
     	dadosExistente.setGrupoSanguineo(dadosAtualizado.getGrupoSanguineo());
@@ -36,6 +37,26 @@ public class DadosAuxiliaresService {
     	dadosExistente.setOrgaoDeExpedicao(dadosAtualizado.getOrgaoDeExpedicao());
     	dadosExistente.setSerie(dadosAtualizado.getSerie());
     	dadosExistente.setEmailInstitucional(dadosAtualizado.getEmailInstitucional());
+    	
+    	// Bloco de campos requisitados pelo Lucas
+    	dadosExistente.setDataEmissaoTitulo(dadosAtualizado.getDataEmissaoTitulo());
+    	dadosExistente.setTipoVaga(dadosAtualizado.getTipoVaga());
+    	
+    	// Bloco de campos que vêm pelo SIGA e que, por decisão tomada no dia 13/05, poderão ser atualizados.
+    	dadosExistente.setAutoIdentificacaoGenero(dadosAtualizado.getAutoIdentificacaoGenero());
+    	dadosExistente.setCidadeNascimento(dadosAtualizado.getCidadeNascimento());
+    	dadosExistente.setCorDaPele(dadosAtualizado.getCorDaPele());
+    	dadosExistente.setCorRaca(dadosAtualizado.getCorRaca());
+    	dadosExistente.setDataDeEmissao(dadosAtualizado.getDataDeEmissao());
+    	dadosExistente.setEstadoNascimento(dadosAtualizado.getEstadoNascimento());
+    	dadosExistente.setExpressaoGenero(dadosAtualizado.getExpressaoGenero());
+    	dadosExistente.setNacionalidade(dadosAtualizado.getNacionalidade());
+    	dadosExistente.setNomeMae(dadosAtualizado.getNomeMae());
+    	dadosExistente.setNomePai(dadosAtualizado.getNomePai());
+    	dadosExistente.setOrgaoEmissor(dadosAtualizado.getOrgaoEmissor());
+    	dadosExistente.setOrientacaoSexual(dadosAtualizado.getOrientacaoSexual());
+    	dadosExistente.setSexo(dadosAtualizado.getSexo());
+    	dadosExistente.setUf(dadosAtualizado.getUf());
     	
     	dadosExistente.setAluno(dadosAtualizado.getAluno());
     	//aluno.save?

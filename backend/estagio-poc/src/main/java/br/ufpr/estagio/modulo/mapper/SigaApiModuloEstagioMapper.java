@@ -14,6 +14,7 @@ import br.ufpr.estagio.modulo.model.Coordenador;
 import br.ufpr.estagio.modulo.model.Curso;
 import br.ufpr.estagio.modulo.model.CursoSiga;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
+import br.ufpr.estagio.modulo.model.DadosBancarios;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.model.Orientador;
@@ -55,9 +56,12 @@ public class SigaApiModuloEstagioMapper {
 	
 	public Aluno mapearDiscenteEmAluno (Discente discente) {
 		Optional<Aluno> alunoFind = alunoRepo.findByMatricula(discente.getGrr());
-		Aluno aluno = new Aluno();
+		Aluno aluno;
+		//Endereco endereco;
 		
 		if(alunoFind.isEmpty()) {
+			aluno = new Aluno();
+			
 			aluno.setNome(discente.getNome());
 			aluno.setIdDiscente(discente.getIdDiscente());
 			aluno.setPcd(discente.isPcD());
@@ -75,31 +79,31 @@ public class SigaApiModuloEstagioMapper {
 			aluno.setMatriculado(discente.isMatriculado());
 			aluno.setTelefone(discente.getTelefone());
 			
-		}else {
+			/*System.out.println(discente.getEndereco().getComplemento() + " A " + discente.getEndereco().getId());
+			
+			endereco = mapearEnderecoAluno(discente, aluno);
+			
+			System.out.println(aluno.getEndereco().getComplemento() + " B " + aluno.getEndereco().getId());
+			aluno.setEndereco(endereco);*/
+			
+			aluno.setDadosBancarios(null);
+		} else {
 			aluno = alunoFind.get();
+			/*System.out.println(aluno.getEndereco().getComplemento() + " C " + aluno.getEndereco().getId());
+			endereco = aluno.getEndereco();*/
 		}
-		
 		
 		Curso curso = mapearCursoSigaEmCurso(discente);
 		
-		//Curso curso = cursoService.mapearCursoDiscente(discente);
-		
 		Coordenador coordenador = coordenadorService.mapearCoordenadorDiscente(discente);
 		
-		// Jogar isso para dentro de algum método mapeador
-		Endereco endereco = new Endereco();
-		endereco.setCep(discente.getEndereco().getCep());
-		endereco.setCidade(discente.getEndereco().getCidade());
-		endereco.setComplemento(discente.getEndereco().getComplemento());
-		endereco.setUf(discente.getEndereco().getUf());
-		endereco.setId(discente.getEndereco().getId());
-		endereco.setRua(discente.getEndereco().getRua());
-		endereco.setNumero(discente.getEndereco().getNumero());
-		endereco.setPessoa(aluno);
-		
-		aluno.setEndereco(endereco);
+		Endereco endereco = mapearEnderecoAluno(discente, aluno);
 		
 		DadosAuxiliares dados = mapearDadosAuxiliaresAluno(discente, aluno);
+		
+		DadosBancarios dadosBancarios = new DadosBancarios();
+		
+		dadosBancarios.setAluno(aluno);
 		
 		aluno.setCurso(curso);
 		//TO-DO: Avaliar se não é melhor colocar essa lógica dentro da classe Curso.
@@ -117,8 +121,17 @@ public class SigaApiModuloEstagioMapper {
 			curso.setCoordenador(listCoordenador);
 		}
 		
-		enderecoRepo.save(endereco);
 		dadosAuxiliaresRepo.save(dados);
+		
+		//////////////////////////////////////////////////////////////////
+		/*Endereco enderecoSalvo = enderecoRepo.save(endereco);
+		if (enderecoSalvo != null) {
+			System.out.println("Não é nulo: " + enderecoSalvo.getId());
+			aluno.setEndereco(enderecoSalvo);
+		} else
+			System.out.println("Nulo");
+		*//////////////////////////////////////////////////////////////////
+		enderecoRepo.save(endereco);
 		alunoRepo.save(aluno);
 		coordenadorRepo.save(coordenador);
 		cursoRepo.save(curso);
@@ -146,8 +159,11 @@ public class SigaApiModuloEstagioMapper {
 		return null;
 	}
 	
-	/*public Endereco mapearEnderecoAluno(Discente discente, Aluno aluno) {
+	public Endereco mapearEnderecoAluno(Discente discente, Aluno aluno) {
 		Endereco endereco = new Endereco();
+		
+		System.out.println(discente.getEndereco().getId());
+		
 		endereco.setCep(discente.getEndereco().getCep());
 		endereco.setCidade(discente.getEndereco().getCidade());
 		endereco.setComplemento(discente.getEndereco().getComplemento());
@@ -155,10 +171,14 @@ public class SigaApiModuloEstagioMapper {
 		endereco.setId(discente.getEndereco().getId());
 		endereco.setRua(discente.getEndereco().getRua());
 		endereco.setNumero(discente.getEndereco().getNumero());
-		endereco.setPessoa(aluno);
 		
+		endereco.setPessoa(aluno);
+		endereco.setAluno(aluno);
+		
+		aluno.setEndereco(endereco);
+
 		return endereco;
-	}*/
+	}
 	
 	public DadosAuxiliares mapearDadosAuxiliaresAluno(Discente discente, Aluno aluno) {
 		DadosAuxiliares dadosAuxiliares = new DadosAuxiliares();

@@ -14,6 +14,10 @@ public class AgenteIntegradorDTO implements Serializable {
 	
 	private String cnpj;
 	
+	private String nome;
+	
+	private String telefone;
+	
 	private List<Convenio> convenio;
 	
 	private List<TermoDeEstagio> termoDeEstagio;
@@ -35,6 +39,18 @@ public class AgenteIntegradorDTO implements Serializable {
 		this.estagio = estagio;
 	}
 
+	public AgenteIntegradorDTO(long id, String cnpj, String nome, String telefone, List<Convenio> convenio,
+			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio) {
+		super();
+		this.id = id;
+		this.cnpj = cnpj;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.convenio = convenio;
+		this.termoDeEstagio = termoDeEstagio;
+		this.estagio = estagio;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -49,6 +65,26 @@ public class AgenteIntegradorDTO implements Serializable {
 
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public List<Convenio> getConvenio() {

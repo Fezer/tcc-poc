@@ -105,8 +105,8 @@ export default defineComponent({
   <div>
     <Toast />
     <span>
-      <small>Processos > Iniciar novo estágio</small>
-      <h3>Novo termo de compromisso</h3>
+      <small>Estágio > Novo Relatório de Estágio</small>
+      <h3>Novo Relatório de Estágio</h3>
     </span>
     <div class="grid">
       <div class="col-12">

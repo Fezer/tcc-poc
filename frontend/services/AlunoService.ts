@@ -48,4 +48,47 @@ export default class AlunoService extends BaseService {
       }
     );
   }
+
+  public async atualizaDadosAuxiliares(
+    grr: string,
+    dados: {
+      estadoCivil: string;
+      dependente: number;
+      grupoSanguineo: string;
+      dataChegada: Date;
+      dataExpedicao: Date;
+      tituloEleitoral: string;
+      zona: number;
+      secao: number;
+      certificadoMilitar: string;
+      orgaoExpedicao: string;
+      serie: string;
+      emailInstitucional: string;
+    }
+  ) {
+    return await $fetch(`${this.BASE_URL}/aluno/${grr}/dadosAuxiliares`, {
+      method: "PUT",
+      body: {
+        ...dados,
+      },
+    });
+  }
+
+  public async criarFichaDeAvaliacao(grr: string, estagio: number) {
+    return await $fetch(
+      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/fichaDeAvaliacao`,
+      {
+        method: "POST",
+      }
+    );
+  }
+
+  public async solicitarCertificadoEstagio(grr: string, estagio: number) {
+    return await $fetch(
+      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/certificadoDeEstagio`,
+      {
+        method: "POST",
+      }
+    );
+  }
 }

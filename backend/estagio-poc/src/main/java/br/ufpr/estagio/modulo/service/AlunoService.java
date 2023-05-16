@@ -19,14 +19,18 @@ import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.mapper.SigaApiModuloEstagioMapper;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.Discente;
+import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
+import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CienciaCoordenacaoRepository;
+import br.ufpr.estagio.modulo.repository.EnderecoRepository;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
 import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
@@ -40,6 +44,9 @@ public class AlunoService {
 
 	@Autowired
 	private AlunoRepository alunoRepo;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepo;
 	
 	@Autowired
 	private EstagioRepository estagioRepo;
@@ -78,10 +85,31 @@ public class AlunoService {
     	if(alunoFind.isEmpty()) {
     		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula);
     		aluno = sigaApiModuloEstagioMapping.mapearDiscenteEmAluno(discente);
-    		aluno = this.salvarAluno(aluno);
+    		//aluno = this.salvarAluno(aluno);
     	} else {
     		aluno = alunoFind.get();
+    		Optional<Endereco> enderecoFind = enderecoRepo.findByAlunoId(aluno.getId());
+        	Endereco endereco = new Endereco();
+        	endereco.setCep(enderecoFind.get().getCep());
+        	endereco.setCidade(enderecoFind.get().getCidade());
+        	endereco.setComplemento(enderecoFind.get().getComplemento());
+        	endereco.setId(enderecoFind.get().getId());
+        	endereco.setNumero(enderecoFind.get().getNumero());
+        	endereco.setPessoa(enderecoFind.get().getPessoa());
+        	endereco.setRua(enderecoFind.get().getRua());
+        	endereco.setUf(enderecoFind.get().getUf());
+        	
+        	endereco.setAluno(enderecoFind.get().getAluno());
+        	
+        	aluno.setEndereco(endereco);
+        	
+        	enderecoRepo.save(endereco);
+
     	}
+
+    	
+    	
+    	
         return aluno;
     }
     
@@ -111,25 +139,31 @@ public class AlunoService {
     	Aluno alunoExistente = buscarAlunoGrr(alunoAtualizado.getMatricula())
     			.orElseThrow(() -> new NoSuchElementException("Aluno não encontrado para o ID informado"));
     	
-    	DadosAuxiliares dadosExistente = alunoExistente.getDadosAuxiliares();
+    	DadosAuxiliares dadosAuxiliaresExistente = alunoExistente.getDadosAuxiliares();
     	
-    	System.out.println(dadosExistente.getNacionalidade());
+    	System.out.println(dadosAuxiliaresExistente.getNacionalidade());
     	System.out.println(alunoAtualizado.getDadosAuxiliares().getEstadoCivil());
     	
     	DadosAuxiliares dadosAtualizado = alunoAtualizado.getDadosAuxiliares();
     	
-    	dadosExistente.setEstadoCivil(dadosAtualizado.getEstadoCivil());
-    	dadosExistente.setDependentes(dadosAtualizado.getDependentes());
-    	dadosExistente.setGrupoSanguineo(dadosAtualizado.getGrupoSanguineo());
-    	dadosExistente.setDataDeChegadaNoPais(dadosAtualizado.getDataDeChegadaNoPais());
-    	dadosExistente.setDataExpedicao(dadosAtualizado.getDataExpedicao());
-    	dadosExistente.setTituloEleitoral(dadosAtualizado.getTituloEleitoral());
-    	dadosExistente.setZona(dadosAtualizado.getZona());
-    	dadosExistente.setSecao(dadosAtualizado.getSecao());
-    	dadosExistente.setCertificadoMilitar(dadosAtualizado.getCertificadoMilitar());
-    	dadosExistente.setOrgaoDeExpedicao(dadosAtualizado.getOrgaoDeExpedicao());
-    	dadosExistente.setSerie(dadosAtualizado.getSerie());
-    	dadosExistente.setEmailInstitucional(dadosAtualizado.getEmailInstitucional());
+    	dadosAuxiliaresExistente.setEstadoCivil(dadosAtualizado.getEstadoCivil());
+    	dadosAuxiliaresExistente.setDependentes(dadosAtualizado.getDependentes());
+    	dadosAuxiliaresExistente.setGrupoSanguineo(dadosAtualizado.getGrupoSanguineo());
+    	dadosAuxiliaresExistente.setDataDeChegadaNoPais(dadosAtualizado.getDataDeChegadaNoPais());
+    	dadosAuxiliaresExistente.setDataExpedicao(dadosAtualizado.getDataExpedicao());
+    	dadosAuxiliaresExistente.setTituloEleitoral(dadosAtualizado.getTituloEleitoral());
+    	dadosAuxiliaresExistente.setZona(dadosAtualizado.getZona());
+    	dadosAuxiliaresExistente.setSecao(dadosAtualizado.getSecao());
+    	dadosAuxiliaresExistente.setCertificadoMilitar(dadosAtualizado.getCertificadoMilitar());
+    	dadosAuxiliaresExistente.setOrgaoDeExpedicao(dadosAtualizado.getOrgaoDeExpedicao());
+    	dadosAuxiliaresExistente.setSerie(dadosAtualizado.getSerie());
+    	dadosAuxiliaresExistente.setEmailInstitucional(dadosAtualizado.getEmailInstitucional());
+    	
+    	/**
+    	 * TO-DO: 
+    	 * 		-> Colocar os outros dados auxiliares no bloco acima.
+    	 *		-> Colocar os dados bancários no bloco a ser criado abaixo.
+    	 */
     	
     	//dados.save?
     	return alunoRepo.save(alunoExistente);
@@ -221,6 +255,11 @@ public class AlunoService {
     	return alunoRepo.save(aluno);
     }
 	
+public Aluno atualizarDadosBancarios(Aluno aluno) {
+		
+    	return alunoRepo.save(aluno);
+    }
+	
 	public void cancelarEstagio(Estagio estagio) {
 		
 		// usado caso queira passar somente o id do estagio
@@ -252,6 +291,44 @@ public class AlunoService {
 //	    termoRepo.delete(termoDeCompromisso);
 //	    planoAtividadesRepo.delete(planoDeAtividades);
 //	    estagioRepo.delete(estagio);
+	}
+
+	public List<CertificadoDeEstagio> listarCertificadosDeEstagioAluno(Aluno aluno) {
+		List<Estagio> listaEstagios = aluno.getEstagio();
+		if (listaEstagios == null || listaEstagios.isEmpty()) {
+			return null;
+		}
+		List<CertificadoDeEstagio> listaCertificados = new ArrayList<>();
+		for (Estagio e : listaEstagios) {
+			listaCertificados.add(e.getCertificadoDeEstagio());
+		}
+		return listaCertificados;
+	}
+
+	// Teste para pedido do Lucas
+	public List<TermoDeEstagio> listarTermosCompromissoAluno(Aluno aluno) {
+		List<Estagio> listaEstagios = aluno.getEstagio();
+		if (listaEstagios == null || listaEstagios.isEmpty()) {
+			return null;
+		}
+		List<TermoDeEstagio> listaTermos = new ArrayList<>();
+		for (Estagio e : listaEstagios) {
+			listaTermos.add((TermoDeEstagio) e.getTermoAdivito());
+		}
+		return listaTermos;
+	}
+
+	// Teste para pedido do Lucas
+	public List<RelatorioDeEstagio> listarRelatoriosEstagioAluno(Aluno aluno) {
+		List<Estagio> listaEstagios = aluno.getEstagio();
+		if (listaEstagios == null || listaEstagios.isEmpty()) {
+			return null;
+		}
+		List<RelatorioDeEstagio> listaRelatorios = new ArrayList<>();
+		for (Estagio e : listaEstagios) {
+			listaRelatorios.add((RelatorioDeEstagio) e.getRelatorioDeEstagio());
+		}
+		return listaRelatorios;
 	}
 
 }

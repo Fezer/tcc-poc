@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "76045f7d-38f1-4b82-a628-d0707ab94861",
+		"_postman_id": "c047314e-91b5-4cbc-bc63-f3262e65c81e",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "17301767"
@@ -166,7 +166,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/17/associarOrientador/452",
+							"raw": "http://localhost:5000/termo/2/associarOrientador/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -174,9 +174,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"17",
+								"2",
 								"associarOrientador",
-								"452"
+								"3"
 							]
 						}
 					},
@@ -318,7 +318,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20200141",
+							"raw": "http://localhost:5000/aluno/GRR20175486",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -326,7 +326,7 @@
 							"port": "5000",
 							"path": [
 								"aluno",
-								"GRR20200141"
+								"GRR20175486"
 							]
 						}
 					},
@@ -546,7 +546,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"estadoCivil\": \"Solteiro\",\n    \"dependentes\": 0,\n    \"grupoSanguineo\": \"O+\",\n    \"dataDeChegadaNoPais\": \"2013-10-31T00:00:00.000+00:00\",\n    \"dataExpedicao\": \"2013-10-31T00:00:00.000+00:00\",\n    \"tituloEleitoral\": \"sei lá\",\n    \"zona\": 3,\n    \"secao\": 971,\n    \"certificadoMilitar\": \"2987389127389\",\n    \"orgaoDeExpedicao\": \"Quartel do Boqueirão\",\n    \"serie\": \"askjsa\",\n    \"emailInstitucional\": \"gabriel.mayer@ufpr.br\"\n}",
+							"raw": "{\n    \"id\": 1,\n    \"nomePai\": \"Kleber\",\n    \"estadoCivil\": \"Solteiro\",\n    \"dependentes\": 1,\n    \"grupoSanguineo\": \"O+\",\n    \"corDaPele\": \"Branca\",\n    \"sexo\": \"Masculino\",\n    \"nomeMae\": \"Camila\",\n    \"nacionalidade\": \"BRASILEIRO\",\n    \"dataDeChegadaNoPais\": \"2013-10-31T00:00:00.000+00:00\",\n    \"orgaoEmissor\": \"SSP-PR\",\n    \"uf\": \"Paraná\",\n    \"dataExpedicao\": \"2013-10-31T00:00:00.000+00:00\",\n    \"tituloEleitoral\": \"sei lá\",\n    \"zona\": 3,\n    \"secao\": 971,\n    \"certificadoMilitar\": \"777674537\",\n    \"orgaoDeExpedicao\": \"Quartel do Boqueirão\",\n    \"serie\": \"askjsa\",\n    \"dataDeEmissao\": \"2013-10-31T00:00:00.000+00:00\",\n    \"estadoNascimento\": \"Paraná\",\n    \"cidadeNascimento\": \"Curitiba\",\n    \"corRaca\": \"Branca\",\n    \"expressaoGenero\": \"Não informado\",\n    \"autoIdentificacaoGenero\": \"Não informado\",\n    \"orientacaoSexual\": \"Não informado\",\n    \"emailInstitucional\": \"gabriel.mayer@ufpr.br\",\n    \"tipoVaga\": \"Ampla Concorrência\",\n    \"dataEmissaoTitulo\": \"2013-10-31T00:00:00.000+00:00\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -564,6 +564,156 @@
 								"aluno",
 								"GRR20204481",
 								"dadosAuxiliares"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "novaFichaDeAvaliacao",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/2/fichaDeAvaliacao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"2",
+								"fichaDeAvaliacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "solicitarCertificadoDeEstagio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/2/certificadoDeEstagio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"2",
+								"certificadoDeEstagio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarCertificadosDeEstagio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/certificadoDeEstagio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"certificadoDeEstagio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "novoTermoAditivo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/2/termoAditivo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"2",
+								"termoAditivo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "novoDadosBancarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"banco\": \"Bantads\",\n    \"numeroDaAgencia\": 1,\n    \"numeroDaConta\": 250,\n    \"nomeDaAgencia\": \"Agência\",\n    \"cidadeDaAgencia\": \"Curitiba\",\n    \"enderecoDaAgencia\": \"Rua Agência\",\n    \"bairroDaAgencia\": \"Uberaba\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20204481/dadosBancarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20204481",
+								"dadosBancarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizaDadosBancarios",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"banco\": \"Bantads Atualizado\",\n    \"numeroDaAgencia\": 1,\n    \"numeroDaConta\": 250,\n    \"nomeDaAgencia\": \"Agência\",\n    \"cidadeDaAgencia\": \"Curitiba\",\n    \"enderecoDaAgencia\": \"Rua Agência\",\n    \"bairroDaAgencia\": \"Uberaba\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20204481/dadosBancarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20204481",
+								"dadosBancarios"
 							]
 						}
 					},
@@ -795,7 +945,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/16",
+							"raw": "http://localhost:5000/estagio/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -803,7 +953,7 @@
 							"port": "5000",
 							"path": [
 								"estagio",
-								"16"
+								"2"
 							]
 						}
 					},
@@ -1036,6 +1186,205 @@
 							"path": [
 								"relatorioDeEstagio",
 								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FichaDeAvaliacao",
+			"item": [
+				{
+					"name": "(Não usar no fluxo)criarFichaDeAvaliacao",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/fichaDeAvaliacao/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fichaDeAvaliacao",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarFichaDeAvaliacaoPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/fichaDeAvaliacao/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fichaDeAvaliacao",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarFichasDeAvaliacao",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/fichaDeAvaliacao/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fichaDeAvaliacao",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizarFichaDeAvaliacao",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"totalHorasEstagioEfetivamenteRealizadas\": 200,\n    \"atividadesForamRealizadas\": false,\n    \"atividadesRealizadasConsideracoes\": \"Realizei as atividades.\",\n    \"acompanhamentoOrientador\": \"Frequentemente\",\n    \"acompanhamentoOrientadorComentario\": \"O orientador foi bastante presente\",\n    \"acompanhamentoCoordenador\": \"Raramente\",\n    \"acompanhamentoCoordenadorComentario\": \"Que coordenador?\",\n    \"contribuicaoEstagio\": \"Olha, contribuiu bastante viu...\",\n    \"avalPontualidade\": \"Pessimo\",\n    \"avalCriatividade\": \"Ruim\",\n    \"avalProtagonismo\": \"Razoavel\",\n    \"avalResponsabilidade\": \"Bom\",\n    \"avalConduta\": \"Excelente\",\n    \"avalDominioTecnico\": \"Pessimo\",\n    \"avalHabilidades\": \"Ruim\",\n    \"avalEfetivacao\": \"Razoavel\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/fichaDeAvaliacao/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fichaDeAvaliacao",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluirFichaDeAvaliacao",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/fichaDeAvaliacao/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fichaDeAvaliacao",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CertificadoDeEstagio",
+			"item": [
+				{
+					"name": "(Não usar no fluxo)criarCertificadoDeEstagio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarCertificadoDeEstagioPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarCertificadosDeEstagio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluirCertificadoDeEstagio",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/certificadoDeEstagio/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"certificadoDeEstagio",
+								"1"
 							]
 						}
 					},
@@ -2420,6 +2769,80 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "listarCertificadosPendenteAprovacaoCoe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coe/certificado/pendenteAprovacaoCoe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coe",
+								"certificado",
+								"pendenteAprovacaoCoe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "aprovarCertificadoDeEstagioCoe",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coe/certificado/2/aprovar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coe",
+								"certificado",
+								"2",
+								"aprovar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reprovarCertificadoDeEstagioCoe",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"justificativa\": \"Não gostei.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/coe/certificado/3/reprovar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coe",
+								"certificado",
+								"3",
+								"reprovar"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -3098,6 +3521,28 @@
 								"relatorioDeEstagio",
 								"7",
 								"darCiencia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarCertificadosDeEstagiosDoOrientador",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/orientador/3/certificadoDeEstagio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"orientador",
+								"3",
+								"certificadoDeEstagio",
+								""
 							]
 						}
 					},

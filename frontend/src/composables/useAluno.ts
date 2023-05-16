@@ -1,7 +1,9 @@
-const useAluno = () => {
-  const aluno = useState("aluno", () => {});
+import { Aluno } from "../types/Aluno";
 
-  const setAluno = (alunoData: any) => {
+const useAluno = () => {
+  const aluno = useState<Aluno | void>("aluno", () => {});
+
+  const setAluno = (alunoData: Aluno) => {
     // console.log("SETTING ALUNO");
     // console.log(alunoData);
 

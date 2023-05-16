@@ -1,7 +1,7 @@
 <script lang="ts">
 import DadosAluno from "./dadosAluno.vue";
 import DadosEstagio from "./dadosEstagio.vue";
-import DadosAuxiliares from "./dadosAuxiliares.vue";
+import CompletarDadosAuxiliares from "./completarDadosAuxiliares.vue";
 import TipoContratante from "./tipoContratante.vue";
 import TipoEstagio from "./tipoEstagio.vue";
 
@@ -21,7 +21,7 @@ export default defineComponent({
     DadosAluno,
     TipoEstagio,
     TipoContratante,
-    DadosAuxiliares,
+    CompletarDadosAuxiliares,
     DadosEstagio,
   },
   setup() {
@@ -58,7 +58,7 @@ export default defineComponent({
           if (termo.value.estagioUfpr) {
             state.step = "DADOS_ESTAGIO";
             state.progressValue =
-              termo.value.tipoEstagio === "Obrigatorio" ? 80 : 100;
+              termo.value.tipoEstagio === "NaoObrigatorio" ? 80 : 100;
             return;
           }
 
@@ -73,11 +73,14 @@ export default defineComponent({
         case "DADOS_ESTAGIO":
           if (
             termo.value.estagioUfpr &&
-            termo.value.tipoEstagio === "Obrigatorio"
+            termo.value.tipoEstagio === "NaoObrigatorio"
           ) {
+            console.log("DADOS AUXILIARES");
             state.step = "DADOS_AUXILIARES";
             state.progressValue = 100;
-            break;
+
+            console.log(state.step);
+            return;
           }
 
           handleGenerateTerm();
@@ -91,7 +94,7 @@ export default defineComponent({
       switch (state.step) {
         case "DADOS_AUXILIARES":
           state.step = "DADOS_ESTAGIO";
-          state.progressValue = 100;
+          state.progressValue = 80;
 
           break;
         case "DADOS_ESTAGIO":
@@ -120,7 +123,7 @@ export default defineComponent({
       state,
       handleBackStep,
       handleAdvanceStep,
-      termo: termo.value,
+      termo: termo,
     };
   },
 });
@@ -143,23 +146,24 @@ export default defineComponent({
       :advanceStep="handleAdvanceStep"
     />
     <TipoEstagio
-      v-if="state.step === 'TIPO_ESTAGIO'"
+      v-else-if="state.step === 'TIPO_ESTAGIO'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
     />
     <TipoContratante
-      v-if="state.step === 'TIPO_CONTRATANTE'"
+      v-else-if="state.step === 'TIPO_CONTRATANTE'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
     />
     <DadosEstagio
-      v-if="state.step === 'DADOS_ESTAGIO'"
+      v-else-if="state.step === 'DADOS_ESTAGIO'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
       :finalStep="!termo?.estagioUfpr"
     />
-    <DadosAuxiliares
-      v-if="state.step === 'DADOS_AUXILIARES'"
+
+    <CompletarDadosAuxiliares
+      v-else-if="state.step === 'DADOS_AUXILIARES'"
       :backStep="handleBackStep"
       :advanceStep="handleAdvanceStep"
     />

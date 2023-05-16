@@ -15,10 +15,12 @@ import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
+import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
+import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
@@ -26,6 +28,7 @@ import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
 import br.ufpr.estagio.modulo.repository.ApoliceRepository;
+import br.ufpr.estagio.modulo.repository.CienciaCoordenacaoRepository;
 import br.ufpr.estagio.modulo.repository.ContratanteRepository;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.OrientadorRepository;
@@ -35,6 +38,7 @@ import br.ufpr.estagio.modulo.repository.TermoDeEstagioRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.beans.BeanUtils;
  
 @Service
 @Transactional
@@ -63,6 +67,9 @@ public class TermoDeEstagioService {
 	
 	@Autowired
 	private ContratanteRepository contratanteRepo;
+	
+	@Autowired
+	private CienciaCoordenacaoRepository cienciaRepo;
 	
     @PersistenceContext
     private EntityManager em;
@@ -657,6 +664,64 @@ public class TermoDeEstagioService {
     	estagioRepo.save(estagio);
 		
     	return termoRepo.save(termo);
+	}
+
+	public TermoDeEstagio novoTermoAditivo(Estagio estagio) {
+		EnumTipoTermoDeEstagio tipoTermo = EnumTipoTermoDeEstagio.TermoAditivo;
+		EnumStatusTermo statusTermo = EnumStatusTermo.EmPreenchimento;
+		EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
+		
+		TermoDeEstagio termoAditivo = new TermoDeEstagio();
+		BeanUtils.copyProperties(estagio, termoAditivo);
+		
+		TermoDeEstagio termoAditivoTemp = new TermoDeEstagio();
+		termoAditivoTemp = termoRepo.save(termoAditivoTemp);
+				
+		termoAditivo.setId(termoAditivoTemp.getId());
+		termoAditivo.setTipoTermoDeEstagio(tipoTermo);
+		termoAditivo.setDataCriacao(termoAditivoTemp.getDataCriacao());
+		termoAditivo.setParecerCoordenacao(termoAditivoTemp.getParecerCoordenacao());
+		termoAditivo.setStatusTermo(statusTermo);
+		termoAditivo.setEtapaFluxo(etapaFluxo);
+		termoAditivo.setParecerCoordenacao(termoAditivoTemp.getParecerCoordenacao());
+		termoAditivo.setParecerCOE(termoAditivoTemp.getParecerCOE());
+		termoAditivo.setParecerCOAFE(termoAditivoTemp.getParecerCOAFE());
+		termoAditivo.setDescricaoAjustes(termoAditivoTemp.getDescricaoAjustes());
+		termoAditivo.setMotivoIndeferimento(termoAditivoTemp.getMotivoIndeferimento());
+		
+		PlanoDeAtividades planoAtividade = new PlanoDeAtividades();
+		BeanUtils.copyProperties(estagio.getPlanoDeAtividades(), planoAtividade);
+		
+		PlanoDeAtividades planoAtividadeTemp = new PlanoDeAtividades();
+		planoAtividadeTemp = planoRepo.save(planoAtividadeTemp);
+		
+		planoAtividade.setId(planoAtividadeTemp.getId());
+		
+		termoAditivo.setPlanoAtividades(planoAtividade);
+		
+		
+		CienciaCoordenacao cienciaCoordenacao = new CienciaCoordenacao();
+		
+		cienciaCoordenacao = cienciaRepo.save(cienciaCoordenacao);
+		
+		termoAditivo.setCienciaCoordenacao(cienciaCoordenacao);
+				
+		List<TermoDeEstagio> listaTermosAditivos = estagio.getTermoAdivito();
+		if (listaTermosAditivos == null) {
+			listaTermosAditivos = new ArrayList<TermoDeEstagio>();
+		}
+		
+		listaTermosAditivos.add(termoAditivo);
+		estagio.setTermoAdivito(listaTermosAditivos);
+		
+		termoAditivo.setEstagio(estagio);
+		
+		estagioRepo.save(estagio);
+		
+		planoRepo.save(planoAtividade);
+		
+		return termoRepo.save(termoAditivo);
+		
 	}
 	
 }
