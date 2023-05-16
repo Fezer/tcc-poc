@@ -145,12 +145,12 @@ public class AgenteIntegradorREST {
 	}
 
 	@GetMapping("/")
-	public ResponseEntity<List<ApoliceDTO>> listarApolices() {
+	public ResponseEntity<List<AgenteIntegradorDTO>> listarAgentesIntegradores() {
 		try {
 			List<AgenteIntegrador> agentesIntegradores = agenteIntegradorService.listarAgentesIntegradores();
 			
-			List<ApoliceDTO> agentesIntegradoresDTO = agentesIntegradores.stream()
-					.map(ap -> mapper.map(ap, ApoliceDTO.class))
+			List<AgenteIntegradorDTO> agentesIntegradoresDTO = agentesIntegradores.stream()
+					.map(ap -> mapper.map(ap, AgenteIntegradorDTO.class))
 					.collect(Collectors.toList());
 			return ResponseEntity.ok().body(agentesIntegradoresDTO);
 		} catch (Exception e) {

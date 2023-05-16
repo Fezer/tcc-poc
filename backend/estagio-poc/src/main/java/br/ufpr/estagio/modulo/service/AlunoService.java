@@ -26,6 +26,7 @@ import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
+import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CienciaCoordenacaoRepository;
@@ -302,6 +303,32 @@ public Aluno atualizarDadosBancarios(Aluno aluno) {
 			listaCertificados.add(e.getCertificadoDeEstagio());
 		}
 		return listaCertificados;
+	}
+
+	// Teste para pedido do Lucas
+	public List<TermoDeEstagio> listarTermosCompromissoAluno(Aluno aluno) {
+		List<Estagio> listaEstagios = aluno.getEstagio();
+		if (listaEstagios == null || listaEstagios.isEmpty()) {
+			return null;
+		}
+		List<TermoDeEstagio> listaTermos = new ArrayList<>();
+		for (Estagio e : listaEstagios) {
+			listaTermos.add((TermoDeEstagio) e.getTermoAdivito());
+		}
+		return listaTermos;
+	}
+
+	// Teste para pedido do Lucas
+	public List<RelatorioDeEstagio> listarRelatoriosEstagioAluno(Aluno aluno) {
+		List<Estagio> listaEstagios = aluno.getEstagio();
+		if (listaEstagios == null || listaEstagios.isEmpty()) {
+			return null;
+		}
+		List<RelatorioDeEstagio> listaRelatorios = new ArrayList<>();
+		for (Estagio e : listaEstagios) {
+			listaRelatorios.add((RelatorioDeEstagio) e.getRelatorioDeEstagio());
+		}
+		return listaRelatorios;
 	}
 
 }
