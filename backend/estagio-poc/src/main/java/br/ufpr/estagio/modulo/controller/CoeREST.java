@@ -1,12 +1,17 @@
 package br.ufpr.estagio.modulo.controller;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,12 +29,14 @@ import br.ufpr.estagio.modulo.dto.CertificadoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
+import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
+import br.ufpr.estagio.modulo.service.AlunoService;
 import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
@@ -43,6 +50,9 @@ public class CoeREST {
 	
 	@Autowired
 	private CertificadoDeEstagioService certificadoDeEstagioService;
+	
+	@Autowired
+	private AlunoService alunoService;
 		
 	@Autowired
 	private ModelMapper mapper;
@@ -206,28 +216,38 @@ public class CoeREST {
 		}
 	}
 	
-	/*@GetMapping("/{grrAlunoURL}/visualizar-termo")
-	public ResponseEntity<byte[]> visualizarTermoPdf(@PathVariable String grrAlunoURL) throws IOException {
-		
-		// TO-DO: Jogar dentro de um try-catch
-		
-		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-			throw new BadRequestException("GRR do aluno não informado!");
-		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
-			if (aluno == null) {
-				throw new NotFoundException("Aluno não encontrado!");
-			} else {
-				byte[] pdf = geradorService.gerarPdf(aluno);
-				
-				HttpHeaders headers = new HttpHeaders();
-				headers.setContentType(MediaType.APPLICATION_PDF);
-				headers.setContentDisposition(ContentDisposition.builder("inline").filename("arquivo.pdf").build());
-		
-				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
-			}
-		}
+	@GetMapping("/{grrAlunoURL}/download-termo")
+	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL) {
+	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+	        throw new BadRequestException("GRR do aluno não informado!");
+	    } else {
+	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+	        if (aluno == null) {
+	            throw new NotFoundException("Aluno não encontrado!");
+	        } else {
+	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+            	
+	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
+	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
 
-	}*/
+	            try {
+	                Resource resource = new UrlResource(arquivo.toUri());
+
+	                if (resource.exists()) {
+	                    return ResponseEntity.ok()
+	                    		.contentType(MediaType.APPLICATION_PDF)
+	                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+	                            .body(resource);
+	                } else {
+	                    throw new NotFoundException("Arquivo não encontrado!");
+	                }
+	            } catch (MalformedURLException e) {
+	                e.printStackTrace();
+	                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+	            }
+	        }
+	    }
+	}
 
 }

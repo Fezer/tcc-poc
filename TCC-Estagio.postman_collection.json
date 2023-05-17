@@ -2922,6 +2922,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "baixarTermoAluno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coe/GRR20204481/download-termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coe",
+								"GRR20204481",
+								"download-termo"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
