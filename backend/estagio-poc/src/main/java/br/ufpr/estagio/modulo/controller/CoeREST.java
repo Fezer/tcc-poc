@@ -1,12 +1,16 @@
 package br.ufpr.estagio.modulo.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +24,10 @@ import br.ufpr.estagio.modulo.dto.CertificadoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
+import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
@@ -199,5 +205,29 @@ public class CoeREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
+	
+	/*@GetMapping("/{grrAlunoURL}/visualizar-termo")
+	public ResponseEntity<byte[]> visualizarTermoPdf(@PathVariable String grrAlunoURL) throws IOException {
+		
+		// TO-DO: Jogar dentro de um try-catch
+		
+		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+			throw new BadRequestException("GRR do aluno não informado!");
+		} else {
+			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+			if (aluno == null) {
+				throw new NotFoundException("Aluno não encontrado!");
+			} else {
+				byte[] pdf = geradorService.gerarPdf(aluno);
+				
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.APPLICATION_PDF);
+				headers.setContentDisposition(ContentDisposition.builder("inline").filename("arquivo.pdf").build());
+		
+				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+			}
+		}
+
+	}*/
 
 }

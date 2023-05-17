@@ -2,6 +2,7 @@ package br.ufpr.estagio.modulo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -597,7 +599,10 @@ public class AlunoREST {
 	
 	@PostMapping("/{grrAlunoURL}/upload-termo")
 	public ResponseEntity<String> uploadTermo(@PathVariable String grrAlunoURL, @RequestParam("file") MultipartFile file) {
-	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+	    
+		// TO-DO: Jogar dentro de um try-catch
+		
+		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 	        throw new BadRequestException("GRR do aluno não informado!");
 	    } else {
 	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
@@ -613,7 +618,7 @@ public class AlunoREST {
 	                	
 	                	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
 	                	
-	                	String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso + "-" + file.getOriginalFilename();
+	                	String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
 	                    Path destino = Paths.get(diretorioDestino + nomeArquivo);
 	                    
 	                    Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
@@ -628,7 +633,38 @@ public class AlunoREST {
 	    }
 	}
 
-	
+	@GetMapping("/{grrAlunoURL}/download-termo")
+	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL) {
+	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+	        throw new BadRequestException("GRR do aluno não informado!");
+	    } else {
+	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+	        if (aluno == null) {
+	            throw new NotFoundException("Aluno não encontrado!");
+	        } else {
+	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+            	
+	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
+	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+
+	            try {
+	                Resource resource = new UrlResource(arquivo.toUri());
+
+	                if (resource.exists()) {
+	                    return ResponseEntity.ok()
+	                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+	                            .body(resource);
+	                } else {
+	                    throw new NotFoundException("Arquivo não encontrado!");
+	                }
+	            } catch (MalformedURLException e) {
+	                e.printStackTrace();
+	                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+	            }
+	        }
+	    }
+	}
 	
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/relatorioDeEstagio")
 	public ResponseEntity<RelatorioDeEstagioDTO> criarRelatorioDeEstagio(@PathVariable String grrAlunoURL, @PathVariable long idEstagio) {
