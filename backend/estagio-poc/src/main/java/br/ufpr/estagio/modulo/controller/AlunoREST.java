@@ -653,6 +653,7 @@ public class AlunoREST {
 
 	                if (resource.exists()) {
 	                    return ResponseEntity.ok()
+	                    		.contentType(MediaType.APPLICATION_PDF)
 	                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
 	                            .body(resource);
 	                } else {

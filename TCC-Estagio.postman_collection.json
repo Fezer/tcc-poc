@@ -770,6 +770,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "downloadTermo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/pdf",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20204481/download-termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20204481",
+								"download-termo"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
