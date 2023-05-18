@@ -243,6 +243,12 @@ export default defineComponent({
           state[key] = aluno?.value?.dadosAuxiliares[key];
         }
       }
+
+      if (aluno?.value?.dadosBancarios) {
+        for (let key in aluno?.value?.dadosBancarios) {
+          dadosBancarios[key] = aluno?.value?.dadosBancarios[key];
+        }
+      }
     });
 
     return {
