@@ -47,11 +47,11 @@ public class GeradorDePdfService {
         }
     }*/
 	
-	public byte[] gerarPdf(Aluno aluno) throws IOException {
+	public byte[] gerarPdf(Aluno aluno, Estagio estagio) throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.out.println("Antes de html: " + aluno.getNome());
-        String html = getHtml(aluno);
+        
+        String html = getHtml(aluno, estagio);
         
         ConverterProperties converterProperties = new ConverterProperties();
         //converterProperties.setBaseUri("src/main/resources");
@@ -68,12 +68,12 @@ public class GeradorDePdfService {
         return outputStream.toByteArray();
     }
 	
-	private String getHtml(Aluno aluno) {
+	private String getHtml(Aluno aluno, Estagio estagio) {
 		// carregar o HTML do arquivo
 		ClassLoader classLoader = getClass().getClassLoader();
 		String html = "";
 		try {
-			System.out.println("Antes de html 2: " + aluno.getNome());
+			
 			html = IOUtils.toString(classLoader.getResourceAsStream("TermoCompromisso-Obrigatorio-Ufpr-EstudanteUfpr.html"), StandardCharsets.UTF_8);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -81,24 +81,36 @@ public class GeradorDePdfService {
 		
 		// Informacoes do concedente
 		
-		Estagio estagio = new Estagio();
-		estagio = aluno.getEstagio().get(0);
-
-		html = html.replace("{{razaoSocial}}", estagio.getContratante().getNome());
-		html = html.replace("{{cnpj}}", estagio.getContratante().getCnpj());
-		html = html.replace("{{representante}}", estagio.getContratante().getRepresentanteEmpresa());
-		html = html.replace("{{telefoneContratante}}", estagio.getContratante().getTelefone());
-		/*html = html.replace("{{ruaContratante}}", estagio.getContratante().getEndereco().getRua());
-		html = html.replace("{{numeroContratante}}", String.valueOf(estagio.getContratante().getEndereco().getNumero()));
-		html = html.replace("{{cidadeContratante}}", estagio.getContratante().getEndereco().getCidade());
-		html = html.replace("{{ufContratante}}", estagio.getContratante().getEndereco().getUf());
-		html = html.replace("{{cepContratante}}", estagio.getContratante().getEndereco().getCep());
-		*/
-		html = html.replace("{{ruaContratante}}", "Rua");
-		html = html.replace("{{numeroContratante}}", "5");
-		html = html.replace("{{cidadeContratante}}", "Curitiba");
-		html = html.replace("{{ufContratante}}", "Paraná");
-		html = html.replace("{{cepContratante}}", "80213-931");
+		/*Estagio estagio = new Estagio();
+		estagio = aluno.getEstagio().get(0);*/
+		
+		if (estagio.isEstagioUfpr()) {
+			html = html.replace("{{razaoSocial}}", "Universidade Federal do Paraná");
+			html = html.replace("{{cnpj}}", "CNPJ UFPR");
+			html = html.replace("{{representante}}", "Dieval Guizelini");
+			html = html.replace("{{telefoneContratante}}", "41 92924 9201");
+			html = html.replace("{{ruaContratante}}", "Rua Alguma Coisa Arcoverde");
+			html = html.replace("{{numeroContratante}}", "1725");
+			html = html.replace("{{cidadeContratante}}", "Curitiba");
+			html = html.replace("{{ufContratante}}", "Paraná");
+			html = html.replace("{{cepContratante}}", "80213-931");
+		} else {
+			html = html.replace("{{razaoSocial}}", estagio.getContratante().getNome());
+			html = html.replace("{{cnpj}}", estagio.getContratante().getCnpj());
+			html = html.replace("{{representante}}", estagio.getContratante().getRepresentanteEmpresa());
+			html = html.replace("{{telefoneContratante}}", estagio.getContratante().getTelefone());
+			/*html = html.replace("{{ruaContratante}}", estagio.getContratante().getEndereco().getRua());
+			html = html.replace("{{numeroContratante}}", String.valueOf(estagio.getContratante().getEndereco().getNumero()));
+			html = html.replace("{{cidadeContratante}}", estagio.getContratante().getEndereco().getCidade());
+			html = html.replace("{{ufContratante}}", estagio.getContratante().getEndereco().getUf());
+			html = html.replace("{{cepContratante}}", estagio.getContratante().getEndereco().getCep());
+			*/
+			html = html.replace("{{ruaContratante}}", "Rua");
+			html = html.replace("{{numeroContratante}}", "5");
+			html = html.replace("{{cidadeContratante}}", "Curitiba");
+			html = html.replace("{{ufContratante}}", "Paraná");
+			html = html.replace("{{cepContratante}}", "80213-931");
+		}
 		
 		// Informacoes do aluno
 		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(aluno.getDataNascimento());

@@ -374,8 +374,6 @@ public class AlunoREST {
 	        	dadosAtualizado.setId(alunoAntigo.getDadosBancarios().getId());
 	        	dadosAtualizado.setAluno(alunoAntigo);
 	        	
-	        	System.out.println("Dados bancários do rapaz: " + alunoAntigo.getDadosBancarios().getId());
-	        	
 	        	dadosAtualizado = dadosBancariosService.atualizarDados(dadosAtualizado);
 	        	DadosBancariosDTO dadosDTOAtualizado = mapper.map(dadosAtualizado, DadosBancariosDTO.class);
 	        	
@@ -585,13 +583,18 @@ public class AlunoREST {
 			if (aluno == null) {
 				throw new NotFoundException("Aluno não encontrado!");
 			} else {
-				byte[] pdf = geradorService.gerarPdf(aluno);
-				
-				HttpHeaders headers = new HttpHeaders();
-				headers.setContentType(MediaType.APPLICATION_PDF);
-				headers.setContentDisposition(ContentDisposition.builder("inline").filename("arquivo.pdf").build());
-		
-				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+				List<Estagio> estagio = estagioService.buscarEstagioPorAluno(aluno);
+				if (estagio.get(0) == null) {
+					throw new NotFoundException("Estágio não encontrado para o aluno " + aluno.getNome());
+				} else {
+					byte[] pdf = geradorService.gerarPdf(aluno, estagio.get(0));
+					
+					HttpHeaders headers = new HttpHeaders();
+					headers.setContentType(MediaType.APPLICATION_PDF);
+					headers.setContentDisposition(ContentDisposition.builder("inline").filename("arquivo.pdf").build());
+			
+					return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+				}
 			}
 		}
 

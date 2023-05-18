@@ -228,5 +228,10 @@ public class EstagioService {
         
         return query.getResultList();
 	}
+	
+	public List<Estagio> buscarEstagioPorAluno(Aluno aluno) {
+		List<Estagio> estagio = estagioRepo.findByAluno(aluno);
+		return estagio;
+	}
 
 }
