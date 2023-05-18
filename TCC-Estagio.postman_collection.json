@@ -718,6 +718,85 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gerarPdfTermo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20204481/gerar-termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20204481",
+								"gerar-termo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadTermo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/gabriel/Downloads/arquivo-mm.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20204481/upload-termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20204481",
+								"upload-termo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "downloadTermo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/pdf",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20204481/download-termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20204481",
+								"download-termo"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2118,7 +2197,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"cnpj\": \"10010001\",\n    \"convenio\": [{\n        \"numero\": \"1212\",\n        \"descricao\": \"Conveniente\",\n        \"dataInicio\": \"2022-01-01\",\n        \"dataFim\": \"2022-12-31\",\n        \"agenteIntegrador\": null\n    }],\n    \"termoDeEstagio\": null,\n    \"estagio\": null\n}",
+							"raw": "{\n    \"cnpj\": \"10010001\",\n    \"nome\": \"Agente Atualizado\",\n    \"telefone\": \"41 3030-3030\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2126,7 +2205,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/1",
+							"raw": "http://localhost:5000/agente-integrador/52",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2134,7 +2213,7 @@
 							"port": "5000",
 							"path": [
 								"agente-integrador",
-								"1"
+								"52"
 							]
 						}
 					},
@@ -2843,6 +2922,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "baixarTermoAluno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coe/GRR20204481/download-termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coe",
+								"GRR20204481",
+								"download-termo"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -3155,6 +3255,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "baixarTermoAluno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coordenacao/GRR20204481/download-termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coordenacao",
+								"GRR20204481",
+								"download-termo"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -3384,6 +3505,27 @@
 								"termo",
 								"8",
 								"aprovar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "baixarTermoAluno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/GRR20204481/download-termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"GRR20204481",
+								"download-termo"
 							]
 						}
 					},
