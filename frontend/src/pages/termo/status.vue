@@ -99,7 +99,10 @@ export default defineComponent({
           <span>{{ parseDate(termo?.dataCriacao) }}</span>
         </div>
         <div class="col-4 flex items-center justify-end">
-          <a href="http://localhost:5000/aluno/gerar-termo" target="_blank">
+          <a
+            href="http://localhost:5000/aluno/GRR20200141/gerar-termo"
+            target="_blank"
+          >
             <Button
               label="Baixar documento"
               class="p-button-secondary self-center"
