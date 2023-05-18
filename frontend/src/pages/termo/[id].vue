@@ -8,6 +8,7 @@ import dadosAuxiliaresVue from "../../components/common/dadosAuxiliares.vue";
 import estagio from "../../components/common/estagio.vue";
 import planoAtividades from "../../components/common/plano-atividades.vue";
 import StatusTermo from "./status.vue";
+import AlunoService from "~~/services/AlunoService";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
 
@@ -26,6 +27,8 @@ export default defineComponent({
     const toast = useToast();
 
     const { id } = route.params;
+
+    const alunoService = new AlunoService();
 
     const novoEstagioService = new NovoEstagioService();
 
@@ -172,6 +175,34 @@ export default defineComponent({
         });
     };
 
+    const handleUploadTermo = async (event) => {
+      console.log("upload");
+      const file = event.files[0];
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      await alunoService
+        .uploadTermo("GRR20200141", formData)
+        .then(() => {
+          toast.add({
+            severity: "success",
+            summary: `Termo enviado!`,
+            detail: `O termo de compromisso foi enviado com sucesso!`,
+            life: 3000,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.add({
+            severity: "error",
+            summary: "Ops!",
+            detail: "Tivemos um problema ao enviar o termo.",
+            life: 3000,
+          });
+        });
+    };
+
     return {
       termo,
       refreshData,
@@ -180,6 +211,7 @@ export default defineComponent({
       handleEditarTermo,
       handleSolicitarAprovacao,
       handleCancelarTermo,
+      handleUploadTermo,
     };
   },
 });
@@ -266,12 +298,15 @@ export default defineComponent({
         seu professor(a) orientador(a) e por você.
       </p>
 
+      <!-- 10MB file size -->
       <FileUpload
         accept=".pdf"
         :multiple="false"
-        :maxFileSize="1000000"
+        :maxFileSize="10000000"
         chooseLabel="Adicionar termo"
         mode="basic"
+        customUpload
+        @uploader="handleUploadTermo"
       />
       <template #footer>
         <Button

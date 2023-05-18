@@ -100,4 +100,11 @@ export default class AlunoService extends BaseService {
       },
     });
   }
+
+  public async uploadTermo(grr: string, termoData: FormData) {
+    return await $fetch(`${this.BASE_URL}/aluno/${grr}/upload-termo`, {
+      method: "POST",
+      body: termoData,
+    });
+  }
 }
