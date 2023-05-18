@@ -56,6 +56,7 @@ type Aluno = {
   ira: string;
   idCurso: number;
   dadosAuxiliares: DadosAuxiliares;
+  dadosBancarios: any;
   pcd: boolean;
   matriculado: boolean;
 };

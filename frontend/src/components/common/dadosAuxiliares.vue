@@ -27,6 +27,13 @@ export default defineComponent({
     const dadosAuxiliares: DadosAuxiliares | null =
       aluno.value?.dadosAuxiliares || null;
 
+    const dadosBancarios = aluno.value?.dadosBancarios || null;
+
+    const shouldShowDadosAuxiliares =
+      (!!termo?.estagio?.estagioUfpr &&
+        termo?.estagio?.tipoEstagio == "NaoObrigatorio") ||
+      (termo?.estagioUfpr && termo?.tipoEstagio == "NaoObrigatorio");
+
     return {
       formatMoney,
       parseDate,
@@ -34,97 +41,135 @@ export default defineComponent({
       termo,
       aluno,
       dadosAuxiliares,
+      dadosBancarios,
+      shouldShowDadosAuxiliares,
     };
   },
 });
 </script>
 
 <template>
-  <div
-    class="card"
-    v-if="
-      !!termo?.estagio?.estagioUfpr &&
-      termo?.estagio?.tipoEstagio == 'NaoObrigatorio'
-    "
-  >
-    <h5>Dados Auxiliares</h5>
-    <div class="grid">
-      <div class="col-4">
-        <strong>Nome Pai</strong>
-        <p>{{ dadosAuxiliares?.nomePai }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Estado Civil</strong>
-        <p>{{ dadosAuxiliares?.estadoCivil }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Dependentes</strong>
-        <p>{{ dadosAuxiliares?.dependentes }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Grupo Sanguíneo</strong>
-        <p>{{ dadosAuxiliares?.grupoSanguineo }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Cor da Pele</strong>
-        <p>{{ dadosAuxiliares?.corRaca }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Sexo</strong>
-        <p>{{ dadosAuxiliares?.sexo }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Nome Mãe</strong>
-        <p>{{ dadosAuxiliares?.nomeMae }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Nacionalidade</strong>
-        <p>{{ dadosAuxiliares?.nacionalidade }}</p>
-      </div>
-      <div class="col-4" v-if="dadosAuxiliares?.nacionalidade != 'BRASILEIRO'">
-        <strong>Data de Chegada no País</strong>
-        <p>{{ parseDate(dadosAuxiliares?.dataDeChegadaNoPais) }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Órgão Emissor</strong>
-        <p>{{ dadosAuxiliares?.orgaoEmissor }}</p>
-      </div>
-      <div class="col-4">
-        <strong>UF</strong>
-        <p>{{ dadosAuxiliares?.uf }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Data de Expedição</strong>
-        <p>{{ parseDate(dadosAuxiliares?.dataExpedicao) }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Título Eleitoral</strong>
-        <p>{{ dadosAuxiliares?.tituloEleitoral }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Zona</strong>
-        <p>{{ dadosAuxiliares?.zona }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Seção</strong>
-        <p>{{ dadosAuxiliares?.secao }}</p>
-      </div>
-
-      <template v-if="dadosAuxiliares?.sexo === 'M'">
+  <div>
+    <div class="card" v-if="shouldShowDadosAuxiliares">
+      <h5>Dados Auxiliares</h5>
+      <div class="grid">
         <div class="col-4">
-          <strong>Certificado Militar</strong>
-          <p>{{ dadosAuxiliares?.certificadoMilitar }}</p>
+          <strong>Nome Pai</strong>
+          <p>{{ dadosAuxiliares?.nomePai }}</p>
         </div>
         <div class="col-4">
-          <strong>Órgão de Expedição Cert. Militar</strong>
-          <p>{{ dadosAuxiliares?.orgaoDeExpedicao }}</p>
+          <strong>Estado Civil</strong>
+          <p>{{ dadosAuxiliares?.estadoCivil }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Dependentes</strong>
+          <p>{{ dadosAuxiliares?.dependentes }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Grupo Sanguíneo</strong>
+          <p>{{ dadosAuxiliares?.grupoSanguineo }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Cor da Pele</strong>
+          <p>{{ dadosAuxiliares?.corRaca }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Sexo</strong>
+          <p>{{ dadosAuxiliares?.sexo }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Nome Mãe</strong>
+          <p>{{ dadosAuxiliares?.nomeMae }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Nacionalidade</strong>
+          <p>{{ dadosAuxiliares?.nacionalidade }}</p>
+        </div>
+        <div
+          class="col-4"
+          v-if="dadosAuxiliares?.nacionalidade != 'BRASILEIRO'"
+        >
+          <strong>Data de Chegada no País</strong>
+          <p>{{ parseDate(dadosAuxiliares?.dataDeChegadaNoPais) }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Órgão Emissor</strong>
+          <p>{{ dadosAuxiliares?.orgaoEmissor }}</p>
+        </div>
+        <div class="col-4">
+          <strong>UF</strong>
+          <p>{{ dadosAuxiliares?.uf }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Data de Expedição</strong>
+          <p>{{ parseDate(dadosAuxiliares?.dataExpedicao) }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Título Eleitoral</strong>
+          <p>{{ dadosAuxiliares?.tituloEleitoral }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Zona</strong>
+          <p>{{ dadosAuxiliares?.zona }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Seção</strong>
+          <p>{{ dadosAuxiliares?.secao }}</p>
         </div>
 
+        <template v-if="dadosAuxiliares?.sexo === 'M'">
+          <div class="col-4">
+            <strong>Certificado Militar</strong>
+            <p>{{ dadosAuxiliares?.certificadoMilitar }}</p>
+          </div>
+          <div class="col-4">
+            <strong>Órgão de Expedição Cert. Militar</strong>
+            <p>{{ dadosAuxiliares?.orgaoDeExpedicao }}</p>
+          </div>
+
+          <div class="col-4">
+            <strong>Série Cert. Militar</strong>
+            <p>{{ dadosAuxiliares?.serie }}</p>
+          </div>
+        </template>
+      </div>
+    </div>
+    <div class="card" v-if="shouldShowDadosAuxiliares">
+      <h5>Dados Bancários</h5>
+      <div class="grid">
+        <div class="col-4">
+          <strong>Banco</strong>
+          <p>{{ dadosBancarios?.banco }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Número da Agência</strong>
+          <p>{{ dadosBancarios?.numeroDaAgencia }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Número da Conta</strong>
+          <p>{{ dadosBancarios?.numeroDaConta }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Nome da Agência</strong>
+          <p>{{ dadosBancarios?.nomeDaAgencia }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Cidade da Agência</strong>
+          <p>{{ dadosBancarios?.cidadeDaAgencia }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Endereço da Agência</strong>
+          <p>{{ dadosBancarios?.enderecoDaAgencia }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Bairro da Agência</strong>
+          <p>{{ dadosBancarios?.bairroDaAgencia }}</p>
+        </div>
         <div class="col-4">
           <strong>Série Cert. Militar</strong>
-          <p>{{ dadosAuxiliares?.serie }}</p>
+          <p>{{ dadosBancarios?.serie }}</p>
         </div>
-      </template>
+      </div>
     </div>
   </div>
 </template>

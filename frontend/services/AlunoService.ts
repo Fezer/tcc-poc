@@ -91,4 +91,13 @@ export default class AlunoService extends BaseService {
       }
     );
   }
+
+  public async atualizaDadosBancarios(grr: string, dados: any) {
+    return await $fetch(`${this.BASE_URL}/aluno/${grr}/dadosBancarios`, {
+      method: "PUT",
+      body: {
+        ...dados,
+      },
+    });
+  }
 }

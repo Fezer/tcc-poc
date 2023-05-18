@@ -1,6 +1,6 @@
 <script lang="ts">
 import { useToast } from "primevue/usetoast";
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive, ref, onMounted } from "vue";
 import { z } from "zod";
 import ZodErrorsService from "../../../../../services/ZodErrorsService";
 import AlunoService from "~~/services/AlunoService";
@@ -35,8 +35,6 @@ export default defineComponent({
     const alunoService = new AlunoService();
 
     const { aluno } = useAluno();
-
-    console.log(aluno);
 
     const errors = ref({} as Record<string, string>);
 
@@ -110,28 +108,73 @@ export default defineComponent({
       zona: null,
       secao: null,
       certificadoMilitar: null,
-      orgaoExpedicao: null,
       serie: null,
+      nomePai: null,
+      dependentes: 1,
+      corDaPele: null,
+      sexo: null,
+      nomeMae: null,
+      nacionalidade: null,
+      orgaoEmissor: null,
+      uf: null,
+      orgaoDeExpedicao: null,
+      estadoNascimento: null,
+      cidadeNascimento: null,
+      corRaca: null,
+      tipoVaga: null,
+      dataEmissaoTitulo: null,
       // tipoVaga: null,
       // banco: null
+    });
+
+    const dadosBancarios = reactive({
+      banco: null,
+      numeroDaAgencia: null,
+      numeroDaConta: null,
+      nomeDaAgencia: null,
+      cidadeDaAgencia: null,
+      enderecoDaAgencia: null,
+      bairroDaAgencia: null,
     });
 
     const handleValidateAndAdvance = async () => {
       console.log("validating..");
       const validator = z.object({
-        // estadoCivil: z.string().min(1),
-        // dependente: z.number().min(0),
-        // grupoSanguineo: z.string().min(1),
-        // dataChegada: z.date(),
-        // dataExpedicao: z.date(),
-        // tituloEleitoral: z.string().min(1),
-        // zona: z.number().min(0),
-        // secao: z.number().min(0),
-        // certificadoMilitar: z.string().min(1),
-        // orgaoExpedicao: z.string().min(1),
-        // serie: z.string().min(1),
+        estadoCivil: z.string().min(1),
+        grupoSanguineo: z.string().min(1),
+        // dataChegada: z.string(),
+        dataExpedicao: z.string(),
+        tituloEleitoral: z.string().min(1),
+        zona: z.string().min(0),
+        secao: z.string().min(0),
+        certificadoMilitar: z.string().min(1),
+        serie: z.string().min(1),
+        nomePai: z.string().min(1),
+        dependentes: z.number().min(0),
+        corRaca: z.string().min(1),
+        sexo: z.string().min(1),
+        nomeMae: z.string().min(1),
+        nacionalidade: z.string().min(1),
+        orgaoEmissor: z.string().min(1),
+        uf: z.string().min(1),
+        orgaoDeExpedicao: z.string().min(1),
+        estadoNascimento: z.string().min(1),
+        cidadeNascimento: z.string().min(1),
+        tipoVaga: z.string().min(1),
+        dataEmissaoTitulo: z.string(),
+        banco: z.string().min(1),
+        numeroDaAgencia: z.string().min(1),
+        numeroDaConta: z.string().min(1),
+        nomeDaAgencia: z.string().min(1),
+        cidadeDaAgencia: z.string().min(1),
+        enderecoDaAgencia: z.string().min(1),
+        bairroDaAgencia: z.string().min(1),
       });
-      const result = validator.safeParse({ ...state });
+      const result = validator.safeParse({
+        ...aluno?.dadosAuxiliares,
+        ...state,
+        ...dadosBancarios,
+      });
 
       if (!result.success) {
         console.log(result.error.issues);
@@ -154,23 +197,28 @@ export default defineComponent({
       try {
         await alunoService
           .atualizaDadosAuxiliares(grr, {
-            estadoCivil: state.estadoCivil,
-            dependente: state.dependente,
-            grupoSanguineo: state.grupoSanguineo,
-            dataChegada: dayjs(state.dataChegada),
+            ...state,
             dataExpedicao: dayjs(state.dataExpedicao),
-            tituloEleitoral: state.tituloEleitoral,
-            zona: state.zona,
-            secao: state.secao,
-            certificadoMilitar: state.certificadoMilitar,
-            orgaoExpedicao: state.orgaoExpedicao,
-            serie: state.serie,
+            dataEmissaoTitulo: dayjs(state.dataEmissaoTitulo),
+            dataDeChegadaNoPais:
+              state?.dataChegada && dayjs(state?.dataChegada),
           })
           .then(() => {
             toast.add({
               severity: "success",
               summary: "Sucesso",
               detail: "Dados atualizados com sucesso",
+              life: 3000,
+            });
+          });
+
+        await alunoService
+          .atualizaDadosBancarios(grr, dadosBancarios)
+          .then(() => {
+            toast.add({
+              severity: "success",
+              summary: "Sucesso",
+              detail: "Dados bancários atualizados com sucesso",
               life: 3000,
             });
           });
@@ -188,6 +236,17 @@ export default defineComponent({
       }
     };
 
+    console.log(aluno?.dadosAuxiliares?.nacionalidade);
+
+    onMounted(() => {
+      if (aluno && aluno?.value?.dadosAuxiliares) {
+        console.log(aluno?.value?.dadosAuxiliares);
+        for (let key in aluno?.value?.dadosAuxiliares) {
+          state[key] = aluno?.value?.dadosAuxiliares[key];
+        }
+      }
+    });
+
     return {
       errors,
       handleValidateAndAdvance,
@@ -197,6 +256,7 @@ export default defineComponent({
       bancos,
       gruposSanguineos,
       aluno,
+      dadosBancarios,
     };
   },
 });
@@ -240,53 +300,97 @@ export default defineComponent({
           <div class="field col">
             <label for="orgaoEmissor">Órgão Emissor RG</label>
             <InputText
-              :value="aluno?.dadosAuxiliares?.orgaroEmissor"
-              disabled
+              v-model="state.orgaoEmissor"
+              :disabled="!!aluno?.dadosAuxiliares?.orgaoEmissor"
+              :class="{ 'p-invalid': errors['orgaoEmissor'] }"
             />
+            <small class="text-rose-600">{{ errors["orgaoEmissor"] }}</small>
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="uf">UF RG</label>
-            <InputText :value="aluno?.dadosAuxiliares?.uf" disabled />
+            <InputText
+              v-model="state.uf"
+              :disabled="!!aluno?.dadosAuxiliares?.uf"
+            />
           </div>
           <div class="field col">
             <label for="dataExpedicaoRG">Data de expedição RG</label>
-            <InputMask v-model="state.dataExpedicao" mask="99/99/9999" />
+            <InputMask
+              v-model="state.dataExpedicao"
+              :disabled="!!aluno?.dadosAuxiliares?.dataExpedicao"
+              mask="99/99/9999"
+              :class="{ 'p-invalid': errors['dataExpedicao'] }"
+            />
+            <small class="text-rose-600">{{ errors["dataExpedicao"] }}</small>
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="tituloEleitoral">Título eleitoral</label>
-            <InputText v-model="state.tituloEleitoral" />
+            <InputText
+              v-model="state.tituloEleitoral"
+              :disabled="!!aluno?.dadosAuxiliares?.tituloEleitoral"
+              :class="{ 'p-invalid': errors['tituloEleitoral'] }"
+            />
+            <small class="text-rose-600">{{ errors["tituloEleitoral"] }}</small>
           </div>
           <div class="field col">
             <label for="dataEmissaoTitulo">Data de emissão</label>
-            <InputMask mask="99/99/9999" disabled />
+            <InputMask
+              mask="99/99/9999"
+              v-model="state.dataEmissaoTitulo"
+              :disabled="!!aluno?.dadosAuxiliares?.dataEmissaoTitulo"
+              :class="{ 'p-invalid': errors['dataEmissaoTitulo'] }"
+            />
+            <small class="text-rose-600">{{
+              errors["dataEmissaoTitulo"]
+            }}</small>
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="zonaEleitoral">Zona</label>
-            <InputText v-model="state.zona" />
+            <InputText
+              v-model="state.zona"
+              :disabled="!!aluno?.dadosAuxiliares?.zona"
+              :class="{ 'p-invalid': errors['zona'] }"
+            />
+            <small class="text-rose-600">{{ errors["zona"] }}</small>
           </div>
           <div class="field col">
             <label for="secaoEleitora">Seção</label>
-            <InputText v-model="state.secao" />
+            <InputText
+              v-model="state.secao"
+              :disabled="!!aluno?.dadosAuxiliares?.secao"
+              :class="{ 'p-invalid': errors['secao'] }"
+            />
+            <small class="text-rose-600">{{ errors["secao"] }}</small>
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
             <label for="estadoCivil">Estado Civil</label>
-            <InputText v-model="state.estadoCivil" />
+            <InputText
+              v-model="state.estadoCivil"
+              :disabled="!!aluno?.dadosAuxiliares?.estadoCivil"
+              :class="{ 'p-invalid': errors['estadoCivil'] }"
+            />
+            <small class="text-rose-600">{{ errors["estadoCivil"] }}</small>
           </div>
           <div class="field col">
             <label for="dependentes">Dependentes</label>
-            <InputNumber v-model="state.dependentes" />
+            <InputNumber
+              v-model="state.dependentes"
+              :disabled="!!aluno?.dadosAuxiliares?.dependentes"
+              :class="{ 'p-invalid': errors['dependentes'] }"
+            />
+            <small class="text-rose-600">{{ errors["dependentes"] }}</small>
           </div>
         </div>
 
@@ -299,16 +403,21 @@ export default defineComponent({
               optionLabel="name"
               optionValue="name"
               v-model="state.grupoSanguineo"
+              :disabled="!!aluno?.dadosAuxiliares?.grupoSanguineo"
+              :class="{ 'p-invalid': errors['grupoSanguineo'] }"
             />
+            <small class="text-rose-600">{{ errors["grupoSanguineo"] }}</small>
           </div>
           <div class="field col">
             <label for="corDaPele">Cor da Pele</label>
             <InputText
               id="corDaPele"
               type="text"
-              disabled
-              :value="aluno?.dadosAuxiliares?.corRaca"
+              v-model="state.corRaca"
+              :disabled="!!aluno?.dadosAuxiliares?.corRaca"
+              :class="{ 'p-invalid': errors['corRaca'] }"
             />
+            <small class="text-rose-600">{{ errors["corRaca"] }}</small>
           </div>
         </div>
 
@@ -318,16 +427,22 @@ export default defineComponent({
             <InputText
               id="sexo"
               type="text"
-              disabled
-              :value="aluno?.dadosAuxiliares?.sexo"
+              v-model="state.sexo"
+              :disabled="!!aluno?.dadosAuxiliares?.sexo"
+              :class="{ 'p-invalid': errors['sexo'] }"
             />
+            <small class="text-rose-600">{{ errors["sexo"] }}</small>
           </div>
           <div class="field col">
             <label for="cidadeNascimento">Cidade de Nascimento</label>
             <InputText
-              disabled
-              :value="aluno?.dadosAuxiliares?.cidadeNascimento"
+              v-model="state.cidadeNascimento"
+              :disabled="!!aluno?.dadosAuxiliares?.cidadeNascimento"
+              :class="{ 'p-invalid': errors['cidadeNascimento'] }"
             />
+            <small class="text-rose-600">{{
+              errors["cidadeNascimento"]
+            }}</small>
           </div>
         </div>
 
@@ -337,18 +452,22 @@ export default defineComponent({
             <InputText
               id="nomeDoPai"
               type="text"
-              disabled
-              :value="aluno?.dadosAuxiliares?.nomePai"
+              v-model="state.nomePai"
+              :disabled="!!aluno?.dadosAuxiliares?.nomePai"
+              :class="{ 'p-invalid': errors['nomePai'] }"
             />
+            <small class="text-rose-600">{{ errors["nomePai"] }}</small>
           </div>
           <div class="field col">
             <label for="nomeDaMae">Nome da mãe</label>
             <InputText
               id="nomeDaMae"
               type="text"
-              disabled
-              :value="aluno?.dadosAuxiliares?.nomeMae"
+              v-model="state.nomeMae"
+              :disabled="!!aluno?.dadosAuxiliares?.nomeMae"
+              :class="{ 'p-invalid': errors['nomeMae'] }"
             />
+            <small class="text-rose-600">{{ errors["nomeMae"] }}</small>
           </div>
         </div>
 
@@ -364,10 +483,18 @@ export default defineComponent({
           </div>
           <div
             class="field col"
-            v-if="aluno?.dadosAuxiliares?.nacionalidade !== 'BRASILEIRO'"
+            v-if="
+              aluno?.dadosAuxiliares?.nacionalidade?.trim() !== 'BRASILEIRO'
+            "
           >
             <label for="dataChegadaPais">Data de chegada no pais</label>
-            <InputMask mask="99/99/9999" v-model="state.dataChegada" />
+            <InputMask
+              mask="99/99/9999"
+              v-model="state.dataChegada"
+              :disabled="!!aluno?.dadosAuxiliares?.dataChegada"
+              :class="{ 'p-invalid': errors['dataChegada'] }"
+            />
+            <small class="text-rose-600">{{ errors["dataChegada"] }}</small>
           </div>
         </div>
       </div>
@@ -383,7 +510,7 @@ export default defineComponent({
               :options="bancos"
               optionLabel="name"
               optionValue="name"
-              v-model="state.banco"
+              v-model="dadosBancarios.banco"
               :class="{ 'p-invalid': errors['banco'] }"
             />
             <small class="text-rose-600">{{ errors["banco"] }}</small>
@@ -392,74 +519,76 @@ export default defineComponent({
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="numAgencia">Número da Agência</label>
+            <label for="numeroDaAgencia">Número da Agência</label>
             <InputText
-              id="numAgencia"
+              id="numeroDaAgencia"
               type="text"
-              v-model="state.numAgencia"
-              :class="{ 'p-invalid': errors['numAgencia'] }"
+              v-model="dadosBancarios.numeroDaAgencia"
+              :class="{ 'p-invalid': errors['numeroDaAgencia'] }"
             />
-            <small class="text-rose-600">{{ errors["numAgencia"] }}</small>
+            <small class="text-rose-600">{{ errors["numeroDaAgencia"] }}</small>
           </div>
 
           <div class="field col">
-            <label for="numConta">Número da Conta</label>
-            <InputMask
-              id="numConta"
-              type="text"
-              mask="999.999-9"
-              v-model="state.numConta"
-              :class="{ 'p-invalid': errors['numConta'] }"
+            <label for="numeroDaConta">Número da Conta</label>
+            <InputText
+              id="numeroDaConta"
+              v-model="dadosBancarios.numeroDaConta"
+              :class="{ 'p-invalid': errors['numeroDaConta'] }"
             />
-            <small class="text-rose-600">{{ errors["numConta"] }}</small>
+            <small class="text-rose-600">{{ errors["numeroDaConta"] }}</small>
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="nomeAgencia">Nome da agência</label>
+            <label for="nomeDaAgencia">Nome da agência</label>
             <InputText
-              id="nomeAgencia"
+              id="nomeDaAgencia"
               type="text"
-              v-model="state.nomeAgencia"
-              :class="{ 'p-invalid': errors['nomeAgencia'] }"
+              v-model="dadosBancarios.nomeDaAgencia"
+              :disabled="aluno?.dadosBancarios?.nomeDaAgencia"
+              :class="{ 'p-invalid': errors['nomeDaAgencia'] }"
             />
-            <small class="text-rose-600">{{ errors["nomeAgencia"] }}</small>
+            <small class="text-rose-600">{{ errors["nomeDaAgencia"] }}</small>
           </div>
 
           <div class="field col">
-            <label for="cidadeAgencia">Cidade da agência</label>
+            <label for="cidadeDaAgencia">Cidade da agência</label>
             <InputText
-              id="cidadeAgencia"
+              id="cidadeDaAgencia"
               type="text"
-              v-model="state.cidadeAgencia"
-              :class="{ 'p-invalid': errors['cidadeAgencia'] }"
+              v-model="dadosBancarios.cidadeDaAgencia"
+              :disabled="aluno?.dadosBancarios?.cidadeDaAgencia"
+              :class="{ 'p-invalid': errors['cidadeDaAgencia'] }"
             />
-            <small class="text-rose-600">{{ errors["cidadeAgencia"] }}</small>
+            <small class="text-rose-600">{{ errors["cidadeDaAgencia"] }}</small>
           </div>
         </div>
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="endAgencia">Endereço da agência</label>
+            <label for="enderecoDaAgencia">Endereço da agência</label>
             <InputText
-              id="endAgencia"
+              id="enderecoDaAgencia"
               type="text"
-              v-model="state.enderecoAgencia"
-              :class="{ 'p-invalid': errors['enderecoAgencia'] }"
+              v-model="dadosBancarios.enderecoDaAgencia"
+              :class="{ 'p-invalid': errors['enderecoDaAgencia'] }"
             />
-            <small class="text-rose-600">{{ errors["enderecoAgencia"] }}</small>
+            <small class="text-rose-600">{{
+              errors["enderecoDaAgencia"]
+            }}</small>
           </div>
 
           <div class="field col">
-            <label for="bairroAgencia">Bairo da agência</label>
+            <label for="bairroDaAgencia">Bairo da agência</label>
             <InputText
-              id="bairroAgencia"
+              id="bairroDaAgencia"
               type="text"
-              v-model="state.bairroAgencia"
-              :class="{ 'p-invalid': errors['bairroAgencia'] }"
+              v-model="dadosBancarios.bairroDaAgencia"
+              :class="{ 'p-invalid': errors['bairroDaAgencia'] }"
             />
-            <small class="text-rose-600">{{ errors["bairroAgencia"] }}</small>
+            <small class="text-rose-600">{{ errors["bairroDaAgencia"] }}</small>
           </div>
         </div>
       </div>
@@ -491,7 +620,7 @@ export default defineComponent({
             <InputText
               id="orgaoExpedicaoCertMilitar"
               type="text"
-              v-model="state.orgaoExpedicao"
+              v-model="state.orgaoDeExpedicao"
               :class="{ 'p-invalid': errors['orgaoExpedicaoCertMilitar'] }"
             />
             <small class="text-rose-600">{{
