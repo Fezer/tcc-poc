@@ -145,8 +145,8 @@ export default defineComponent({
         // dataChegada: z.string(),
         dataExpedicao: z.string(),
         tituloEleitoral: z.string().min(1),
-        zona: z.string().min(0),
-        secao: z.string().min(0),
+        zona: z.string().min(1).or(z.number().min(0)),
+        secao: z.string().min(1).or(z.number().min(0)),
         certificadoMilitar: z.string().min(1),
         serie: z.string().min(1),
         nomePai: z.string().min(1),
@@ -212,16 +212,14 @@ export default defineComponent({
             });
           });
 
-        await alunoService
-          .atualizaDadosBancarios(grr, dadosBancarios)
-          .then(() => {
-            toast.add({
-              severity: "success",
-              summary: "Sucesso",
-              detail: "Dados bancários atualizados com sucesso",
-              life: 3000,
-            });
+        await alunoService.criaDadosBancarios(grr, dadosBancarios).then(() => {
+          toast.add({
+            severity: "success",
+            summary: "Sucesso",
+            detail: "Dados bancários atualizados com sucesso",
+            life: 3000,
           });
+        });
 
         advanceStep();
       } catch (err) {

@@ -87,7 +87,7 @@ export default defineComponent({
         </div>
         <div
           class="col-4"
-          v-if="dadosAuxiliares?.nacionalidade != 'BRASILEIRO'"
+          v-if="dadosAuxiliares?.nacionalidade?.trim() != 'BRASILEIRO'"
         >
           <strong>Data de Chegada no País</strong>
           <p>{{ parseDate(dadosAuxiliares?.dataDeChegadaNoPais) }}</p>
@@ -164,10 +164,6 @@ export default defineComponent({
         <div class="col-4">
           <strong>Bairro da Agência</strong>
           <p>{{ dadosBancarios?.bairroDaAgencia }}</p>
-        </div>
-        <div class="col-4">
-          <strong>Série Cert. Militar</strong>
-          <p>{{ dadosBancarios?.serie }}</p>
         </div>
       </div>
     </div>

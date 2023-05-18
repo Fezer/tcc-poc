@@ -34,10 +34,6 @@ export default {
         <strong>Nome Professor Orientador UFPR</strong>
         <p>Prof. {{ termo?.orientador?.nome }}</p>
       </div>
-      <div class="col-4">
-        <strong>Departamento do Orientador</strong>
-        <p>{{ termo?.orientador?.departamento }}</p>
-      </div>
       <div class="col-12">
         <strong>Atividades a serem desenvolvidas</strong>
         <p>{{ planoAtividades?.descricaoAtividades }}</p>
