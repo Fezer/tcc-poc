@@ -3509,6 +3509,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "baixarTermoAluno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/GRR20204481/download-termo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"GRR20204481",
+								"download-termo"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
