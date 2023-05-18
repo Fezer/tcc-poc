@@ -103,11 +103,13 @@ export default defineComponent({
             icon="pi pi-file"
           />
         </NuxtLink>
-        <Button
-          label="Termo aditivo"
-          class="p-button-success"
-          icon="pi pi-plus"
-        />
+        <NuxtLink to="/aluno/termo-aditivo/gerar">
+          <Button
+            label="Termo aditivo"
+            class="p-button-success"
+            icon="pi pi-plus"
+          />
+        </NuxtLink>
         <!-- TODO: só poder solicitar certificado após ficha de avaliação -->
         <Button
           label="Solicitar certificado"
