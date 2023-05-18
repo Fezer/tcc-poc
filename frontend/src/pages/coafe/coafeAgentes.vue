@@ -12,7 +12,15 @@
       </span>
     </div>
     <div>
-      <DataTable :value="agentes" rowHover stripedRows>
+      <DataTable
+        :value="agentes"
+        paginator
+        :rows="5"
+        :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+        rowHover
+        stripedRows
+      >
         <template #header>
           <div class="flex justify-content-between">
             <span class="p-input-icon-left">
@@ -31,14 +39,23 @@
             {{ data.nome }}
           </template>
         </Column>
-        <Column field="numeroConvenio" header="Número de Convênios">
+        <Column field="convenio" header="Número de Convênios">
           <template #body="{ data }">
-            {{ data.convenio }}
+            {{ data.convenio.length }}
+          </template>
+        </Column>
+        <Column field="cnpj" header="CNPJ">
+          <template #body="{ data }">
+            {{ data.cnpj }}
           </template>
         </Column>
         <Column field="button">
-          <template #body>
-            <Button label="Ver"></Button>
+          <template #body="{ data }">
+            <NuxtLink
+              :to="`/coafe/agentes-integracao/agenteVisualizar?id=${data.id}`"
+            >
+              <Button label="Ver" />
+            </NuxtLink>
           </template>
         </Column>
       </DataTable>
@@ -53,6 +70,5 @@ import Button from "primevue/button";
 </script>
 <script scoped></script>
 <script setup>
-const { data: agentes } = useFetch(`http://localhost:5000/agente-integrador`);
-console.log(agentes.value);
+const { data: agentes } = useFetch(`http://localhost:5000/agente-integrador/`);
 </script>

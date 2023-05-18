@@ -1,6 +1,7 @@
 export default interface Agente {
-    id: null;
-    nome: null;
-    convenio: null;
+    id: number;
+    nome: string;
+    cnpj: number;
+    telefone: number;
   }
   

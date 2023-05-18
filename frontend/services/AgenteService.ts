@@ -2,17 +2,18 @@ import Agente from "~~/src/types/Agente";
 import BaseService from "./BaseService";
 
 export default class AgenteService extends BaseService {
-  async criarAgente() { //passar por 
-    const response = await $fetch(this.BASE_URL + "/agente-integrador", {
+  async criarAgente(nome:string,cnpj:number,telefone:number) {
+    const response = await $fetch(this.BASE_URL + "/agente-integrador/", {
       method: "POST",
       body: {
-        nome:"teste",
-        telefone:"1123123",
-        cnpj:"00123"
+        nome : nome,
+        cnpj : cnpj,
+        telefone : telefone
       },
     });
 
     if (!response?.id) {
+      console.log('deu erro :( ')
       throw new Error("Erro ao criar novo agente");
     }else{
       return response;

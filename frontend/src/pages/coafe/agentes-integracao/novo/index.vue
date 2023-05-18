@@ -10,9 +10,9 @@ export default defineComponent({
     const state = reactive({
       id: null,
       nome: null,
-      convenio: null,
+      cnpj: null,
+      telefone: null,
     });
-
     const agenteService = new AgenteService();
     const handleRegisterAgentes = async () => {
       if (!state.nome) {
@@ -22,7 +22,14 @@ export default defineComponent({
           detail: "Preencha todos os campos",
           life: 3000,
         });
-      } else if (!state.convenio) {
+      } else if (!state.cnpj) {
+        return toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Preencha todos os campos",
+          life: 3000,
+        });
+      } else if (!state.telefone) {
         return toast.add({
           severity: "error",
           summary: "Erro",
@@ -31,16 +38,15 @@ export default defineComponent({
         });
       }
       try {
-        const response = await agenteService.criarAgente();
-        state.id = response?.id;
-        console.log(state.id);
-        await agenteService.atualizaAgente({ ...state }).then(() => {
-          toast.add({
-            severity: "success",
-            summary: "Agente de Integração adicionado com sucesso",
-            life: 3000,
+        const response = await agenteService
+          .criarAgente(state.nome, state.cnpj, state.telefone)
+          .then(() => {
+            toast.add({
+              severity: "success",
+              summary: "Agente de Integração adicionado com sucesso",
+              life: 3000,
+            });
           });
-        });
       } catch (e) {
         console.log(e);
       }
@@ -68,8 +74,12 @@ export default defineComponent({
             <InputText id="nome" type="text" v-model="state.nome" />
           </div>
           <div class="field col">
-            <label style="font-size: 20px" for="covenios">Convênios</label>
-            <InputText id="convenios" type="text" v-model="state.convenio" />
+            <label style="font-size: 20px" for="cnpj">CNPJ</label>
+            <InputText id="cnpj" type="text" v-model="state.cnpj" />
+          </div>
+          <div class="field col">
+            <label style="font-size: 20px" for="telefone">Telefone</label>
+            <InputText id="telefone" type="text" v-model="state.telefone" />
           </div>
           <!-- <div class="field col">
               <label for="orgaoEmissor">Órgão Emissor</label>
