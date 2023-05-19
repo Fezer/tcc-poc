@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.SeguradoraDTO;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
@@ -42,39 +43,12 @@ public class SeguradoraREST {
     @Autowired
 	private ModelMapper mapper;
     
-    @PostMapping("/novo")
-	public ResponseEntity<SeguradoraDTO> novoSeguradora(@RequestBody SeguradoraDTO seguradoraDTO){
-		try {
-			Seguradora seguradora = mapper.map(seguradoraDTO, Seguradora.class);
-			
-			if (seguradoraDTO.getNome().isBlank() || seguradoraDTO.getNome().isEmpty())
-	    		throw new InvalidFieldException("Nome inválido.");
-	    	
-	    	if (seguradoraDTO.isSeguradoraUfpr() != true && seguradoraDTO.isSeguradoraUfpr() != false)
-	    		throw new InvalidFieldException("Selecione se a seguradora é uma seguradora UFPR.");
-			
-		    seguradora.setApolice(seguradoraDTO.getApolice());
-		    seguradora.setTermoDeEstagio(seguradoraDTO.getTermoDeEstagio());
-		    seguradora.setEstagio(seguradoraDTO.getEstagio());
-		    
-		    seguradora = seguradoraService.criarSeguradora(seguradora);
-			
-		    seguradoraDTO = mapper.map(seguradora, SeguradoraDTO.class);
-			
-			return new ResponseEntity<>(seguradoraDTO, HttpStatus.CREATED);	
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-    
     @PostMapping("/")
-	public ResponseEntity<SeguradoraDTO> criarSeguradora(@RequestBody SeguradoraDTO seguradoraDTO){
+	public ResponseEntity<Object> criarSeguradora(@RequestBody SeguradoraDTO seguradoraDTO){
 		try {
 			Seguradora seguradora = mapper.map(seguradoraDTO, Seguradora.class);
 			
-			if (seguradoraDTO.getNome().isBlank() || seguradoraDTO.getNome().isEmpty())
+			if (seguradoraDTO.getNome() == null || seguradoraDTO.getNome().isEmpty())
 	    		throw new InvalidFieldException("Nome inválido.");
 	    	
 	    	if (seguradoraDTO.isSeguradoraUfpr() != true && seguradoraDTO.isSeguradoraUfpr() != false)
@@ -86,106 +60,228 @@ public class SeguradoraREST {
 			seguradora = seguradoraService.criarSeguradora(seguradora);
 			seguradoraDTO = mapper.map(seguradora, SeguradoraDTO.class);
 			return new ResponseEntity<>(seguradoraDTO, HttpStatus.CREATED);
-		}catch(Exception e) {
+		} catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
+		
+		/**
+		  catch (InvalidFieldException ex) {
+	        throw new NotFoundException("Nome inválido.");
+	      }
+	      Caso o front não queira verificar o tipo de objeto retornado, a exceção deverá ser lançada da maneira acima
+		 */
+		
+		/**
+		   catch (Exception ex) {
+		        ErrorResponse response = new ErrorResponse("Erro interno no servidor.");
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response); // Resposta de erro interno do servidor com a mensagem de erro no corpo
+		    }
+		 */
 	}
     
     @PostMapping("/{idSeguradora}/apolice")
-	public ResponseEntity<ApoliceDTO> criarApolice(@PathVariable Integer idSeguradora, @RequestBody ApoliceDTO apolice){
+	public ResponseEntity<Object> criarApolice(@PathVariable String idSeguradora, @RequestBody ApoliceDTO apolice){
 		try {
-			Optional<Seguradora> seguradoraFind = seguradoraService.buscarSeguradoraPorId(idSeguradora);
+			int idSeguradoraInt = Integer.parseInt(idSeguradora);
 			
-			// copiar de apólice
+			Optional<Seguradora> seguradoraFind = seguradoraService.buscarSeguradoraPorId(idSeguradoraInt);
+			
+			if (!seguradoraFind.isPresent())
+				throw new NotFoundException("Não foi encontrada uma seguradora com o id informado.");
 			
 			Seguradora seguradora = seguradoraFind.get();
+			
+			if (apolice.getNumero() < 1)
+				throw new InvalidFieldException("Número inválido.");
+			
+			if (apolice.getDataInicio().after(apolice.getDataFim()))
+				throw new InvalidFieldException("Data de início não pode ser superior à data de fim");
+			
 			Apolice apoliceNovo = mapper.map(apolice, Apolice.class);
 			apoliceNovo = apoliceService.criarApolice(apoliceNovo);
 			apoliceNovo = apoliceService.associarSeguradoraApolice(apoliceNovo, seguradora);
 			apolice = mapper.map(apoliceNovo, ApoliceDTO.class);
 			return new ResponseEntity<>(apolice, HttpStatus.CREATED);
-		}catch(Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
     
     @GetMapping("/{id}")
-	public ResponseEntity<SeguradoraDTO> buscarPorId(@PathVariable Integer id) {
-	    Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(id);
-	    
-	    if (seguradora.isEmpty()) {
-			throw new NotFoundException("Seguradora não encontrada!");
+	public ResponseEntity<Object> buscarPorId(@PathVariable String id) {
+	    try {
+	    	int idInt = Integer.parseInt(id);
+	    	
+	    	if (idInt < 1) {
+	    		throw new InvalidFieldException("Id da seguradora inválido!");
+	    	}
+	    	
+	    	Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(idInt);
+		    
+		    if (seguradora.isEmpty()) {
+				throw new NotFoundException("Seguradora não encontrada!");
+			}
+		    
+		    SeguradoraDTO seguradoraDTO = mapper.map(seguradora, SeguradoraDTO.class);
+		    return ResponseEntity.status(HttpStatus.OK).body(seguradoraDTO);
+	    } catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
-	    
-	    SeguradoraDTO seguradoraDTO = mapper.map(seguradora, SeguradoraDTO.class);
-	    return ResponseEntity.status(HttpStatus.OK).body(seguradoraDTO);
+    	
 	}
     
     @GetMapping("/")
 	public ResponseEntity<List<SeguradoraDTO>> listarSeguradoras() {
-	    List<Seguradora> seguradoras = seguradoraService.listarSeguradoras();
-	    List<SeguradoraDTO> seguradorasDTO = seguradoras.stream()
-	            .map(ap -> mapper.map(ap, SeguradoraDTO.class))
-	            .collect(Collectors.toList());
-	    return ResponseEntity.ok().body(seguradorasDTO);
+    	try {
+    		List<Seguradora> seguradoras = seguradoraService.listarSeguradoras();
+    	    List<SeguradoraDTO> seguradorasDTO = seguradoras.stream()
+    	            .map(ap -> mapper.map(ap, SeguradoraDTO.class))
+    	            .collect(Collectors.toList());
+    	    return ResponseEntity.ok().body(seguradorasDTO);
+    	} catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	    
 	}
     
     @PutMapping("/{id}")
-    public ResponseEntity<SeguradoraDTO> atualizarSeguradora(@PathVariable Integer id, @RequestBody SeguradoraDTO seguradoraDTO){
-        Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(id);
-        
-        if(seguradora.isPresent()) {
+    public ResponseEntity<Object> atualizarSeguradora(@PathVariable Integer id, @RequestBody SeguradoraDTO seguradoraDTO){
+        try {
+        	Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(id);
+            
+            if(seguradora.isPresent()) {
 
-        	/*if (seguradoraDTO.getNome() == null && (seguradoraDTO.isSeguradoraUfpr() != false && seguradoraDTO.isSeguradoraUfpr() != true)) {
-        		Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO, Seguradora.class);
+            	/*if (seguradoraDTO.getNome() == null && (seguradoraDTO.isSeguradoraUfpr() != false && seguradoraDTO.isSeguradoraUfpr() != true)) {
+            		Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO, Seguradora.class);
+                    seguradoraAtualizada.setId(id);
+                    System.out.println(seguradoraAtualizada.isAtiva());
+                    seguradoraAtualizada = seguradoraService.ativarDesativarSeguradora(seguradoraAtualizada);
+                    SeguradoraDTO seguradoraDTOAtualizada = mapper.map(seguradoraAtualizada, SeguradoraDTO.class);
+                    return ResponseEntity.ok().body(seguradoraDTOAtualizada);
+            	}*/
+            	
+            	if (seguradoraDTO.getNome().isEmpty())
+            		throw new InvalidFieldException("Nome inválido!");
+            	
+            	Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO, Seguradora.class);
                 seguradoraAtualizada.setId(id);
-                System.out.println(seguradoraAtualizada.isAtiva());
-                seguradoraAtualizada = seguradoraService.ativarDesativarSeguradora(seguradoraAtualizada);
+                seguradoraAtualizada = seguradoraService.atualizarSeguradora(seguradoraAtualizada);
                 SeguradoraDTO seguradoraDTOAtualizada = mapper.map(seguradoraAtualizada, SeguradoraDTO.class);
                 return ResponseEntity.ok().body(seguradoraDTOAtualizada);
-        	}*/
-        	
-        	Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO, Seguradora.class);
-            seguradoraAtualizada.setId(id);
-            seguradoraAtualizada = seguradoraService.atualizarSeguradora(seguradoraAtualizada);
-            SeguradoraDTO seguradoraDTOAtualizada = mapper.map(seguradoraAtualizada, SeguradoraDTO.class);
-            return ResponseEntity.ok().body(seguradoraDTOAtualizada);
 
-        } else {
-			throw new NotFoundException("Seguradora não encontrada!");
-        }
+            } else {
+    			throw new NotFoundException("Seguradora não encontrada!");
+            }
+        } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+    	
     }
     
     @PutMapping("/ativar-desativar/{id}")
-    public ResponseEntity<SeguradoraDTO> ativarDesativarSeguradora(@PathVariable Integer id, @RequestBody SeguradoraDTO seguradoraDTO){
-        Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(id);
+    public ResponseEntity<Object> ativarDesativarSeguradora(@PathVariable String id, @RequestBody SeguradoraDTO seguradoraDTO){
         
-        if(seguradora.isPresent()) {
-            Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO, Seguradora.class);
-                        
-            seguradoraAtualizada.setId(id);
-            seguradoraAtualizada = seguradoraService.ativarDesativarSeguradora(seguradoraAtualizada);
-
-            if (seguradoraAtualizada.getError() != null)
-            	throw new InvalidFieldException(seguradoraAtualizada.getError());
+    	try {
+    		int idInt = Integer.parseInt(id);
+	    	
+	    	if (idInt < 1) {
+	    		throw new InvalidFieldException("Id da seguradora inválido!");
+	    	}
+    		
+	    	Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(idInt);
             
-            SeguradoraDTO seguradoraDTOAtualizada = mapper.map(seguradoraAtualizada, SeguradoraDTO.class);
-            return ResponseEntity.ok().body(seguradoraDTOAtualizada);
-        } else {
-			throw new NotFoundException("Seguradora não encontrada!");
-        }
+            if(seguradora.isPresent()) {
+                Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO, Seguradora.class);
+                            
+                seguradoraAtualizada.setId(idInt);
+                seguradoraAtualizada = seguradoraService.ativarDesativarSeguradora(seguradoraAtualizada);
+
+                // Lança a exceção caso tente ativar uma seguradora já ativa e vice-versa
+                if (seguradoraAtualizada.getError() != null)
+                	throw new InvalidFieldException(seguradoraAtualizada.getError());
+                
+                SeguradoraDTO seguradoraDTOAtualizada = mapper.map(seguradoraAtualizada, SeguradoraDTO.class);
+                return ResponseEntity.ok().body(seguradoraDTOAtualizada);
+            } else {
+    			throw new NotFoundException("Seguradora não encontrada!");
+            }
+            
+    	} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+    	
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirSeguradora(@PathVariable Integer id){
-        Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(id);
-        if(seguradora.isPresent()) {
-            seguradoraService.excluirSeguradora(seguradora.get());
-            return ResponseEntity.noContent().build();
-        } else {
-        	throw new NotFoundException("Seguradora não encontrada!");
-        }
+    public ResponseEntity<?> excluirSeguradora(@PathVariable String id){
+        try {
+        	int idInt = Integer.parseInt(id);
+	    	
+	    	if (idInt < 1) {
+	    		throw new InvalidFieldException("Id da seguradora inválido!");
+	    	}
+	    	
+        	Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(idInt);
+            
+        	if(seguradora.isPresent()) {
+                seguradoraService.excluirSeguradora(seguradora.get());
+                return ResponseEntity.noContent().build();
+            } else {
+            	throw new NotFoundException("Seguradora não encontrada!");
+            }
+        	
+        } catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+    	
     }
 }
