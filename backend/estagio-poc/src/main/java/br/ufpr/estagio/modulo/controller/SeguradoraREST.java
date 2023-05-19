@@ -70,7 +70,7 @@ public class SeguradoraREST {
 		
 		/**
 		  catch (InvalidFieldException ex) {
-	        throw new NotFoundException("Nome inválido.");
+	        throw new InvalidFieldException("Nome inválido.");
 	      }
 	      Caso o front não queira verificar o tipo de objeto retornado, a exceção deverá ser lançada da maneira acima
 		 */
@@ -97,6 +97,12 @@ public class SeguradoraREST {
 			
 			if (apolice.getNumero() < 1)
 				throw new InvalidFieldException("Número inválido.");
+			
+			if (apolice.getDataInicio() == null)
+        		throw new InvalidFieldException("Insira uma data de início.");
+        	
+        	if (apolice.getDataFim() == null)
+        		throw new InvalidFieldException("Insira uma data de fim.");
 			
 			if (apolice.getDataInicio().after(apolice.getDataFim()))
 				throw new InvalidFieldException("Data de início não pode ser superior à data de fim");
@@ -170,9 +176,15 @@ public class SeguradoraREST {
 	}
     
     @PutMapping("/{id}")
-    public ResponseEntity<Object> atualizarSeguradora(@PathVariable Integer id, @RequestBody SeguradoraDTO seguradoraDTO){
+    public ResponseEntity<Object> atualizarSeguradora(@PathVariable String id, @RequestBody SeguradoraDTO seguradoraDTO){
         try {
-        	Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(id);
+        	int idInt = Integer.parseInt(id);
+	    	
+	    	if (idInt < 1) {
+	    		throw new InvalidFieldException("Id da seguradora inválido!");
+	    	}
+	    	
+        	Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(idInt);
             
             if(seguradora.isPresent()) {
 
@@ -189,7 +201,7 @@ public class SeguradoraREST {
             		throw new InvalidFieldException("Nome inválido!");
             	
             	Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO, Seguradora.class);
-                seguradoraAtualizada.setId(id);
+                seguradoraAtualizada.setId(idInt);
                 seguradoraAtualizada = seguradoraService.atualizarSeguradora(seguradoraAtualizada);
                 SeguradoraDTO seguradoraDTOAtualizada = mapper.map(seguradoraAtualizada, SeguradoraDTO.class);
                 return ResponseEntity.ok().body(seguradoraDTOAtualizada);
@@ -197,7 +209,13 @@ public class SeguradoraREST {
             } else {
     			throw new NotFoundException("Seguradora não encontrada!");
             }
-        } catch (InvalidFieldException ex) {
+        } catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch(Exception e) {
