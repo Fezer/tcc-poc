@@ -32,8 +32,6 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 	@OneToMany(mappedBy="agenteIntegrador", cascade=CascadeType.ALL)
 	private List<Estagio> estagio;
 	
-	private String error;
-	
 	public AgenteIntegrador() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -46,11 +44,6 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 		this.convenio = convenio;
 		this.termoDeEstagio = termoDeEstagio;
 		this.estagio = estagio;
-	}
-
-	public AgenteIntegrador(long id, String nome, String telefone, String error) {
-		super(id, nome, telefone);
-		this.error = error;
 	}
 
 	public long getId() {
@@ -91,14 +84,6 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 
 	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
-	}
-
-	public String getError() {
-		return error;
-	}
-
-	public void setError(String error) {
-		this.error = error;
 	}
 
 }
