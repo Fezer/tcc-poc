@@ -57,7 +57,7 @@ public class CoafeREST {
 	private ModelMapper mapper;
 
 	@GetMapping("/termo/pendenteAprovacaoCoafe")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacao(){
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosDeCompromissoPendenteAprovacao(){
 		try {
 			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoPendenteAprovacaoCoafe();
 			if(listaTermos == null || listaTermos.isEmpty()) {
@@ -75,7 +75,7 @@ public class CoafeREST {
 	}
 	
 	@GetMapping("/termo/pendenteAprovacaoCoafeFiltro")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacaoPorTipoEstagio(@RequestParam String tipoEstagio){
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosDeCompromissoPendenteAprovacaoPorTipoEstagio(@RequestParam String tipoEstagio){
 		try {
 			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoPendenteAprovacaoCoafePorTipoEstagio(tipoEstagio);
 			if(listaTermos == null || listaTermos.isEmpty()) {
@@ -93,9 +93,63 @@ public class CoafeREST {
 	}
 	
 	@GetMapping("/termo/indeferido")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosIndeferidos(){
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosDeCompromissoIndeferidos(){
 		try {
 			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidos();
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termoAditivo/pendenteAprovacaoCoafe")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoPendenteAprovacao(){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosPendenteAprovacaoCoafe();
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termoAditivo/pendenteAprovacaoCoafeFiltro")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoPendenteAprovacaoPorTipoEstagio(@RequestParam String tipoEstagio){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosPendenteAprovacaoCoafePorTipoEstagio(tipoEstagio);
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termoAditivo/indeferido")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoIndeferidos(){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosIndeferidos();
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {

@@ -731,7 +731,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/termo/15/solicitarAprovacaoTermo",
+							"raw": "http://localhost:5000/aluno/GRR20175486/termo/18/solicitarAprovacaoTermo",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -741,7 +741,7 @@
 								"aluno",
 								"GRR20175486",
 								"termo",
-								"15",
+								"18",
 								"solicitarAprovacaoTermo"
 							]
 						}
@@ -2952,7 +2952,7 @@
 					"name": "TermoDeCompromisso",
 					"item": [
 						{
-							"name": "listarTermosPendenteAprovacaoCoe",
+							"name": "listarTermosDeCompromissoPendenteAprovacaoCoe",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -2973,7 +2973,7 @@
 							"response": []
 						},
 						{
-							"name": "listarTermosIndeferidos",
+							"name": "listarTermosDeCompromissoIndeferidos",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -2997,7 +2997,50 @@
 				},
 				{
 					"name": "TermoAditivo",
-					"item": []
+					"item": [
+						{
+							"name": "listarTermosAditivoPendenteAprovacaoCoe",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/termoAditivo/pendenteAprovacaoCoe",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"termoAditivo",
+										"pendenteAprovacaoCoe"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermosAditivoIndeferidos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/termoAditivo/indeferido",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"termoAditivo",
+										"indeferido"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				},
 				{
 					"name": "CertificadoDeEstagio",
@@ -3093,7 +3136,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coe/termo/1/indeferir",
+							"raw": "http://localhost:5000/coe/termo/16/indeferir",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3102,7 +3145,7 @@
 							"path": [
 								"coe",
 								"termo",
-								"1",
+								"16",
 								"indeferir"
 							]
 						}
@@ -3155,7 +3198,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coe/termo/15/aprovar",
+							"raw": "http://localhost:5000/coe/termo/18/aprovar",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3164,7 +3207,7 @@
 							"path": [
 								"coe",
 								"termo",
-								"15",
+								"18",
 								"aprovar"
 							]
 						}
@@ -3201,7 +3244,7 @@
 					"name": "TermoDeCompromisso",
 					"item": [
 						{
-							"name": "listarTermosPendenteAprovacaoCoordenacao",
+							"name": "listarTermosDeCompromissoPendenteAprovacaoCoordenacao",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3222,7 +3265,7 @@
 							"response": []
 						},
 						{
-							"name": "listarTermosPendenteAprovacaoCoordenacaoFiltroTipo",
+							"name": "listarTermosDeCompromissoPendenteAprovacaoCoordenacaoFiltroTipo",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3249,28 +3292,7 @@
 							"response": []
 						},
 						{
-							"name": "listarTermosIndeferidos",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:5000/coordenacao/termo/indeferido",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"coordenacao",
-										"termo",
-										"indeferido"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "listarTermosIndeferidosPendentesCienciaCoordenacao",
+							"name": "listarTermosDeCompromissoIndeferidosPendentesCienciaCoordenacao",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3289,12 +3311,124 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "listarTermosDeCompromissoIndeferidos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termo/indeferido",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termo",
+										"indeferido"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
 				{
 					"name": "TermoAditivo",
-					"item": []
+					"item": [
+						{
+							"name": "listarTermosAditivosPendenteAprovacaoCoordenacao",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termoAditivo/pendenteAprovacaoCoordenacao",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termoAditivo",
+										"pendenteAprovacaoCoordenacao"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermosAditivosPendenteAprovacaoCoordenacaoFiltroTipo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termoAditivo/pendenteAprovacaoCoordenacaoFiltro?tipoEstagio=NaoObrigatorio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termoAditivo",
+										"pendenteAprovacaoCoordenacaoFiltro"
+									],
+									"query": [
+										{
+											"key": "tipoEstagio",
+											"value": "NaoObrigatorio"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermosAditivosIndeferidosPendentesCienciaCoordenacao",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termoAditivo/pendenteCienciaCoordenacao",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termoAditivo",
+										"pendenteCienciaCoordenacao"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermosAditivosIndeferidos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termoAditivo/indeferido",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termoAditivo",
+										"indeferido"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				},
 				{
 					"name": "darCienciaFormacaoSupervisor",
@@ -3466,7 +3600,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/15/aprovar",
+							"raw": "http://localhost:5000/coordenacao/termo/17/aprovar",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3475,7 +3609,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"15",
+								"17",
 								"aprovar"
 							]
 						}
@@ -3543,7 +3677,7 @@
 					"name": "TermoDeCompromisso",
 					"item": [
 						{
-							"name": "listarTermosPendenteAprovacaoCoafe",
+							"name": "listarTermosDeCompromissoPendenteAprovacaoCoafe",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3564,7 +3698,7 @@
 							"response": []
 						},
 						{
-							"name": "listarTermosPendenteAprovacaoCoafeFiltroTipo",
+							"name": "listarTermosDeCompromissoPendenteAprovacaoCoafeFiltroTipo",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3591,7 +3725,7 @@
 							"response": []
 						},
 						{
-							"name": "listarTermosIndeferidos",
+							"name": "listarTermosDeCompromissoIndeferidos",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3615,7 +3749,77 @@
 				},
 				{
 					"name": "TermoAditivo",
-					"item": []
+					"item": [
+						{
+							"name": "listarTermosAditivoPendenteAprovacaoCoafe",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/termoAditivo/pendenteAprovacaoCoafe",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"termoAditivo",
+										"pendenteAprovacaoCoafe"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermosAditivoPendenteAprovacaoCoafeFiltroTipo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/termoAditivo/pendenteAprovacaoCoafeFiltro?tipoEstagio=NaoObrigatorio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"termoAditivo",
+										"pendenteAprovacaoCoafeFiltro"
+									],
+									"query": [
+										{
+											"key": "tipoEstagio",
+											"value": "NaoObrigatorio"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermosAditivoIndeferidos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/termoAditivo/indeferido",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"termoAditivo",
+										"indeferido"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				},
 				{
 					"name": "consultarAgenteIntegradorAssociadoAoTermo",

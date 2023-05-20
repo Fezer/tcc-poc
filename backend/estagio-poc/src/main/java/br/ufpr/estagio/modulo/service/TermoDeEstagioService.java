@@ -1108,5 +1108,46 @@ public class TermoDeEstagioService {
         query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
         return query.getResultList();
 	}
+
+	public List<TermoDeEstagio> listarTermosAditivosPendenteAprovacaoCoafe() {
+		
+    	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COAFE;
+    	EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoAditivo;
+        
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioPorEtapaFluxoStatusTermoTipoTermo, TermoDeEstagio.class);
+        query.setParameter("etapaFluxo", etapaFluxo);
+        query.setParameter("statusTermo", statusTermo);
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+        return query.getResultList();
+	}
+
+	public List<TermoDeEstagio> listarTermosAditivosPendenteAprovacaoCoafePorTipoEstagio(String tipoEstagioString) {
+		
+		EnumTipoEstagio tipoEstagio;
+		tipoEstagioString = tipoEstagioString.toUpperCase();
+		
+		switch(tipoEstagioString) {
+		case "OBRIGATORIO":
+			tipoEstagio = EnumTipoEstagio.Obrigatorio;
+			break;
+		case "NAOOBRIGATORIO":
+			tipoEstagio = EnumTipoEstagio.NaoObrigatorio;
+			break;
+		default:
+			return null;
+		}
+		
+    	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COAFE;
+    	EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoAditivo;
+		                
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermoPorTipoEstagioEtapaFluxoStatusTermoTipoTermo, TermoDeEstagio.class);
+        query.setParameter("tipoEstagio", tipoEstagio);
+        query.setParameter("etapaFluxo", etapaFluxo);
+        query.setParameter("statusTermo", statusTermo);
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+        return query.getResultList();
+	}
 	
 }
