@@ -107,4 +107,11 @@ export default class AlunoService extends BaseService {
       body: termoData,
     });
   }
+  // http://localhost:5000/aluno/GRR20175486/estagio/termoCompromisso?statusTermo=EmRevisao
+
+  public async getEstagioEmRevisao(grr: string) {
+    return await $fetch(
+      `${this.BASE_URL}/aluno/${grr}/estagio/termoCompromisso?statusTermo=EmRevisao`
+    );
+  }
 }

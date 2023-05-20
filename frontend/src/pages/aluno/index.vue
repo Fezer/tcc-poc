@@ -22,30 +22,60 @@ export default defineComponent({
         .getAlunoFromSiga(grr)
         .then(async (res) => {
           setAluno(res);
+
+          const emRevisao = await alunoService
+            .getEstagioEmRevisao(grr)
+            .then((res) => {
+              if (res && res.length > 0) {
+                console.log("AJUSTE");
+                router.push({
+                  path: "/aluno/termo/" + res[0]?.termoDeCompromisso,
+                });
+                return true;
+              }
+              return false;
+            });
+
+          if (emRevisao) return;
+
+          const emAndamento = await alunoService
+            .getEstagioEmAndamento(grr)
+            .then((res) => {
+              if (res && res.length > 0) {
+                router.push({
+                  path: "/aluno/estagio/" + res[0].id,
+                });
+                return true;
+              }
+              return false;
+            });
+
+          if (emAndamento) return;
+
+          const emAprovacao = await novoEstagioService
+            .getTermoEmAprovacao(grr)
+            .then((res) => {
+              if (res && res.length > 0) {
+                setTermo(res[0]);
+                router.push({
+                  path: "/aluno/termo/" + res[0].id,
+                });
+                return true;
+              }
+              return false;
+            });
+
+          if (emAprovacao) return;
+
           await novoEstagioService.getTermoEmPreenchimento(grr).then((res) => {
             if (res && res.length > 0) {
               setTermo(res[0]);
               router.push({
-                path: "/termo/" + res[0].id,
+                path: "/aluno/termo/" + res[0].id,
               });
+              return true;
             }
-          });
-
-          await novoEstagioService.getTermoEmAprovacao(grr).then((res) => {
-            if (res && res.length > 0) {
-              setTermo(res[0]);
-              router.push({
-                path: "/termo/" + res[0].id,
-              });
-            }
-          });
-
-          await alunoService.getEstagioEmAndamento(grr).then((res) => {
-            if (res && res.length > 0) {
-              router.push({
-                path: "/aluno/estagio/" + res[0].id,
-              });
-            }
+            return false;
           });
 
           return res;
