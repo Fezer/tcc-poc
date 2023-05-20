@@ -46,7 +46,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo/1",
+							"raw": "http://localhost:5000/termo/13",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -54,7 +54,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"1"
+								"13"
 							]
 						}
 					},
@@ -102,10 +102,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"dataInicio\": \"2023-05-05\",\r\n    \"dataTermino\": \"2023-12-05\", \r\n    \"jornadaDiaria\": 6,\r\n    \"jornadaSemanal\": 30,\r\n    \"valorBolsa\": 2000,\r\n    \"valorTransporte\": 200,\r\n    \"dataFimSuspensao\": \"\",\r\n    \"dataInicioRetomada\": \"\"\r\n}"
+							"raw": "{\r\n    \"dataInicio\": \"2023-05-05\",\r\n    \"dataTermino\": \"2023-12-05\", \r\n    \"jornadaDiaria\": 6,\r\n    \"jornadaSemanal\": 30,\r\n    \"valorBolsa\": 4000,\r\n    \"valorTransporte\": 300,\r\n    \"dataFimSuspensao\": \"\",\r\n    \"dataInicioRetomada\": \"\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/8",
+							"raw": "http://localhost:5000/termo/13",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -113,7 +113,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"8"
+								"13"
 							]
 						}
 					},
@@ -132,10 +132,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"local\": \"Qualquer\",\r\n    \"nomeSupervisor\": \"SuperVitor\",\r\n    \"telefoneSupervisor\": \"41999990000\",\r\n    \"cpfSupervisor\": \"11111111134\",\r\n    \"formacaoSupervisor\": \"TADS\",\r\n    \"descricaoAtividades\": \"atividades Bacanas\"\r\n}"
+							"raw": "{\r\n    \"local\": \"Qualquer\",\r\n    \"nomeSupervisor\": \"SuperVitor\",\r\n    \"telefoneSupervisor\": \"41999990000\",\r\n    \"cpfSupervisor\": \"11111111134\",\r\n    \"formacaoSupervisor\": \"TADS\",\r\n    \"descricaoAtividades\": \"Outras atividades Bacanas\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/8/planoAtividades",
+							"raw": "http://localhost:5000/termo/13/planoAtividades",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -143,7 +143,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"8",
+								"13",
 								"planoAtividades"
 							]
 						}
@@ -166,7 +166,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/2/associarOrientador/3",
+							"raw": "http://localhost:5000/termo/13/associarOrientador/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -174,9 +174,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"2",
+								"13",
 								"associarOrientador",
-								"3"
+								"4"
 							]
 						}
 					},
@@ -198,7 +198,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/8/associarAgenteIntegrador/104",
+							"raw": "http://localhost:5000/termo/13/associarAgenteIntegrador/53",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -206,9 +206,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"8",
+								"13",
 								"associarAgenteIntegrador",
-								"104"
+								"53"
 							]
 						}
 					},
@@ -230,7 +230,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/8/associarApolice/1",
+							"raw": "http://localhost:5000/termo/13/associarApolice/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -238,9 +238,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"8",
+								"13",
 								"associarApolice",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -252,7 +252,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/termo/8/associarContratante/105",
+							"raw": "http://localhost:5000/termo/13/associarContratante/55",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -260,9 +260,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"8",
+								"13",
 								"associarContratante",
-								"105"
+								"55"
 							]
 						}
 					},
@@ -303,6 +303,81 @@
 		{
 			"name": "Aluno",
 			"item": [
+				{
+					"name": "TermoAditivo",
+					"item": [
+						{
+							"name": "novoTermoAditivo",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/3/termoAditivo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"estagio",
+										"3",
+										"termoAditivo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cancelarTermoAditivo",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/3/termoAditivo/14/cancelarTermoAditivo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"estagio",
+										"3",
+										"termoAditivo",
+										"14",
+										"cancelarTermoAditivo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermoAditivoEmPreenchimento",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/termoAditivo/emPreenchimento",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"termoAditivo",
+										"emPreenchimento"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
 				{
 					"name": "listAluno",
 					"request": {
@@ -475,12 +550,34 @@
 					"response": []
 				},
 				{
+					"name": "cancelarEstagio",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "solicitarAprovacaoTermo",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/termo/2/solicitarAprovacaoTermo",
+							"raw": "http://localhost:5000/aluno/GRR20175486/termo/13/solicitarAprovacaoTermo",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -490,7 +587,7 @@
 								"aluno",
 								"GRR20175486",
 								"termo",
-								"2",
+								"13",
 								"solicitarAprovacaoTermo"
 							]
 						}
@@ -540,28 +637,6 @@
 								"relatorioDeEstagio",
 								"7",
 								"solicitarCiencia"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "cancelarEstagio",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20175486",
-								"estagio",
-								"1"
 							]
 						}
 					},
@@ -659,29 +734,6 @@
 								"aluno",
 								"GRR20175486",
 								"certificadoDeEstagio"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "novoTermoAditivo",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/2/termoAditivo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20175486",
-								"estagio",
-								"2",
-								"termoAditivo"
 							]
 						}
 					},
@@ -1052,7 +1104,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/2",
+							"raw": "http://localhost:5000/estagio/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1060,7 +1112,7 @@
 							"port": "5000",
 							"path": [
 								"estagio",
-								"2"
+								"3"
 							]
 						}
 					},
@@ -1072,7 +1124,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/tipo/2?tipoEstagio=NaoObrigatorio",
+							"raw": "http://localhost:5000/estagio/tipo/3?tipoEstagio=NaoObrigatorio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1081,7 +1133,7 @@
 							"path": [
 								"estagio",
 								"tipo",
-								"2"
+								"3"
 							],
 							"query": [
 								{
@@ -1099,7 +1151,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/ufpr/8?estagioUfpr=false",
+							"raw": "http://localhost:5000/estagio/ufpr/3?estagioUfpr=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1108,7 +1160,7 @@
 							"path": [
 								"estagio",
 								"ufpr",
-								"8"
+								"3"
 							],
 							"query": [
 								{
@@ -1126,7 +1178,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/seed/8?estagioSeed=false",
+							"raw": "http://localhost:5000/estagio/seed/3?estagioSeed=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1135,7 +1187,7 @@
 							"path": [
 								"estagio",
 								"seed",
-								"8"
+								"3"
 							],
 							"query": [
 								{
@@ -1697,7 +1749,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Seguradora123\",\n    \"seguradoraUfpr\": false,\n    \"ativa\": true\n}",
+							"raw": "{\n    \"nome\": \"Seguradora4321\",\n    \"seguradoraUfpr\": false,\n    \"ativa\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1726,7 +1778,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"numero\": \"12345\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\"\n}",
+							"raw": "{\n    \"numero\": \"11111\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1734,7 +1786,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/seguradora/1/apolice",
+							"raw": "http://localhost:5000/seguradora/2/apolice",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1742,7 +1794,7 @@
 							"port": "5000",
 							"path": [
 								"seguradora",
-								"1",
+								"2",
 								"apolice"
 							]
 						}
@@ -1863,129 +1915,6 @@
 								"seguradora",
 								"ativar-desativar",
 								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Convenio",
-			"item": [
-				{
-					"name": "novoConvenio",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"numero\": \"1212\",\n    \"descricao\": \"Inconveniente\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\",\n    \"agenteIntegrador\": {\n        \"id\": 1,\n        \"nome\": \"Agente A\"\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/convenio/novo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"convenio",
-								"novo"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "listConvenio",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/convenio/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"convenio",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "listConvenios",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/convenio/",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"convenio",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "atualizaConvenio",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"numero\": \"1222\",\n    \"descricao\": \"Inconveniente\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\",\n    \"agenteIntegrador\": {\n        \"id\": 13,\n        \"cnpj\": \"00010001\"\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/convenio/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"convenio",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deletaConvenio",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/convenio/4",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"convenio",
-								"4"
 							]
 						}
 					},
@@ -2126,7 +2055,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Convenio123\",\n    \"telefone\": \"4112341234\",\n    \"cnpj\": \"00010001\"\n}",
+							"raw": "{\n    \"nome\": \"AgenteIntegrador111\",\n    \"telefone\": \"4112341234\",\n    \"cnpj\": \"00010001\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2163,7 +2092,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/104/convenio",
+							"raw": "http://localhost:5000/agente-integrador/53/convenio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2171,7 +2100,7 @@
 							"port": "5000",
 							"path": [
 								"agente-integrador",
-								"104",
+								"53",
 								"convenio"
 							]
 						}
@@ -2270,6 +2199,129 @@
 			]
 		},
 		{
+			"name": "Convenio",
+			"item": [
+				{
+					"name": "novoConvenio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numero\": \"1212\",\n    \"descricao\": \"Inconveniente\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\",\n    \"agenteIntegrador\": {\n        \"id\": 1,\n        \"nome\": \"Agente A\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/convenio/novo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"convenio",
+								"novo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listConvenio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/convenio/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"convenio",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listConvenios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/convenio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"convenio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizaConvenio",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numero\": \"1222\",\n    \"descricao\": \"Inconveniente\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\",\n    \"agenteIntegrador\": {\n        \"id\": 13,\n        \"cnpj\": \"00010001\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/convenio/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"convenio",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletaConvenio",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/convenio/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"convenio",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Contratante",
 			"item": [
 				{
@@ -2279,7 +2331,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Ilya\",\n    \"telefone\": \"419292929292\",\n    \"tipo\": \"PessoaJuridica\",\n    \"cnpj\": \"121.212.12238964186349168121\",\n    \"cpf\": null,\n    \"representanteEmpresa\": \"Sergey\"\n}",
+							"raw": "{\n    \"nome\": \"Maria\",\n    \"telefone\": \"419292929292\",\n    \"tipo\": \"PessoaJuridica\",\n    \"cnpj\": \"121.212.12238964186349168121\",\n    \"cpf\": null,\n    \"representanteEmpresa\": \"Sergey\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2743,6 +2795,14 @@
 			"name": "COE",
 			"item": [
 				{
+					"name": "TermoDeCompromisso",
+					"item": []
+				},
+				{
+					"name": "TermoAditivo",
+					"item": []
+				},
+				{
 					"name": "listarTermosPendenteAprovacaoCoe",
 					"request": {
 						"method": "GET",
@@ -2830,7 +2890,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coe/termo/2/solicitarAjustes",
+							"raw": "http://localhost:5000/coe/termo/13/solicitarAjustes",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2839,7 +2899,7 @@
 							"path": [
 								"coe",
 								"termo",
-								"2",
+								"13",
 								"solicitarAjustes"
 							]
 						}
@@ -2861,7 +2921,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coe/termo/8/aprovar",
+							"raw": "http://localhost:5000/coe/termo/13/aprovar",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2870,7 +2930,7 @@
 							"path": [
 								"coe",
 								"termo",
-								"8",
+								"13",
 								"aprovar"
 							]
 						}
@@ -2978,6 +3038,14 @@
 			"name": "Coordenacao",
 			"item": [
 				{
+					"name": "TermoDeCompromisso",
+					"item": []
+				},
+				{
+					"name": "TermoAditivo",
+					"item": []
+				},
+				{
 					"name": "listarTermosPendenteAprovacaoCoordenacao",
 					"request": {
 						"method": "GET",
@@ -3004,7 +3072,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/pendenteAprovacaoCoordenacaoFiltro?tipoEstagio=Obrigatorio",
+							"raw": "http://localhost:5000/coordenacao/termo/pendenteAprovacaoCoordenacaoFiltro?tipoEstagio=NaoObrigatorio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3018,7 +3086,7 @@
 							"query": [
 								{
 									"key": "tipoEstagio",
-									"value": "Obrigatorio"
+									"value": "NaoObrigatorio"
 								}
 							]
 						}
@@ -3061,7 +3129,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/8/cienciaFormacaoSupervisor",
+							"raw": "http://localhost:5000/coordenacao/termo/13/cienciaFormacaoSupervisor",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3070,7 +3138,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"8",
+								"13",
 								"cienciaFormacaoSupervisor"
 							]
 						}
@@ -3092,7 +3160,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/8/cienciaPlanoAtividades",
+							"raw": "http://localhost:5000/coordenacao/termo/13/cienciaPlanoAtividades",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3101,7 +3169,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"8",
+								"13",
 								"cienciaPlanoAtividades"
 							]
 						}
@@ -3123,7 +3191,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/8/cienciaIra",
+							"raw": "http://localhost:5000/coordenacao/termo/13/cienciaIra",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3132,7 +3200,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"8",
+								"13",
 								"cienciaIra"
 							]
 						}
@@ -3185,7 +3253,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/1/solicitarAjustes",
+							"raw": "http://localhost:5000/coordenacao/termo/13/solicitarAjustes",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3194,7 +3262,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"1",
+								"13",
 								"solicitarAjustes"
 							]
 						}
@@ -3216,7 +3284,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/8/aprovar",
+							"raw": "http://localhost:5000/coordenacao/termo/13/aprovar",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3225,7 +3293,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"8",
+								"13",
 								"aprovar"
 							]
 						}
@@ -3268,7 +3336,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/1/cienciaIndeferimento",
+							"raw": "http://localhost:5000/coordenacao/termo/13/cienciaIndeferimento",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3277,7 +3345,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"1",
+								"13",
 								"cienciaIndeferimento"
 							]
 						}
@@ -3310,6 +3378,14 @@
 		{
 			"name": "COAFE",
 			"item": [
+				{
+					"name": "TermoDeCompromisso",
+					"item": []
+				},
+				{
+					"name": "TermoAditivo",
+					"item": []
+				},
 				{
 					"name": "listarTermosPendenteAprovacaoCoafe",
 					"request": {
@@ -3385,7 +3461,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/coafe/termo/8/agenteIntegrador",
+							"raw": "http://localhost:5000/coafe/termo/13/agenteIntegrador",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3394,7 +3470,7 @@
 							"path": [
 								"coafe",
 								"termo",
-								"8",
+								"13",
 								"agenteIntegrador"
 							]
 						}
@@ -3407,7 +3483,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/coafe/termo/8/seguradora",
+							"raw": "http://localhost:5000/coafe/termo/13/seguradora",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3416,7 +3492,7 @@
 							"path": [
 								"coafe",
 								"termo",
-								"8",
+								"13",
 								"seguradora"
 							]
 						}
@@ -3429,7 +3505,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/coafe/termo/8/apolice",
+							"raw": "http://localhost:5000/coafe/termo/13/apolice",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3438,7 +3514,7 @@
 							"path": [
 								"coafe",
 								"termo",
-								"8",
+								"13",
 								"apolice"
 							]
 						}
@@ -3460,7 +3536,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coafe/termo/3/indeferir",
+							"raw": "http://localhost:5000/coafe/termo/13/indeferir",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3469,7 +3545,7 @@
 							"path": [
 								"coafe",
 								"termo",
-								"3",
+								"13",
 								"indeferir"
 							]
 						}
@@ -3522,7 +3598,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coafe/termo/8/aprovar",
+							"raw": "http://localhost:5000/coafe/termo/13/aprovar",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3531,7 +3607,7 @@
 							"path": [
 								"coafe",
 								"termo",
-								"8",
+								"13",
 								"aprovar"
 							]
 						}
