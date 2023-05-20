@@ -1,6 +1,5 @@
 package br.ufpr.estagio.modulo.controller;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,7 +56,7 @@ public class CoeREST {
 	private ModelMapper mapper;
 
 	@GetMapping("/termo/pendenteAprovacaoCoe")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacao(){
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosDeCompromissoPendenteAprovacaoCoe(){
 		try {
 			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoPendenteAprovacaoCoe();
 			if(listaTermos == null || listaTermos.isEmpty()) {
@@ -76,9 +74,45 @@ public class CoeREST {
 	}
 	
 	@GetMapping("/termo/indeferido")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosIndeferidos(){
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosDeCompromissoIndeferidos(){
 		try {
 			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidos();
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termoAditivo/pendenteAprovacaoCoe")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoPendenteAprovacaoCoe(){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivoPendenteAprovacaoCoe();
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termoAditivo/indeferido")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoIndeferidos(){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosIndeferidos();
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
