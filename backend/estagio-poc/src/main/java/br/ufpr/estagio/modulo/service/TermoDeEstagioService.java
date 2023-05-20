@@ -873,5 +873,13 @@ public class TermoDeEstagioService {
 		return termoRepo.save(termoAditivo);
 		
 	}
+
+	public TermoDeEstagio cancelarTermoAditivo(TermoDeEstagio termoAditivo) {
+		if(termoAditivo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoAditivo) {
+			termoAditivo.setStatusTermo(EnumStatusTermo.Cancelado);
+			termoAditivo.setEtapaFluxo(EnumEtapaFluxo.Aluno);
+		}
+		return termoRepo.save(termoAditivo);
+	}
 	
 }
