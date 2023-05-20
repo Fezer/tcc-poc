@@ -19,6 +19,7 @@ import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
+import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
 import br.ufpr.estagio.modulo.model.Contratante;
@@ -47,6 +48,19 @@ public class TermoDeEstagioService {
 	private static final String selectTermosDeEstagioIndeferidos = "SELECT t FROM TermoDeEstagio t "
     		+ "WHERE t.etapaFluxo = :etapaFluxo "
     		+ "AND t.statusTermo = :statusTermo";
+	
+	private static final String selectTermosDeEstagioTipoTermoPorAluno = "SELECT t FROM TermoDeEstagio t "
+			+ "INNER JOIN t.estagio e "
+			+ "INNER JOIN e.aluno a "
+			+ "WHERE t.tipoTermoDeEstagio = :tipoTermoDeEstagio "
+			+ "AND a.id = :idAluno";
+	
+	private static final String selectTermosDeEstagioTipoTermoPorStatusTermoPorAluno = "SELECT t FROM TermoDeEstagio t "
+			+ "INNER JOIN t.estagio e "
+			+ "INNER JOIN e.aluno a "
+			+ "WHERE t.tipoTermoDeEstagio = :tipoTermoDeEstagio "
+			+ "AND t.statusTermo = :statusTermo "
+			+ "AND a.id = :idAluno";
 	
 	@Autowired
 	private TermoDeEstagioRepository termoRepo;
@@ -880,6 +894,132 @@ public class TermoDeEstagioService {
 			termoAditivo.setEtapaFluxo(EnumEtapaFluxo.Aluno);
 		}
 		return termoRepo.save(termoAditivo);
+	}
+
+	public List<TermoDeEstagio> listarTermosAditivosPorAluno(Aluno aluno) {
+		EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoAditivo;
+
+		TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioTipoTermoPorAluno, TermoDeEstagio.class);
+		
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+        query.setParameter("idAluno", aluno.getId());
+		
+		return query.getResultList();
+	}
+	
+	public List<TermoDeEstagio> listarTermosAditivosEmPreenchimentoPorAluno(Aluno aluno) {
+		EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoAditivo;
+		EnumStatusTermo statusTermo = EnumStatusTermo.EmPreenchimento;
+
+		TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioTipoTermoPorStatusTermoPorAluno, TermoDeEstagio.class);
+		
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+        query.setParameter("statusTermo", statusTermo);
+        query.setParameter("idAluno", aluno.getId());
+		
+		return query.getResultList();
+	}
+	
+	public List<TermoDeEstagio> listarTermosAditivosPorAlunoPorStatus(Aluno aluno, String statusTermoString) {
+		EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoAditivo;
+		EnumStatusTermo statusTermo;
+		statusTermoString = statusTermoString.toUpperCase();
+		switch(statusTermoString) {
+			case "EMPREENCHIMENTO":
+				statusTermo = EnumStatusTermo.EmPreenchimento;
+				break;
+			case "EMAPROVACAO":
+				statusTermo = EnumStatusTermo.EmAprovacao;
+				break;
+			case "EMREVISAO":
+				statusTermo = EnumStatusTermo.EmRevisao;
+				break;
+			case "EMASSINATURA":
+				statusTermo = EnumStatusTermo.EmRevisao;
+				break;
+			case "APROVADO":
+				statusTermo = EnumStatusTermo.Aprovado;
+				break;
+			case "CANCELADO":
+				statusTermo = EnumStatusTermo.Cancelado;
+				break;
+			case "REPROVADO":
+				statusTermo = EnumStatusTermo.Reprovado;
+				break;
+			default:
+				return null;
+		}
+
+		TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioTipoTermoPorStatusTermoPorAluno, TermoDeEstagio.class);
+		
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+        query.setParameter("statusTermo", statusTermo);
+        query.setParameter("idAluno", aluno.getId());
+		
+		return query.getResultList();
+	}
+	
+	public List<TermoDeEstagio> listarTermosDeCompromissoPorAluno(Aluno aluno) {
+		EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoDeCompromisso;
+
+		TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioTipoTermoPorAluno, TermoDeEstagio.class);
+		
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+        query.setParameter("idAluno", aluno.getId());
+		
+		return query.getResultList();
+	}
+	
+	public List<TermoDeEstagio> listarTermosDeCompromissoEmPreenchimentoPorAluno(Aluno aluno) {
+		EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoDeCompromisso;
+		EnumStatusTermo statusTermo = EnumStatusTermo.EmPreenchimento;
+
+		TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioTipoTermoPorStatusTermoPorAluno, TermoDeEstagio.class);
+		
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+        query.setParameter("statusTermo", statusTermo);
+        query.setParameter("idAluno", aluno.getId());
+		
+		return query.getResultList();
+	}
+	
+	public List<TermoDeEstagio> listarTermosDeCompromissoPorAlunoPorStatus(Aluno aluno, String statusTermoString) {
+		EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoDeCompromisso;
+		EnumStatusTermo statusTermo;
+		statusTermoString = statusTermoString.toUpperCase();
+		switch(statusTermoString) {
+			case "EMPREENCHIMENTO":
+				statusTermo = EnumStatusTermo.EmPreenchimento;
+				break;
+			case "EMAPROVACAO":
+				statusTermo = EnumStatusTermo.EmAprovacao;
+				break;
+			case "EMREVISAO":
+				statusTermo = EnumStatusTermo.EmRevisao;
+				break;
+			case "EMASSINATURA":
+				statusTermo = EnumStatusTermo.EmRevisao;
+				break;
+			case "APROVADO":
+				statusTermo = EnumStatusTermo.Aprovado;
+				break;
+			case "CANCELADO":
+				statusTermo = EnumStatusTermo.Cancelado;
+				break;
+			case "REPROVADO":
+				statusTermo = EnumStatusTermo.Reprovado;
+				break;
+			default:
+				return null;
+		}
+
+		TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioTipoTermoPorStatusTermoPorAluno, TermoDeEstagio.class);
+		
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+        query.setParameter("statusTermo", statusTermo);
+        query.setParameter("idAluno", aluno.getId());
+		
+		return query.getResultList();
 	}
 	
 }
