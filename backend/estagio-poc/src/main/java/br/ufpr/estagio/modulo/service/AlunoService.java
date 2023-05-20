@@ -228,21 +228,26 @@ public class AlunoService {
 		TermoDeEstagio termoAtualizado = termofind.get();
 		Estagio estagio = termoAtualizado.getEstagio();
 		
-		EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
-		estagio.setStatusEstagio(statusEstagio);
-		
-		EnumEtapaFluxo etapaFluxo = null;
-		//Se for estágio obrigatório não passa pela COE
-		if(estagio.getTipoEstagio() == EnumTipoEstagio.Obrigatorio) {
-			etapaFluxo = EnumEtapaFluxo.Coordenacao;
-		} else {
-			etapaFluxo = EnumEtapaFluxo.COE;
+		if(termoAtualizado.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+			EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
+			estagio.setStatusEstagio(statusEstagio);
 		}
 		
+		EnumEtapaFluxo etapaFluxo = null;
+		//Se for estágio da SEED o termo é encaminhado direto para a COAFE
+		if(estagio.isEstagioSeed()) {
+			etapaFluxo = EnumEtapaFluxo.COAFE;
+		} else {
+			//Se for estágio obrigatório não passa pela COE
+			if(estagio.getTipoEstagio() == EnumTipoEstagio.Obrigatorio) {
+				etapaFluxo = EnumEtapaFluxo.Coordenacao;
+			} else {
+				etapaFluxo = EnumEtapaFluxo.COE;
+			}
+		}
 		termoAtualizado.setEtapaFluxo(etapaFluxo);
 		
 		EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
-		
 		termoAtualizado.setStatusTermo(statusTermo);
 		
 		estagioRepo.save(estagio);
