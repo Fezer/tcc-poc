@@ -45,9 +45,21 @@ import org.springframework.beans.BeanUtils;
 @Transactional
 public class TermoDeEstagioService {
 	
-	private static final String selectTermosDeEstagioIndeferidos = "SELECT t FROM TermoDeEstagio t "
-    		+ "WHERE t.etapaFluxo = :etapaFluxo "
+		
+	private static final String selectTermosDeEstagioPorTipoTermoPorStatusTermo = "SELECT t FROM TermoDeEstagio t "
+    		+ "WHERE t.tipoTermoDeEstagio = :tipoTermoDeEstagio "
     		+ "AND t.statusTermo = :statusTermo";
+	
+	private static final String selectTermosDeEstagioPorEtapaFluxoStatusTermoTipoTermo = "SELECT t FROM TermoDeEstagio t "
+    		+ "WHERE t.etapaFluxo = :etapaFluxo "
+    		+ "AND t.tipoTermoDeEstagio = :tipoTermoDeEstagio "
+    		+ "AND t.statusTermo = :statusTermo";
+	
+	private static final String selectTermoPorTipoEstagioEtapaFluxoStatusTermoTipoTermo = "SELECT t FROM TermoDeEstagio t INNER JOIN t.estagio e "
+    		+ "WHERE e.tipoEstagio = :tipoEstagio "
+    		+ "AND t.etapaFluxo = :etapaFluxo "
+    		+ "AND t.statusTermo = :statusTermo "
+    		+ "AND t.tipoTermoDeEstagio = :tipoTermoDeEstagio";
 	
 	private static final String selectTermosDeEstagioTipoTermoPorAluno = "SELECT t FROM TermoDeEstagio t "
 			+ "INNER JOIN t.estagio e "
@@ -61,6 +73,12 @@ public class TermoDeEstagioService {
 			+ "WHERE t.tipoTermoDeEstagio = :tipoTermoDeEstagio "
 			+ "AND t.statusTermo = :statusTermo "
 			+ "AND a.id = :idAluno";
+	
+	private static final String selectTermosDeEstagioIndeferidosPendentesCienciaCoordenacao = "SELECT t FROM TermoDeEstagio t "
+    		+ "WHERE t.etapaFluxo = :etapaFluxo "
+    		+ "AND t.statusTermo = :statusTermo "
+    		+ "AND t.tipoTermoDeEstagio = :tipoTermoDeEstagio "
+    		+ "AND (t.parecerCOAFE = :parecerCOAFE OR t.parecerCOE = :parecerCOE)";
 	
 	@Autowired
 	private TermoDeEstagioRepository termoRepo;
@@ -148,7 +166,7 @@ public class TermoDeEstagioService {
 		return termoRepo.save(termoAtualizado);
 	}
 
-	public TermoDeEstagio associarOrientadorAoTermo(TermoDeEstagio termoDeEstagio, Orientador orientador) {
+	public TermoDeEstagio associarOrientadorAoTermoDeEstagio(TermoDeEstagio termoDeEstagio, Orientador orientador) {
 		//Associa o orientador ao termo;
 		termoDeEstagio.setOrientador(orientador);
 		
@@ -186,7 +204,7 @@ public class TermoDeEstagioService {
 		return termoDeEstagio;
 	}
 
-	public TermoDeEstagio associarAgenteIntegradorAoTermo(TermoDeEstagio termoDeEstagio,
+	public TermoDeEstagio associarAgenteIntegradorAoTermoDeEstagio(TermoDeEstagio termoDeEstagio,
 			AgenteIntegrador agenteIntegrador) {
 		//Associa o agente integrador ao termo;
 		termoDeEstagio.setAgenteIntegrador(agenteIntegrador);
@@ -225,7 +243,7 @@ public class TermoDeEstagioService {
 		return termoDeEstagio;
 	}
 
-	public TermoDeEstagio associarApoliceAoTermo(TermoDeEstagio termoDeEstagio, Apolice apolice) {
+	public TermoDeEstagio associarApoliceAoTermoDeEstagio(TermoDeEstagio termoDeEstagio, Apolice apolice) {
 		//Associa o apolice e seguradora ao termo;
 		termoDeEstagio.setApolice(apolice);
 		termoDeEstagio.setSeguradora(apolice.getSeguradora());
@@ -273,7 +291,7 @@ public class TermoDeEstagioService {
 		return termoDeEstagio;
 	}
 	
-	public TermoDeEstagio associarContratanteAoTermo(TermoDeEstagio termoDeEstagio,
+	public TermoDeEstagio associarContratanteAoTermoDeEstagio(TermoDeEstagio termoDeEstagio,
 			Contratante contratante) {
 		//Associa o contratante ao termo;
 		termoDeEstagio.setContratante(contratante);
@@ -312,25 +330,22 @@ public class TermoDeEstagioService {
 		return termoDeEstagio;
 	}
 
-	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoe() {
+	public List<TermoDeEstagio> listarTermosDeCompromissoPendenteAprovacaoCoe() {
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COE;
     	EnumTipoEstagio tipoEstagio = EnumTipoEstagio.NaoObrigatorio;
-		
-        String jpql = "SELECT t FROM TermoDeEstagio t INNER JOIN t.estagio e "
-        		+ "WHERE e.tipoEstagio = :tipoEstagio "
-        		+ "AND t.etapaFluxo = :etapaFluxo "
-        		+ "AND t.statusTermo = :statusTermo";
-        
-        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
+    	EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoDeCompromisso;
+		        
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermoPorTipoEstagioEtapaFluxoStatusTermoTipoTermo, TermoDeEstagio.class);
         query.setParameter("tipoEstagio", tipoEstagio);
         query.setParameter("etapaFluxo", etapaFluxo);
         query.setParameter("statusTermo", statusTermo);
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
         return query.getResultList();
 
 	}
 
-	public TermoDeEstagio indeferirTermoDeCompromissoCoe(TermoDeEstagio termo, JustificativaDTO justificativa) {
+	public TermoDeEstagio indeferirTermoDeEstagioCoe(TermoDeEstagio termo, JustificativaDTO justificativa) {
     	EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
     	
     	//Uma vez que a COE reprove o termo de compromisso, deve ser encaminhado para ciencia da coordenação
@@ -357,7 +372,7 @@ public class TermoDeEstagioService {
 		return termoRepo.save(termo);
 	}
 
-	public TermoDeEstagio solicitarAjutesTermoDeCompromissoCoe(TermoDeEstagio termo,
+	public TermoDeEstagio solicitarAjutesTermoDeEstagioCoe(TermoDeEstagio termo,
 			DescricaoAjustesDTO descricaoAjustes) {
 
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmRevisao;
@@ -387,7 +402,7 @@ public class TermoDeEstagioService {
     	return termoRepo.save(termo);
 	}
 
-	public TermoDeEstagio aprovarTermoDeCompromissoCoe(TermoDeEstagio termo) {
+	public TermoDeEstagio aprovarTermoDeEstagioCoe(TermoDeEstagio termo) {
 		
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
     	
@@ -415,20 +430,19 @@ public class TermoDeEstagioService {
     	return termoRepo.save(termo);
 	}
 
-	public List<TermoDeEstagio> listarTermosIndeferidos() {
+	public List<TermoDeEstagio> listarTermosDeCompromissoIndeferidos() {
 		
     	EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
-
-        String jpql = "SELECT t FROM TermoDeEstagio t "
-        		+ "WHERE t.statusTermo = :statusTermo";
+    	EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoDeCompromisso;
         
-        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioPorTipoTermoPorStatusTermo, TermoDeEstagio.class);
         query.setParameter("statusTermo", statusTermo);
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
         return query.getResultList();
-        
+                
 	}
 
-	public TermoDeEstagio indeferirTermoDeCompromissoCoordenacao(TermoDeEstagio termo, JustificativaDTO justificativa) {
+	public TermoDeEstagio indeferirTermoDeEstagioCoordenacao(TermoDeEstagio termo, JustificativaDTO justificativa) {
 		
 		EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
 		
@@ -463,7 +477,7 @@ public class TermoDeEstagioService {
 		return termoRepo.save(termo);
 	}
 
-	public TermoDeEstagio aprovarTermoDeCompromissoCoordenacao(TermoDeEstagio termo) {
+	public TermoDeEstagio aprovarTermoDeEstagioCoordenacao(TermoDeEstagio termo) {
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
     	
     	//Uma vez que a Coorenacao aprava o termo de compromisso, deve ser encaminhado para análise da COAFE
@@ -490,7 +504,7 @@ public class TermoDeEstagioService {
     	return termoRepo.save(termo);
 	}
 
-	public TermoDeEstagio solicitarAjutesTermoDeCompromissoCoordenacao(TermoDeEstagio termo,
+	public TermoDeEstagio solicitarAjutesTermoDeEstagioCoordenacao(TermoDeEstagio termo,
 			DescricaoAjustesDTO descricaoAjustes) {
 		
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmRevisao;
@@ -520,18 +534,20 @@ public class TermoDeEstagioService {
     	return termoRepo.save(termo);
 	}
 	
-	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoordenacao() {
+	public List<TermoDeEstagio> listarTermosDeCompromissoPendenteAprovacaoCoordenacao() {
 		
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
+    	EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoDeCompromisso;
 		        
-        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioIndeferidos, TermoDeEstagio.class);
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioPorEtapaFluxoStatusTermoTipoTermo, TermoDeEstagio.class);
         query.setParameter("etapaFluxo", etapaFluxo);
         query.setParameter("statusTermo", statusTermo);
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
         return query.getResultList();
 	}
 
-	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoordenacaoPorTipoEstagio(String tipoEstagioString) {
+	public List<TermoDeEstagio> listarTermosDeCompromissoPendenteAprovacaoCoordenacaoPorTipoEstagio(String tipoEstagioString) {
 		
 		EnumTipoEstagio tipoEstagio;
 		tipoEstagioString = tipoEstagioString.toUpperCase();
@@ -549,16 +565,13 @@ public class TermoDeEstagioService {
 		
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
-		        
-        String jpql = "SELECT t FROM TermoDeEstagio t INNER JOIN t.estagio e "
-        		+ "WHERE e.tipoEstagio = :tipoEstagio "
-        		+ "AND t.etapaFluxo = :etapaFluxo "
-        		+ "AND t.statusTermo = :statusTermo";
+    	EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoDeCompromisso;
         
-        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermoPorTipoEstagioEtapaFluxoStatusTermoTipoTermo, TermoDeEstagio.class);
         query.setParameter("tipoEstagio", tipoEstagio);
         query.setParameter("etapaFluxo", etapaFluxo);
         query.setParameter("statusTermo", statusTermo);
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
         return query.getResultList();
 	}
 
@@ -604,42 +617,36 @@ public class TermoDeEstagioService {
     	return termoRepo.save(termo);
 	}
 
-	public List<TermoDeEstagio> listarTermosIndeferidosPendentesCienciaCoordenacao() {
+	public List<TermoDeEstagio> listarTermosDeCompromissoIndeferidosPendentesCienciaCoordenacao() {
 		
     	EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
     	EnumParecerAprovadores parecerCOE = EnumParecerAprovadores.Reprovado;
     	EnumParecerAprovadores parecerCOAFE = EnumParecerAprovadores.Reprovado;
-    	
-		        
-        String jpql = "SELECT t FROM TermoDeEstagio t "
-        		+ "WHERE t.etapaFluxo = :etapaFluxo "
-        		+ "AND t.statusTermo = :statusTermo "
-        		+ "AND (t.parecerCOAFE = :parecerCOAFE OR t.parecerCOE = :parecerCOE)";
+    	EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoDeCompromisso;
         
-        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioIndeferidosPendentesCienciaCoordenacao, TermoDeEstagio.class);
         query.setParameter("etapaFluxo", etapaFluxo);
         query.setParameter("statusTermo", statusTermo);
         query.setParameter("parecerCOE", parecerCOE);
         query.setParameter("parecerCOAFE", parecerCOAFE);
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
         return query.getResultList();
 	}
 
-	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoafe() {
+	public List<TermoDeEstagio> listarTermosDeCompromissoPendenteAprovacaoCoafe() {
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COAFE;
-		
-        String jpql = "SELECT t FROM TermoDeEstagio t "
-        		+ "WHERE t.etapaFluxo = :etapaFluxo "
-        		+ "AND t.statusTermo = :statusTermo";
+    	EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoDeCompromisso;
         
-        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioPorEtapaFluxoStatusTermoTipoTermo, TermoDeEstagio.class);
         query.setParameter("etapaFluxo", etapaFluxo);
         query.setParameter("statusTermo", statusTermo);
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
         return query.getResultList();
 	}
 	
-	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoafePorTipoEstagio(String tipoEstagioString) {
+	public List<TermoDeEstagio> listarTermosDeCompromissoPendenteAprovacaoCoafePorTipoEstagio(String tipoEstagioString) {
 		
 		EnumTipoEstagio tipoEstagio;
 		tipoEstagioString = tipoEstagioString.toUpperCase();
@@ -657,20 +664,17 @@ public class TermoDeEstagioService {
 		
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COAFE;
-		        
-        String jpql = "SELECT t FROM TermoDeEstagio t INNER JOIN t.estagio e "
-        		+ "WHERE e.tipoEstagio = :tipoEstagio "
-        		+ "AND t.etapaFluxo = :etapaFluxo "
-        		+ "AND t.statusTermo = :statusTermo";
-        
-        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
+    	EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoDeCompromisso;
+		                
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermoPorTipoEstagioEtapaFluxoStatusTermoTipoTermo, TermoDeEstagio.class);
         query.setParameter("tipoEstagio", tipoEstagio);
         query.setParameter("etapaFluxo", etapaFluxo);
         query.setParameter("statusTermo", statusTermo);
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
         return query.getResultList();
 	}
 
-	public TermoDeEstagio indeferirTermoDeCompromissoCoafe(TermoDeEstagio termo, JustificativaDTO justificativa) {
+	public TermoDeEstagio indeferirTermoDeEstagioCoafe(TermoDeEstagio termo, JustificativaDTO justificativa) {
 		
     	EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
     	
@@ -699,7 +703,7 @@ public class TermoDeEstagioService {
 		return termoRepo.save(termo);
 	}
 
-	public TermoDeEstagio solicitarAjutesTermoDeCompromissoCoafe(TermoDeEstagio termo,
+	public TermoDeEstagio solicitarAjutesTermoDeEstagioCoafe(TermoDeEstagio termo,
 			DescricaoAjustesDTO descricaoAjustes) {
 		
     	EnumStatusTermo statusTermo = EnumStatusTermo.EmRevisao;
@@ -729,7 +733,7 @@ public class TermoDeEstagioService {
     	return termoRepo.save(termo);
 	}
 
-	public TermoDeEstagio aprovarTermoDeCompromissoCoafe(TermoDeEstagio termo) {
+	public TermoDeEstagio aprovarTermoDeEstagioCoafe(TermoDeEstagio termo) {
 		
     	EnumStatusTermo statusTermo = EnumStatusTermo.Aprovado;
     	
@@ -1021,5 +1025,26 @@ public class TermoDeEstagioService {
 		
 		return query.getResultList();
 	}
+
+	public List<TermoDeEstagio> listarTermosAditivosIndeferidosPendentesCienciaCoordenacao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<TermoDeEstagio> listarTermosAditivosIndeferidos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<TermoDeEstagio> listarTermosAditivosPendenteAprovacaoCoordenacaoPorTipoEstagio(String tipoEstagio) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<TermoDeEstagio> listarTermosAditivosPendenteAprovacaoCoordenacao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

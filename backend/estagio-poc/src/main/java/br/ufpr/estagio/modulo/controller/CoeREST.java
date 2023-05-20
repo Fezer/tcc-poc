@@ -60,7 +60,7 @@ public class CoeREST {
 	@GetMapping("/termo/pendenteAprovacaoCoe")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacao(){
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosPendenteAprovacaoCoe();
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoPendenteAprovacaoCoe();
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
@@ -78,7 +78,7 @@ public class CoeREST {
 	@GetMapping("/termo/indeferido")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosIndeferidos(){
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosIndeferidos();
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidos();
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
@@ -101,7 +101,7 @@ public class CoeREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.indeferirTermoDeCompromissoCoe(termo, justificativa);
+			termo = termoDeEstagioService.indeferirTermoDeEstagioCoe(termo, justificativa);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
@@ -122,7 +122,7 @@ public class CoeREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.solicitarAjutesTermoDeCompromissoCoe(termo, descricaoAjustes);
+			termo = termoDeEstagioService.solicitarAjutesTermoDeEstagioCoe(termo, descricaoAjustes);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
@@ -143,7 +143,7 @@ public class CoeREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.aprovarTermoDeCompromissoCoe(termo);
+			termo = termoDeEstagioService.aprovarTermoDeEstagioCoe(termo);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}

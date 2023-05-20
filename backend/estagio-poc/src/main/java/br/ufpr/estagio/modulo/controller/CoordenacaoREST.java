@@ -53,7 +53,7 @@ public class CoordenacaoREST {
 	@GetMapping("/termo/pendenteAprovacaoCoordenacao")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacao(){
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosPendenteAprovacaoCoordenacao();
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoPendenteAprovacaoCoordenacao();
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
@@ -71,7 +71,7 @@ public class CoordenacaoREST {
 	@GetMapping("/termo/pendenteAprovacaoCoordenacaoFiltro")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacaoPorTipoEstagio(@RequestParam String tipoEstagio){
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosPendenteAprovacaoCoordenacaoPorTipoEstagio(tipoEstagio);
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoPendenteAprovacaoCoordenacaoPorTipoEstagio(tipoEstagio);
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
@@ -89,7 +89,7 @@ public class CoordenacaoREST {
 	@GetMapping("/termo/indeferido")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosIndeferidos(){
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosIndeferidos();
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidos();
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
@@ -107,7 +107,79 @@ public class CoordenacaoREST {
 	@GetMapping("/termo/pendenteCienciaCoordenacao")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosIndeferidosPendentesCienciaCoordenacao(){
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosIndeferidosPendentesCienciaCoordenacao();
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidosPendentesCienciaCoordenacao();
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termoAditivo/pendenteAprovacaoCoordenacao")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivosPendenteAprovacao(){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosPendenteAprovacaoCoordenacao();
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termoAditivo/pendenteAprovacaoCoordenacaoFiltro")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivosPendenteAprovacaoPorTipoEstagio(@RequestParam String tipoEstagio){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosPendenteAprovacaoCoordenacaoPorTipoEstagio(tipoEstagio);
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termoAditivo/indeferido")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivosIndeferidos(){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosIndeferidos();
+			if(listaTermos == null || listaTermos.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream().map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termoAditivo/pendenteCienciaCoordenacao")
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivosIndeferidosPendentesCienciaCoordenacao(){
+		try {
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosIndeferidosPendentesCienciaCoordenacao();
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
@@ -130,7 +202,7 @@ public class CoordenacaoREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.indeferirTermoDeCompromissoCoordenacao(termo, justificativa);
+			termo = termoDeEstagioService.indeferirTermoDeEstagioCoordenacao(termo, justificativa);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
@@ -151,7 +223,7 @@ public class CoordenacaoREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.solicitarAjutesTermoDeCompromissoCoordenacao(termo, descricaoAjustes);
+			termo = termoDeEstagioService.solicitarAjutesTermoDeEstagioCoordenacao(termo, descricaoAjustes);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
@@ -256,7 +328,7 @@ public class CoordenacaoREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.aprovarTermoDeCompromissoCoordenacao(termo);
+			termo = termoDeEstagioService.aprovarTermoDeEstagioCoordenacao(termo);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}

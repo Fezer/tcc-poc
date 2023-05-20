@@ -157,7 +157,7 @@ public class TermoREST {
 			if(orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");			
 			} else {
-				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarOrientadorAoTermo(termofind.get(), orientadorFind.get());
+				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarOrientadorAoTermoDeEstagio(termofind.get(), orientadorFind.get());
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
 			}
 		}catch(PocException e) {
@@ -180,7 +180,7 @@ public class TermoREST {
 			if(agenteFind.isEmpty()) {
 				throw new NotFoundException("Agente integrador não encontrado!");			
 			} else {
-				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarAgenteIntegradorAoTermo(termofind.get(), agenteFind.get());
+				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarAgenteIntegradorAoTermoDeEstagio(termofind.get(), agenteFind.get());
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
 			}
 		}catch(PocException e) {
@@ -203,7 +203,7 @@ public class TermoREST {
 			if(apoliceFind.isEmpty()) {
 				throw new NotFoundException("Apolice não encontrada!");			
 			} else {
-				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarApoliceAoTermo(termofind.get(), apoliceFind.get());
+				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarApoliceAoTermoDeEstagio(termofind.get(), apoliceFind.get());
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
 			}
 		}catch(PocException e) {
@@ -226,7 +226,7 @@ public class TermoREST {
 			if(contratanteFind.isEmpty()) {
 				throw new NotFoundException("Contratante não encontrado!");			
 			} else {
-				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarContratanteAoTermo(termofind.get(), contratanteFind.get());
+				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarContratanteAoTermoDeEstagio(termofind.get(), contratanteFind.get());
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
 			}
 		}catch(PocException e) {

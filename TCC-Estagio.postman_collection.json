@@ -731,7 +731,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/termo/13/solicitarAprovacaoTermo",
+							"raw": "http://localhost:5000/aluno/GRR20175486/termo/15/solicitarAprovacaoTermo",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -741,7 +741,7 @@
 								"aluno",
 								"GRR20175486",
 								"termo",
-								"13",
+								"15",
 								"solicitarAprovacaoTermo"
 							]
 						}
@@ -1258,7 +1258,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/3",
+							"raw": "http://localhost:5000/estagio/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1266,7 +1266,7 @@
 							"port": "5000",
 							"path": [
 								"estagio",
-								"3"
+								"4"
 							]
 						}
 					},
@@ -1278,7 +1278,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/tipo/3?tipoEstagio=NaoObrigatorio",
+							"raw": "http://localhost:5000/estagio/tipo/4?tipoEstagio=NaoObrigatorio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1287,7 +1287,7 @@
 							"path": [
 								"estagio",
 								"tipo",
-								"3"
+								"4"
 							],
 							"query": [
 								{
@@ -1305,7 +1305,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/ufpr/3?estagioUfpr=false",
+							"raw": "http://localhost:5000/estagio/ufpr/4?estagioUfpr=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1314,7 +1314,7 @@
 							"path": [
 								"estagio",
 								"ufpr",
-								"3"
+								"4"
 							],
 							"query": [
 								{
@@ -1332,7 +1332,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/seed/3?estagioSeed=false",
+							"raw": "http://localhost:5000/estagio/seed/4?estagioSeed=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1341,7 +1341,7 @@
 							"path": [
 								"estagio",
 								"seed",
-								"3"
+								"4"
 							],
 							"query": [
 								{
@@ -3000,6 +3000,85 @@
 					"item": []
 				},
 				{
+					"name": "CertificadoDeEstagio",
+					"item": [
+						{
+							"name": "listarCertificadosPendenteAprovacaoCoe",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/certificado/pendenteAprovacaoCoe",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"certificado",
+										"pendenteAprovacaoCoe"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "aprovarCertificadoDeEstagioCoe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/certificado/2/aprovar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"certificado",
+										"2",
+										"aprovar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "reprovarCertificadoDeEstagioCoe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"justificativa\": \"Não gostei.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coe/certificado/3/reprovar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"certificado",
+										"3",
+										"reprovar"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "indeferirTermoCoe",
 					"request": {
 						"method": "PUT",
@@ -3076,7 +3155,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coe/termo/13/aprovar",
+							"raw": "http://localhost:5000/coe/termo/15/aprovar",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3085,82 +3164,8 @@
 							"path": [
 								"coe",
 								"termo",
-								"13",
+								"15",
 								"aprovar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "listarCertificadosPendenteAprovacaoCoe",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coe/certificado/pendenteAprovacaoCoe",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coe",
-								"certificado",
-								"pendenteAprovacaoCoe"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "aprovarCertificadoDeEstagioCoe",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coe/certificado/2/aprovar",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coe",
-								"certificado",
-								"2",
-								"aprovar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "reprovarCertificadoDeEstagioCoe",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"justificativa\": \"Não gostei.\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/coe/certificado/3/reprovar",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coe",
-								"certificado",
-								"3",
-								"reprovar"
 							]
 						}
 					},
@@ -3461,7 +3466,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/13/aprovar",
+							"raw": "http://localhost:5000/coordenacao/termo/15/aprovar",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3470,7 +3475,7 @@
 							"path": [
 								"coordenacao",
 								"termo",
-								"13",
+								"15",
 								"aprovar"
 							]
 						}

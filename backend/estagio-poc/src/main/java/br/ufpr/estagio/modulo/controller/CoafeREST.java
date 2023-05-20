@@ -59,7 +59,7 @@ public class CoafeREST {
 	@GetMapping("/termo/pendenteAprovacaoCoafe")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacao(){
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosPendenteAprovacaoCoafe();
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoPendenteAprovacaoCoafe();
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
@@ -77,7 +77,7 @@ public class CoafeREST {
 	@GetMapping("/termo/pendenteAprovacaoCoafeFiltro")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosPendenteAprovacaoPorTipoEstagio(@RequestParam String tipoEstagio){
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosPendenteAprovacaoCoafePorTipoEstagio(tipoEstagio);
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoPendenteAprovacaoCoafePorTipoEstagio(tipoEstagio);
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
@@ -95,7 +95,7 @@ public class CoafeREST {
 	@GetMapping("/termo/indeferido")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosIndeferidos(){
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosIndeferidos();
+			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidos();
 			if(listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
@@ -181,7 +181,7 @@ public class CoafeREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.indeferirTermoDeCompromissoCoafe(termo, justificativa);
+			termo = termoDeEstagioService.indeferirTermoDeEstagioCoafe(termo, justificativa);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
@@ -202,7 +202,7 @@ public class CoafeREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.solicitarAjutesTermoDeCompromissoCoafe(termo, descricaoAjustes);
+			termo = termoDeEstagioService.solicitarAjutesTermoDeEstagioCoafe(termo, descricaoAjustes);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
@@ -223,7 +223,7 @@ public class CoafeREST {
 			throw new NotFoundException("Termo não encontrado!");
 		} else {
 			TermoDeEstagio termo = termoOptional.get();
-			termo = termoDeEstagioService.aprovarTermoDeCompromissoCoafe(termo);
+			termo = termoDeEstagioService.aprovarTermoDeEstagioCoafe(termo);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
