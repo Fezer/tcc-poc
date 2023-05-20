@@ -44,6 +44,10 @@ import org.springframework.beans.BeanUtils;
 @Transactional
 public class TermoDeEstagioService {
 	
+	private static final String selectTermosDeEstagioIndeferidos = "SELECT t FROM TermoDeEstagio t "
+    		+ "WHERE t.etapaFluxo = :etapaFluxo "
+    		+ "AND t.statusTermo = :statusTermo";
+	
 	@Autowired
 	private TermoDeEstagioRepository termoRepo;
 	
@@ -135,7 +139,9 @@ public class TermoDeEstagioService {
 		termoDeEstagio.setOrientador(orientador);
 		
 		//Associa o orientador ao Estagio;
-		termoDeEstagio.getEstagio().setOrientador(orientador);
+		if(termoDeEstagio.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+			termoDeEstagio.getEstagio().setOrientador(orientador);
+		}
 		
 		//Associa o termo ao orientador;
 		List<TermoDeEstagio> listaTermos = orientador.getTermoDeEstagio();
@@ -145,6 +151,18 @@ public class TermoDeEstagioService {
 		if(!listaTermos.contains(termoDeEstagio)) {
 			listaTermos.add(termoDeEstagio);
 			orientador.setTermoDeEstagio(listaTermos);
+		}
+		
+		//Associa o Estagio ao orientador;
+		if(termoDeEstagio.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+			List<Estagio> listaEstagio = orientador.getEstagio();
+			if(listaEstagio == null) {
+				listaEstagio = new ArrayList<Estagio>();
+			}
+			if(!listaEstagio.contains(termoDeEstagio.getEstagio())) {
+				listaEstagio.add(termoDeEstagio.getEstagio());
+				orientador.setEstagio(listaEstagio);
+			}
 		}
 		
 		orientadorRepo.save(orientador);
@@ -160,7 +178,9 @@ public class TermoDeEstagioService {
 		termoDeEstagio.setAgenteIntegrador(agenteIntegrador);
 		
 		//Associa o agente integrador ao Estagio;
-		termoDeEstagio.getEstagio().setAgenteIntegrador(agenteIntegrador);
+		if(termoDeEstagio.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+			termoDeEstagio.getEstagio().setAgenteIntegrador(agenteIntegrador);
+		}
 		
 		//Associa o termo ao agente integrador;
 		List<TermoDeEstagio> listaTermos = agenteIntegrador.getTermoDeEstagio();
@@ -173,13 +193,15 @@ public class TermoDeEstagioService {
 		}
 		
 		//Associa o estagio ao agente integrador;
-		List<Estagio> listaEstagios = agenteIntegrador.getEstagio();
-		if(listaEstagios == null) {
-			listaEstagios = new ArrayList<Estagio>();
-		}
-		if(!listaEstagios.contains(termoDeEstagio.getEstagio())) {
-			listaEstagios.add(termoDeEstagio.getEstagio());
-			agenteIntegrador.setEstagio(listaEstagios);
+		if(termoDeEstagio.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+			List<Estagio> listaEstagios = agenteIntegrador.getEstagio();
+			if(listaEstagios == null) {
+				listaEstagios = new ArrayList<Estagio>();
+			}
+			if(!listaEstagios.contains(termoDeEstagio.getEstagio())) {
+				listaEstagios.add(termoDeEstagio.getEstagio());
+				agenteIntegrador.setEstagio(listaEstagios);
+			}
 		}
 		
 		agenteIntegradorRepo.save(agenteIntegrador);
@@ -195,11 +217,15 @@ public class TermoDeEstagioService {
 		termoDeEstagio.setSeguradora(apolice.getSeguradora());
 		
 		//Associa o apolice e seguradora ao Estagio;
-		termoDeEstagio.getEstagio().setApolice(apolice);
-		termoDeEstagio.getEstagio().setSeguradora(apolice.getSeguradora());
+		if(termoDeEstagio.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+			termoDeEstagio.getEstagio().setApolice(apolice);
+			termoDeEstagio.getEstagio().setSeguradora(apolice.getSeguradora());
+		}
 		
 		//Associa o Estagio e Termo a apolice;
-		apolice.setEstagio(termoDeEstagio.getEstagio());
+		if(termoDeEstagio.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+			apolice.setEstagio(termoDeEstagio.getEstagio());
+		}
 		apolice.setTermoDeEstagio(termoDeEstagio);
 		
 		//Associa o termo a seguradora;
@@ -213,13 +239,15 @@ public class TermoDeEstagioService {
 		}
 		
 		//Associa o estagio a seguradora;
-		List<Estagio> listaEstagios = apolice.getSeguradora().getEstagio();
-		if(listaEstagios == null) {
-			listaEstagios = new ArrayList<Estagio>();
-		}
-		if(!listaEstagios.contains(termoDeEstagio.getEstagio())) {
-			listaEstagios.add(termoDeEstagio.getEstagio());
-			apolice.getSeguradora().setEstagio(listaEstagios);
+		if(termoDeEstagio.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+			List<Estagio> listaEstagios = apolice.getSeguradora().getEstagio();
+			if(listaEstagios == null) {
+				listaEstagios = new ArrayList<Estagio>();
+			}
+			if(!listaEstagios.contains(termoDeEstagio.getEstagio())) {
+				listaEstagios.add(termoDeEstagio.getEstagio());
+				apolice.getSeguradora().setEstagio(listaEstagios);
+			}
 		}
 		
 		estagioRepo.save(termoDeEstagio.getEstagio());
@@ -237,7 +265,9 @@ public class TermoDeEstagioService {
 		termoDeEstagio.setContratante(contratante);
 		
 		//Associa o contratante ao Estagio;
-		termoDeEstagio.getEstagio().setContratante(contratante);
+		if(termoDeEstagio.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+			termoDeEstagio.getEstagio().setContratante(contratante);
+		}
 		
 		//Associa o termo ao contratante;
 		List<TermoDeEstagio> listaTermos = contratante.getTermoDeEstagio();
@@ -250,13 +280,15 @@ public class TermoDeEstagioService {
 		}
 		
 		//Associa o estagio ao contratante;
-		List<Estagio> listaEstagios = contratante.getEstagio();
-		if(listaEstagios == null) {
-			listaEstagios = new ArrayList<Estagio>();
-		}
-		if(!listaEstagios.contains(termoDeEstagio.getEstagio())) {
-			listaEstagios.add(termoDeEstagio.getEstagio());
-			contratante.setEstagio(listaEstagios);
+		if(termoDeEstagio.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+			List<Estagio> listaEstagios = contratante.getEstagio();
+			if(listaEstagios == null) {
+				listaEstagios = new ArrayList<Estagio>();
+			}
+			if(!listaEstagios.contains(termoDeEstagio.getEstagio())) {
+				listaEstagios.add(termoDeEstagio.getEstagio());
+				contratante.setEstagio(listaEstagios);
+			}
 		}
 		
 		contratanteRepo.save(contratante);
@@ -291,9 +323,6 @@ public class TermoDeEstagioService {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
     	
     	EnumParecerAprovadores parecerCoe = EnumParecerAprovadores.Reprovado;
-    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
-    	Estagio estagio = termo.getEstagio();
-    	estagio.setStatusEstagio(statusEstagio);
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCOE(parecerCoe);
     	termo.setMotivoIndeferimento(justificativa.getJustificativa());
@@ -301,7 +330,15 @@ public class TermoDeEstagioService {
     	//Uma vez que a COE reprove o termo de compromisso, deve ser encaminhado para ciencia da coordenação
     	termo.setEtapaFluxo(etapaFluxo);
     	
-    	estagioRepo.save(estagio);
+    	/**Só podemos considerar um estágio como reprovado nessa etapa caso seja termo de compromisso.
+    	 * A reprovação de um termo aditivo não pode reprovar automaticamente um estágio em andamento.
+    	 */
+    	if(termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+	    	Estagio estagio = termo.getEstagio();
+	    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
+	    	estagio.setStatusEstagio(statusEstagio);
+	    	estagioRepo.save(estagio);
+    	}
     	
 		return termoRepo.save(termo);
 	}
@@ -315,9 +352,7 @@ public class TermoDeEstagioService {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
     	
     	EnumParecerAprovadores parecerCoe = EnumParecerAprovadores.Ajustar;
-    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
-    	Estagio estagio = termo.getEstagio();
-    	estagio.setStatusEstagio(statusEstagio);
+
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCOE(parecerCoe);
     	termo.setDescricaoAjustes(descricaoAjustes.getDescricaoAjustes());
@@ -325,7 +360,15 @@ public class TermoDeEstagioService {
     	//Uma vez que a COE solicita ajustes no termo de compromisso, deve ser encaminhado para revisão do Aluno
     	termo.setEtapaFluxo(etapaFluxo);
     	
-    	estagioRepo.save(estagio);
+    	/**Só podemos mudar o status do Estagio nessa etapa caso seja termo de compromisso.
+    	 * A solicitação de ajustes de um termo aditivo não pode mudar o status de um estágio em andamento.
+    	 */
+    	if(termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+	    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
+	    	Estagio estagio = termo.getEstagio();
+	    	estagio.setStatusEstagio(statusEstagio);
+	    	estagioRepo.save(estagio);
+    	}
 		
     	return termoRepo.save(termo);
 	}
@@ -338,16 +381,22 @@ public class TermoDeEstagioService {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
     	
     	EnumParecerAprovadores parecerCoe = EnumParecerAprovadores.Aprovado;
-    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
-    	Estagio estagio = termo.getEstagio();
-    	estagio.setStatusEstagio(statusEstagio);
+
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCOE(parecerCoe);
     	
     	//Uma vez que a COE aprava o termo de compromisso, deve ser encaminhado para análise da coordenação
     	termo.setEtapaFluxo(etapaFluxo);
     	
-    	estagioRepo.save(estagio);
+    	/**Só podemos mudar o status do Estagio nessa etapa caso seja termo de compromisso.
+    	 * A solicitação de ajustes de um termo aditivo não pode mudar o status de um estágio em andamento.
+    	 */
+    	if(termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+	    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
+	    	Estagio estagio = termo.getEstagio();
+	    	estagio.setStatusEstagio(statusEstagio);
+	    	estagioRepo.save(estagio);
+    	}
 		
     	return termoRepo.save(termo);
 	}
@@ -376,9 +425,7 @@ public class TermoDeEstagioService {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
     	
     	EnumParecerAprovadores parecerCoordenacao = EnumParecerAprovadores.Reprovado;
-    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
-    	Estagio estagio = termo.getEstagio();
-    	estagio.setStatusEstagio(statusEstagio);
+
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCoordenacao(parecerCoordenacao);
     	termo.setMotivoIndeferimento(justificativa.getJustificativa());
@@ -389,24 +436,17 @@ public class TermoDeEstagioService {
     	 */
     	termo.setEtapaFluxo(etapaFluxo);
     	
-    	estagioRepo.save(estagio);
+    	/**Só podemos considerar um estágio como reprovado nessa etapa caso seja termo de compromisso.
+    	 * A reprovação de um termo aditivo não pode reprovar automaticamente um estágio em andamento.
+    	 */
+    	if(termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+	    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
+	    	Estagio estagio = termo.getEstagio();
+	    	estagio.setStatusEstagio(statusEstagio);
+	    	estagioRepo.save(estagio);
+    	}
     	
 		return termoRepo.save(termo);
-	}
-
-	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoordenacao() {
-		
-    	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
-    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
-		
-        String jpql = "SELECT t FROM TermoDeEstagio t "
-        		+ "WHERE t.etapaFluxo = :etapaFluxo "
-        		+ "AND t.statusTermo = :statusTermo";
-        
-        TypedQuery<TermoDeEstagio> query = em.createQuery(jpql, TermoDeEstagio.class);
-        query.setParameter("etapaFluxo", etapaFluxo);
-        query.setParameter("statusTermo", statusTermo);
-        return query.getResultList();
 	}
 
 	public TermoDeEstagio aprovarTermoDeCompromissoCoordenacao(TermoDeEstagio termo) {
@@ -416,16 +456,22 @@ public class TermoDeEstagioService {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COAFE;
     	
     	EnumParecerAprovadores parecerCoordenacao = EnumParecerAprovadores.Aprovado;
-    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
-    	Estagio estagio = termo.getEstagio();
-    	estagio.setStatusEstagio(statusEstagio);
+
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCoordenacao(parecerCoordenacao);
     	
     	//Uma vez que a COE aprava o termo de compromisso, deve ser encaminhado para análise da coordenação
     	termo.setEtapaFluxo(etapaFluxo);
     	
-    	estagioRepo.save(estagio);
+    	/**Só podemos mudar o status do Estagio nessa etapa caso seja termo de compromisso.
+    	 * A solicitação de ajustes de um termo aditivo não pode mudar o status de um estágio em andamento.
+    	 */
+    	if(termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+	    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
+	    	Estagio estagio = termo.getEstagio();
+	    	estagio.setStatusEstagio(statusEstagio);
+	    	estagioRepo.save(estagio);
+    	}
 		
     	return termoRepo.save(termo);
 	}
@@ -439,9 +485,7 @@ public class TermoDeEstagioService {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
     	
     	EnumParecerAprovadores parecerCoordenacao = EnumParecerAprovadores.Ajustar;
-    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
-    	Estagio estagio = termo.getEstagio();
-    	estagio.setStatusEstagio(statusEstagio);
+
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCoordenacao(parecerCoordenacao);
     	termo.setDescricaoAjustes(descricaoAjustes.getDescricaoAjustes());
@@ -449,9 +493,28 @@ public class TermoDeEstagioService {
     	//Uma vez que a Coordenação solicita ajustes no termo de compromisso, deve ser encaminhado para revisão do Aluno
     	termo.setEtapaFluxo(etapaFluxo);
     	
-    	estagioRepo.save(estagio);
+    	/**Só podemos mudar o status do Estagio nessa etapa caso seja termo de compromisso.
+    	 * A solicitação de ajustes de um termo aditivo não pode mudar o status de um estágio em andamento.
+    	 */
+    	if(termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+	    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
+	    	Estagio estagio = termo.getEstagio();
+	    	estagio.setStatusEstagio(statusEstagio);
+	    	estagioRepo.save(estagio);
+    	}
 		
     	return termoRepo.save(termo);
+	}
+	
+	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoordenacao() {
+		
+    	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
+		        
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioIndeferidos, TermoDeEstagio.class);
+        query.setParameter("etapaFluxo", etapaFluxo);
+        query.setParameter("statusTermo", statusTermo);
+        return query.getResultList();
 	}
 
 	public List<TermoDeEstagio> listarTermosPendenteAprovacaoCoordenacaoPorTipoEstagio(String tipoEstagioString) {
@@ -507,16 +570,22 @@ public class TermoDeEstagioService {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
     	
     	EnumParecerAprovadores parecerCoordenacao = EnumParecerAprovadores.Ciente;
-    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
-    	Estagio estagio = termo.getEstagio();
-    	estagio.setStatusEstagio(statusEstagio);
+
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCoordenacao(parecerCoordenacao);
     	
     	//Uma vez que a Coordenação da ciencia no indeferimento da COE ou COAFE, o fluxo se encerra e o termo deve ser encaminhado ao Aluno.
     	termo.setEtapaFluxo(etapaFluxo);
     	
-    	estagioRepo.save(estagio);
+    	/**Só podemos considerar um estágio como reprovado nessa etapa caso seja termo de compromisso.
+    	 * A reprovação de um termo aditivo não pode reprovar automaticamente um estágio em andamento.
+    	 */
+    	if(termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+	    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
+	    	Estagio estagio = termo.getEstagio();
+	    	estagio.setStatusEstagio(statusEstagio);
+	    	estagioRepo.save(estagio);
+    	}
 		
     	return termoRepo.save(termo);
 	}
@@ -595,9 +664,7 @@ public class TermoDeEstagioService {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Coordenacao;
     	
     	EnumParecerAprovadores parecerCoafe = EnumParecerAprovadores.Reprovado;
-    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
-    	Estagio estagio = termo.getEstagio();
-    	estagio.setStatusEstagio(statusEstagio);
+
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCOAFE(parecerCoafe);
     	termo.setMotivoIndeferimento(justificativa.getJustificativa());
@@ -605,7 +672,15 @@ public class TermoDeEstagioService {
     	//Uma vez que a COAFE reprove o termo de compromisso, deve ser encaminhado para ciencia da coordenação
     	termo.setEtapaFluxo(etapaFluxo);
     	
-    	estagioRepo.save(estagio);
+    	/**Só podemos considerar um estágio como reprovado nessa etapa caso seja termo de compromisso.
+    	 * A reprovação de um termo aditivo não pode reprovar automaticamente um estágio em andamento.
+    	 */
+    	if(termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+	    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
+	    	Estagio estagio = termo.getEstagio();
+	    	estagio.setStatusEstagio(statusEstagio);
+	    	estagioRepo.save(estagio);
+    	}
     	
 		return termoRepo.save(termo);
 	}
@@ -619,9 +694,7 @@ public class TermoDeEstagioService {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
     	
     	EnumParecerAprovadores parecerCoafe = EnumParecerAprovadores.Ajustar;
-    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
-    	Estagio estagio = termo.getEstagio();
-    	estagio.setStatusEstagio(statusEstagio);
+
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCOAFE(parecerCoafe);
     	termo.setDescricaoAjustes(descricaoAjustes.getDescricaoAjustes());
@@ -629,7 +702,15 @@ public class TermoDeEstagioService {
     	//Uma vez que a Coafe solicita ajustes no termo de compromisso, deve ser encaminhado para revisão do Aluno
     	termo.setEtapaFluxo(etapaFluxo);
     	
-    	estagioRepo.save(estagio);
+    	/**Só podemos mudar o status do Estagio nessa etapa caso seja termo de compromisso.
+    	 * A solicitação de ajustes de um termo aditivo não pode mudar o status de um estágio em andamento.
+    	 */
+    	if(termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+	    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
+	    	Estagio estagio = termo.getEstagio();
+	    	estagio.setStatusEstagio(statusEstagio);
+	    	estagioRepo.save(estagio);
+    	}
 		
     	return termoRepo.save(termo);
 	}
@@ -642,14 +723,22 @@ public class TermoDeEstagioService {
     	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.Aluno;
     	
     	EnumParecerAprovadores parecerCoafe = EnumParecerAprovadores.Aprovado;
-    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Aprovado;
-    	Estagio estagio = termo.getEstagio();
-    	estagio.setStatusEstagio(statusEstagio);
+    	
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCOAFE(parecerCoafe);
     
     	//Uma vez que a COE aprava o termo de compromisso, deve ser encaminhado para análise da coordenação
     	termo.setEtapaFluxo(etapaFluxo);
+    	
+    	Estagio estagio = termo.getEstagio();
+    	
+    	/**Só podemos mudar o status do Estagio nessa etapa caso seja termo de compromisso.
+    	 * A aprovação de um termo aditivo não pode mudar o status de um estágio em andamento.
+    	 */
+    	if(termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso) {
+	    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.Aprovado;
+	    	estagio.setStatusEstagio(statusEstagio);
+    	}
     	
     	/**Como o termo de compromisso foi aprovado pela COAFE e o fluxo chegou ao fim,
     	 * a consolidação das informações do Termo é realizada no Estágio.
@@ -661,11 +750,72 @@ public class TermoDeEstagioService {
     	estagio.setValorBolsa(termo.getValorBolsa());
     	estagio.setValorTransporte(termo.getValorTransporte());
     	
+    	List<Estagio> listaEstagios = null;
+    	
+    	estagio.setContratante(termo.getContratante());
+		listaEstagios = termo.getContratante().getEstagio();
+		if(listaEstagios == null) {
+			listaEstagios = new ArrayList<Estagio>();
+		}
+		if(!listaEstagios.contains(termo.getEstagio())) {
+			listaEstagios.add(termo.getEstagio());
+			termo.getContratante().setEstagio(listaEstagios);
+		}
+    	
+    	estagio.setSeguradora(termo.getSeguradora());
+		listaEstagios = termo.getSeguradora().getEstagio();
+		if(listaEstagios == null) {
+			listaEstagios = new ArrayList<Estagio>();
+		}
+		if(!listaEstagios.contains(termo.getEstagio())) {
+			listaEstagios.add(termo.getEstagio());
+			termo.getSeguradora().setEstagio(listaEstagios);
+		}
+    	
+    	estagio.setApolice(termo.getApolice());
+		termo.getApolice().setEstagio(estagio);
+    	
+    	estagio.setOrientador(termo.getOrientador());
+		listaEstagios = termo.getOrientador().getEstagio();
+		if(listaEstagios == null) {
+			listaEstagios = new ArrayList<Estagio>();
+		}
+		if(!listaEstagios.contains(termo.getEstagio())) {
+			listaEstagios.add(termo.getEstagio());
+			termo.getOrientador().setEstagio(listaEstagios);
+		}	
+    	
+    	estagio.setAgenteIntegrador(termo.getAgenteIntegrador());
+		listaEstagios = termo.getAgenteIntegrador().getEstagio();
+		if(listaEstagios == null) {
+			listaEstagios = new ArrayList<Estagio>();
+		}
+		if(!listaEstagios.contains(termo.getEstagio())) {
+			listaEstagios.add(termo.getEstagio());
+			termo.getAgenteIntegrador().setEstagio(listaEstagios);
+		}
+		
+		estagio.setPlanoDeAtividades(termo.getPlanoAtividades());
+		termo.getPlanoAtividades().setEstagio(estagio);
+    	
+		contratanteRepo.save(estagio.getContratante());
+		seguradoraRepo.save(estagio.getSeguradora());
+		apoliceRepo.save(estagio.getApolice());
+		orientadorRepo.save(estagio.getOrientador());
+		agenteIntegradorRepo.save(estagio.getAgenteIntegrador());
+		planoRepo.save(estagio.getPlanoDeAtividades());
     	estagioRepo.save(estagio);
 		
     	return termoRepo.save(termo);
 	}
 
+	/**A ideia desse método é que o termoAditivo nasce espelhando as informações correntes do Estagio.
+	 * Isso porque assume-se que o termoAditivo irá mudar algumas características do estágio já iniciado,
+	 * e não todas elas. Desta forma, esse espelhamento visa facilitar, mantendo no termoAditivo
+	 * informações atuais do Estágio que não serão alteradas pelo termoAditivo.
+	 * @param estagio
+	 * @return
+	 */
 	public TermoDeEstagio novoTermoAditivo(Estagio estagio) {
 		EnumTipoTermoDeEstagio tipoTermo = EnumTipoTermoDeEstagio.TermoAditivo;
 		EnumStatusTermo statusTermo = EnumStatusTermo.EmPreenchimento;

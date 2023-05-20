@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
+import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.model.Aluno;
@@ -30,6 +31,11 @@ public class EstagioService {
 	private static final String selectPorIdOrientadorFiltroStatusEstagio = "SELECT e FROM Estagio e INNER JOIN e.orientador o "
     		+ "WHERE o.id = :idOrientador "
     		+ "and e.statusEstagio = :statusEstagio"; 
+	private static final String selectPorIdAlunoFiltroStatusTermoCompromisso = "SELECT e FROM Estagio e "
+			+ "INNER JOIN e.aluno a "
+			+ "INNER JOIN e.termoDeCompromisso t "
+    		+ "WHERE a.id = :idAluno "
+    		+ "and t.statusTermo = :statusTermo"; 
 
 	@Autowired
 	private EstagioRepository estagioRepo;
@@ -189,6 +195,42 @@ public class EstagioService {
 		}
 		List<Estagio> estagio = estagioRepo.findByStatusEstagioAndAluno(statusEstagio, aluno);
 		return estagio;
+	}
+	
+	public List<Estagio> buscarEstagioPorStatusTermoCompromisso(Aluno aluno, String statusTermoString) {
+		EnumStatusTermo statusTermo;
+		statusTermoString = statusTermoString.toUpperCase();
+		switch(statusTermoString) {
+			case "EMPREENCHIMENTO":
+				statusTermo = EnumStatusTermo.EmPreenchimento;
+				break;
+			case "EMAPROVACAO":
+				statusTermo = EnumStatusTermo.EmAprovacao;
+				break;
+			case "EMREVISAO":
+				statusTermo = EnumStatusTermo.EmRevisao;
+				break;
+			case "EMASSINATURA":
+				statusTermo = EnumStatusTermo.EmRevisao;
+				break;
+			case "APROVADO":
+				statusTermo = EnumStatusTermo.Aprovado;
+				break;
+			case "CANCELADO":
+				statusTermo = EnumStatusTermo.Cancelado;
+				break;
+			case "REPROVADO":
+				statusTermo = EnumStatusTermo.Reprovado;
+				break;
+			default:
+				return null;
+		}
+        TypedQuery<Estagio> query = em.createQuery(selectPorIdAlunoFiltroStatusTermoCompromisso, Estagio.class);
+        
+        query.setParameter("idAluno", aluno.getId());
+        query.setParameter("statusTermo", statusTermo);
+        
+        return query.getResultList();
 	}
 
 	public List<Estagio> listarTodosEstagiosPendenteAprovacaoCoe() {
