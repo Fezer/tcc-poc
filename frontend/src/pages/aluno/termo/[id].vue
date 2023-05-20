@@ -260,11 +260,13 @@ export default defineComponent({
       </Button>
     </div>
 
-    <div
-      v-else-if="state.tipoUsuario === 'ALUNO'"
-      class="flex align-items-end justify-content-end gap-2"
-    >
+    <div class="flex align-items-end justify-content-end gap-2">
       <Button
+        v-if="
+          !['Reprovado', 'Aprovado', 'Cancelado'].includes(
+            termo?.statusTermo || ''
+          )
+        "
         class="p-button-danger"
         @click="() => (state.cancelationConfirm = true)"
       >

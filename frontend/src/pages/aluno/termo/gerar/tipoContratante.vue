@@ -7,8 +7,10 @@ import SeguradoraService from "~~/services/SeguradoraService";
 import ApoliceService from "~~/services/ApoliceService";
 import ZodErrorsService from "../../../../../services/ZodErrorsService";
 import NovoEstagioService from "../../../../../services/NovoEstagioService";
+import buscaContratante from "../../../../components/contratante/buscaContratante.vue";
 
 export default defineComponent({
+  components: { buscaContratante },
   props: {
     advanceStep: {
       type: Function,
@@ -37,6 +39,8 @@ export default defineComponent({
 
     const contratanteLoading = ref(false);
     const contratantes = ref([]);
+
+    const selectedContratante = ref(null);
 
     // const handleSearchContratante = async (e: any) => {
     //   console.log(e.target.value);
@@ -271,6 +275,7 @@ export default defineComponent({
       contratantes,
       handleToggleRegisterContratante,
       contratanteLoading,
+      selectedContratante,
     };
   },
 });
@@ -288,6 +293,7 @@ export default defineComponent({
           :options="tipos"
           optionLabel="label"
           optionValue="value"
+          @change="state.id = null"
         />
       </div>
     </div>
@@ -296,16 +302,9 @@ export default defineComponent({
       class="card p-fluid col-12 m-2"
       v-if="state.tipoContratante === 'PessoaJuridica'"
     >
-      <Dropdown
-        filter
-        :options="contratantes"
-        :optionLabel="(c) => `${c.nome} - ${c.cnpj}`"
-        optionValue="id"
-        placeholder="Busca por contratante"
-        :filter-fields="['nome', 'cnpj']"
+      <busca-contratante
         v-model="state.id"
-        :disabled="state.cadastrarContratante"
-        :class="{ 'p-invalid': errors['id'] }"
+        v-if="!state.cadastrarContratante"
       />
       <div class="flex justify-end w-full">
         <Button

@@ -57,7 +57,7 @@ const { data: termos } = await useFetch(`http://localhost:5000/termo`);
       </Column>
       <Column field="acoes" header="Ações" style="min-width: 12rem">
         <template #body="{ data }">
-          <NuxtLink :to="`/termo/${data.id}`">
+          <NuxtLink :to="`/aluno/termo/${data.id}`">
             <Button type="primary"> Ver </Button>
           </NuxtLink>
         </template>

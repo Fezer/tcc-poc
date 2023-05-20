@@ -43,13 +43,14 @@ export default defineComponent({
 
     const percentage = getPercentageByEtapa();
 
-    const parseStatus = (status: string) => {
+    const parseStatus = (status: string): string => {
       const statusObjects = {
         EmPreenchimento: "Em preenchimento",
         EmAprovacao: "Em aprovação",
         EmRevisao: "Necessita de Ajuste",
         Aprovado: "Aprovado",
-        Reprovado: "Reprovado",
+        Reprovado: "Indeferimento",
+        Cancelado: "Cancelado pelo aluno",
       };
 
       return statusObjects[status] || "Erro";
@@ -101,14 +102,19 @@ export default defineComponent({
                 : 'text-red-500 font-bold text-lg uppercase'
             "
           >
-            {{ parseStatus(status) || "" }}
+            {{ parseStatus(status) }}
           </p>
         </div>
         <div class="text-box col-4 flex flex-col">
           <strong>Data de Início do processo</strong>
           <span>{{ parseDate(termo?.dataCriacao) }}</span>
         </div>
-        <div class="col-4 flex items-center justify-end">
+        <div
+          class="col-4 flex items-center justify-end"
+          v-if="
+            ['EmPreenchimento', 'Aprovado'].includes(termo?.statusTermo || '')
+          "
+        >
           <a
             href="http://localhost:5000/aluno/GRR20200141/gerar-termo"
             target="_blank"

@@ -223,6 +223,7 @@ export default defineComponent({
     <small>Processos > Ver processo</small>
     <h2>Termo de Compromisso</h2>
 
+    <h1>DEPRECATED</h1>
     <StatusTermo
       :etapa="termo?.etapaFluxo"
       :status="termo?.statusTermo"
@@ -348,39 +349,6 @@ export default defineComponent({
           class="p-button-danger"
           autofocus
           @click="handleCancelarTermo"
-        />
-      </template>
-    </Dialog>
-
-    <Dialog
-      :visible="state.indeferimentoConfirm"
-      header="Justificativa indeferimento"
-      style="min-width: 500px"
-      :modal="true"
-    >
-      <div class="flex align-items-center justify-content-center flex-column">
-        <Textarea
-          id="justificativa"
-          v-model="state.justificativa"
-          style="min-width: 100%"
-          name="justificativa"
-          cols="30"
-          rows="10"
-        />
-      </div>
-      <template #footer>
-        <Button
-          label="Cancelar"
-          icon="pi pi-times"
-          class="p-button-secondary"
-          @click="state.indeferimentoConfirm = false"
-        />
-        <Button
-          label="Indeferir"
-          icon="pi pi-check"
-          class="p-button-danger"
-          autofocus
-          @click="responderTermo('reprovar').then(() => refreshData())"
         />
       </template>
     </Dialog>
