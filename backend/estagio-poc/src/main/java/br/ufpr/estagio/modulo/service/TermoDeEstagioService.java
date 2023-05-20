@@ -1025,6 +1025,17 @@ public class TermoDeEstagioService {
 		
 		return query.getResultList();
 	}
+	
+	public List<TermoDeEstagio> listarTermosAditivosIndeferidos() {
+		
+    	EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
+    	EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoAditivo;
+        
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioPorTipoTermoPorStatusTermo, TermoDeEstagio.class);
+        query.setParameter("statusTermo", statusTermo);
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+        return query.getResultList();
+	}
 
 	public List<TermoDeEstagio> listarTermosAditivosIndeferidosPendentesCienciaCoordenacao() {
     	EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
@@ -1083,12 +1094,16 @@ public class TermoDeEstagioService {
         return query.getResultList();
 	}
 
-	public List<TermoDeEstagio> listarTermosAditivosIndeferidos() {
+	public List<TermoDeEstagio> listarTermosAditivoPendenteAprovacaoCoe() {
 		
-    	EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
+    	EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
+    	EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COE;
+    	EnumTipoEstagio tipoEstagio = EnumTipoEstagio.NaoObrigatorio;
     	EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoAditivo;
-        
-        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermosDeEstagioPorTipoTermoPorStatusTermo, TermoDeEstagio.class);
+		        
+        TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermoPorTipoEstagioEtapaFluxoStatusTermoTipoTermo, TermoDeEstagio.class);
+        query.setParameter("tipoEstagio", tipoEstagio);
+        query.setParameter("etapaFluxo", etapaFluxo);
         query.setParameter("statusTermo", statusTermo);
         query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
         return query.getResultList();
