@@ -47,6 +47,7 @@ import br.ufpr.estagio.modulo.dto.FichaDeAvaliacaoDTO;
 import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
+import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
@@ -924,6 +925,52 @@ public class AlunoREST {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
+	}
+	
+	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoAditivo/{idTermo}/cancelarTermoAditivo")
+	@ResponseBody
+	public ResponseEntity<Object> cancelarTermoAditivo(@PathVariable String grrAlunoURL, @PathVariable Long idEstagio, @PathVariable Long idTermo) {
+	    try {
+	        if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+	            throw new BadRequestException("GRR do aluno não informado!");
+	        } else {
+	            Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+	            if (aluno == null) {
+	                throw new NotFoundException("Aluno não encontrado!");
+	            } else {
+	                Estagio estagio = alunoService.buscarEstagioPorId(idEstagio);
+	                if (estagio == null) {
+	                    throw new NotFoundException("Estágio não encontrado!");
+	                } else {
+	                	TermoDeEstagio termoAditivo = termoDeEstagioService.buscarPorId(idTermo);
+	                	if (termoAditivo == null) {
+	                		throw new NotFoundException("Termo não encontrado!");
+	                	} else {
+	                		if (estagio.getAluno().getId() != aluno.getId()) {
+	                			throw new NotFoundException("O estágio não pertence ao Aluno!");
+	                		}
+	                		if (termoAditivo.getEstagio().getAluno().getId() != aluno.getId()) {
+	                			throw new NotFoundException("O termo não pertence ao Aluno!");
+	                		}
+	                		if (termoAditivo.getStatusTermo() == EnumStatusTermo.Aprovado) {
+	                			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Não é possível cancelar um termo aditivo já aprovado."));
+	                		} else {
+	                			TermoDeEstagio termo = termoDeEstagioService.cancelarTermoAditivo(termoAditivo);
+	                			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termo, TermoDeEstagioDTO.class));
+	                		}
+	                	}
+	                }
+	            }
+	        }
+	    } catch (NumberFormatException e) {
+	        throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+	    } catch (PocException e) {
+	        e.printStackTrace();
+	        throw e;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    }
 	}
 	
 }
