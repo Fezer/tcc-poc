@@ -250,6 +250,21 @@ public class AlunoService {
 		EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
 		termoAtualizado.setStatusTermo(statusTermo);
 		
+		/**
+		 * Pode se estar solicitando uma reaprovação de um termo que o Aluno ajustou,
+		 * pelo motivo de algum dos atores terem solicitado ajuste. Desta forma,
+		 * é importante zerar todos os pareceres e ciências, bem como a descrição
+		 * do havia sido pedido pro aluno ajustar.
+		 */
+		termoAtualizado.setParecerCOAFE(null);
+		termoAtualizado.setParecerCOE(null);
+		termoAtualizado.setParecerCoordenacao(null);
+		termoAtualizado.getCienciaCoordenacao().setCienciaFormacaoSupervisor(false);
+		termoAtualizado.getCienciaCoordenacao().setCienciaIRA(false);
+		termoAtualizado.getCienciaCoordenacao().setCienciaPlanoAtividades(false);
+		termoAtualizado.setDescricaoAjustes(null);
+		
+		
 		estagioRepo.save(estagio);
 				
 		return termoRepo.save(termoAtualizado);
@@ -267,35 +282,15 @@ public Aluno atualizarDadosBancarios(Aluno aluno) {
 	
 	public void cancelarEstagio(Estagio estagio) {
 		
-		// usado caso queira passar somente o id do estagio
-	    /*Estagio estagio = estagioRepo.findById(idEstagio)
-	        .orElseThrow(() -> new NotFoundException("Estágio não encontrado!"));*/
-		
-		//TO-DO: Considerar regras de negócio ao cancelar um estágio
-		/** Somente é possível cancelar um estágio caso ele ainda não tenha sido aprovado, então
-		 * precisamos fazer algumas validações antes de cancelar um estágio.
-		 */
 		TermoDeEstagio termoDeCompromisso = estagio.getTermoDeCompromisso();
-		estagio.setStatusEstagio(EnumStatusEstagio.Cancelado);
-		termoDeCompromisso.setStatusTermo(EnumStatusTermo.Cancelado);
-			
+		
+		if(estagio.getStatusEstagio() == EnumStatusEstagio.EmAprovacao || estagio.getStatusEstagio() == EnumStatusEstagio.EmPreenchimento) {
+			estagio.setStatusEstagio(EnumStatusEstagio.Cancelado);
+			termoDeCompromisso.setStatusTermo(EnumStatusTermo.Cancelado);
+		}
+		
 		estagioRepo.save(estagio);
 	    termoRepo.save(termoDeCompromisso);
-
-	    /*TermoDeEstagio termoDeCompromisso = estagio.getTermoDeCompromisso();
-	    //PlanoDeAtividades planoDeAtividades = estagio.getPlanoDeAtividades();
-	    Aluno aluno = estagio.getAluno();
-	    //List<Estagio> listaEstagios = aluno.getEstagio();
-	    //listaEstagios.remove(estagio);
-	    //aluno.setEstagio(listaEstagios);
-	    estagio.setStatusEstagio(EnumStatusEstagio.Cancelado);
-	    termoDeCompromisso.setStatusTermo(EnumStatusTermo.Cancelado);
-	    
-	    alunoRepo.save(aluno);*/
-	    
-//	    termoRepo.delete(termoDeCompromisso);
-//	    planoAtividadesRepo.delete(planoDeAtividades);
-//	    estagioRepo.delete(estagio);
 	}
 
 	public List<CertificadoDeEstagio> listarCertificadosDeEstagioAluno(Aluno aluno) {
