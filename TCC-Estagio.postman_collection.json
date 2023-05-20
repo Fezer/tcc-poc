@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "c047314e-91b5-4cbc-bc63-f3262e65c81e",
+		"_postman_id": "58ff374f-1135-4beb-b08f-12523ec44689",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17301767"
+		"_exporter_id": "18567474"
 	},
 	"item": [
 		{
@@ -46,7 +46,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo/8",
+							"raw": "http://localhost:5000/termo/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -54,7 +54,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"8"
+								"1"
 							]
 						}
 					},
@@ -447,12 +447,40 @@
 					"response": []
 				},
 				{
+					"name": "listarEstagioPorStatusTermoCompromisso",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/termoCompromisso?statusTermo=EmRevisao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"estagio",
+								"termoCompromisso"
+							],
+							"query": [
+								{
+									"key": "statusTermo",
+									"value": "EmRevisao"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "solicitarAprovacaoTermo",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/termo/14/solicitarAprovacaoTermo",
+							"raw": "http://localhost:5000/aluno/GRR20175486/termo/2/solicitarAprovacaoTermo",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -462,7 +490,7 @@
 								"aluno",
 								"GRR20175486",
 								"termo",
-								"14",
+								"2",
 								"solicitarAprovacaoTermo"
 							]
 						}
@@ -1044,7 +1072,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/tipo/8?tipoEstagio=NaoObrigatorio",
+							"raw": "http://localhost:5000/estagio/tipo/2?tipoEstagio=NaoObrigatorio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1053,7 +1081,7 @@
 							"path": [
 								"estagio",
 								"tipo",
-								"8"
+								"2"
 							],
 							"query": [
 								{
@@ -2802,7 +2830,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/coe/termo/3/solicitarAjustes",
+							"raw": "http://localhost:5000/coe/termo/2/solicitarAjustes",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2811,7 +2839,7 @@
 							"path": [
 								"coe",
 								"termo",
-								"3",
+								"2",
 								"solicitarAjustes"
 							]
 						}
