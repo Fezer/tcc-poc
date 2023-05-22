@@ -220,8 +220,8 @@ export default defineComponent({
 <template>
   <div>
     <Toast />
-    <small>Processos > Ver processo</small>
-    <h2>Termo de Compromisso</h2>
+    <small>Processos > Termos Aditivos</small>
+    <h2>Termo Aditivo</h2>
 
     <StatusTermo
       :etapa="termo?.etapaFluxo"
@@ -230,15 +230,11 @@ export default defineComponent({
       :termo="termo"
     />
 
-    <Aluno />
-
     <Estagio :termo="termo" />
 
     <DadosAuxiliares :termo="termo" />
 
     <PlanoAtividades :termo="termo" :planoAtividades="termo?.planoAtividades" />
-
-    <Contratante :termo="termo" />
 
     <div
       v-if="

@@ -1,8 +1,8 @@
 <script setup>
 const grr = "GRR20200141";
 
-const { data: termos } = await useFetch(
-  `http://localhost:5000/aluno/${grr}/termosAditivos/`
+const { data: relatorios } = await useFetch(
+  `http://localhost:5000/aluno/${grr}/relatorios/`
 );
 
 // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
@@ -12,8 +12,8 @@ const { data: termos } = await useFetch(
   <div>
     <h1>Relatórios de Estágio</h1>
 
-    <DataTable :value="termos">
-      <Column field="termo" header="Termo">
+    <DataTable :value="relatorios">
+      <Column field="id" header="Processo">
         <template #body="{ data }">
           {{ data.id }}
         </template>

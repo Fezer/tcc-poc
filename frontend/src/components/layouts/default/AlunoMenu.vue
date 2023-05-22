@@ -12,7 +12,7 @@ export default defineComponent({
       },
       {
         label: "Todos os estágios",
-        link: "/aluno/processos",
+        link: "/aluno/processos/estagios",
       },
     ];
 

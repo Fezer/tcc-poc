@@ -114,4 +114,13 @@ export default class AlunoService extends BaseService {
       `${this.BASE_URL}/aluno/${grr}/estagio/termoCompromisso?statusTermo=EmRevisao`
     );
   }
+
+  public async criarTermoAditivo(grr: string, estagio: number) {
+    return await $fetch(
+      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/termoAditivo`,
+      {
+        method: "POST",
+      }
+    );
+  }
 }
