@@ -42,7 +42,7 @@ export default defineComponent({
       });
       setTimeout(() => {
         router.push({
-          path: "/termo/" + termo.value.id,
+          path: "/aluno/termo/" + termo.value.id,
         });
       }, 3000);
     };

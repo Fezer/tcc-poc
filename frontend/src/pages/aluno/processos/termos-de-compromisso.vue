@@ -1,27 +1,17 @@
 <script setup>
-const { data: termos } = await useFetch(`http://localhost:5000/termo`);
+const grr = "GRR20200141";
+
+const { data: termos } = await useFetch(
+  `http://localhost:5000/aluno/${grr}/termoDeCompromisso/`
+);
 
 // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 </script>
 
 <template>
   <div>
-    <h1>Processos</h1>
-    <!-- <table class="p-datatable-table">
-      <th>
-        <td>Termo</td>
-        <td>GRR</td>
-        <td>Contratante</td>
-        <td>Tipo Estágio</td>
-        <td>Status</td>
-        <td>Ações</td>
-      </th>
-    </table> -->
-    <!-- <NuxtLink to="/termo/1">
-      <Button type="primary">
-        Ir para termo
-      </Button>
-    </NuxtLink> -->
+    <h1>Termos de compromisso</h1>
+
     <DataTable :value="termos">
       <Column field="termo" header="Termo">
         <template #body="{ data }">
@@ -59,5 +49,3 @@ const { data: termos } = await useFetch(`http://localhost:5000/termo`);
     </DataTable>
   </div>
 </template>
-
-<style></style>
