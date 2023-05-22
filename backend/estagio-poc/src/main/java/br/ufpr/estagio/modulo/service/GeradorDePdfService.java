@@ -9,11 +9,12 @@ import com.itextpdf.html2pdf.HtmlConverter;
 import org.apache.commons.io.IOUtils;
 //import com.lowagie.text.DocumentException;
 import org.springframework.core.io.ClassPathResource;
-//import org.xhtmlrenderer.pdf.ITextRenderer;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.lowagie.text.DocumentException;
 
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Estagio;
@@ -24,7 +25,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 
 @Service
@@ -47,7 +51,7 @@ public class GeradorDePdfService {
         }
     }*/
 	
-	public byte[] gerarPdf(Aluno aluno, Estagio estagio) throws IOException {
+	/*public byte[] gerarPdf(Aluno aluno, Estagio estagio) throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         
@@ -66,19 +70,69 @@ public class GeradorDePdfService {
         
         pdf.close();
         return outputStream.toByteArray();
-    }
+    }*/
+	
+	public byte[] gerarPdf(Aluno aluno, Estagio estagio) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtml(aluno, estagio);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
 	
 	private String getHtml(Aluno aluno, Estagio estagio) {
 		// carregar o HTML do arquivo
 		ClassLoader classLoader = getClass().getClassLoader();
+		
+		Path diretorioAtual = Paths.get("").toAbsolutePath();
+    	
+    	String resources = diretorioAtual + "/src/main/resources/";
+		
+		String cssPath = resources + "termo/bootstrap.min.css";
+		String estiloPath = resources + "termo/estilo.css";
+		String jqueryPath = resources + "termo/jquery.js";
+		String bootstrapPath = resources + "termo/bootstrap.js";
+		String scriptPath = resources + "termo/script.js";
+
+		//System.out.println(scriptPath);
+		
+		/*URL cssUrl = classLoader.getResource(cssPath);
+		URL estiloUrl = classLoader.getResource(estiloPath);
+		URL jqueryUrl = classLoader.getResource(jqueryPath);
+		URL bootstrapUrl = classLoader.getResource(bootstrapPath);
+		URL scriptUrl = classLoader.getResource(scriptPath);
+		
+		System.out.println("cssUrl: " + cssUrl);
+		System.out.println("estiloUrl: " + estiloUrl);
+		System.out.println("jqueryUrl: " + jqueryUrl);
+		System.out.println("bootstrapUrl: " + bootstrapUrl);
+		System.out.println("scriptUrl: " + scriptUrl);
+		*/
 		String html = "";
 		try {
 			
 			html = IOUtils.toString(classLoader.getResourceAsStream("TermoCompromisso-Obrigatorio-Ufpr-EstudanteUfpr.html"), StandardCharsets.UTF_8);
+			//html = IOUtils.toString(classLoader.getResourceAsStream("termo.html"), StandardCharsets.UTF_8);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		//html = html.replace("${cssPath}", cssPath);
+		//html = html.replace("${estiloPath}", estiloPath);
+		//html = html.replace("${jqueryPath}", jqueryPath);
+		html = html.replace("${bootstrapPath}", bootstrapPath);
+		//html = html.replace("${scriptPath}", scriptPath);
+		
+		
+		String imagePath = resources + "termo/prograd.png";
+		html = html.replace("{{imagePath}}", imagePath);
 		// Informacoes do concedente
 		
 		/*Estagio estagio = new Estagio();
