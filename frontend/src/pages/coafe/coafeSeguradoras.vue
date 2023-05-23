@@ -10,7 +10,7 @@
       </NuxtLink>
     </div>
     <div>
-      <DataTable :value="Seguradoras" rowHover stripedRows>
+      <DataTable :value="seguradoras" rowHover stripedRows>
         <template #header>
           <div class="flex justify-content-between">
             <span class="p-input-icon-left">
@@ -22,26 +22,38 @@
             </span>
           </div>
         </template>
-        <template #empty> No customers found. </template>
-        <template #loading> Loading customers data. Please wait. </template>
-        <Column field="seguradora" header="Nome da Seguradora">
+        <template #empty> Nenhuma seguradora encontrada. </template>
+        <template #loading>
+          Carregando seguradoras, por favor aguarde.
+        </template>
+        <Column field="nome" header="Nome da Seguradora">
           <template #body="{ data }">
-            {{ data.seguradora }}
+            {{ data.nome }}
           </template>
         </Column>
-        <Column field="numeroApolice" header="Número da Apólice">
+        <Column field="apolice" header="Quantidade de Apólices">
           <template #body="{ data }">
-            {{ data.numeroApolice }}
+            {{ data.apolice.length }}
           </template>
         </Column>
-        <Column field="cnpj" header="CNPJ">
+        <Column field="seguradoraUfpr" header="Seguradora UFPR">
           <template #body="{ data }">
-            {{ data.cnpj }}
+            <Tag
+              style="font-size: medium"
+              :value="seguradoraService.pegarAtivaValue(data.seguradoraUfpr)"
+              :severity="
+                seguradoraService.pegarAtivaSeverity(data.seguradoraUfpr)
+              "
+            />
           </template>
         </Column>
-        <Column field="situação" header="Ativo">
+        <Column field="ativa" header="Ativo">
           <template #body="{ data }">
-            {{ data.situação }}
+            <Tag
+              style="font-size: medium"
+              :value="seguradoraService.pegarAtivaValue(data.ativa)"
+              :severity="seguradoraService.pegarAtivaSeverity(data.ativa)"
+            />
           </template>
         </Column>
         <Column field="button">
@@ -63,26 +75,9 @@
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Button from "primevue/button";
-export default {
-  data() {
-    return {
-      Seguradoras: [
-        {
-          id: 1,
-          seguradora: "Seguradora de Seguros",
-          numeroApolice: "12421421214",
-          cnpj: "124412142",
-          situação: "ATIVO",
-        },
-        {
-          id: 2,
-          seguradora: "Seguros Seguros",
-          numeroApolice: "124900824",
-          cnpj: "89024908",
-          situação: "INATIVO",
-        },
-      ],
-    };
-  },
-};
+import SeguradoraService from "~~/services/SeguradoraService";
+</script>
+<script setup>
+const { data: seguradoras } = useFetch(`http://localhost:5000/seguradora/`);
+const seguradoraService = new SeguradoraService();
 </script>

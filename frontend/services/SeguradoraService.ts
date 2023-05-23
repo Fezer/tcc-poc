@@ -17,4 +17,20 @@ export default class SeguradoraService extends BaseService {
 
     return response;
   }
+  pegarAtivaSeverity(ativa:boolean){
+    if(ativa){
+      console.log("entrou no if false");
+      return "success";
+    }else{
+      console.log("entrou no if true");
+      return "danger";
+    }
+  }
+  pegarAtivaValue(ativa:boolean){
+    if(ativa){
+      return "Sim";
+    }else{
+      return "Não";
+    }
+  }
 }
