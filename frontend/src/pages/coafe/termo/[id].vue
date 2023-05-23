@@ -1,6 +1,6 @@
 <script lang="ts">
 import { useToast } from "primevue/usetoast";
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import CoeService from "../../../../services/CoeService";
 import aluno from "../../../components/common/aluno.vue";
 import Contratante from "../../../components/common/contratante.vue";
@@ -32,12 +32,18 @@ export default defineComponent({
       `http://localhost:5000/termo/${id}`
     );
 
+    const { data: agentesIntegracao } = useFetch(
+      `http://localhost:5000/agente-integrador/`
+    );
+
     function refreshData() {
       refresh();
     }
 
     const state = reactive({
       confirmAction: null as null | "APROVAR" | "AJUSTAR" | "INDEFERIR",
+
+      agenteIntegracao: null as null | string,
 
       indeferimentoConfirm: false,
       justificativa: "",
@@ -103,7 +109,36 @@ export default defineComponent({
       try {
         switch (state.confirmAction) {
           case "APROVAR":
-            await aprovarTermo();
+            if (state.agenteIntegracao === null) {
+              return toast.add({
+                severity: "error",
+                summary: "Erro",
+                detail:
+                  "Por favor, selecione um agente de integração para esse estágio.",
+                life: 3000,
+              });
+            }
+
+            try {
+              await coafeService
+                .associarAgenteIntegradorAoEstagio(
+                  termo.value.id,
+                  state.agenteIntegracao
+                )
+                .then(async () => {
+                  await aprovarTermo();
+                });
+            } catch (err) {
+              toast.add({
+                severity: "error",
+                summary: "Erro",
+                detail: "Erro ao associar agente de integração ao estágio.",
+                life: 3000,
+              });
+
+              console.error(err);
+            }
+
             break;
           case "AJUSTAR":
             await ajustarTermo();
@@ -160,6 +195,7 @@ export default defineComponent({
       getConfirmationHeader,
       getConfirmationButtonClass,
       handleParecerTermo,
+      agentesIntegracao,
     };
   },
 });
@@ -224,6 +260,17 @@ export default defineComponent({
           cols="30"
           rows="10"
         />
+        <div v-if="state.confirmAction === 'APROVAR'" class="w-full">
+          <p>Selecionar Agente de integração</p>
+          <Dropdown
+            class="w-full"
+            :options="agentesIntegracao"
+            :optionLabel="(a) => `${a.nome} - ${a.cnpj}`"
+            optionValue="id"
+            v-model="state.agenteIntegracao"
+          >
+          </Dropdown>
+        </div>
       </div>
       <template #footer>
         <Button
@@ -237,6 +284,9 @@ export default defineComponent({
           icon="pi pi-check"
           :class="getConfirmationButtonClass()"
           autofocus
+          :disabled="
+            state.confirmAction === 'APROVAR' && !state.agenteIntegracao
+          "
           @click="() => handleParecerTermo()"
         />
       </template>

@@ -1,37 +1,27 @@
 <script setup>
-const { data: termos } = await useFetch(`http://localhost:5000/termo`);
+const grr = "GRR20200141";
+
+const { data: estagios } = await useFetch(
+  `http://localhost:5000/aluno/${grr}/estagio/`
+);
+
+console.log(estagios);
 
 // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 </script>
 
 <template>
   <div>
-    <h1>Processos</h1>
-    <!-- <table class="p-datatable-table">
-      <th>
-        <td>Termo</td>
-        <td>GRR</td>
-        <td>Contratante</td>
-        <td>Tipo Estágio</td>
-        <td>Status</td>
-        <td>Ações</td>
-      </th>
-    </table> -->
-    <!-- <NuxtLink to="/termo/1">
-      <Button type="primary">
-        Ir para termo
-      </Button>
-    </NuxtLink> -->
-    <DataTable :value="termos">
-      <Column field="termo" header="Termo">
-        <template #body="{ data }">
-          {{ data.id }}
-        </template>
+    <h1>Estágios</h1>
+
+    <DataTable :value="estagios">
+      <Column field="id" header="Processo">
+        <template #body="{ data }"> #{{ data.id }} </template>
       </Column>
       <Column field="tipo" header="Tipo" style="min-width: 12rem">
         <template #body="{ data }">
           <!-- {{ data.tipoTermoDeEstagio }} -->
-          Termo de Compromisso
+          Estágio
         </template>
       </Column>
       <Column field="contratante" header="Contratante" style="min-width: 12rem">
@@ -40,18 +30,23 @@ const { data: termos } = await useFetch(`http://localhost:5000/termo`);
           {{ data?.contratante?.cnpj || data?.contratante?.cpf }}
         </template>
       </Column>
+      <Column field="data" header="Data criação do processo">
+        <template #body="{ data }">
+          {{ parseDate(data.dataCriacao) }}
+        </template>
+      </Column>
       <Column
         field="etapa"
         header="Status"
         style="min-width: 12rem; font-weight: bold"
       >
         <template #body="{ data }">
-          {{ data.statusTermo }}
+          {{ data.statusEstagio }}
         </template>
       </Column>
       <Column field="acoes" header="Ações" style="min-width: 12rem">
         <template #body="{ data }">
-          <NuxtLink :to="`/aluno/termo/${data.id}`">
+          <NuxtLink :to="`/aluno/estagio/${data.id}`">
             <Button type="primary"> Ver </Button>
           </NuxtLink>
         </template>
@@ -59,5 +54,3 @@ const { data: termos } = await useFetch(`http://localhost:5000/termo`);
     </DataTable>
   </div>
 </template>
-
-<style></style>

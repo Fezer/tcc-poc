@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.lowagie.text.DocumentException;
+
 import br.ufpr.estagio.modulo.dto.CertificadoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.DadosAuxiliaresDTO;
 import br.ufpr.estagio.modulo.dto.DadosBancariosDTO;
@@ -636,8 +638,36 @@ public class AlunoREST {
 	}
 	
 	
-	@GetMapping("/{grrAlunoURL}/gerar-termo")
+	/*@GetMapping("/{grrAlunoURL}/gerar-termo")
 	public ResponseEntity<byte[]> gerarTermoPdf(@PathVariable String grrAlunoURL) throws IOException {
+		
+		// TO-DO: Jogar dentro de um try-catch
+		
+		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+			throw new BadRequestException("GRR do aluno não informado!");
+		} else {
+			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+			if (aluno == null) {
+				throw new NotFoundException("Aluno não encontrado!");
+			} else {
+				List<Estagio> estagio = estagioService.buscarEstagioPorAluno(aluno);
+				if (estagio.get(0) == null) {
+					throw new NotFoundException("Estágio não encontrado para o aluno " + aluno.getNome());
+				} else {
+					byte[] pdf = geradorService.gerarPdf(aluno, estagio.get(0));
+					
+					HttpHeaders headers = new HttpHeaders();
+					headers.setContentType(MediaType.APPLICATION_PDF);
+					headers.setContentDisposition(ContentDisposition.builder("inline").filename("arquivo.pdf").build());
+			
+					return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+				}
+			}
+		}
+	}*/
+	
+	@GetMapping("/{grrAlunoURL}/gerar-termo")
+	public ResponseEntity<byte[]> gerarTermoPdf(@PathVariable String grrAlunoURL) throws IOException, DocumentException {
 		
 		// TO-DO: Jogar dentro de um try-catch
 		

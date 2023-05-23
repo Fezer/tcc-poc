@@ -24,4 +24,19 @@ export default class CoafeService extends BaseService {
       },
     });
   }
+
+  // http://localhost:5000/termo/13/associarAgenteIntegrador/53
+
+  async associarAgenteIntegradorAoEstagio(
+    estagio: number,
+    agenteIntegrador: number
+  ) {
+    return await $fetch(
+      this.BASE_URL +
+        `/termo/${estagio}/associarAgenteIntegrador/${agenteIntegrador}`,
+      {
+        method: "PUT",
+      }
+    );
+  }
 }

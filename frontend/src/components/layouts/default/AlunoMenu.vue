@@ -12,7 +12,7 @@ export default defineComponent({
       },
       {
         label: "Todos os estágios",
-        link: "/aluno/processos",
+        link: "/aluno/processos/estagios",
       },
     ];
 
@@ -20,22 +20,22 @@ export default defineComponent({
       {
         label: "Termos de Compromisso",
 
-        link: "/aluno/processos",
+        link: "/aluno/processos/termos-de-compromisso",
       },
       {
         label: "Termos Aditivos",
 
-        link: "/aluno/processos",
+        link: "/aluno/processos/termos-aditivos",
       },
       {
         label: "Termos de Recisão",
 
-        link: "/aluno/processos",
+        link: "/aluno/processos/termos-de-recisao",
       },
       {
         label: "Relatórios de Estágio",
 
-        link: "/aluno/processos",
+        link: "/aluno/processos/relatorios",
       },
       {
         label: "Certificados",

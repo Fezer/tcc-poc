@@ -103,7 +103,7 @@ export default defineComponent({
             icon="pi pi-file"
           />
         </NuxtLink>
-        <NuxtLink to="/aluno/termo-aditivo/gerar">
+        <NuxtLink :to="`/aluno/termo-aditivo/${id}/gerar`">
           <Button
             label="Termo aditivo"
             class="p-button-success"
