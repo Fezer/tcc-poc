@@ -23,7 +23,39 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-row justify-content-end flex-wrap gap-2">
+    <DataTable class="flex-column" :value="agente.convenio" rowHover>
+      <template #header>
+        <div>
+          <span>
+            <h4><b>Cônvênios</b></h4>
+          </span>
+        </div>
+      </template>
+      <template #empty>
+        o Agente {{ agente.nome }} não possui nenhum convênio
+      </template>
+      <Column field="numero" header="Número">
+        <template #body="{ data }">
+          {{ data.numero }}
+        </template>
+      </Column>
+      <Column field="descricao" header="Descrição">
+        <template #body="{ data }">
+          {{ data.descricao }}
+        </template>
+      </Column>
+      <Column field="dataInicio" header="Data de Inicio">
+        <template #body="{ data }">
+          {{ data.dataInicio }}
+        </template>
+      </Column>
+      <Column field="dataFim" header="Data de Fim">
+        <template #body="{ data }">
+          {{ data.dataFim }}
+        </template>
+      </Column>
+    </DataTable>
+    <div class="flex flex-row justify-content-end flex-wrap pb-2 gap-2">
       <NuxtLink to="/coafe/coafeAgentes">
         <Button
           label="Voltar"
@@ -37,6 +69,8 @@
 </template>
 <script setup>
 import Button from "primevue/button";
+import Column from "primevue/column";
+import DataTable from "primevue/datatable";
 import { useRoute } from "vue-router";
 const route = useRoute();
 const id = route.query.id;

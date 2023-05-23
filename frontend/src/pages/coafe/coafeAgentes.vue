@@ -32,8 +32,8 @@
             </span>
           </div>
         </template>
-        <template #empty> No customers found. </template>
-        <template #loading> Loading customers data. Please wait. </template>
+        <template #empty> Nenhum Agente Integrador encontrado. </template>
+        <template #loading> Carregando Agentes, por favor aguarde. </template>
         <Column field="nome" header="Nome">
           <template #body="{ data }">
             {{ data.nome }}
