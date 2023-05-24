@@ -13,5 +13,7 @@ public interface EstagioRepository extends JpaRepository<Estagio, Long>{
 	List<Estagio> findByStatusEstagioAndAluno(EnumStatusEstagio statusEstagio, Aluno aluno);
 
 	List<Estagio> findByAluno(Aluno aluno);
+
+	List<Estagio> findBySeguradoraSeguradoraUfprIsTrue();
 	
 }

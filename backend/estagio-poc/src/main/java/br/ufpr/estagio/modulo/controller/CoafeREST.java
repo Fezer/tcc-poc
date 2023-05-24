@@ -348,6 +348,24 @@ public class CoafeREST {
 	    }
 	}
 	
+	@GetMapping("/gerar-relatorio-seguradora-ufpr")
+	public ResponseEntity<byte[]> gerarRelatorioSeguradoraUfprPdf() throws IOException, DocumentException {
+		
+		// TO-DO: Jogar dentro de um try-catch
+		
+				List<Estagio> estagio = estagioService.buscarEstagioPorSeguradoraUfpr();
+				
+				 // Alterar para gerar relatórios de N estágios
+					byte[] pdf = geradorService.gerarPdfEstagioSeguradoraUfpr(estagio.get(0));
+					
+					HttpHeaders headers = new HttpHeaders();
+					headers.setContentType(MediaType.APPLICATION_PDF);
+					headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-seguradora-ufpr.pdf").build());
+			
+					return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+
+	}
+	
 	@GetMapping("/gerar-relatorio-empresa/{idContratanteURL}")
 	public ResponseEntity<byte[]> gerarPdfEmpresa(@PathVariable String idContratanteURL) throws IOException, DocumentException {
 		

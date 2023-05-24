@@ -295,4 +295,47 @@ public class GeradorDePdfService {
 		System.out.println(html.length());
 		return html;
 	}
+	
+	public byte[] gerarPdfEstagioSeguradoraUfpr(Estagio estagio) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlEstagioSeguradoraUfpr(estagio);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
+	
+	private String getHtmlEstagioSeguradoraUfpr(Estagio estagio) {
+		// carregar o HTML do arquivo
+		ClassLoader classLoader = getClass().getClassLoader();
+		
+		String html = "";
+		try {
+			//html = IOUtils.toString(classLoader.getResourceAsStream("copy.html"), StandardCharsets.UTF_8);
+			
+			html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-estagio-seguradora-ufpr.html"), StandardCharsets.UTF_8);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		html = html.replace("{{nome}}", estagio.getAluno().getNome());
+		html = html.replace("{{seguradora}}", String.valueOf(estagio.getSeguradora().isSeguradoraUfpr()));
+		//html = html.replace("{{telefone}}", agenteIntegrador.getTelefone());
+		/*html = html.replace("{{ruaContratante}}", "Rua");
+		html = html.replace("{{numeroContratante}}", "5");
+		html = html.replace("{{cidadeContratante}}", "Curitiba");
+		html = html.replace("{{ufContratante}}", "Paraná");
+		html = html.replace("{{cepContratante}}", "80213-931");
+		*/
+		System.out.println(html.length());
+		return html;
+	}
 }

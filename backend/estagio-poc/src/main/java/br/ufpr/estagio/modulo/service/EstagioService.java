@@ -275,5 +275,10 @@ public class EstagioService {
 		List<Estagio> estagio = estagioRepo.findByAluno(aluno);
 		return estagio;
 	}
+	
+	public List<Estagio> buscarEstagioPorSeguradoraUfpr() {
+		List<Estagio> estagio = estagioRepo.findBySeguradoraSeguradoraUfprIsTrue();
+		return estagio;
+	}
 
 }
