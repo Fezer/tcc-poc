@@ -2,19 +2,19 @@ import Seguradora from "~~/src/types/Seguradora";
 import BaseService from "./BaseService";
 
 export default class SeguradoraService extends BaseService {
-  async criarSeguradora(seguradora: Seguradora, termoID: number) {
+  async criarSeguradora(seguradora: Seguradora) {
     const response = await $fetch(this.BASE_URL + "/seguradora/", {
       method: "POST",
       body: {
-        ...seguradora,
-        seguradoraUfpr: false,
+        nome: seguradora.nome,
+        seguradoraUfpr: seguradora.seguradoraUfpr,
+        ativa: seguradora.ativa
       },
     });
 
     if (!response?.id) {
       throw new Error("Erro ao criar nova seguradora");
     }
-
     return response;
   }
   pegarAtivaSeverity(ativa:boolean){

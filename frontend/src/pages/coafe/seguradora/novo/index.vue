@@ -2,12 +2,15 @@
 import { useToast } from "primevue/usetoast";
 import { defineComponent, reactive } from "vue";
 import SeguradoraService from "~~/services/SeguradoraService";
+import InputSwitch from "primevue/inputswitch";
 
 export default defineComponent({
   setup() {
     const toast = useToast();
     const state = reactive({
       nome: null,
+      seguradoraUfpr: null,
+      ativa: null,
     });
 
     const seguradoraService = new SeguradoraService();
@@ -46,11 +49,25 @@ export default defineComponent({
     <h5 class="mb-0 p-2 mt-4">Nova seguradora</h5>
 
     <div class="col-12">
-      <div class="card p-fluid col-12">
-        <div class="formgrid grid">
+      <div class="card flex-column p-fluid col-12">
+        <div class="formgrid grid flex flex-row justify-content-between gap-10">
           <div class="field col">
             <label for="nome">Nome</label>
             <InputText id="nome" type="text" v-model="state.nome" />
+          </div>
+          <div class="field row" style="align-content: center">
+            <label for="seguradoraUfpr" class="flex flex-direction col"
+              >Seguradora Ufpr</label
+            >
+            <InputSwitch
+              id="seguradoraUfpr"
+              v-model="state.seguradoraUfpr"
+              :binary="true"
+            />
+          </div>
+          <div class="field col">
+            <label for="ativa" class="flex flex-direction col">Ativo</label>
+            <InputSwitch id="ativa" v-model="state.ativa" :binary="true" />
           </div>
           <!-- <div class="field col">
               <label for="orgaoEmissor">Órgão Emissor</label>
@@ -58,8 +75,7 @@ export default defineComponent({
             </div> -->
         </div>
       </div>
-
-      <div class="w-full flex justify-end gap-2">
+      <div class="w-full flex justify-end gap-2 p">
         <NuxtLink to="/coafe/coafeSeguradoras">
           <Button
             label="Voltar"

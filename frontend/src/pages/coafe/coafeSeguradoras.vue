@@ -10,7 +10,15 @@
       </NuxtLink>
     </div>
     <div>
-      <DataTable :value="seguradoras" rowHover stripedRows>
+      <DataTable
+        :value="seguradoras"
+        rowHover
+        stripedRows
+        paginator
+        :rows="5"
+        :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+      >
         <template #header>
           <div class="flex justify-content-between">
             <span class="p-input-icon-left">
