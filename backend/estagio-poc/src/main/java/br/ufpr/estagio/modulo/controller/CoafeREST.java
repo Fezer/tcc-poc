@@ -1,5 +1,6 @@
 package br.ufpr.estagio.modulo.controller;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.lowagie.text.DocumentException;
 
 import br.ufpr.estagio.modulo.dto.AgenteIntegradorResumidoDTO;
 import br.ufpr.estagio.modulo.dto.ApoliceResumidoDTO;
@@ -37,9 +41,13 @@ import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Apolice;
+import br.ufpr.estagio.modulo.model.Contratante;
+import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.AlunoService;
+import br.ufpr.estagio.modulo.service.ContratanteService;
+import br.ufpr.estagio.modulo.service.GeradorDePdfService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
@@ -52,6 +60,12 @@ public class CoafeREST {
 	
 	@Autowired
 	private AlunoService alunoService;
+	
+	@Autowired
+	private ContratanteService contratanteService;
+	
+	@Autowired
+	private GeradorDePdfService geradorService;
 		
 	@Autowired
 	private ModelMapper mapper;
@@ -322,6 +336,37 @@ public class CoafeREST {
 	            }
 	        }
 	    }
+	}
+	
+	@GetMapping("/gerar-relatorio-empresa/{idContratanteURL}")
+	public ResponseEntity<byte[]> gerarPdfEmpresa(@PathVariable String idContratanteURL) throws IOException, DocumentException {
+		
+		// TO-DO: Jogar dentro de um try-catch
+		
+		if (idContratanteURL.isBlank() || idContratanteURL.isEmpty()) {
+			throw new BadRequestException("GRR do aluno não informado!");
+		} else {
+			long idInt = Long.parseLong(idContratanteURL);
+			
+			Optional<Contratante> contratanteFind = contratanteService.buscarPorId(idInt);
+			
+			if (!contratanteFind.isPresent()) {
+				throw new NotFoundException("Contratante não encontrado!");
+			} else {
+				
+				Contratante contratante = contratanteFind.get();
+				
+				byte[] pdf = geradorService.gerarPdfContratante(contratante);
+				
+//				byte[] pdf = geradorService.gerarPdfSimples();
+					
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.APPLICATION_PDF);
+				headers.setContentDisposition(ContentDisposition.builder("inline").filename("arquivo.pdf").build());
+			
+				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+			}
+		}
 	}
 
 }

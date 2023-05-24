@@ -16,7 +16,9 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.lowagie.text.DocumentException;
 
+import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
 
 import java.io.ByteArrayOutputStream;
@@ -75,7 +77,7 @@ public class GeradorDePdfService {
 	public byte[] gerarPdf(Aluno aluno, Estagio estagio) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
-	    String html = getHtml(aluno, estagio);
+	    String html = getHtmlTermoAluno(aluno, estagio);
 	    
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    ITextRenderer renderer = new ITextRenderer();
@@ -87,7 +89,7 @@ public class GeradorDePdfService {
 	    return outputStream.toByteArray();
 	}
 	
-	private String getHtml(Aluno aluno, Estagio estagio) {
+	private String getHtmlTermoAluno(Aluno aluno, Estagio estagio) {
 		// carregar o HTML do arquivo
 		ClassLoader classLoader = getClass().getClassLoader();
 		
@@ -193,6 +195,60 @@ public class GeradorDePdfService {
 		html = html.replace("{{nivel}}", "4º Período"); // NULO!!
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
 		
+		return html;
+	}
+	
+	public byte[] gerarPdfContratante(Contratante contratante) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlRelatorioContratante(contratante);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
+	
+	private String getHtmlRelatorioContratante(Contratante contratante) {
+		// carregar o HTML do arquivo
+		ClassLoader classLoader = getClass().getClassLoader();
+		
+		String html = "";
+		try {
+			//html = IOUtils.toString(classLoader.getResourceAsStream("copy.html"), StandardCharsets.UTF_8);
+			
+			if (contratante.getTipo() == EnumTipoContratante.PessoaJuridica)
+				html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-contratante-juridico.html"), StandardCharsets.UTF_8);
+			
+			else if (contratante.getTipo() == EnumTipoContratante.PessoaFisica)
+				html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-contratante-fisico.html"), StandardCharsets.UTF_8);
+
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		if (contratante.getTipo() == EnumTipoContratante.PessoaJuridica)
+			html = html.replace("{{cnpj}}", contratante.getCnpj());
+		
+		else if (contratante.getTipo() == EnumTipoContratante.PessoaFisica)
+			html = html.replace("{{cpf}}", contratante.getCpf());
+		
+		
+		html = html.replace("{{nome}}", contratante.getNome());
+		html = html.replace("{{representante}}", contratante.getRepresentanteEmpresa());
+		html = html.replace("{{telefone}}", contratante.getTelefone());
+		/*html = html.replace("{{ruaContratante}}", "Rua");
+		html = html.replace("{{numeroContratante}}", "5");
+		html = html.replace("{{cidadeContratante}}", "Curitiba");
+		html = html.replace("{{ufContratante}}", "Paraná");
+		html = html.replace("{{cepContratante}}", "80213-931");
+		*/
+		System.out.println(html.length());
 		return html;
 	}
 }
