@@ -45,8 +45,10 @@ import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
+import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
 import br.ufpr.estagio.modulo.service.AlunoService;
 import br.ufpr.estagio.modulo.service.ContratanteService;
+import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
@@ -62,7 +64,13 @@ public class CoafeREST {
 	private AlunoService alunoService;
 	
 	@Autowired
+	private EstagioService estagioService;
+	
+	@Autowired
 	private ContratanteService contratanteService;
+	
+	@Autowired
+	private AgenteIntegradorService agenteIntegradorService;
 	
 	@Autowired
 	private GeradorDePdfService geradorService;
@@ -304,6 +312,8 @@ public class CoafeREST {
 		}
 	}
 	
+	// Não lembro como veio parar aqui e estou no meio de outra coisa. 
+	// Mantido para não quebrar algo, mas acho que pode apagar. Vou revisar em breve
 	@GetMapping("/{grrAlunoURL}/download-termo")
 	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL) {
 	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
@@ -362,7 +372,38 @@ public class CoafeREST {
 					
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_PDF);
-				headers.setContentDisposition(ContentDisposition.builder("inline").filename("arquivo.pdf").build());
+				headers.setContentDisposition(ContentDisposition.builder("inline").filename("contratante.pdf").build());
+			
+				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+			}
+		}
+	}
+	
+	@GetMapping("/gerar-relatorio-agenteIntegrador/{idAgenteURL}")
+	public ResponseEntity<byte[]> gerarPdfAgenteIntegrador(@PathVariable String idAgenteURL) throws IOException, DocumentException {
+		
+		// TO-DO: Jogar dentro de um try-catch
+		
+		if (idAgenteURL.isBlank() || idAgenteURL.isEmpty()) {
+			throw new BadRequestException("Id do agente integradornão informado!");
+		} else {
+			long idInt = Long.parseLong(idAgenteURL);
+			
+			Optional<AgenteIntegrador> agenteIntegradorFind = agenteIntegradorService.buscarPorId(idInt);
+			
+			if (!agenteIntegradorFind.isPresent()) {
+				throw new NotFoundException("Contratante não encontrado!");
+			} else {
+				
+				AgenteIntegrador agenteIntegrador = agenteIntegradorFind.get();
+				
+				byte[] pdf = geradorService.gerarPdfAgenteIntegrador(agenteIntegrador);
+				
+//				byte[] pdf = geradorService.gerarPdfSimples();
+					
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.APPLICATION_PDF);
+				headers.setContentDisposition(ContentDisposition.builder("inline").filename("agente-integrador.pdf").build());
 			
 				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 			}
