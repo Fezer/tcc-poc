@@ -6,7 +6,7 @@ import NovoEstagioService from "../../../../../services/NovoEstagioService";
 import ZodErrorsService from "../../../../../services/ZodErrorsService";
 import validateStringDate from "../../../../utils/validateStringDate";
 import { useToast } from "primevue/usetoast";
-import { DadoEstagio } from "~~/src/types/NovoEstagio";
+import NovoEstagio, { DadoEstagio } from "~~/src/types/NovoEstagio";
 import dayjs from "dayjs";
 import AlunoService from "~~/services/AlunoService";
 
@@ -32,13 +32,14 @@ export default defineComponent({
 
     const { estagio: idEstagio } = route.params;
 
-    const { data: estagio } = useFetch(
+    const { data: estagio } = useFetch<
+    NovoEstagio
+    >(
       `http://localhost:5000/estagio/${idEstagio}`
     );
 
     const { aluno } = useAluno();
     const handleLoadDocentes = async () => {
-      console.log(aluno.value);
 
       const response = await $fetch(
         `http://localhost:5000/curso/${aluno.value?.idPrograma}/orientadores`
@@ -56,7 +57,7 @@ export default defineComponent({
       { label: "Não obrigatório", value: "NaoObrigatorio" },
     ];
 
-    const state = reactive({
+    const state: = reactive({
       dataInicio: undefined as undefined | string,
       dataFinal: undefined as undefined | string,
       jornadaDiaria: undefined as number | undefined,

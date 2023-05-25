@@ -1,19 +1,24 @@
 export default interface NovoEstagio
-  extends PlanoAtividades,
+  extends BasicEstagio,
+    PlanoAtividades,
     DadosAuxiliares,
-    DadoEstagio {
+    DadoEstagio {}
+
+export interface BasicEstagio {
   id: number | null;
   tipoEstagio: TipoEstagio;
   estagioUfpr: boolean;
-  supervisor: Supervisor;
   estagioSeed: boolean;
 }
 
 export interface PlanoAtividades {
   local: string;
   descricaoAtividades: string;
+  nomeSupervisor: string;
+  telefoneSupervisor: string;
+  cpfSupervisor: string;
+  formacaoSupervisor: string;
 }
-
 export interface DadosAuxiliares {
   tipoVaga: "amplaConcorrencia" | "negros" | "pcd";
   grupoSanguineo: string;

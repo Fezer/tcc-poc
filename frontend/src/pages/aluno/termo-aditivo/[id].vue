@@ -36,7 +36,7 @@ export default defineComponent({
 
     const { setTermo } = useTermo();
 
-    const { data: termo, refresh } = useFetch(
+    const { data: termo, refresh } = useFetch<BaseTermo>(
       `http://localhost:5000/termo/${id}`
     );
 
@@ -177,7 +177,7 @@ export default defineComponent({
         });
     };
 
-    const handleUploadTermo = async (event) => {
+    const handleUploadTermo = async (event: any) => {
       console.log("upload");
       const file = event.files[0];
 

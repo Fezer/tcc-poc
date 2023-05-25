@@ -8,6 +8,7 @@ import dadosAuxiliaresVue from "../../../components/common/dadosAuxiliares.vue";
 import estagio from "../../../components/common/estagio.vue";
 import planoAtividades from "../../../components/common/plano-atividades.vue";
 import CoordService from "~~/services/CoordService";
+import { BaseTermo } from "~~/src/types/Termos";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
 
@@ -28,7 +29,7 @@ export default defineComponent({
 
     const coordService = new CoordService();
 
-    const { data: termo, refresh } = useFetch(
+    const { data: termo, refresh } = useFetch<BaseTermo>(
       `http://localhost:5000/termo/${id}`
     );
 

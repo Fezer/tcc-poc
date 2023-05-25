@@ -1,4 +1,8 @@
-import NovoEstagio from "./NovoEstagio";
+import Agente from "./Agente";
+import Apolice from "./Apolice";
+import Contratante from "./Contratante";
+import { BasicEstagio, PlanoAtividades } from "./NovoEstagio";
+import Orientador from "./Orientador";
 import Seguradora from "./Seguradora";
 
 type StatusTermo =
@@ -26,6 +30,22 @@ interface BaseTermo {
   parecerCOAFE: string | null;
   motivoIndeferimento: string | null;
   descricaoAjustes: string | null;
+
+  orientador?: Orientador;
+  agenteIntegrador?: Agente;
+  planoAtividades?: PlanoAtividades;
+  cienciaCoordenacao?: {
+    id: number;
+    cienciaIRA: boolean;
+    cienciaPlanoAtividades: boolean;
+    cienciaFormacaoSupervisor: boolean;
+  };
+
+  contratante?: Contratante;
+
+  apolice?: Apolice;
+  seguradora?: Seguradora;
+  estagio?: BasicEstagio;
 }
 
 export { StatusTermo, BaseTermo };
