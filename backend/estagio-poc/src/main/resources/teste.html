@@ -16,7 +16,7 @@
 
 		h2 {
 			margin-top: 40px;
-			margin-bottom: -15px;
+			margin-bottom: -100px;
 		}
 
 		table {
@@ -53,7 +53,7 @@
 <body>
     <h1>Relatório de Estágio com Seguradora UFPR</h1>
 
-	<h2>Estágio de Gabriel Volkof Mayer</h2>
+	<h2>Estágio de {{nome}}</h2>
     <table>
         <caption>Dados do Estágio</caption>
         <tr>
@@ -63,20 +63,54 @@
 			<th>Curso</th>
         </tr>
 		<tr>
-            <td>Gabriel Volkof Mayer</td>
-            <td>True</td>
-			<td>True</td>
+            <td>{{nome}}</td>
+            <td>{{grr}}</td>
+			<td>{{ira}}</td>
+            <td>{{curso}}</td>
         </tr>
         <br></br>
 		<tr>
-            <th>Nome Aluno</th>
-            <th>Seguradora UFPR?</th>
-			<th>Seguradora UFPR?</th>
+            <th>Contratante</th>
+            <th>Seguradora</th>
+			<th>Apólice</th>
         </tr>
 		<tr>
-            <td>Gabriel Volkof Mayer</td>
-            <td>True</td>
-			<td>True</td>
+            <td>{{contratante}}</td>
+            <td>{{seguradora}}</td>
+			<td>{{apolice}}</td>
+        </tr>
+        <br></br>
+		<tr>
+            <th>Agente Integrador</th>
+            <th>Orientador</th>
+			<th>Supervisor</th>
+        </tr>
+		<tr>
+            <td>{{agente}}</td>
+            <td>{{orientador}}</td>
+			<td>{{supervisor}}</td>
+        </tr>
+        <br></br>
+		<tr>
+            <th>Data de Início</th>
+            <th>Data de Término</th>
+			<th>Jornada Diária</th>
+            <th>Jornada Semanal</th>
+        </tr>
+		<tr>
+            <td>{{dataInicio}}</td>
+            <td>{{dataTermino}}</td>
+			<td>{{jornadaDiaria}}</td>
+            <td>{{jornadaSemanal}}</td>
+        </tr>
+        <br></br>
+		<tr>
+            <th>Valor da Bolsa</th>
+            <th>Valor de Transporte</th>
+        </tr>
+		<tr>
+            <td>{{valorBolsa}}</td>
+            <td>{{valorTransporte}}</td>
         </tr>
     </table>
 
@@ -106,52 +140,7 @@
     </table>
 
 	<br></br>
-	<hr></hr>
-	<h2>Estágio de Ana Flávia</h2>
-    <table>
-        <caption>Dados do Estágio</caption>
-        <tr>
-            <th>Nome Aluno</th>
-            <th>Seguradora UFPR?</th>
-			<th>Seguradora UFPR?</th>
-        </tr>
-		<tr>
-            <td>Gabriel Volkof Mayer</td>
-            <td>True</td>
-			<td>True</td>
-        </tr>
-        <br></br>
-		<tr>
-            <th>Nome Aluno</th>
-            <th>Seguradora UFPR?</th>
-			<th>Seguradora UFPR?</th>
-        </tr>
-		<tr>
-            <td>Gabriel Volkof Mayer</td>
-            <td>True</td>
-			<td>True</td>
-        </tr>
-    </table>
-
-    <br></br>
-
-    <table>
-        <caption>Endereço do Estágio</caption>
-        <tr>
-            <th>Rua</th>
-            <th>Número</th>
-            <th>Cidade</th>
-            <th>Estado</th>
-            <th>CEP</th>
-        </tr>
-        <tr>
-            <td>Rua A</td>
-            <td>123</td>
-            <td>Curitiba</td>
-            <td>Paraná</td>
-            <td>82721-412</td>
-        </tr>
-    </table>
+	
 </body>
 
 </html>
