@@ -19,10 +19,7 @@ const { data: termos } = await useFetch(
         </template>
       </Column>
       <Column field="tipo" header="Tipo" style="min-width: 12rem">
-        <template #body="{ data }">
-          <!-- {{ data.tipoTermoDeEstagio }} -->
-          Termo Aditivo
-        </template>
+        <template #body="{ data }"> Termo Aditivo </template>
       </Column>
       <Column field="contratante" header="Contratante" style="min-width: 12rem">
         <template #body="{ data }">
@@ -36,7 +33,7 @@ const { data: termos } = await useFetch(
         style="min-width: 12rem; font-weight: bold"
       >
         <template #body="{ data }">
-          {{ data.statusTermo }}
+          {{ parseStatusProcessos(data.statusTermo) }}
         </template>
       </Column>
       <Column field="acoes" header="Ações" style="min-width: 12rem">

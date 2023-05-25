@@ -1,34 +1,34 @@
 <script lang="ts">
-export default {
-  data() {
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  setup() {
+    const route = useRoute();
+    const getIsTabActive = (tab: "coe") => {
+      console.log(route.path);
+
+      return route.path === tab;
+    };
+
+    const processos = [
+      {
+        label: "Termos de Compromisso",
+
+        link: "/coe/processos/termo",
+      },
+      {
+        label: "Termos Aditivos",
+
+        link: "/coe/processos/termoAditivo",
+      },
+    ];
+
     return {
-      menu: [
-        {
-          label: "Pendências",
-          link: "/coe",
-          icon: "pi-envelope",
-        },
-        {
-          label: "Processos",
-          link: "/coe/coeProcesses",
-          icon: "pi-envelope",
-        },
-        {
-          label: "Certificados",
-          link: "/coe/certificados",
-          icon: "pi-file",
-        },
-      ],
+      getIsTabActive,
+      processos,
     };
   },
-  methods: {
-    getIsTabActive(tab: "coe") {
-      console.log(this.$route.path);
-
-      return this.$route.path === tab;
-    },
-  },
-};
+});
 </script>
 
 <template>
@@ -49,6 +49,34 @@ export default {
       >
         <i
           :class="`${item.icon} pi pi-fw   mr-2 text-lg`"
+          style="vertical-align: center"
+        />
+        <NuxtLink :to="item.link" class="text-lg text-black">
+          {{ item.label }}
+        </NuxtLink>
+      </div>
+    </div>
+
+    <span>
+      <span
+        :class="`pi pi-file-export pi-fw  mr-2 text-lg`"
+        style="vertical-align: center"
+      />
+      <strong>PROCESSOS</strong>
+    </span>
+
+    <div v-for="item in processos" :key="item.label">
+      <div
+        :class="
+          'mb-4 mt-3 hover:opacity-70 transition-all  '.concat(
+            (getIsTabActive(item.link) &&
+              'border-l-2 border-l-gray-500 pl-2') ||
+              ''
+          )
+        "
+      >
+        <i
+          :class="`${item.icon} pi pi-fw  mr-2 text-lg`"
           style="vertical-align: center"
         />
         <NuxtLink :to="item.link" class="text-lg text-black">

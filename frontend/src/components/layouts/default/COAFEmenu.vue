@@ -1,59 +1,73 @@
 <script lang="ts">
-export default {
-  data() {
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  setup() {
+    const route = useRoute();
+
+    const getIsTabActive = (tab: "coafe") => {
+      return route.path === tab;
+    };
+    const gerenciamentos = [
+      {
+        label: "Empresas",
+        link: "/coafe/coafeEmpresas",
+      },
+      {
+        label: "Seguradoras",
+        link: "/coafe/coafeSeguradoras",
+      },
+      {
+        label: "Agentes de Integração",
+        link: "/coafe/coafeAgentes",
+      },
+      {
+        label: "Relatórios",
+        link: "/coafe/coafeRelatorios",
+      },
+    ];
+
+    const processos = [
+      {
+        label: "Termos de Compromisso",
+
+        link: "/coafe/processos/termo",
+      },
+      {
+        label: "Termos Aditivos",
+
+        link: "/coafe/processos/termoAditivo",
+      },
+    ];
+
     return {
-      menu: [
-        {
-          label: "Pendências",
-          link: "/coafe",
-          icon: "pi-envelope",
-        },
-        {
-          label: "Processos",
-          link: "/coafe/coafeProcesses",
-          icon: "pi-envelope",
-        },
-        {
-          label: "Empresas",
-          link: "/coafe/coafeEmpresas",
-          icon: "pi-home",
-        },
-        {
-          label: "Seguradoras",
-          link: "/coafe/coafeSeguradoras",
-          icon: "pi-home",
-        },
-        {
-          label: "Agentes de Integração",
-          link: "/coafe/coafeAgentes",
-          icon: "pi-home",
-        },
-        {
-          label: "Relatórios",
-          link: "/coafe/coafeRelatorios",
-          icon: "pi-file",
-        },
-      ],
+      getIsTabActive,
+      gerenciamentos,
+      processos,
     };
   },
-  methods: {
-    getIsTabActive(tab: "coafe") {
-      return this.$route.path === tab;
-    },
-  },
-};
+});
 </script>
 
 <template>
   <div>
-    <div class="h-full w-full flex items-center justify-center flex-col">
+    <div class="h-full w-full flex items-center justify-center flex-col mb-4">
       <strong class=" ">Administrador</strong>
       <p class=" ">COAFE</p>
     </div>
-    <div v-for="item in menu" :key="item.label">
+
+    <span>
+      <span
+        :class="`pi pi-file-export pi-fw  mr-2 text-lg`"
+        style="vertical-align: center"
+      />
+      <strong>PROCESSOS</strong>
+    </span>
+
+    <div v-for="item in processos" :key="item.label">
       <div
         :class="
-          'mb-4 mt-3 hover:opacity-70 transition-all '.concat(
+          'mb-4 mt-3 hover:opacity-70 transition-all  '.concat(
             (getIsTabActive(item.link) &&
               'border-l-2 border-l-gray-500 pl-2') ||
               ''
@@ -61,7 +75,33 @@ export default {
         "
       >
         <i
-          :class="`${item.icon} pi pi-fw   mr-2 text-lg`"
+          :class="`${item.icon} pi pi-fw  mr-2 text-lg`"
+          style="vertical-align: center"
+        />
+        <NuxtLink :to="item.link" class="text-lg text-black">
+          {{ item.label }}
+        </NuxtLink>
+      </div>
+    </div>
+    <span>
+      <span
+        :class="`pi pi-cog pi-fw  mr-2 text-lg`"
+        style="vertical-align: center"
+      />
+      <strong>GERENCIAMENTOS</strong>
+    </span>
+    <div v-for="item in gerenciamentos" :key="item.label">
+      <div
+        :class="
+          'mb-4 mt-3 hover:opacity-70 transition-all  '.concat(
+            (getIsTabActive(item.link) &&
+              'border-l-2 border-l-gray-500 pl-2') ||
+              ''
+          )
+        "
+      >
+        <i
+          :class="`${item.icon} pi pi-fw  mr-2 text-lg`"
           style="vertical-align: center"
         />
         <NuxtLink :to="item.link" class="text-lg text-black">

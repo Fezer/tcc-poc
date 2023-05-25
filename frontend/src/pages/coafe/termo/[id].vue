@@ -8,6 +8,7 @@ import dadosAuxiliaresVue from "../../../components/common/dadosAuxiliares.vue";
 import estagio from "../../../components/common/estagio.vue";
 import planoAtividades from "../../../components/common/plano-atividades.vue";
 import CoafeService from "~~/services/CoafeService";
+import parseTipoTermo from "~~/src/utils/parseTipoProcesso";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
 
@@ -109,13 +110,27 @@ export default defineComponent({
       try {
         switch (state.confirmAction) {
           case "APROVAR":
-            if (state.agenteIntegracao === null) {
+            if (
+              state.agenteIntegracao === null &&
+              termo?.value?.tipoTermoDeEstagio === "TermoDeCompromisso"
+            ) {
               return toast.add({
                 severity: "error",
                 summary: "Erro",
                 detail:
                   "Por favor, selecione um agente de integração para esse estágio.",
                 life: 3000,
+              });
+            }
+
+            if (termo?.value?.tipoTermoDeEstagio === "TermoAditivo") {
+              return await aprovarTermo().then(() => {
+                toast.add({
+                  severity: "success",
+                  summary: "Sucesso",
+                  detail: "Termo de compromisso aprovado com sucesso",
+                  life: 3000,
+                });
               });
             }
 
@@ -127,6 +142,12 @@ export default defineComponent({
                 )
                 .then(async () => {
                   await aprovarTermo();
+                  toast.add({
+                    severity: "success",
+                    summary: "Sucesso",
+                    detail: "Termo de compromisso aprovado com sucesso",
+                    life: 3000,
+                  });
                 });
             } catch (err) {
               toast.add({
@@ -164,7 +185,10 @@ export default defineComponent({
     const getConfirmationHeader = (): string => {
       switch (state.confirmAction) {
         case "APROVAR":
-          return "Confirmar aprovação termo de compromisso";
+          return (
+            "Confirmar aprovação " +
+            parseTipoTermo(termo?.value?.tipoTermoDeEstagio)
+          );
         case "AJUSTAR":
           return "Descrição Pedido de Ajuste";
         case "INDEFERIR":
@@ -260,7 +284,13 @@ export default defineComponent({
           cols="30"
           rows="10"
         />
-        <div v-if="state.confirmAction === 'APROVAR'" class="w-full">
+        <div
+          v-if="
+            state.confirmAction === 'APROVAR' &&
+            termo?.tipoTermoDeEstagio === 'TermoDeCompromisso'
+          "
+          class="w-full"
+        >
           <p>Selecionar Agente de integração</p>
           <Dropdown
             class="w-full"
@@ -285,7 +315,9 @@ export default defineComponent({
           :class="getConfirmationButtonClass()"
           autofocus
           :disabled="
-            state.confirmAction === 'APROVAR' && !state.agenteIntegracao
+            state.confirmAction === 'APROVAR' &&
+            !state.agenteIntegracao &&
+            termo?.tipoTermoDeEstagio === 'TermoDeCompromisso'
           "
           @click="() => handleParecerTermo()"
         />
