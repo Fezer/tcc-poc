@@ -41,12 +41,14 @@ import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Apolice;
+import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
 import br.ufpr.estagio.modulo.service.AlunoService;
+import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.ContratanteService;
 import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
@@ -65,6 +67,9 @@ public class CoafeREST {
 	
 	@Autowired
 	private EstagioService estagioService;
+	
+	@Autowired
+	private CertificadoDeEstagioService certificadoDeEstagioService;
 	
 	@Autowired
 	private ContratanteService contratanteService;
@@ -426,6 +431,24 @@ public class CoafeREST {
 				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 			}
 		}
+	}
+	
+	@GetMapping("/gerar-relatorio-certificados")
+	public ResponseEntity<byte[]> gerarRelatorioCertificadosPdf() throws IOException, DocumentException {
+		
+		// TO-DO: Jogar dentro de um try-catch
+		
+				List<CertificadoDeEstagio> certificados = certificadoDeEstagioService.listarTodosCertificadosDeEstagio();
+				
+				 // Alterar para gerar relatórios de N estágios
+					byte[] pdf = geradorService.gerarPdfCertificadosDeEstagio(certificados);
+					
+					HttpHeaders headers = new HttpHeaders();
+					headers.setContentType(MediaType.APPLICATION_PDF);
+					headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-certificados.pdf").build());
+			
+					return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+
 	}
 
 }
