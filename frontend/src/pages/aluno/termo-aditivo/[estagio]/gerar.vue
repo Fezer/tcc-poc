@@ -81,9 +81,9 @@ export default defineComponent({
       // return this.advanceStep();
       errors.value = {};
       const validator = z.object({
-        // dataInicio: z.custom(validateStringDate, {
-        //   message: "Data inválida",
-        // }),
+        dataInicio: z.custom(validateStringDate, {
+          message: "Data inválida",
+        }),
         dataFinal: z.custom(validateStringDate, { message: "Data inválida" }),
         jornadaDiaria: z.number().min(1).max(24),
         jornadaSemanal: z.number().min(1).max(99),
@@ -303,7 +303,6 @@ export default defineComponent({
           <div class="field col">
             <label for="dataInicio">Data de Início</label>
             <InputMask
-              disabled
               mask="99/99/9999"
               v-tooltip.top="
                 'Inserir o período de início e término do estágio. Este termo de compromisso deve ser colocado na plataforma, contendo todas as assinaturas, com pelo menos 10 dias ANTES do início das atividades de estágio.'
