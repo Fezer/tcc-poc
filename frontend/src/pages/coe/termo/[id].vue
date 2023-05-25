@@ -128,7 +128,10 @@ export default defineComponent({
     const getConfirmationHeader = (): string => {
       switch (state.confirmAction) {
         case "APROVAR":
-          return "Confirmar aprovação termo de compromisso";
+          return (
+            "Confirmar aprovação " +
+            parseTipoProcesso(termo?.value?.tipoTermoDeEstagio)
+          );
         case "AJUSTAR":
           return "Descrição Pedido de Ajuste";
         case "INDEFERIR":
@@ -168,7 +171,7 @@ export default defineComponent({
   <div>
     <Toast />
     <small>Processos > Ver processo</small>
-    <h2>Termo de Compromisso</h2>
+    <h2>{{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}</h2>
 
     <Aluno />
 

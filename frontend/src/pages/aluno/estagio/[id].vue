@@ -21,7 +21,9 @@ export default defineComponent({
     Relatorios: relatoriosVue,
   },
   async setup() {
+    const { setTermo } = useTermo();
     const route = useRoute();
+    const router = useRouter();
     const alunoService = new AlunoService();
     const toast = useToast();
 
@@ -31,7 +33,31 @@ export default defineComponent({
       `http://localhost:5000/estagio/${id}`
     );
 
-    console.log(estagio);
+    const handleNovoTermoAditivo = async () => {
+      const grr = "GRR20200141";
+
+      const termoEmProcessoExiste = await alunoService.getTermoAditivoAtivo(
+        grr
+      );
+
+      if (termoEmProcessoExiste) {
+        toast.add({
+          severity: "error",
+          summary: "Erro ao gerar termo aditivo",
+          detail: "Você já possui um termo aditivo em processo de aprovação",
+          life: 3000,
+        });
+        return;
+      }
+
+      setTermo(null);
+      router.push(`/aluno/termo-aditivo/${estagio?.value?.id}/gerar`);
+    };
+
+    const handleRedirectToTermoAditivo = (id: string) => {
+      setTermo(null);
+      router.push(`/aluno/termo-aditivo/${id}`);
+    };
 
     // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 
@@ -69,6 +95,8 @@ export default defineComponent({
       estagio,
       id,
       handleSolicitarCertificado,
+      handleNovoTermoAditivo,
+      handleRedirectToTermoAditivo,
     };
   },
 });
@@ -103,13 +131,12 @@ export default defineComponent({
             icon="pi pi-file"
           />
         </NuxtLink>
-        <NuxtLink :to="`/aluno/termo-aditivo/${id}/gerar`">
-          <Button
-            label="Termo aditivo"
-            class="p-button-success"
-            icon="pi pi-plus"
-          />
-        </NuxtLink>
+        <Button
+          label="Termo aditivo"
+          class="p-button-success"
+          icon="pi pi-plus"
+          @click="handleNovoTermoAditivo"
+        />
         <!-- TODO: só poder solicitar certificado após ficha de avaliação -->
         <Button
           label="Solicitar certificado"
@@ -131,17 +158,32 @@ export default defineComponent({
 
     <Contratante :termo="estagio" />
 
-    <h3>Relatórios de Estágio</h3>
+    <h3 v-if="estagio?.relatorioDeEstagio?.length">Relatórios de Estágio</h3>
 
     <div
       class="card flex items-center justify-between"
-      v-for="relatorio in estagio?.relatorioDeEstagio"
-      :key="relatorio"
+      v-for="idRelatorio in estagio?.relatorioDeEstagio"
+      :key="idRelatorio"
     >
-      <h5>Relatório {{ relatorio }}</h5>
-      <NuxtLink :to="`/aluno/relatorio/${relatorio}`">
+      <h5>Relatório #{{ idRelatorio }}</h5>
+      <NuxtLink :to="`/aluno/relatorio/${idRelatorio}`">
         <Button label="Ver relatório" class="p-button-secondary"></Button>
       </NuxtLink>
+    </div>
+
+    <h3 v-if="estagio?.termoAdivito?.length">Termos aditivos</h3>
+
+    <div
+      class="card flex items-center justify-between"
+      v-for="idTermoAditivo in estagio?.termoAdivito"
+      :key="idTermoAditivo"
+    >
+      <h5>Termo Aditivo #{{ idTermoAditivo }}</h5>
+      <Button
+        label="Ver termo aditivo"
+        class="p-button-secondary"
+        @click="() => handleRedirectToTermoAditivo(idTermoAditivo)"
+      ></Button>
     </div>
 
     <Dialog

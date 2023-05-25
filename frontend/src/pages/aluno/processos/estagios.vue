@@ -41,7 +41,7 @@ console.log(estagios);
         style="min-width: 12rem; font-weight: bold"
       >
         <template #body="{ data }">
-          {{ data.statusEstagio }}
+          {{ parseStatusProcessos(data.statusEstagio) }}
         </template>
       </Column>
       <Column field="acoes" header="Ações" style="min-width: 12rem">

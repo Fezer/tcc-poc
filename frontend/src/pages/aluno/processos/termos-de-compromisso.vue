@@ -36,7 +36,7 @@ const { data: termos } = await useFetch(
         style="min-width: 12rem; font-weight: bold"
       >
         <template #body="{ data }">
-          {{ data.statusTermo }}
+          {{ parseStatusProcessos(data.statusTermo) }}
         </template>
       </Column>
       <Column field="acoes" header="Ações" style="min-width: 12rem">

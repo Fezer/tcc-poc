@@ -18,8 +18,8 @@ export default {
   <div>
     <div>
       <h1>
-        COE
-        <h6>Comissão Orientadora de Estágio</h6>
+        Coordenação
+        <h6>Curso X</h6>
       </h1>
     </div>
     <div>

@@ -205,7 +205,10 @@ export default defineComponent({
     const getConfirmationHeader = (): string => {
       switch (state.confirmAction) {
         case "APROVAR":
-          return "Confirmar aprovação termo de compromisso";
+          return (
+            "Confirmar aprovação " +
+            parseTipoProcesso(termo?.value?.tipoTermoDeEstagio)
+          );
         case "AJUSTAR":
           return "Descrição Pedido de Ajuste";
         case "INDEFERIR":
@@ -230,6 +233,10 @@ export default defineComponent({
 
     const canConfirmAction = () => {
       if (state.confirmAction === "APROVAR") {
+        if (termo?.value?.tipoTermoDeEstagio !== "TermoDeCompromisso") {
+          return true;
+        }
+
         return (
           state.cienciaIRA &&
           state.cienciaFormacaoSupervisor &&
@@ -271,7 +278,9 @@ export default defineComponent({
   <div>
     <Toast />
     <small>Processos > Ver processo</small>
-    <h2>Termo de Compromisso</h2>
+    <h2>
+      {{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}
+    </h2>
 
     <Aluno />
 
@@ -326,7 +335,10 @@ export default defineComponent({
           cols="30"
           rows="10"
         />
-        <div v-else class="flex flex-col justify-center w-full gap-4">
+        <div
+          v-else-if="termo?.tipoTermoDeEstagio === 'TermoDeCompromisso'"
+          class="flex flex-col justify-center w-full gap-4"
+        >
           <span>
             <Checkbox
               @click="handleCienciaIRA"

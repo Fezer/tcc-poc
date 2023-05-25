@@ -1,5 +1,6 @@
 import RelatorioEstagio from "~~/src/types/RelatorioEstagio";
 import BaseService from "./BaseService";
+import { BaseTermo } from "~~/src/types/Termos";
 
 export default class AlunoService extends BaseService {
   public async getAlunoFromSiga(grr: string) {
@@ -122,5 +123,33 @@ export default class AlunoService extends BaseService {
         method: "POST",
       }
     );
+  }
+
+  public async cancelarTermoAditivo(
+    grr: string,
+    termo: number,
+    estagio: number
+  ) {
+    return await $fetch(
+      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/termoAditivo/${termo}/cancelarTermoAditivo`,
+      {
+        method: "PUT",
+      }
+    );
+  }
+
+  public async getTermoAditivoAtivo(grr: string): Promise<boolean> {
+    return await $fetch(`${this.BASE_URL}/aluno/${grr}/termoAditivo/`)
+      .then((response: BaseTermo[]) => {
+        return response?.some((termo: BaseTermo) =>
+          ["EmPreenchimento", "EmRevisao", "EmAprovacao"].includes(
+            termo.statusTermo
+          )
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+        return false;
+      });
   }
 }

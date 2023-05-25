@@ -42,13 +42,11 @@ export default defineComponent({
           </div>
         </template>
         <Column field="process" header="Processo">
-          <template #body="{ data }">
-            {{ data.id }}
-          </template>
+          <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
         <Column field="process_type" header="Tipo de Processo">
           <template #body="{ data }">
-            {{ data.tipoTermoDeEstagio }}
+            {{ parseTipoProcesso(data.tipoTermoDeEstagio) }}
           </template>
         </Column>
         <Column field="student_name" header="Nome do Aluno">
@@ -71,9 +69,7 @@ export default defineComponent({
           header="Ação necessária"
           bodyStyle="color:orange;"
         >
-          <template #body="{ data }">
-            Parecer {{ data.tipoTermoDeEstagio }}
-          </template>
+          <template #body="{ data }"> Parecer </template>
         </Column>
         <Column field="button">
           <template #body="{ data }">

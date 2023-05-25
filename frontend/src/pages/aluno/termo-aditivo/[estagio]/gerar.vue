@@ -128,6 +128,7 @@ export default defineComponent({
 
         await novoEstagioService
           .setDadosEstagio(termoAditivoID, {
+            dataInicio: dayjs(state.dataInicio).format("YYYY-MM-DD"),
             dataTermino: dayjs(state.dataFinal).format("YYYY-MM-DD"),
             jornadaDiaria: state.jornadaDiaria,
             jornadaSemanal: state.jornadaSemanal,
@@ -190,7 +191,7 @@ export default defineComponent({
         });
 
         setTimeout(() => {
-          router.push(`/termo/${termoAditivoID}`);
+          router.push(`/aluno/termo-aditivo/${termoAditivoID}`);
         }, 3000);
       } catch (err) {
         console.log(err);
@@ -205,9 +206,9 @@ export default defineComponent({
 
     onMounted(() => {
       if (estagio) {
-        console.log(estagio.value);
-        state.dataInicio = parseDateToMask(estagio.value?.dataInicio);
-        state.dataFinal = parseDateToMask(estagio.value?.dataTermino);
+        console.log(estagio.value, "estagio");
+        state.dataInicio = parseDate(estagio.value?.dataInicio);
+        state.dataFinal = parseDate(estagio.value?.dataTermino);
         state.jornadaDiaria = estagio.value?.jornadaDiaria;
         state.jornadaSemanal = estagio.value?.jornadaSemanal;
         state.bolsaAuxilio = estagio.value?.valorBolsa;
@@ -229,8 +230,13 @@ export default defineComponent({
       }
 
       if (termo) {
-        state.dataInicio = parseDateToMask(termo.value?.dataInicio);
-        state.dataFinal = parseDateToMask(termo.value?.dataTermino);
+        console.log("termo", termo.value);
+        state.dataInicio = termo.value?.dataInicio
+          ? parseDateToMask(termo.value?.dataInicio)
+          : state.dataInicio;
+        state.dataFinal = termo.value?.dataTermino
+          ? parseDateToMask(termo.value?.dataTermino)
+          : state.dataFinal;
         state.jornadaDiaria = termo.value?.jornadaDiaria || state.jornadaDiaria;
         state.jornadaSemanal =
           termo.value?.jornadaSemanal || state.jornadaSemanal;
@@ -492,12 +498,13 @@ export default defineComponent({
         </div>
       </div>
       <div class="w-full flex justify-end gap-2">
-        <Button
-          @click="() => {}"
-          label="Voltar"
-          class="p-button-secondary"
-          icon="pi pi-arrow-left"
-        />
+        <NuxtLink to="/aluno">
+          <Button
+            label="Voltar"
+            class="p-button-secondary"
+            icon="pi pi-arrow-left"
+          />
+        </NuxtLink>
         <Button
           @click="validateAndAdvance"
           label="Gerar termo aditivo"

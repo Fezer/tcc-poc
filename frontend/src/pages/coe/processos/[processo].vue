@@ -44,9 +44,7 @@ export default defineComponent({
           </div>
         </template>
         <Column field="process" header="Processo">
-          <template #body="{ data }">
-            {{ data.id }}
-          </template>
+          <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
         <Column field="process_type" header="Tipo de Processo">
           <template #body="{ data }">

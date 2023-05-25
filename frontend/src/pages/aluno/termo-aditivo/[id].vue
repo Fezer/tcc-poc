@@ -28,6 +28,8 @@ export default defineComponent({
 
     const { id } = route.params;
 
+    const grr = "GRR20200141";
+
     const alunoService = new AlunoService();
 
     const novoEstagioService = new NovoEstagioService();
@@ -119,7 +121,11 @@ export default defineComponent({
 
     const handleCancelarTermo = async () => {
       try {
-        await novoEstagioService.cancelarTermo(termo.value.id);
+        await alunoService.cancelarTermoAditivo(
+          grr,
+          termo.value.id,
+          termo.value?.estagio?.id
+        );
         toast.add({
           severity: "success",
           summary: `Termo cancelado!`,
@@ -299,9 +305,9 @@ export default defineComponent({
       :modal="true"
     >
       <p>
-        Para solicitar a aprovação do seu termo de compromisso, por favor faça o
-        upload do termo assinado pelo supervisor do estágio (na contratante),
-        seu professor(a) orientador(a) e por você.
+        Para solicitar a aprovação do seu termo aditivo, por favor faça o upload
+        do termo assinado pelo supervisor do estágio (na contratante), seu
+        professor(a) orientador(a) e por você.
       </p>
 
       <!-- 10MB file size -->
@@ -338,8 +344,8 @@ export default defineComponent({
       :modal="true"
     >
       <p>
-        Tem certeza que deseja cancelar esse termo de compromisso? Para começar
-        em um estágio, será necessário iniciar todo o processo novamente.
+        Tem certeza que deseja cancelar esse termo aditivo? Você poderá iniciar
+        outro processo de termo aditivo.
       </p>
       <template #footer>
         <Button

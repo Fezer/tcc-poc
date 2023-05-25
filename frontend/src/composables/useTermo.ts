@@ -1,11 +1,12 @@
 import { Ref } from "vue";
 import NovoEsatgio from "../types/NovoEstagio";
+import { BaseTermo } from "../types/Termos";
 
 const useTermo = (): {
-  termo: Ref<NovoEsatgio>;
-  setTermo(termoData: NovoEsatgio): void;
+  termo: Ref<BaseTermo>;
+  setTermo(termoData: BaseTermo): void;
 } => {
-  const termo = useState<NovoEsatgio>("termo");
+  const termo = useState<BaseTermo>("termo");
 
   const setTermo = (termoData: any) => {
     console.log("setting termo", termoData);
