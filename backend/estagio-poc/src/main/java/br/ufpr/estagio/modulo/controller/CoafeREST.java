@@ -356,7 +356,7 @@ public class CoafeREST {
 				List<Estagio> estagio = estagioService.buscarEstagioPorSeguradoraUfpr();
 				
 				 // Alterar para gerar relatórios de N estágios
-					byte[] pdf = geradorService.gerarPdfEstagioSeguradoraUfpr(estagio.get(0));
+					byte[] pdf = geradorService.gerarPdfEstagioSeguradoraUfpr(estagio);
 					
 					HttpHeaders headers = new HttpHeaders();
 					headers.setContentType(MediaType.APPLICATION_PDF);

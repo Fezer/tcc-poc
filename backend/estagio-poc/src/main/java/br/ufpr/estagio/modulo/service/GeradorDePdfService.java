@@ -33,6 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Service
 public class GeradorDePdfService {
@@ -296,10 +297,10 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	public byte[] gerarPdfEstagioSeguradoraUfpr(Estagio estagio) throws IOException, DocumentException {
+	public byte[] gerarPdfEstagioSeguradoraUfpr(List<Estagio> estagios) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
-	    String html = getHtmlEstagioSeguradoraUfpr(estagio);
+	    String html = getHtmlEstagioSeguradoraUfpr(estagios);
 	    
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    ITextRenderer renderer = new ITextRenderer();
@@ -311,7 +312,7 @@ public class GeradorDePdfService {
 	    return outputStream.toByteArray();
 	}
 	
-	private String getHtmlEstagioSeguradoraUfpr(Estagio estagio) {
+	/*private String getHtmlEstagioSeguradoraUfpr(Estagio estagio) {
 		// carregar o HTML do arquivo
 		ClassLoader classLoader = getClass().getClassLoader();
 		
@@ -334,8 +335,64 @@ public class GeradorDePdfService {
 		html = html.replace("{{cidadeContratante}}", "Curitiba");
 		html = html.replace("{{ufContratante}}", "Paraná");
 		html = html.replace("{{cepContratante}}", "80213-931");
-		*/
+		
 		System.out.println(html.length());
 		return html;
+	}*/
+	
+	private String getHtmlEstagioSeguradoraUfpr(List<Estagio> estagios) {
+	    // Carregar o HTML do arquivo
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    String html = "";
+	    try {
+	        html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-estagio-seguradora-ufpr.html"), StandardCharsets.UTF_8);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    StringBuilder estagiosHtml = new StringBuilder();
+	    for (Estagio estagio : estagios) {
+	        String estagioHtml = "<h2>Estágio de {{nome}}</h2>\n"
+	        		+ "        <table>\n"
+	        		+ "            <caption>Dados do Estágio</caption>\n"
+	        		+ "            <tr>\n"
+	        		+ "                <th>Nome Aluno</th>\n"
+	        		+ "                <th>Seguradora UFPR?</th>\n"
+	        		+ "            </tr>\n"
+	        		+ "            <tr>\n"
+	        		+ "                <th>{{nome}}</th>\n"
+	        		+ "                <th>{{seguradora}}</th>\n"
+	        		+ "            </tr>\n"
+	        		+ "        </table>\n"
+	        		+ "    \n"
+	        		+ "        <br></br>\n"
+	        		+ "    \n"
+	        		+ "        <table>\n"
+	        		+ "            <caption>Endereço do Estágio</caption>\n"
+	        		+ "            <tr>\n"
+	        		+ "                <th>Rua</th>\n"
+	        		+ "                <th>Número</th>\n"
+	        		+ "                <th>Cidade</th>\n"
+	        		+ "                <th>Estado</th>\n"
+	        		+ "                <th>CEP</th>\n"
+	        		+ "            </tr>\n"
+	        		+ "            <tr>\n"
+	        		+ "                <td>Rua A</td>\n"
+	        		+ "                <td>123</td>\n"
+	        		+ "                <td>Curitiba</td>\n"
+	        		+ "                <td>Paraná</td>\n"
+	        		+ "                <td>82721-412</td>\n"
+	        		+ "            </tr>\n"
+	        		+ "        </table>";
+	        estagioHtml = estagioHtml.replace("{{nome}}", estagio.getAluno().getNome());
+	        estagioHtml = estagioHtml.replace("{{seguradora}}", String.valueOf(estagio.getSeguradora().isSeguradoraUfpr()));
+	        // Adicionar o HTML do estágio à lista
+	        estagiosHtml.append(estagioHtml);
+	    }
+
+	    // Substituir a tag no HTML principal com os estágios
+	    html = html.replace("{{estagios}}", estagiosHtml.toString());
+
+	    return html;
 	}
 }
