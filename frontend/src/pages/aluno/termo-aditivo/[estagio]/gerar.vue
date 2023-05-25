@@ -57,7 +57,7 @@ export default defineComponent({
       { label: "Não obrigatório", value: "NaoObrigatorio" },
     ];
 
-    const state: = reactive({
+    const state = reactive({
       dataInicio: undefined as undefined | string,
       dataFinal: undefined as undefined | string,
       jornadaDiaria: undefined as number | undefined,
