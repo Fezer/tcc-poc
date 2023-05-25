@@ -2,46 +2,156 @@
 <html lang="en">
 <head>
     <title>Dados do Estudante</title>
-    <!--link rel="stylesheet" href="style.css"-->
+    <style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 30px;
+			padding: 5px;
+		}
+
+		h1 {
+			text-align: center;
+			/*margin-bottom: 40px;*/
+		}
+
+		h2 {
+			margin-top: 40px;
+			margin-bottom: -15px;
+		}
+
+		table {
+			width: 80%;
+			margin: 0 auto;
+			border-collapse: collapse;
+		}
+
+		caption {
+			padding: 15px;
+			text-align: center;
+			border-bottom: 1px solid #ddd;
+			background-color: #c2c2c2;
+			font-weight: bold;
+		}
+
+		th, td {
+			padding: 8px;
+			padding-left: 10px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+
+		th {
+			background-color: #f2f2f2;
+			font-weight: bold;
+		}
+
+		tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+	</style>
 </head>
 <body>
-     <div>
-        <h1>Dados do Estudante</h1>
-	<ul>
-		<li><strong>Nome do Aluno:</strong> João da Silva</li>
-		<li><strong>RG:</strong> 12345678-9</li>
-		<li><strong>CPF:</strong> 123.456.789-00</li>
-		<li><strong>Curso:</strong> TADS</li>
-		<li><strong>Matrícula:</strong> 2022001</li>
-		<li><strong>Nível:</strong> Superior</li>
-		<li><strong>Email:</strong> joao.silva@exemplo.com</li>
-		<li><strong>Data de Nascimento:</strong> 01/01/2000</li>
-		<li><strong>Rua:</strong> Rua 12</li>
-		<li><strong>Número:</strong> 123</li>
-		<li><strong>Complemento:</strong> Ap 123</li>
-		<li><strong>Telefone:</strong> (11) 1234-5678</li>
-		<li><strong>Cidade:</strong> São Paulo</li>
-		<li><strong>Estado:</strong> SP</li>
-		<li><strong>CEP:</strong> 12345-678</li>
-		<li><strong>Contratante:</strong> Pessoa Jurídica</li>
-		<li><strong>Nome da Empresa:</strong> Exemplo S/A</li>
-		<li><strong>CNPJ:</strong> 12.345.678/0001-90</li>
-		<li><strong>Representante da Empresa:</strong> José da Silva</li>
-		<li><strong>Telefone do Representante:</strong> (11) 9876-5432</li>
-		<li><strong>Rua do Contratante:</strong> Rua das Flores</li>
-		<li><strong>Número do Contratante:</strong> 456</li>
-		<li><strong>Cidade do Contratante:</strong> São Paulo</li>
-		<li><strong>Estado do Contratante:</strong> SP</li>
-		<li><strong>CEP do Contratante:</strong> 09876-543</li>
-		<li><strong>Início do Estágio:</strong> 01/02/2022</li>
-		<li><strong>Fim do Estágio:</strong> 01/02/2023</li>
-		<li><strong>Jornada Diária:</strong> 6 horas</li>
-		<li><strong>Jornada Semanal:</strong> 30 horas</li>
-		<li><strong>Valor Bolsa Auxílio:</strong> R$ 1.000,00</li>
-		<li><strong>Valor Auxílio Transporte Diário:</strong> R$ 10,00</li>
-		<li><strong>Nome do Coordenador do Curso:</strong> Maria Oliveira</li>
-		<li><strong>Nome do Supervisor no Local de Estágio:</strong> Ana Santos</li>
-		<li><strong>Telefone do Supervisor:</strong> (11) 91234-5678</li>
-     </div>
+    <h1>Relatório de Estágio com Seguradora UFPR</h1>
+
+	<h2>Estágio de Gabriel Volkof Mayer</h2>
+    <table>
+        <caption>Dados do Estágio</caption>
+        <tr>
+            <th>Nome Aluno</th>
+            <th>GRR</th>
+			<th>IRA</th>
+			<th>Curso</th>
+        </tr>
+		<tr>
+            <td>Gabriel Volkof Mayer</td>
+            <td>True</td>
+			<td>True</td>
+        </tr>
+        <br></br>
+		<tr>
+            <th>Nome Aluno</th>
+            <th>Seguradora UFPR?</th>
+			<th>Seguradora UFPR?</th>
+        </tr>
+		<tr>
+            <td>Gabriel Volkof Mayer</td>
+            <td>True</td>
+			<td>True</td>
+        </tr>
+    </table>
+
+    <br></br>
+
+    <table>
+        <caption>Endereço do Estágio</caption>
+        <tr>
+            <th>Rua</th>
+            <th>Número</th>
+		</tr>
+		<tr>
+            <td>Rua XXXXXXXX YYYYYYY ZZZZZZZZ</td>
+            <td>123</td>
+		</tr>
+
+		<tr>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>CEP</th>
+        </tr>
+        <tr>
+            <td>Curitiba</td>
+            <td>Paraná</td>
+            <td>82721-412</td>
+        </tr>
+    </table>
+
+	<br></br>
+	<hr></hr>
+	<h2>Estágio de Ana Flávia</h2>
+    <table>
+        <caption>Dados do Estágio</caption>
+        <tr>
+            <th>Nome Aluno</th>
+            <th>Seguradora UFPR?</th>
+			<th>Seguradora UFPR?</th>
+        </tr>
+		<tr>
+            <td>Gabriel Volkof Mayer</td>
+            <td>True</td>
+			<td>True</td>
+        </tr>
+        <br></br>
+		<tr>
+            <th>Nome Aluno</th>
+            <th>Seguradora UFPR?</th>
+			<th>Seguradora UFPR?</th>
+        </tr>
+		<tr>
+            <td>Gabriel Volkof Mayer</td>
+            <td>True</td>
+			<td>True</td>
+        </tr>
+    </table>
+
+    <br></br>
+
+    <table>
+        <caption>Endereço do Estágio</caption>
+        <tr>
+            <th>Rua</th>
+            <th>Número</th>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>CEP</th>
+        </tr>
+        <tr>
+            <td>Rua A</td>
+            <td>123</td>
+            <td>Curitiba</td>
+            <td>Paraná</td>
+            <td>82721-412</td>
+        </tr>
+    </table>
 </body>
+
 </html>

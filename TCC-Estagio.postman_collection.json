@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "58ff374f-1135-4beb-b08f-12523ec44689",
+		"_postman_id": "d32c7e71-1149-4e75-a8e3-5e0b1136e47a",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18567474"
+		"_exporter_id": "17301767"
 	},
 	"item": [
 		{
@@ -230,7 +230,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/13/associarApolice/2",
+							"raw": "http://localhost:5000/termo/2/associarApolice/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -238,9 +238,9 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"13",
+								"2",
 								"associarApolice",
-								"2"
+								"3"
 							]
 						}
 					},
@@ -3996,6 +3996,68 @@
 								"coafe",
 								"GRR20204481",
 								"download-termo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gerarRelatorioContratante",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/gerar-relatorio-empresa/102",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"gerar-relatorio-empresa",
+								"102"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gerarRelatorioAgenteIntegrador",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/gerar-relatorio-agenteIntegrador/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"gerar-relatorio-agenteIntegrador",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gerarRelatorioEstagioSeguradoraUfpr",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/gerar-relatorio-seguradora-ufpr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"gerar-relatorio-seguradora-ufpr"
 							]
 						}
 					},
