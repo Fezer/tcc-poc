@@ -110,14 +110,10 @@ export default defineComponent({
     };
 
     const handleEditarTermo = () => {
-      setTermo({
-        ...termo.value.estagio,
-        ...termo.value.planoAtividades,
-        ...termo.value,
-      });
+      setTermo(termo.value);
 
       router.push({
-        path: "/aluno/termo/gerar",
+        path: `/aluno/termo-aditivo/${termo.value.estagio.id}/gerar`,
       });
     };
 
@@ -218,10 +214,18 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
+  <div class="relative">
     <Toast />
     <small>Processos > Termos Aditivos</small>
     <h2>Termo Aditivo</h2>
+
+    <NuxtLink :to="`/aluno/estagio/${termo?.estagio?.id}`">
+      <Button
+        label="Ir para estágio"
+        icon="pi pi-arrow-right"
+        class="absolute right-0 top-10"
+      />
+    </NuxtLink>
 
     <StatusTermo
       :etapa="termo?.etapaFluxo"

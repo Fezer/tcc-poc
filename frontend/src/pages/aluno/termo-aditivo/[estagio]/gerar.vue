@@ -17,6 +17,8 @@ export default defineComponent({
     const toast = useToast();
     const errors = ref({} as Record<string, string>);
 
+    const { termo } = useTermo();
+
     const parseDateToMask = (date?: string) => {
       if (!date) return "";
       const [year, month, day] = date.split("-");
@@ -45,6 +47,15 @@ export default defineComponent({
       docentes.value = response;
     };
 
+    const locais = [
+      { label: "Empresa Externa", value: "EXTERNO" },
+      { label: "UFPR", value: "UFPR" },
+    ];
+    const tiposEstagio = [
+      { label: "Obrigatório", value: "Obrigatorio" },
+      { label: "Não obrigatório", value: "NaoObrigatorio" },
+    ];
+
     const state = reactive({
       dataInicio: undefined as undefined | string,
       dataFinal: undefined as undefined | string,
@@ -58,6 +69,12 @@ export default defineComponent({
       formacaoSupervisor: undefined as string | undefined,
       telefoneSupervisor: undefined as string | undefined,
       atividades: undefined as string | undefined,
+    });
+
+    const tipoEstagio = reactive({
+      tipoEstagio: null,
+      localEstagio: null,
+      estagioSeed: false,
     });
 
     const validateAndAdvance = async () => {
@@ -98,10 +115,16 @@ export default defineComponent({
 
       try {
         const grr = "GRR20200141";
-        const { id: termoAditivoID } = await alunoSerivce.criarTermoAditivo(
-          grr,
-          idEstagio
-        );
+
+        let termoAditivoID = termo?.value?.id;
+        if (!termoAditivoID) {
+          const { id: novoID } = await alunoSerivce.criarTermoAditivo(
+            grr,
+            idEstagio
+          );
+
+          termoAditivoID = novoID;
+        }
 
         await novoEstagioService
           .setDadosEstagio(termoAditivoID, {
@@ -198,6 +221,40 @@ export default defineComponent({
           estagio.value?.planoDeAtividades?.formacaoSupervisor;
         state.atividades =
           estagio.value?.planoDeAtividades?.descricaoAtividades;
+
+        tipoEstagio.localEstagio = estagio.value?.estagioUfpr
+          ? "UFPR"
+          : estagio.value?.estagioUfpr === false && "EXTERNO";
+        tipoEstagio.tipoEstagio = estagio.value?.tipoEstagio;
+      }
+
+      if (termo) {
+        state.dataInicio = parseDateToMask(termo.value?.dataInicio);
+        state.dataFinal = parseDateToMask(termo.value?.dataTermino);
+        state.jornadaDiaria = termo.value?.jornadaDiaria || state.jornadaDiaria;
+        state.jornadaSemanal =
+          termo.value?.jornadaSemanal || state.jornadaSemanal;
+        state.bolsaAuxilio = termo.value?.valorBolsa || state.bolsaAuxilio;
+        state.auxilioTransporte =
+          termo.value?.valorTransporte || state.auxilioTransporte;
+        state.orientador = termo.value?.orientador?.id || state.orientador;
+        state.nomeSupervisor =
+          termo.value?.planoDeAtividades?.nomeSupervisor ||
+          state.nomeSupervisor;
+        state.telefoneSupervisor =
+          termo.value?.planoDeAtividades?.telefoneSupervisor ||
+          state.telefoneSupervisor;
+        state.cpfSupervisor =
+          termo.value?.planoDeAtividades?.cpfSupervisor || state.cpfSupervisor;
+        state.formacaoSupervisor =
+          termo.value?.planoDeAtividades?.formacaoSupervisor ||
+          state.formacaoSupervisor;
+        state.atividades =
+          termo.value?.planoDeAtividades?.descricaoAtividades ||
+          state.atividades;
+
+        tipoEstagio.tipoEstagio =
+          termo.value?.estagio?.tipoEstagio || tipoEstagio.tipoEstagio;
       }
 
       handleLoadDocentes();
@@ -210,6 +267,9 @@ export default defineComponent({
       aluno,
       handleLoadDocentes,
       docentes,
+      tipoEstagio,
+      locais,
+      tiposEstagio,
     };
   },
 });
@@ -219,6 +279,21 @@ export default defineComponent({
   <div class="grid">
     <Toast />
     <h1 class="mb-0 p-2 mt-2">Gerar termo aditivo</h1>
+
+    <div class="col-12">
+      <div class="card p-fluid col-12">
+        <h5>Obrigatoriedade do estágio</h5>
+        <SelectButton
+          v-model="tipoEstagio.tipoEstagio"
+          :options="tiposEstagio"
+          optionLabel="label"
+          optionValue="value"
+          :class="{ 'p-invalid': error }"
+        />
+
+        <small class="text-rose-600">{{ error }}</small>
+      </div>
+    </div>
 
     <div class="col-12">
       <div class="card p-fluid col-12">
