@@ -353,39 +353,119 @@ public class GeradorDePdfService {
 	    StringBuilder estagiosHtml = new StringBuilder();
 	    for (Estagio estagio : estagios) {
 	        String estagioHtml = "<h2>Estágio de {{nome}}</h2>\n"
-	        		+ "        <table>\n"
-	        		+ "            <caption>Dados do Estágio</caption>\n"
-	        		+ "            <tr>\n"
-	        		+ "                <th>Nome Aluno</th>\n"
-	        		+ "                <th>Seguradora UFPR?</th>\n"
-	        		+ "            </tr>\n"
-	        		+ "            <tr>\n"
-	        		+ "                <td>{{nome}}</td>\n"
-	        		+ "                <td>{{seguradora}}</td>\n"
-	        		+ "            </tr>\n"
-	        		+ "        </table>\n"
-	        		+ "    \n"
+	        		+ "    <table>\n"
+	        		+ "        <caption>Dados do Estágio</caption>\n"
+	        		+ "        <tr>\n"
+	        		+ "            <th>Nome Aluno</th>\n"
+	        		+ "            <th>GRR</th>\n"
+	        		+ "			<th>IRA</th>\n"
+	        		+ "			<th>Curso</th>\n"
+	        		+ "        </tr>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <td>{{nome}}</td>\n"
+	        		+ "            <td>{{grr}}</td>\n"
+	        		+ "			<td>{{ira}}</td>\n"
+	        		+ "            <td>{{curso}}</td>\n"
+	        		+ "        </tr>\n"
 	        		+ "        <br></br>\n"
-	        		+ "    \n"
-	        		+ "        <table>\n"
-	        		+ "            <caption>Endereço do Estágio</caption>\n"
-	        		+ "            <tr>\n"
-	        		+ "                <th>Rua</th>\n"
-	        		+ "                <th>Número</th>\n"
-	        		+ "                <th>Cidade</th>\n"
-	        		+ "                <th>Estado</th>\n"
-	        		+ "                <th>CEP</th>\n"
-	        		+ "            </tr>\n"
-	        		+ "            <tr>\n"
-	        		+ "                <td>Rua A</td>\n"
-	        		+ "                <td>123</td>\n"
-	        		+ "                <td>Curitiba</td>\n"
-	        		+ "                <td>Paraná</td>\n"
-	        		+ "                <td>82721-412</td>\n"
-	        		+ "            </tr>\n"
-	        		+ "        </table>";
+	        		+ "		<tr>\n"
+	        		+ "            <th>Contratante</th>\n"
+	        		+ "            <th>Seguradora</th>\n"
+	        		+ "			<th>Apólice</th>\n"
+	        		+ "        </tr>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <td>{{contratante}}</td>\n"
+	        		+ "            <td>{{seguradora}}</td>\n"
+	        		+ "			<td>{{apolice}}</td>\n"
+	        		+ "        </tr>\n"
+	        		+ "        <br></br>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <th>Agente Integrador</th>\n"
+	        		+ "            <th>Orientador</th>\n"
+	        		+ "			<th>Supervisor</th>\n"
+	        		+ "        </tr>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <td>{{agente}}</td>\n"
+	        		+ "            <td>{{orientador}}</td>\n"
+	        		+ "			<td>{{supervisor}}</td>\n"
+	        		+ "        </tr>\n"
+	        		+ "        <br></br>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <th>Data de Início</th>\n"
+	        		+ "            <th>Data de Término</th>\n"
+	        		+ "			<th>Jornada Diária</th>\n"
+	        		+ "            <th>Jornada Semanal</th>\n"
+	        		+ "        </tr>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <td>{{dataInicio}}</td>\n"
+	        		+ "            <td>{{dataTermino}}</td>\n"
+	        		+ "			<td>{{jornadaDiaria}}</td>\n"
+	        		+ "            <td>{{jornadaSemanal}}</td>\n"
+	        		+ "        </tr>\n"
+	        		+ "        <br></br>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <th>Valor da Bolsa</th>\n"
+	        		+ "            <th>Valor de Transporte</th>\n"
+	        		+ "        </tr>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <td>{{valorBolsa}}</td>\n"
+	        		+ "            <td>{{valorTransporte}}</td>\n"
+	        		+ "        </tr>\n"
+	        		+ "    </table>\n"
+	        		+ "\n"
+	        		+ "    <br></br>\n"
+	        		+ "\n"
+	        		+ "    <table>\n"
+	        		+ "        <caption>Endereço do Estágio</caption>\n"
+	        		+ "        <tr>\n"
+	        		+ "            <th>Rua</th>\n"
+	        		+ "            <th>Número</th>\n"
+	        		+ "		</tr>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <td>Rua XXXXXXXX YYYYYYY ZZZZZZZZ</td>\n"
+	        		+ "            <td>123</td>\n"
+	        		+ "		</tr>\n"
+	        		+ "\n"
+	        		+ "		<tr>\n"
+	        		+ "            <th>Cidade</th>\n"
+	        		+ "            <th>Estado</th>\n"
+	        		+ "            <th>CEP</th>\n"
+	        		+ "        </tr>\n"
+	        		+ "        <tr>\n"
+	        		+ "            <td>Curitiba</td>\n"
+	        		+ "            <td>Paraná</td>\n"
+	        		+ "            <td>82721-412</td>\n"
+	        		+ "        </tr>\n"
+	        		+ "    </table>\n"
+	        		+ "\n"
+	        		+ "	<br></br>";
 	        estagioHtml = estagioHtml.replace("{{nome}}", estagio.getAluno().getNome());
 	        estagioHtml = estagioHtml.replace("{{seguradora}}", String.valueOf(estagio.getSeguradora().isSeguradoraUfpr()));
+	        estagioHtml = estagioHtml.replace("{{grr}}", estagio.getAluno().getMatricula());
+	        estagioHtml = estagioHtml.replace("{{ira}}", estagio.getAluno().getIra());
+	        estagioHtml = estagioHtml.replace("{{curso}}", estagio.getAluno().getCurso().getNome());
+	        estagioHtml = estagioHtml.replace("{{contratante}}", estagio.getContratante().getNome());
+	        estagioHtml = estagioHtml.replace("{{apolice}}", String.valueOf(estagio.getApolice().getNumero()));
+	        estagioHtml = estagioHtml.replace("{{agente}}", estagio.getAgenteIntegrador().getNome());
+
+//	        estagioHtml = estagioHtml.replace("{{orientador}}", estagio.getOrientador().getNome());
+	        estagioHtml = estagioHtml.replace("{{orientador}}", "Orientador Estático");
+	        
+	        estagioHtml = estagioHtml.replace("{{supervisor}}", estagio.getPlanoDeAtividades().getNomeSupervisor());
+	        
+	        //String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(estagio.getDataInicio());
+	        //estagioHtml = estagioHtml.replace("{{dataInicio}}", dataInicioFormatada);
+	        estagioHtml = estagioHtml.replace("{{dataInicio}}", "01/01/2022");
+	        
+	        //String dataTerminoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(estagio.getDataTermino());
+	        //estagioHtml = estagioHtml.replace("{{dataTermino}}", dataTerminoFormatada);
+	        estagioHtml = estagioHtml.replace("{{dataTermino}}", "01/01/2023");
+	        
+	        estagioHtml = estagioHtml.replace("{{jornadaDiaria}}", String.valueOf(estagio.getJornadaDiaria()));
+	        estagioHtml = estagioHtml.replace("{{jornadaSemanal}}", String.valueOf(estagio.getJornadaSemanal()));
+	        
+	        estagioHtml = estagioHtml.replace("{{valorBolsa}}", String.valueOf(estagio.getValorBolsa()));
+	        estagioHtml = estagioHtml.replace("{{valorTransporte}}", String.valueOf(estagio.getValorTransporte()));
 	        // Adicionar o HTML do estágio à lista
 	        estagiosHtml.append(estagioHtml);
 	    }
