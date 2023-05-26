@@ -4062,6 +4062,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gerarRelatorioCertificadosDeEstagio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/coafe/gerar-relatorio-certificados",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"coafe",
+								"gerar-relatorio-certificados"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
