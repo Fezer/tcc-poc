@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.ApoliceDTO;
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
@@ -90,25 +91,30 @@ public class ApoliceREST {
 	}*/
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ApoliceDTO> buscarApolicePorId(@PathVariable Long id) {
+	public ResponseEntity<Object> buscarApolicePorId(@PathVariable String id) {
 	    try {
-	        Optional<Apolice> apolice = apoliceService.buscarPorId(id);
+	    	long idLong = Long.parseLong(id);
+	    	
+	    	if (idLong < 1L)
+        		throw new InvalidFieldException("Id inválido.");
+	    	
+	        Optional<Apolice> apolice = apoliceService.buscarPorId(idLong);
 
 	        if (apolice.isEmpty() || apolice == null) {
-	        	// Não é legal, mas do jeito legal não funcionou
-	            throw new PocException(HttpStatus.NOT_FOUND, "A apólice não foi encontrada.");
+	            throw new NotFoundException("A apólice não foi encontrada.");
 	        }
 
 	        ApoliceDTO apoliceDTO = mapper.map(apolice, ApoliceDTO.class);
 
 	        return ResponseEntity.ok(apoliceDTO);
+	    } catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do agente integrador deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (PocException e) {
-	    	// GATO (PRETO!!)... aparentemente, para utilizar mais de uma classe `ControllerAdvice`, eh necessario
-	    	// utilizar mais uma anotação (@Order)
-	        throw new NotFoundException("A apólice não foi encontrada.");
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
 	    }
 	}
 
@@ -130,15 +136,20 @@ public class ApoliceREST {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ApoliceDTO> atualizarApolice(@PathVariable Long id, @RequestBody ApoliceDTO apoliceDTO){
+	public ResponseEntity<Object> atualizarApolice(@PathVariable String id, @RequestBody ApoliceDTO apoliceDTO){
 	    
 		try {
-			Optional<Apolice> apolice = apoliceService.buscarPorId(id);
+			long idLong = Long.parseLong(id);
+	    	
+	    	if (idLong < 1L)
+        		throw new InvalidFieldException("Id inválido.");
+	    	
+			Optional<Apolice> apolice = apoliceService.buscarPorId(idLong);
 	    
 			if(apolice.isPresent()) {
 				
 				Apolice apoliceAtualizada = mapper.map(apoliceDTO, Apolice.class);
-				apoliceAtualizada.setId(id);
+				apoliceAtualizada.setId(idLong);
 				
 				if (apoliceAtualizada.getNumero() < 1)
 					throw new InvalidFieldException("Número inválido.");
@@ -156,22 +167,50 @@ public class ApoliceREST {
 			} else {
 				throw new NotFoundException("A apólice não foi encontrada.");
 			}
-		} catch (Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do agente integrador deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    }catch (Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao atualizar apólice!");
 		}
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> excluirApolice(@PathVariable Long id){
-	    Optional<Apolice> apolice = apoliceService.buscarPorId(id);
-	    
-	    if(apolice.isPresent()) {
-	        apoliceService.excluirApolice(apolice.get());
-	        return ResponseEntity.noContent().build();
-	    } else {
-	    	throw new NotFoundException("A apólice não foi encontrada.");
-	    }
+	public ResponseEntity<?> excluirApolice(@PathVariable String id){
+		try {
+			long idLong = Long.parseLong(id);
+	    	
+	    	if (idLong < 1L)
+	    		throw new InvalidFieldException("Id inválido.");
+	    	
+		    Optional<Apolice> apolice = apoliceService.buscarPorId(idLong);
+		    
+		    if(apolice.isPresent()) {
+		        apoliceService.excluirApolice(apolice.get());
+		        return ResponseEntity.noContent().build();
+		    } else {
+		    	throw new NotFoundException("A apólice não foi encontrada.");
+		    }
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao excluir agente integrador!");
+		}
 	}
 
 	
