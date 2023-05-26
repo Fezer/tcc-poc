@@ -158,6 +158,8 @@ export default defineComponent({
 
     <Contratante :termo="estagio" />
 
+    <SuspensaoEstagio :termo="termo" />
+
     <h3 v-if="estagio?.relatorioDeEstagio?.length">Relatórios de Estágio</h3>
 
     <div

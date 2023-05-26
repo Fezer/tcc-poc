@@ -246,6 +246,8 @@ export default defineComponent({
 
     <PlanoAtividades :termo="termo" :planoAtividades="termo?.planoAtividades" />
 
+    <SuspensaoEstagio :termo="termo" />
+
     <div
       v-if="
         termo?.statusTermo === 'EmAprovacao' && state.tipoUsuario !== 'ALUNO'

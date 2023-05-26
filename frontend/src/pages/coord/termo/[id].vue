@@ -293,6 +293,8 @@ export default defineComponent({
 
     <Contratante :termo="termo" />
 
+    <SuspensaoEstagio :termo="termo" />
+
     <div
       v-if="
         termo?.statusTermo === 'EmAprovacao' && state.tipoUsuario !== 'ALUNO'

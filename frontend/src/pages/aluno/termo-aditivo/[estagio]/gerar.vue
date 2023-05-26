@@ -32,15 +32,12 @@ export default defineComponent({
 
     const { estagio: idEstagio } = route.params;
 
-    const { data: estagio } = useFetch<
-    NovoEstagio
-    >(
+    const { data: estagio } = useFetch<NovoEstagio>(
       `http://localhost:5000/estagio/${idEstagio}`
     );
 
     const { aluno } = useAluno();
     const handleLoadDocentes = async () => {
-
       const response = await $fetch(
         `http://localhost:5000/curso/${aluno.value?.idPrograma}/orientadores`
       );
@@ -56,6 +53,13 @@ export default defineComponent({
       { label: "Obrigatório", value: "Obrigatorio" },
       { label: "Não obrigatório", value: "NaoObrigatorio" },
     ];
+
+    const suspensaoEstagio = reactive({
+      isSuspensao: false,
+
+      dataFimSuspensao: null,
+      dataInicioRetomada: null,
+    });
 
     const state = reactive({
       dataInicio: undefined as undefined | string,
@@ -97,7 +101,19 @@ export default defineComponent({
         cpfSupervisor: z.string().min(2),
         atividades: z.string().min(50).max(700),
       });
-      const result = validator.safeParse({ ...state });
+
+      const suspensaoValidator = z.object({
+        dataFimSuspensao: z.custom(validateStringDate, {
+          message: "Data inválida",
+        }),
+        dataInicioRetomada: z.custom(validateStringDate, {
+          message: "Data inválida",
+        }),
+      });
+
+      const result = suspensaoEstagio?.isSuspensao
+        ? suspensaoValidator.safeParse({ ...suspensaoEstagio })
+        : validator.safeParse({ ...state });
 
       if (!result.success) {
         console.log(result.error.issues);
@@ -127,15 +143,26 @@ export default defineComponent({
           termoAditivoID = novoID;
         }
 
+        const dadosTermoAditivo = suspensaoEstagio?.isSuspensao
+          ? {
+              dataFimSuspensao: dayjs(suspensaoEstagio.dataFimSuspensao).format(
+                "YYYY-MM-DD"
+              ),
+              dataInicioRetomada: dayjs(
+                suspensaoEstagio.dataInicioRetomada
+              ).format("YYYY-MM-DD"),
+            }
+          : {
+              dataInicio: dayjs(state.dataInicio).format("YYYY-MM-DD"),
+              dataTermino: dayjs(state.dataFinal).format("YYYY-MM-DD"),
+              jornadaDiaria: state.jornadaDiaria,
+              jornadaSemanal: state.jornadaSemanal,
+              valorBolsa: state.bolsaAuxilio,
+              valorTransporte: state.auxilioTransporte,
+            };
+
         await novoEstagioService
-          .setDadosEstagio(termoAditivoID, {
-            dataInicio: dayjs(state.dataInicio).format("YYYY-MM-DD"),
-            dataTermino: dayjs(state.dataFinal).format("YYYY-MM-DD"),
-            jornadaDiaria: state.jornadaDiaria,
-            jornadaSemanal: state.jornadaSemanal,
-            valorBolsa: state.bolsaAuxilio,
-            valorTransporte: state.auxilioTransporte,
-          })
+          .setDadosEstagio(termoAditivoID, dadosTermoAditivo)
           .catch((err) => {
             console.log(err);
             toast.add({
@@ -262,6 +289,17 @@ export default defineComponent({
 
         tipoEstagio.tipoEstagio =
           termo.value?.estagio?.tipoEstagio || tipoEstagio.tipoEstagio;
+
+        suspensaoEstagio.isSuspensao = !!termo.value?.dataFimSuspensao;
+        if (suspensaoEstagio.isSuspensao) {
+          suspensaoEstagio.dataFimSuspensao = parseDateToMask(
+            termo.value?.dataFimSuspensao
+          );
+
+          suspensaoEstagio.dataInicioRetomada = parseDateToMask(
+            termo.value?.dataInicioRetomada
+          );
+        }
       }
 
       handleLoadDocentes();
@@ -277,6 +315,7 @@ export default defineComponent({
       tipoEstagio,
       locais,
       tiposEstagio,
+      suspensaoEstagio,
     };
   },
 });
@@ -289,230 +328,281 @@ export default defineComponent({
 
     <div class="col-12">
       <div class="card p-fluid col-12">
-        <h5>Obrigatoriedade do estágio</h5>
-        <SelectButton
-          v-model="tipoEstagio.tipoEstagio"
-          :options="tiposEstagio"
-          optionLabel="label"
-          optionValue="value"
-          :class="{ 'p-invalid': error }"
+        <h5>Suspender estágio</h5>
+
+        <InputSwitch
+          v-model="suspensaoEstagio.isSuspensao"
+          @change="
+            () => {
+              if (!suspensaoEstagio.isSuspensao) {
+                suspensaoEstagio.dataFimSuspensao = '';
+                suspensaoEstagio.dataInicioRetomada = '';
+              }
+            }
+          "
         />
 
-        <small class="text-rose-600">{{ error }}</small>
+        <div v-if="suspensaoEstagio.isSuspensao" class="mt-4">
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="dataInicio">Data de Suspensão</label>
+              <InputMask
+                mask="99/99/9999"
+                v-model="suspensaoEstagio.dataFimSuspensao"
+                :class="errors['dataFimSuspensao'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{
+                errors["dataFimSuspensao"]
+              }}</small>
+            </div>
+            <div class="field col">
+              <label for="dataFinal">Data de Retomada</label>
+              <InputMask
+                mask="99/99/9999"
+                v-model="suspensaoEstagio.dataInicioRetomada"
+                :class="errors['dataInicioRetomada'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{
+                errors["dataInicioRetomada"]
+              }}</small>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="col-12">
-      <div class="card p-fluid col-12">
-        <h5>Periodo de Estágio</h5>
+    <template v-if="!suspensaoEstagio?.isSuspensao">
+      <div class="col-12">
+        <div class="card p-fluid col-12">
+          <h5>Obrigatoriedade do estágio</h5>
+          <SelectButton
+            v-model="tipoEstagio.tipoEstagio"
+            :options="tiposEstagio"
+            optionLabel="label"
+            optionValue="value"
+            :class="{ 'p-invalid': error }"
+          />
 
-        <div class="formgrid grid">
-          <div class="field col">
-            <label for="dataInicio">Data de Início</label>
-            <InputMask
-              mask="99/99/9999"
-              v-tooltip.top="
-                'Inserir o período de início e término do estágio. Este termo de compromisso deve ser colocado na plataforma, contendo todas as assinaturas, com pelo menos 10 dias ANTES do início das atividades de estágio.'
-              "
-              v-model="state.dataInicio"
-              :class="errors['dataInicio'] && 'p-invalid'"
-            />
-            <small class="text-rose-500">{{ errors["dataInicio"] }}</small>
-          </div>
-          <div class="field col">
-            <label for="dataFinal">Data de Termino</label>
-            <InputMask
-              mask="99/99/9999"
-              v-model="state.dataFinal"
-              :class="errors['dataFinal'] && 'p-invalid'"
-            />
-            <small class="text-rose-500">{{ errors["dataFinal"] }}</small>
-          </div>
-          <div class="field col">
-            <label for="jornadaDiaria">Jornada Diária</label>
-            <InputNumber
-              :max="6"
-              :min="1"
-              v-tooltip.top="
-                'Máximo de 4h para estágios de nível fundamental e especial. Máximo de 6h para estágios de nível médio e superior.\n (Art. 10 - Lei Federal 11.788/2008)'
-              "
-              suffix="h"
-              v-model="state.jornadaDiaria"
-              :class="errors['jornadaDiaria'] && 'p-invalid'"
-            />
-            <small class="text-rose-500">{{ errors["jornadaDiaria"] }}</small>
-          </div>
-          <div class="field col">
-            <label for="jornadaSemanal">Jornada Semanal</label>
-            <InputNumber
-              :max="30"
-              :min="state.jornadaDiaria || 1"
-              v-tooltip.top="
-                'Máximo de 20h para estágios de nível fundamental e especial. Máximo de 30h para estágios de nível médio e superior. (Art. 10 - Lei Federal no. 11.788/2008).'
-              "
-              suffix="h"
-              v-model="state.jornadaSemanal"
-              :class="errors['jornadaSemanal'] && 'p-invalid'"
-            />
-            <small class="text-rose-500">{{ errors["jornadaSemanal"] }}</small>
-          </div>
+          <small class="text-rose-600">{{ error }}</small>
         </div>
       </div>
-      <div class="card p-fluid col-12">
-        <h5>Valores da Bolsa Auxílio</h5>
-        <div class="formgrid grid">
-          <div class="field col">
-            <label for="bolsaAuxilio">Valor bolsa auxílio </label>
-            <InputNumber
-              mode="currency"
-              v-tooltip.top="
-                'A contratante é responsável pelo pagamento de bolsa auxílio mensal para o estudante que realiza o estágio na modalidade não obrigatório (Lei Federal 11.788/2008).'
-              "
-              currency="BRL"
-              v-model="state.bolsaAuxilio"
-              :class="errors['bolsaAuxilio'] && 'p-invalid'"
-            />
-            <small class="text-rose-500">{{ errors["bolsaAuxilio"] }}</small>
-          </div>
-          <div class="field col">
-            <label for="auxilioTransporte"
-              >Valor auxílio transporte (R$/diário)</label
-            >
-            <InputNumber
-              mode="currency"
-              currency="BRL"
-              v-tooltip.top="
-                'A contratante é responsável pelo pagamento de auxílio transporte para o estudante que realiza o estágio na modalidade não obrigatório (Lei Federal 11.788/2008).'
-              "
-              v-model="state.auxilioTransporte"
-              :class="errors['auxilioTransporte'] && 'p-invalid'"
-            />
-            <small class="text-rose-500">{{
-              errors["auxilioTransporte"]
-            }}</small>
+
+      <div class="col-12">
+        <div class="card p-fluid col-12">
+          <h5>Periodo de Estágio</h5>
+
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="dataInicio">Data de Início</label>
+              <InputMask
+                mask="99/99/9999"
+                v-tooltip.top="
+                  'Inserir o período de início e término do estágio. Este termo de compromisso deve ser colocado na plataforma, contendo todas as assinaturas, com pelo menos 10 dias ANTES do início das atividades de estágio.'
+                "
+                v-model="state.dataInicio"
+                :class="errors['dataInicio'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{ errors["dataInicio"] }}</small>
+            </div>
+            <div class="field col">
+              <label for="dataFinal">Data de Termino</label>
+              <InputMask
+                mask="99/99/9999"
+                v-model="state.dataFinal"
+                :class="errors['dataFinal'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{ errors["dataFinal"] }}</small>
+            </div>
+            <div class="field col">
+              <label for="jornadaDiaria">Jornada Diária</label>
+              <InputNumber
+                :max="6"
+                :min="1"
+                v-tooltip.top="
+                  'Máximo de 4h para estágios de nível fundamental e especial. Máximo de 6h para estágios de nível médio e superior.\n (Art. 10 - Lei Federal 11.788/2008)'
+                "
+                suffix="h"
+                v-model="state.jornadaDiaria"
+                :class="errors['jornadaDiaria'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{ errors["jornadaDiaria"] }}</small>
+            </div>
+            <div class="field col">
+              <label for="jornadaSemanal">Jornada Semanal</label>
+              <InputNumber
+                :max="30"
+                :min="state.jornadaDiaria || 1"
+                v-tooltip.top="
+                  'Máximo de 20h para estágios de nível fundamental e especial. Máximo de 30h para estágios de nível médio e superior. (Art. 10 - Lei Federal no. 11.788/2008).'
+                "
+                suffix="h"
+                v-model="state.jornadaSemanal"
+                :class="errors['jornadaSemanal'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{
+                errors["jornadaSemanal"]
+              }}</small>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card p-fluid col-12">
-        <h5>Plano de Atividades</h5>
-        <!-- <div class="formgrid grid">
+        <div class="card p-fluid col-12">
+          <h5>Valores da Bolsa Auxílio</h5>
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="bolsaAuxilio">Valor bolsa auxílio </label>
+              <InputNumber
+                mode="currency"
+                v-tooltip.top="
+                  'A contratante é responsável pelo pagamento de bolsa auxílio mensal para o estudante que realiza o estágio na modalidade não obrigatório (Lei Federal 11.788/2008).'
+                "
+                currency="BRL"
+                v-model="state.bolsaAuxilio"
+                :class="errors['bolsaAuxilio'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{ errors["bolsaAuxilio"] }}</small>
+            </div>
+            <div class="field col">
+              <label for="auxilioTransporte"
+                >Valor auxílio transporte (R$/diário)</label
+              >
+              <InputNumber
+                mode="currency"
+                currency="BRL"
+                v-tooltip.top="
+                  'A contratante é responsável pelo pagamento de auxílio transporte para o estudante que realiza o estágio na modalidade não obrigatório (Lei Federal 11.788/2008).'
+                "
+                v-model="state.auxilioTransporte"
+                :class="errors['auxilioTransporte'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{
+                errors["auxilioTransporte"]
+              }}</small>
+            </div>
+          </div>
+        </div>
+        <div class="card p-fluid col-12">
+          <h5>Plano de Atividades</h5>
+          <!-- <div class="formgrid grid">
           <div class="field col">
             <label for="coordenador">Coordenador do curso</label>
             <InputText
-              id="coordenador"
-              type="text"
-              disabled
-              :value="aluno?.coordenador"
+            id="coordenador"
+            type="text"
+            disabled
+            :value="aluno?.coordenador"
             />
           </div>
         </div> -->
-        <div class="formgrid grid">
-          <div class="field col">
-            <label for="orientador">Professor Orientador na UFPR</label>
-            <Dropdown
-              filter
-              :options="docentes"
-              optionLabel="nome"
-              optionValue="id"
-              placeholder="Selecione orientador(a)"
-              :filter-fields="['nome']"
-              v-model="state.orientador"
-              :class="{ 'p-invalid': errors['orientador'] }"
-            />
-            <small class="text-rose-500">{{ errors["orientador"] }}</small>
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="orientador">Professor Orientador na UFPR</label>
+              <Dropdown
+                filter
+                :options="docentes"
+                optionLabel="nome"
+                optionValue="id"
+                placeholder="Selecione orientador(a)"
+                :filter-fields="['nome']"
+                v-model="state.orientador"
+                :class="{ 'p-invalid': errors['orientador'] }"
+              />
+              <small class="text-rose-500">{{ errors["orientador"] }}</small>
+            </div>
           </div>
-        </div>
-        <div class="formgrid grid">
-          <div class="field col">
-            <label for="nomeSupervisor"
-              >Nome do Supervisor no Local de Estágio</label
-            >
-            <InputText
-              id="nomeSupervisor"
-              type="text"
-              v-model="state.nomeSupervisor"
-              :class="errors['nomeSupervisor'] && 'p-invalid'"
-            />
-            <small class="text-rose-500">{{ errors["nomeSupervisor"] }}</small>
-          </div>
-          <div class="field col">
-            <label for="telefoneSupervisor">Telefone do Supervisor</label>
-            <InputMask
-              mask="(99) 99999-9999"
-              v-model="state.telefoneSupervisor"
-              :class="errors['telefoneSupervisor'] && 'p-invalid'"
-            />
-            <small class="text-rose-500">{{
-              errors["telefoneSupervisor"]
-            }}</small>
-          </div>
-        </div>
-        <div class="formgrid grid">
-          <div class="field col">
-            <label for="nomeSupervisor"
-              >CPF do Supervisor no Local de Estágio</label
-            >
-            <InputMask
-              mask="999.999.999-99"
-              v-model="state.cpfSupervisor"
-              :class="errors['cpfSupervisor'] && 'p-invalid'"
-            />
-            <small class="text-rose-500">{{ errors["cpfSupervisor"] }}</small>
-          </div>
-          <div class="field col">
-            <label for="telefoneSupervisor"
-              >Formação do Supervisor no Local de Estágio</label
-            >
-            <InputText
-              id="formacaoSupervisor"
-              type="text"
-              v-model="state.formacaoSupervisor"
-              :class="errors['formacaoSupervisor'] && 'p-invalid'"
-            />
-            <small class="text-rose-500">{{
-              errors["formacaoSupervisor"]
-            }}</small>
-          </div>
-        </div>
-        <div class="formgrid grid">
-          <div class="field col">
-            <span>
-              <label for="atividades">Atividades a Serem Desenvolvidas</label>
-              <small class="ml-2"
-                >50 - 700 caracteres ({{
-                  state.atividades?.trim()?.length || 0
-                }})</small
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="nomeSupervisor"
+                >Nome do Supervisor no Local de Estágio</label
               >
-            </span>
-            <Textarea
-              id="atividades"
-              v-tooltip.top="
-                'Inserir todas as atividades que serão realizadas durante o período de estágio. As atividades devem ser compatíveis com a área do curso do estagiário. (Art. 3 - Lei Federal no. 11.788/2008)(Art. 2 - Instrução Normativa no. 01/13-CEPE)'
-              "
-              v-model="state.atividades"
-              :class="errors['atividades'] && 'p-invalid'"
-              maxlength="700"
-              class="h-32"
-            />
-            <small class="text-rose-500">{{ errors["atividades"] }}</small>
+              <InputText
+                id="nomeSupervisor"
+                type="text"
+                v-model="state.nomeSupervisor"
+                :class="errors['nomeSupervisor'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{
+                errors["nomeSupervisor"]
+              }}</small>
+            </div>
+            <div class="field col">
+              <label for="telefoneSupervisor">Telefone do Supervisor</label>
+              <InputMask
+                mask="(99) 99999-9999"
+                v-model="state.telefoneSupervisor"
+                :class="errors['telefoneSupervisor'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{
+                errors["telefoneSupervisor"]
+              }}</small>
+            </div>
+          </div>
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="nomeSupervisor"
+                >CPF do Supervisor no Local de Estágio</label
+              >
+              <InputMask
+                mask="999.999.999-99"
+                v-model="state.cpfSupervisor"
+                :class="errors['cpfSupervisor'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{ errors["cpfSupervisor"] }}</small>
+            </div>
+            <div class="field col">
+              <label for="telefoneSupervisor"
+                >Formação do Supervisor no Local de Estágio</label
+              >
+              <InputText
+                id="formacaoSupervisor"
+                type="text"
+                v-model="state.formacaoSupervisor"
+                :class="errors['formacaoSupervisor'] && 'p-invalid'"
+              />
+              <small class="text-rose-500">{{
+                errors["formacaoSupervisor"]
+              }}</small>
+            </div>
+          </div>
+          <div class="formgrid grid">
+            <div class="field col">
+              <span>
+                <label for="atividades">Atividades a Serem Desenvolvidas</label>
+                <small class="ml-2"
+                  >50 - 700 caracteres ({{
+                    state.atividades?.trim()?.length || 0
+                  }})</small
+                >
+              </span>
+              <Textarea
+                id="atividades"
+                v-tooltip.top="
+                  'Inserir todas as atividades que serão realizadas durante o período de estágio. As atividades devem ser compatíveis com a área do curso do estagiário. (Art. 3 - Lei Federal no. 11.788/2008)(Art. 2 - Instrução Normativa no. 01/13-CEPE)'
+                "
+                v-model="state.atividades"
+                :class="errors['atividades'] && 'p-invalid'"
+                maxlength="700"
+                class="h-32"
+              />
+              <small class="text-rose-500">{{ errors["atividades"] }}</small>
+            </div>
           </div>
         </div>
       </div>
-      <div class="w-full flex justify-end gap-2">
-        <NuxtLink to="/aluno">
-          <Button
-            label="Voltar"
-            class="p-button-secondary"
-            icon="pi pi-arrow-left"
-          />
-        </NuxtLink>
+    </template>
+    <div class="w-full flex justify-end gap-2">
+      <NuxtLink to="/aluno">
         <Button
-          @click="validateAndAdvance"
-          label="Gerar termo aditivo"
-          class="p-button-success"
-          icon="pi pi-arrow-right"
+          label="Voltar"
+          class="p-button-secondary"
+          icon="pi pi-arrow-left"
         />
-      </div>
+      </NuxtLink>
+      <Button
+        @click="validateAndAdvance"
+        label="Gerar termo aditivo"
+        class="p-button-success"
+        icon="pi pi-arrow-right"
+      />
     </div>
   </div>
 </template>
