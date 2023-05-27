@@ -34,6 +34,7 @@ import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.SeguradoraResumidoDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
+import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
@@ -46,6 +47,7 @@ import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
+import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
 import br.ufpr.estagio.modulo.service.AlunoService;
 import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
@@ -53,6 +55,7 @@ import br.ufpr.estagio.modulo.service.ContratanteService;
 import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
+import br.ufpr.estagio.modulo.service.TermoDeRescisaoService;
 
 @CrossOrigin
 @RestController
@@ -61,6 +64,9 @@ public class CoafeREST {
 
 	@Autowired
 	private TermoDeEstagioService termoDeEstagioService;
+	
+	@Autowired
+	private TermoDeRescisaoService termoDeRescisaoService;
 	
 	@Autowired
 	private AlunoService alunoService;
@@ -306,6 +312,45 @@ public class CoafeREST {
 			TermoDeEstagio termo = termoOptional.get();
 			termo = termoDeEstagioService.aprovarTermoDeEstagioCoafe(termo);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
+			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
+		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termoDeRescisao/pendenteCiencia")
+	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPendenteCienciaCoafe(){
+		try {
+			List<TermoDeRescisao> listaTermosDeRescisao = termoDeRescisaoService.listarTermosDeRescisaoPendenteCienciaCoafe();
+			if(listaTermosDeRescisao == null || listaTermosDeRescisao.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermosDeRescisao.stream().map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/termoDeRescisao/{idTermo}/darCiencia")
+	public ResponseEntity<TermoDeRescisaoDTO> darCienciaTermoDeRescisao(@PathVariable Long idTermo){
+		try {
+			Optional<TermoDeRescisao> termoOptional = termoDeRescisaoService.buscarPorId(idTermo);
+		if(termoOptional.isEmpty()) {
+			throw new NotFoundException("Termo não encontrado!");
+		} else {
+			TermoDeRescisao termo = termoOptional.get();
+			termo = termoDeRescisaoService.darCienciaTermoDeRescisaoCoafe(termo);
+			TermoDeRescisaoDTO termoDTO = mapper.map(termo, TermoDeRescisaoDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
 		}catch(PocException e) {

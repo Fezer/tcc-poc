@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
+
 import java.util.Date;
 
 import jakarta.persistence.CascadeType;
@@ -29,6 +31,9 @@ public class TermoDeRescisao implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private long id;
+	
+	@Column(name = "etapa_fluxo")
+	private EnumEtapaFluxo etapaFluxo;
 
 	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
@@ -48,8 +53,8 @@ public class TermoDeRescisao implements Serializable{
 	@Column(name = "ciencia_orientador")
 	private boolean cienciaOrientador;
 	
-	@Column(name = "ciencia_coordenador")
-	private boolean cienciaCoordenador;
+	@Column(name = "ciencia_coordenacao")
+	private boolean cienciaCoordenacao;
 	
 	@Column(name = "ciencia_coe")
 	private boolean cienciaCOE;
@@ -62,17 +67,18 @@ public class TermoDeRescisao implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoDeRescisao(long id, Estagio estagio, Date dataTermino, int periodoTotalRecesso,
-			List<PeriodoRecesso> periodoRecesso, boolean cienciaOrientador, boolean cienciaCoordenador,
-			boolean cienciaCOE, boolean cienciaCOAFE) {
+	public TermoDeRescisao(long id, EnumEtapaFluxo etapaFluxo, Estagio estagio, Date dataTermino,
+			int periodoTotalRecesso, List<PeriodoRecesso> periodoRecesso, boolean cienciaOrientador,
+			boolean cienciaCoordenacao, boolean cienciaCOE, boolean cienciaCOAFE) {
 		super();
 		this.id = id;
+		this.etapaFluxo = etapaFluxo;
 		this.estagio = estagio;
 		this.dataTermino = dataTermino;
 		this.periodoTotalRecesso = periodoTotalRecesso;
 		this.periodoRecesso = periodoRecesso;
 		this.cienciaOrientador = cienciaOrientador;
-		this.cienciaCoordenador = cienciaCoordenador;
+		this.cienciaCoordenacao = cienciaCoordenacao;
 		this.cienciaCOE = cienciaCOE;
 		this.cienciaCOAFE = cienciaCOAFE;
 	}
@@ -83,6 +89,14 @@ public class TermoDeRescisao implements Serializable{
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public EnumEtapaFluxo getEtapaFluxo() {
+		return etapaFluxo;
+	}
+
+	public void setEtapaFluxo(EnumEtapaFluxo etapaFluxo) {
+		this.etapaFluxo = etapaFluxo;
 	}
 
 	public Estagio getEstagio() {
@@ -125,12 +139,12 @@ public class TermoDeRescisao implements Serializable{
 		this.cienciaOrientador = cienciaOrientador;
 	}
 
-	public boolean isCienciaCoordenador() {
-		return cienciaCoordenador;
+	public boolean isCienciaCoordenacao() {
+		return cienciaCoordenacao;
 	}
 
-	public void setCienciaCoordenador(boolean cienciaCoordenador) {
-		this.cienciaCoordenador = cienciaCoordenador;
+	public void setCienciaCoordenacao(boolean cienciaCoordenacao) {
+		this.cienciaCoordenacao = cienciaCoordenacao;
 	}
 
 	public boolean isCienciaCOE() {
@@ -147,6 +161,10 @@ public class TermoDeRescisao implements Serializable{
 
 	public void setCienciaCOAFE(boolean cienciaCOAFE) {
 		this.cienciaCOAFE = cienciaCOAFE;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 }

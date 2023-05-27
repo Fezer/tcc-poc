@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d32c7e71-1149-4e75-a8e3-5e0b1136e47a",
+		"_postman_id": "f6f8cb31-81bb-4974-a4ba-8f75fb3ce1a3",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17301767"
+		"_exporter_id": "18567474"
 	},
 	"item": [
 		{
@@ -292,6 +292,151 @@
 							"port": "5000",
 							"path": [
 								"termo",
+								"102"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TermoDeRescisao",
+			"item": [
+				{
+					"name": "NãoUsar-novoTermoDeRescisao",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dataTermino\": \"2023-12-05\", \r\n    \"periodoTotalRecesso\": 120\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/termoDeRescisao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termoDeRescisao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listTermosDeRescisao",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/termoDeRescisao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termoDeRescisao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listTermoDeRescisao",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/termoDeRescisao/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termoDeRescisao",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateTermoDeRescisao",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dataTermino\": \"2023-12-05\", \r\n    \"periodoTotalRecesso\": 120\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/termoDeRescisao/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termoDeRescisao",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NãoUsar-deleteTermoDeRescisao",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/termoDeRescisao/102",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termoDeRescisao",
 								"102"
 							]
 						}
@@ -689,6 +834,172 @@
 											"key": "statusTermo",
 											"value": "Aprovado"
 										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "TermoDeRescisao",
+					"item": [
+						{
+							"name": "novoTermoDeRescisao",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1/termoRescisao",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"estagio",
+										"1",
+										"termoRescisao"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermosDeRescisaoPorAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/termoDeRescisao/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"termoDeRescisao",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermoDeRescisaoEtapaAlunoPorAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/termoDeRescisao/etapaAluno",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"termoDeRescisao",
+										"etapaAluno"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermosDeRecisaoPorAlunoEmProcessoDeCiencia",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/termoDeRescisao/etapaCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"termoDeRescisao",
+										"etapaCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermosDeRecisaoPorAlunoProcessoFinalizado",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/termoDeRescisao/finalizados",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"termoDeRescisao",
+										"finalizados"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "solicitarCienciaTermoDeRescisao",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1/termoDeRescisao/2/solicitarCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"estagio",
+										"1",
+										"termoDeRescisao",
+										"2",
+										"solicitarCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cancelarTermoAditivo",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1/termoDeRescisao/1/cancelarTermoDeRescisao",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"estagio",
+										"1",
+										"termoDeRescisao",
+										"1",
+										"cancelarTermoDeRescisao"
 									]
 								}
 							},
@@ -3043,6 +3354,54 @@
 					]
 				},
 				{
+					"name": "TermoDeRescisao",
+					"item": [
+						{
+							"name": "listarTermosDeRescisaoPendenteCienciaCoe",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/termoDeRescisao/pendenteCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"termoDeRescisao",
+										"pendenteCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "darCienciaTermoDeRescisaoCoe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/termoDeRescisao/2/darCienciaCoe",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"termoDeRescisao",
+										"2",
+										"darCienciaCoe"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "CertificadoDeEstagio",
 					"item": [
 						{
@@ -3122,118 +3481,123 @@
 					]
 				},
 				{
-					"name": "indeferirTermoCoe",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"justificativa\": \"Não pode fazer estágio porque não pode.\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "TermoDeEstagio",
+					"item": [
+						{
+							"name": "indeferirTermoCoe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"justificativa\": \"Não pode fazer estágio porque não pode.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coe/termo/16/indeferir",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"termo",
+										"16",
+										"indeferir"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:5000/coe/termo/16/indeferir",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coe",
-								"termo",
-								"16",
-								"indeferir"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "solicitarAjutesTermoCoe",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"descricaoAjustes\": \"Precisa alterar isso, isso e aquilo.\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "solicitarAjutesTermoCoe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"descricaoAjustes\": \"Precisa alterar isso, isso e aquilo.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coe/termo/13/solicitarAjustes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"termo",
+										"13",
+										"solicitarAjustes"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:5000/coe/termo/13/solicitarAjustes",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coe",
-								"termo",
-								"13",
-								"solicitarAjustes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "aprovarTermoCoe",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "aprovarTermoCoe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coe/termo/18/aprovar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"termo",
+										"18",
+										"aprovar"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:5000/coe/termo/18/aprovar",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coe",
-								"termo",
-								"18",
-								"aprovar"
-							]
+						{
+							"name": "baixarTermoAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/GRR20204481/download-termo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"GRR20204481",
+										"download-termo"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "baixarTermoAluno",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coe/GRR20204481/download-termo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coe",
-								"GRR20204481",
-								"download-termo"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
@@ -3431,242 +3795,295 @@
 					]
 				},
 				{
-					"name": "darCienciaFormacaoSupervisor",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "TermoDeEstagio",
+					"item": [
+						{
+							"name": "darCienciaFormacaoSupervisor",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termo/13/cienciaFormacaoSupervisor",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termo",
+										"13",
+										"cienciaFormacaoSupervisor"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/13/cienciaFormacaoSupervisor",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coordenacao",
-								"termo",
-								"13",
-								"cienciaFormacaoSupervisor"
-							]
+						{
+							"name": "darCienciaPlanoAtividades",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termo/13/cienciaPlanoAtividades",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termo",
+										"13",
+										"cienciaPlanoAtividades"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "darCienciaIRA",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termo/13/cienciaIra",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termo",
+										"13",
+										"cienciaIra"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "indeferirTermoCoordenacao",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"justificativa\": \"Não pode fazer estágio porque não pode.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termo/3/indeferir",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termo",
+										"3",
+										"indeferir"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "solicitarAjutesTermoCoordenacao",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"descricaoAjustes\": \"Precisa alterar isso, isso e aquilo.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termo/13/solicitarAjustes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termo",
+										"13",
+										"solicitarAjustes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "aprovarTermoCoordenacao",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termo/17/aprovar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termo",
+										"17",
+										"aprovar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "darCienciaTermoIndeferido",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termo/13/cienciaIndeferimento",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termo",
+										"13",
+										"cienciaIndeferimento"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/GRR20204481/download-termo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"GRR20204481",
+										"download-termo"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "darCienciaPlanoAtividades",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "TermoDeRescisao",
+					"item": [
+						{
+							"name": "listarTermosDeRescisaoPendenteCienciaCoordenacao",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termoDeRescisao/pendenteCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termoDeRescisao",
+										"pendenteCiencia"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/13/cienciaPlanoAtividades",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coordenacao",
-								"termo",
-								"13",
-								"cienciaPlanoAtividades"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "darCienciaIRA",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "darCienciaTermoDeRescisaoCoordenacao",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/termoDeRescisao/2/darCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"termoDeRescisao",
+										"2",
+										"darCiencia"
+									]
 								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/13/cienciaIra",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coordenacao",
-								"termo",
-								"13",
-								"cienciaIra"
-							]
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "indeferirTermoCoordenacao",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"justificativa\": \"Não pode fazer estágio porque não pode.\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/3/indeferir",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coordenacao",
-								"termo",
-								"3",
-								"indeferir"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "solicitarAjutesTermoCoordenacao",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"descricaoAjustes\": \"Precisa alterar isso, isso e aquilo.\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/13/solicitarAjustes",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coordenacao",
-								"termo",
-								"13",
-								"solicitarAjustes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "aprovarTermoCoordenacao",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/17/aprovar",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coordenacao",
-								"termo",
-								"17",
-								"aprovar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "darCienciaTermoIndeferido",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/coordenacao/termo/13/cienciaIndeferimento",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coordenacao",
-								"termo",
-								"13",
-								"cienciaIndeferimento"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "baixarTermoAluno",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coordenacao/GRR20204481/download-termo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coordenacao",
-								"GRR20204481",
-								"download-termo"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
@@ -3822,266 +4239,324 @@
 					]
 				},
 				{
-					"name": "consultarAgenteIntegradorAssociadoAoTermo",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coafe/termo/13/agenteIntegrador",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coafe",
-								"termo",
-								"13",
-								"agenteIntegrador"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "consultarSeguradoraAssociadaAoTermo",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coafe/termo/13/seguradora",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coafe",
-								"termo",
-								"13",
-								"seguradora"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "consultarApoliceAssociadaAoTermo",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coafe/termo/13/apolice",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coafe",
-								"termo",
-								"13",
-								"apolice"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "indeferirTermoCoafe",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"justificativa\": \"Não pode fazer estágio porque não pode.\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "TermoDeEstagio",
+					"item": [
+						{
+							"name": "consultarAgenteIntegradorAssociadoAoTermo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/termo/13/agenteIntegrador",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"termo",
+										"13",
+										"agenteIntegrador"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:5000/coafe/termo/13/indeferir",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coafe",
-								"termo",
-								"13",
-								"indeferir"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "solicitarAjutesTermoCoafe",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"descricaoAjustes\": \"Precisa alterar isso, isso e aquilo.\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "consultarSeguradoraAssociadaAoTermo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/termo/13/seguradora",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"termo",
+										"13",
+										"seguradora"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:5000/coafe/termo/1/solicitarAjustes",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coafe",
-								"termo",
-								"1",
-								"solicitarAjustes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "aprovarTermoCoafe",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "consultarApoliceAssociadaAoTermo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/termo/13/apolice",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"termo",
+										"13",
+										"apolice"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:5000/coafe/termo/13/aprovar",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coafe",
-								"termo",
-								"13",
-								"aprovar"
-							]
+						{
+							"name": "indeferirTermoCoafe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"justificativa\": \"Não pode fazer estágio porque não pode.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coafe/termo/13/indeferir",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"termo",
+										"13",
+										"indeferir"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "solicitarAjutesTermoCoafe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"descricaoAjustes\": \"Precisa alterar isso, isso e aquilo.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coafe/termo/1/solicitarAjustes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"termo",
+										"1",
+										"solicitarAjustes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "aprovarTermoCoafe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/coafe/termo/13/aprovar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"termo",
+										"13",
+										"aprovar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/GRR20204481/download-termo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"GRR20204481",
+										"download-termo"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "baixarTermoAluno",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coafe/GRR20204481/download-termo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coafe",
-								"GRR20204481",
-								"download-termo"
-							]
+					"name": "TermoDeRescisao",
+					"item": [
+						{
+							"name": "listarTermosDeRescisaoPendenteCienciaCoafe",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/termoDeRescisao/pendenteCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"termoDeRescisao",
+										"pendenteCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "darCienciaTermoDeRescisaoCoafe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/termoDeRescisao/2/darCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"termoDeRescisao",
+										"2",
+										"darCiencia"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "gerarRelatorioContratante",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coafe/gerar-relatorio-empresa/102",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coafe",
-								"gerar-relatorio-empresa",
-								"102"
-							]
+					"name": "Relatorios",
+					"item": [
+						{
+							"name": "gerarRelatorioContratante",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/gerar-relatorio-empresa/102",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"gerar-relatorio-empresa",
+										"102"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "gerarRelatorioAgenteIntegrador",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/gerar-relatorio-agenteIntegrador/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"gerar-relatorio-agenteIntegrador",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "gerarRelatorioEstagioSeguradoraUfpr",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/gerar-relatorio-seguradora-ufpr",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"gerar-relatorio-seguradora-ufpr"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "gerarRelatorioCertificadosDeEstagio",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/gerar-relatorio-certificados",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"gerar-relatorio-certificados"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "gerarRelatorioAgenteIntegrador",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coafe/gerar-relatorio-agenteIntegrador/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coafe",
-								"gerar-relatorio-agenteIntegrador",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "gerarRelatorioEstagioSeguradoraUfpr",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coafe/gerar-relatorio-seguradora-ufpr",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coafe",
-								"gerar-relatorio-seguradora-ufpr"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "gerarRelatorioCertificadosDeEstagio",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/coafe/gerar-relatorio-certificados",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"coafe",
-								"gerar-relatorio-certificados"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
@@ -4089,158 +4564,218 @@
 			"name": "Orientadror",
 			"item": [
 				{
-					"name": "listarEstagiosDeOrientandos",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/orientador/106/estagio",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"orientador",
-								"106",
-								"estagio"
-							]
+					"name": "Estagio",
+					"item": [
+						{
+							"name": "listarEstagiosDeOrientandos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/orientador/106/estagio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"orientador",
+										"106",
+										"estagio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarEstagiosDeOrientandosPendenteAprovacao",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/orientador/106/estagio/pendenteAprovacao",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"orientador",
+										"106",
+										"estagio",
+										"pendenteAprovacao"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarEstagiosDeOrientandosIndeferido",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/orientador/106/estagio/indeferido",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"orientador",
+										"106",
+										"estagio",
+										"indeferido"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "listarEstagiosDeOrientandosPendenteAprovacao",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/orientador/106/estagio/pendenteAprovacao",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"orientador",
-								"106",
-								"estagio",
-								"pendenteAprovacao"
-							]
+					"name": "RelatorioDeEstagio",
+					"item": [
+						{
+							"name": "listarRelatoriosDeOrientandos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/orientador/452/relatorioDeEstagio/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"orientador",
+										"452",
+										"relatorioDeEstagio",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarRelatoriosDeOrientandosPendenteCiencia",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/orientador/452/relatorioDeEstagio/pendenteCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"orientador",
+										"452",
+										"relatorioDeEstagio",
+										"pendenteCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "darCienciaRelatorioDeEstagio",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/orientador/452/relatorioDeEstagio/7/darCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"orientador",
+										"452",
+										"relatorioDeEstagio",
+										"7",
+										"darCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarCertificadosDeEstagiosDoOrientador",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/orientador/3/certificadoDeEstagio/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"orientador",
+										"3",
+										"certificadoDeEstagio",
+										""
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "listarEstagiosDeOrientandosIndeferido",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/orientador/106/estagio/indeferido",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"orientador",
-								"106",
-								"estagio",
-								"indeferido"
-							]
+					"name": "TermoDeRescisao",
+					"item": [
+						{
+							"name": "listarTermosDeRescisaoPendenteCienciaOrientador",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/orientador/1/termoDeRescisao/pendenteCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"orientador",
+										"1",
+										"termoDeRescisao",
+										"pendenteCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "darCienciaTermoDeRescisaoOrientador",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/orientador/3/termoDeRescisao/2/darCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"orientador",
+										"3",
+										"termoDeRescisao",
+										"2",
+										"darCiencia"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "listarRelatoriosDeOrientandos",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/orientador/452/relatorioDeEstagio/",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"orientador",
-								"452",
-								"relatorioDeEstagio",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "listarRelatoriosDeOrientandosPendenteCiencia",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/orientador/452/relatorioDeEstagio/pendenteCiencia",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"orientador",
-								"452",
-								"relatorioDeEstagio",
-								"pendenteCiencia"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "darCienciaRelatorioDeEstagio",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/orientador/452/relatorioDeEstagio/7/darCiencia",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"orientador",
-								"452",
-								"relatorioDeEstagio",
-								"7",
-								"darCiencia"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "listarCertificadosDeEstagiosDoOrientador",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/orientador/3/certificadoDeEstagio/",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"orientador",
-								"3",
-								"certificadoDeEstagio",
-								""
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		}
