@@ -27,14 +27,17 @@ import org.springframework.web.bind.annotation.RestController;
 import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
+import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
+import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 import br.ufpr.estagio.modulo.service.AlunoService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
+import br.ufpr.estagio.modulo.service.TermoDeRescisaoService;
 
 @CrossOrigin
 @RestController
@@ -43,6 +46,9 @@ public class CoordenacaoREST {
 
 	@Autowired
 	private TermoDeEstagioService termoDeEstagioService;
+	
+	@Autowired
+	private TermoDeRescisaoService termoDeRescisaoService;
 	
 	@Autowired
 	private AlunoService alunoService;
@@ -330,6 +336,45 @@ public class CoordenacaoREST {
 			TermoDeEstagio termo = termoOptional.get();
 			termo = termoDeEstagioService.aprovarTermoDeEstagioCoordenacao(termo);
 			TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
+			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
+		}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/termoDeRescisao/pendenteCiencia")
+	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPendenteCienciaCoordenacao(){
+		try {
+			List<TermoDeRescisao> listaTermosDeRescisao = termoDeRescisaoService.listarTermosDeRescisaoPendenteCienciaCoordenacao();
+			if(listaTermosDeRescisao == null || listaTermosDeRescisao.isEmpty()) {
+				return null;
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermosDeRescisao.stream().map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@PutMapping("/termoDeRescisao/{idTermo}/darCiencia")
+	public ResponseEntity<TermoDeRescisaoDTO> darCienciaTermoDeRescisao(@PathVariable Long idTermo){
+		try {
+			Optional<TermoDeRescisao> termoOptional = termoDeRescisaoService.buscarPorId(idTermo);
+		if(termoOptional.isEmpty()) {
+			throw new NotFoundException("Termo não encontrado!");
+		} else {
+			TermoDeRescisao termo = termoOptional.get();
+			termo = termoDeRescisaoService.darCienciaTermoDeRescisaoCoordenacao(termo);
+			TermoDeRescisaoDTO termoDTO = mapper.map(termo, TermoDeRescisaoDTO.class);
 			return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 		}
 		}catch(PocException e) {
