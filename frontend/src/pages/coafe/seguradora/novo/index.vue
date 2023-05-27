@@ -9,14 +9,13 @@ export default defineComponent({
     const toast = useToast();
     const state = reactive({
       nome: null,
-      seguradoraUfpr: null,
+      seguradoraUfpr: true,
       ativa: null,
     });
 
     const seguradoraService = new SeguradoraService();
 
     const handleRegisterSeguradora = async () => {
-      console.log("ofsasfa");
       if (!state.nome) {
         return toast.add({
           severity: "error",
@@ -63,6 +62,7 @@ export default defineComponent({
               id="seguradoraUfpr"
               v-model="state.seguradoraUfpr"
               :binary="true"
+              disabled
             />
           </div>
           <div class="field col">

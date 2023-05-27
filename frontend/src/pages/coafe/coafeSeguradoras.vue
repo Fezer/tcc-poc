@@ -66,10 +66,9 @@
         </Column>
         <Column field="button">
           <template #body="{ data }">
-            <NuxtLink :to="`seguradora/seguradoraVisualizar/`">
-              <NuxtLink
-                :to="`seguradora/seguradoraVisualizar/${data.id}`"
-              ></NuxtLink>
+            <NuxtLink
+              :to="`/coafe/seguradora/seguradoraVisualizar?id=${data.id}`"
+            >
               <Button label="Ver" />
             </NuxtLink>
           </template>

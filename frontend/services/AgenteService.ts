@@ -13,7 +13,6 @@ export default class AgenteService extends BaseService {
     });
 
     if (!response?.id) {
-      console.log('deu erro :( ')
       throw new Error("Erro ao criar novo agente");
     }else{
       return response;

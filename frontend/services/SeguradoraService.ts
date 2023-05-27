@@ -2,6 +2,15 @@ import Seguradora from "~~/src/types/Seguradora";
 import BaseService from "./BaseService";
 
 export default class SeguradoraService extends BaseService {
+  async desativarSeguradora(id: number){
+    const response = await $fetch(this.BASE_URL + "/seguradora/ativar-desativar/"+id, {
+      method: "PUT",
+      body:{
+        ativa: "false"
+      },
+    });
+    return response;
+  }
   async criarSeguradora(seguradora: Seguradora) {
     const response = await $fetch(this.BASE_URL + "/seguradora/", {
       method: "POST",
@@ -19,10 +28,8 @@ export default class SeguradoraService extends BaseService {
   }
   pegarAtivaSeverity(ativa:boolean){
     if(ativa){
-      console.log("entrou no if false");
       return "success";
     }else{
-      console.log("entrou no if true");
       return "danger";
     }
   }
