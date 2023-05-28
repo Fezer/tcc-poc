@@ -63,7 +63,9 @@
           icon="pi pi-arrow-left"
         />
       </NuxtLink>
-      <Button label="Editar" severity="info" />
+      <NuxtLink :to="`agenteEditar?id=${agente.id}`">
+        <Button label="Editar" />
+      </NuxtLink>
     </div>
   </div>
 </template>

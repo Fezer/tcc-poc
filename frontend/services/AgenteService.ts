@@ -11,24 +11,28 @@ export default class AgenteService extends BaseService {
         telefone : telefone
       },
     });
-
     if (!response?.id) {
       throw new Error("Erro ao criar novo agente");
     }else{
       return response;
     }
   }
-  async atualizaAgente(agente:Agente) {
-    const response = await $fetch(this.BASE_URL + `/agente-integrador/${agente.id}`, {
+  async atualizaAgente(id:number,nome:string,cnpj:string,telefone:string) {
+    console.log(nome);
+    console.log(cnpj);
+    console.log(telefone);
+    const response = await $fetch(this.BASE_URL + `/agente-integrador/${id}`, {
       method: "PUT",
       body: {
-        nome : agente.nome,
-        convenio: agente.convenio,
+        cnpj: cnpj,   
+        nome : nome,
+        telefone: telefone,        
       },
     });
     if (!response?.id) {
-      throw new Error("Erro ao criar novo agente");
+      throw new Error("Erro ao atualizar o gente");
     }else{
+      console.log(response);
       return response;
     }
   }
