@@ -7,10 +7,10 @@
 	},
 	"item": [
 		{
-			"name": "Termo",
+			"name": "TermoDeEstagio",
 			"item": [
 				{
-					"name": "NãoUsar-createTermo",
+					"name": "NãoUsar-criarTermoDeEstagio",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -39,7 +39,7 @@
 					"response": []
 				},
 				{
-					"name": "listTermos",
+					"name": "listarTermosDeEstagio",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -64,7 +64,7 @@
 					"response": []
 				},
 				{
-					"name": "listTermo",
+					"name": "buscarTermoDeEstagioPorId",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -90,7 +90,7 @@
 					"response": []
 				},
 				{
-					"name": "updateTermo",
+					"name": "atualizarTermoDeEstagio",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -105,7 +105,7 @@
 							"raw": "{\r\n    \"dataInicio\": \"2023-05-05\",\r\n    \"dataTermino\": \"2023-12-05\", \r\n    \"jornadaDiaria\": 6,\r\n    \"jornadaSemanal\": 30,\r\n    \"valorBolsa\": 4000,\r\n    \"valorTransporte\": 300,\r\n    \"dataFimSuspensao\": \"\",\r\n    \"dataInicioRetomada\": \"\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/13",
+							"raw": "http://localhost:5000/termo/19",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -113,14 +113,14 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"13"
+								"19"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "updatePlanoAtividades",
+					"name": "atualizarPlanoAtividadesDoTermoDeEstagio",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -135,7 +135,7 @@
 							"raw": "{\r\n    \"local\": \"Qualquer\",\r\n    \"nomeSupervisor\": \"SuperVitor\",\r\n    \"telefoneSupervisor\": \"41999990000\",\r\n    \"cpfSupervisor\": \"11111111134\",\r\n    \"formacaoSupervisor\": \"TADS\",\r\n    \"descricaoAtividades\": \"Outras atividades Bacanas\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/13/planoAtividades",
+							"raw": "http://localhost:5000/termo/19/planoAtividades",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -143,7 +143,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"13",
+								"19",
 								"planoAtividades"
 							]
 						}
@@ -151,7 +151,7 @@
 					"response": []
 				},
 				{
-					"name": "associarOrientadorAoTermo",
+					"name": "associarOrientadorAoTermoDeEstagio",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -166,7 +166,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/13/associarOrientador/4",
+							"raw": "http://localhost:5000/termo/19/associarOrientador/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -174,7 +174,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"13",
+								"19",
 								"associarOrientador",
 								"4"
 							]
@@ -183,7 +183,7 @@
 					"response": []
 				},
 				{
-					"name": "associarAgenteIntegradorAoTermo",
+					"name": "associarAgenteIntegradorAoTermoDeEstagio",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -198,7 +198,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/13/associarAgenteIntegrador/53",
+							"raw": "http://localhost:5000/termo/19/associarAgenteIntegrador/53",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -206,7 +206,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"13",
+								"19",
 								"associarAgenteIntegrador",
 								"53"
 							]
@@ -215,7 +215,7 @@
 					"response": []
 				},
 				{
-					"name": "associarApoliceAoTermo",
+					"name": "associarApoliceAoTermoDeEstagio",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -230,7 +230,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/termo/2/associarApolice/3",
+							"raw": "http://localhost:5000/termo/19/associarApolice/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -238,21 +238,21 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"2",
+								"19",
 								"associarApolice",
-								"3"
+								"2"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "associarContratanteAoTermo",
+					"name": "associarContratanteAoTermoDeEstagio",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/termo/13/associarContratante/55",
+							"raw": "http://localhost:5000/termo/19/associarContratante/55",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -260,7 +260,7 @@
 							"port": "5000",
 							"path": [
 								"termo",
-								"13",
+								"19",
 								"associarContratante",
 								"55"
 							]
@@ -269,7 +269,7 @@
 					"response": []
 				},
 				{
-					"name": "NãoUsar-deleteTermo",
+					"name": "NãoUsar-removerTermoDeEstagio",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -333,7 +333,7 @@
 					"response": []
 				},
 				{
-					"name": "listTermosDeRescisao",
+					"name": "listarTermosDeRescisao",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -358,7 +358,7 @@
 					"response": []
 				},
 				{
-					"name": "listTermoDeRescisao",
+					"name": "buscarTermoDeRescisaoPorId",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -384,7 +384,7 @@
 					"response": []
 				},
 				{
-					"name": "updateTermoDeRescisao",
+					"name": "atualizarTermoDeRescisao",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -399,7 +399,7 @@
 							"raw": "{\r\n    \"dataTermino\": \"2023-12-05\", \r\n    \"periodoTotalRecesso\": 120\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/termoDeRescisao/2",
+							"raw": "http://localhost:5000/termoDeRescisao/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -407,14 +407,14 @@
 							"port": "5000",
 							"path": [
 								"termoDeRescisao",
-								"2"
+								"3"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "NãoUsar-deleteTermoDeRescisao",
+					"name": "NãoUsar-removerTermoDeRescisao",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -437,6 +437,151 @@
 							"port": "5000",
 							"path": [
 								"termoDeRescisao",
+								"102"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PeriodoDeRecesso",
+			"item": [
+				{
+					"name": "NãoUsar-novoPeriodoDeRecesso",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dataInicio\": \"2023-12-05\", \r\n    \"dataFim\": \"2024-12-05\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/periodoRecesso",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"periodoRecesso"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarPeriodosDeRecesso",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/periodoRecesso",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"periodoRecesso"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarPeriodoDeRecessoPorId",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/periodoRecesso/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"periodoRecesso",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizarPeriodoDeRecesso",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dataInicio\": \"2023-12-06\", \r\n    \"dataFim\": \"2024-12-06\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/periodoRecesso/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"periodoRecesso",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NãoUsar-removerPeriodoDeRecesso",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/periodoRecesso/102",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"periodoRecesso",
 								"102"
 							]
 						}
@@ -473,7 +618,7 @@
 							"response": []
 						},
 						{
-							"name": "listarEstagioPorAluno",
+							"name": "listarEstagiosPorAluno",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -495,7 +640,7 @@
 							"response": []
 						},
 						{
-							"name": "listarEstagioEmPreenchimento",
+							"name": "listarEstagiosEmPreenchimento",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -517,7 +662,7 @@
 							"response": []
 						},
 						{
-							"name": "listarEstagioEmProgresso",
+							"name": "listarEstagiosEmProgresso",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -539,7 +684,7 @@
 							"response": []
 						},
 						{
-							"name": "listarEstagioEmAprovacao",
+							"name": "listarEstagiosEmAprovacao",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -561,7 +706,7 @@
 							"response": []
 						},
 						{
-							"name": "listarEstagioPorStatusEstagio",
+							"name": "listarEstagiosPorStatusEstagio",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -588,7 +733,7 @@
 							"response": []
 						},
 						{
-							"name": "listarEstagioPorStatusTermoCompromisso",
+							"name": "listarEstagiosPorStatusTermoCompromisso",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -688,7 +833,7 @@
 							"response": []
 						},
 						{
-							"name": "listarTermoAditivoEmPreenchimentoPorAluno",
+							"name": "listarTermosAditivoEmPreenchimentoPorAluno",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -790,7 +935,7 @@
 							"response": []
 						},
 						{
-							"name": "listarTermoDeCompromissoEmPreenchimentoPorAluno",
+							"name": "listarTermosDeCompromissoEmPreenchimentoPorAluno",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -850,7 +995,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/1/termoRescisao",
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/5/termoDeRescisao",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -860,8 +1005,42 @@
 										"aluno",
 										"GRR20175486",
 										"estagio",
-										"1",
-										"termoRescisao"
+										"5",
+										"termoDeRescisao"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "novoPeriodoDeRecesso",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/5/termoDeRescisao/3/periodoRecesso",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"estagio",
+										"5",
+										"termoDeRescisao",
+										"3",
+										"periodoRecesso"
 									]
 								}
 							},
@@ -890,7 +1069,7 @@
 							"response": []
 						},
 						{
-							"name": "listarTermoDeRescisaoEtapaAlunoPorAluno",
+							"name": "listarTermosDeRescisaoEtapaAlunoPorAluno",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -981,7 +1160,7 @@
 							"response": []
 						},
 						{
-							"name": "cancelarTermoAditivo",
+							"name": "cancelarTermoDeRescisao",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -1004,11 +1183,374 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "removerPeriodoDeRecesso",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/5/termoDeRescisao/3/periodoRecesso/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"estagio",
+										"5",
+										"termoDeRescisao",
+										"3",
+										"periodoRecesso",
+										"2"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
 				{
-					"name": "listAluno",
+					"name": "TermoDeEstagio",
+					"item": [
+						{
+							"name": "solicitarAprovacaoTermoDeEstagio",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/termo/18/solicitarAprovacaoTermo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"termo",
+										"18",
+										"solicitarAprovacaoTermo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "gerarPdfTermo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/gerar-termo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"gerar-termo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "uploadTermo",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/gabriel/Downloads/arquivo-mm.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/upload-termo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"upload-termo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "downloadTermo",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/pdf",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/download-termo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"download-termo"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "RelatorioDeEstagio",
+					"item": [
+						{
+							"name": "novoRelatorioDeEstagio",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/17/relatorioDeEstagio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"estagio",
+										"17",
+										"relatorioDeEstagio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "solicitarCienciaRelatorioDeEstagio",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/17/relatorioDeEstagio/7/solicitarCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"estagio",
+										"17",
+										"relatorioDeEstagio",
+										"7",
+										"solicitarCiencia"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DadosBancarios",
+					"item": [
+						{
+							"name": "novoDadosBancarios",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"banco\": \"Bantads\",\n    \"numeroDaAgencia\": 1,\n    \"numeroDaConta\": 250,\n    \"nomeDaAgencia\": \"Agência\",\n    \"cidadeDaAgencia\": \"Curitiba\",\n    \"enderecoDaAgencia\": \"Rua Agência\",\n    \"bairroDaAgencia\": \"Uberaba\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/dadosBancarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"dadosBancarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "atualizarDadosBancarios",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"banco\": \"Bantads Atualizado\",\n    \"numeroDaAgencia\": 1,\n    \"numeroDaConta\": 250,\n    \"nomeDaAgencia\": \"Agência\",\n    \"cidadeDaAgencia\": \"Curitiba\",\n    \"enderecoDaAgencia\": \"Rua Agência\",\n    \"bairroDaAgencia\": \"Uberaba\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/dadosBancarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"dadosBancarios"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DadosAuxiliares",
+					"item": [
+						{
+							"name": "atualizaDadosAuxiliares",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 1,\n    \"nomePai\": \"Kleber\",\n    \"estadoCivil\": \"Solteiro\",\n    \"dependentes\": 1,\n    \"grupoSanguineo\": \"O+\",\n    \"corDaPele\": \"Branca\",\n    \"sexo\": \"Masculino\",\n    \"nomeMae\": \"Camila\",\n    \"nacionalidade\": \"BRASILEIRO\",\n    \"dataDeChegadaNoPais\": \"2013-10-31T00:00:00.000+00:00\",\n    \"orgaoEmissor\": \"SSP-PR\",\n    \"uf\": \"Paraná\",\n    \"dataExpedicao\": \"2013-10-31T00:00:00.000+00:00\",\n    \"tituloEleitoral\": \"sei lá\",\n    \"zona\": 3,\n    \"secao\": 971,\n    \"certificadoMilitar\": \"777674537\",\n    \"orgaoDeExpedicao\": \"Quartel do Boqueirão\",\n    \"serie\": \"askjsa\",\n    \"dataDeEmissao\": \"2013-10-31T00:00:00.000+00:00\",\n    \"estadoNascimento\": \"Paraná\",\n    \"cidadeNascimento\": \"Curitiba\",\n    \"corRaca\": \"Branca\",\n    \"expressaoGenero\": \"Não informado\",\n    \"autoIdentificacaoGenero\": \"Não informado\",\n    \"orientacaoSexual\": \"Não informado\",\n    \"emailInstitucional\": \"gabriel.mayer@ufpr.br\",\n    \"tipoVaga\": \"Ampla Concorrência\",\n    \"dataEmissaoTitulo\": \"2013-10-31T00:00:00.000+00:00\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/dadosAuxiliares",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"dadosAuxiliares"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "FichaDeAvaliacao",
+					"item": [
+						{
+							"name": "novaFichaDeAvaliacao",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/2/fichaDeAvaliacao",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"estagio",
+										"2",
+										"fichaDeAvaliacao"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CertificadoDeEstagio",
+					"item": [
+						{
+							"name": "solicitarCertificadoDeEstagio",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/2/certificadoDeEstagio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"estagio",
+										"2",
+										"certificadoDeEstagio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarCertificadosDeEstagio",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/certificadoDeEstagio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"certificadoDeEstagio"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "buscarAlunoPorGrr",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -1031,463 +1573,6 @@
 							"path": [
 								"aluno",
 								"GRR20175486"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "solicitarAprovacaoTermo",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/termo/18/solicitarAprovacaoTermo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20175486",
-								"termo",
-								"18",
-								"solicitarAprovacaoTermo"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "novoRelatorioDeEstagio",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/17/relatorioDeEstagio",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20175486",
-								"estagio",
-								"17",
-								"relatorioDeEstagio"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "solicitarCienciaRelatorioDeEstagio",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/17/relatorioDeEstagio/7/solicitarCiencia",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20175486",
-								"estagio",
-								"17",
-								"relatorioDeEstagio",
-								"7",
-								"solicitarCiencia"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "atualizaDadosAuxiliares",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\": 1,\n    \"nomePai\": \"Kleber\",\n    \"estadoCivil\": \"Solteiro\",\n    \"dependentes\": 1,\n    \"grupoSanguineo\": \"O+\",\n    \"corDaPele\": \"Branca\",\n    \"sexo\": \"Masculino\",\n    \"nomeMae\": \"Camila\",\n    \"nacionalidade\": \"BRASILEIRO\",\n    \"dataDeChegadaNoPais\": \"2013-10-31T00:00:00.000+00:00\",\n    \"orgaoEmissor\": \"SSP-PR\",\n    \"uf\": \"Paraná\",\n    \"dataExpedicao\": \"2013-10-31T00:00:00.000+00:00\",\n    \"tituloEleitoral\": \"sei lá\",\n    \"zona\": 3,\n    \"secao\": 971,\n    \"certificadoMilitar\": \"777674537\",\n    \"orgaoDeExpedicao\": \"Quartel do Boqueirão\",\n    \"serie\": \"askjsa\",\n    \"dataDeEmissao\": \"2013-10-31T00:00:00.000+00:00\",\n    \"estadoNascimento\": \"Paraná\",\n    \"cidadeNascimento\": \"Curitiba\",\n    \"corRaca\": \"Branca\",\n    \"expressaoGenero\": \"Não informado\",\n    \"autoIdentificacaoGenero\": \"Não informado\",\n    \"orientacaoSexual\": \"Não informado\",\n    \"emailInstitucional\": \"gabriel.mayer@ufpr.br\",\n    \"tipoVaga\": \"Ampla Concorrência\",\n    \"dataEmissaoTitulo\": \"2013-10-31T00:00:00.000+00:00\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20204481/dadosAuxiliares",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20204481",
-								"dadosAuxiliares"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "novaFichaDeAvaliacao",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/2/fichaDeAvaliacao",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20175486",
-								"estagio",
-								"2",
-								"fichaDeAvaliacao"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "solicitarCertificadoDeEstagio",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/estagio/2/certificadoDeEstagio",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20175486",
-								"estagio",
-								"2",
-								"certificadoDeEstagio"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "listarCertificadosDeEstagio",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20175486/certificadoDeEstagio",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20175486",
-								"certificadoDeEstagio"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "novoDadosBancarios",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"banco\": \"Bantads\",\n    \"numeroDaAgencia\": 1,\n    \"numeroDaConta\": 250,\n    \"nomeDaAgencia\": \"Agência\",\n    \"cidadeDaAgencia\": \"Curitiba\",\n    \"enderecoDaAgencia\": \"Rua Agência\",\n    \"bairroDaAgencia\": \"Uberaba\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20204481/dadosBancarios",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20204481",
-								"dadosBancarios"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "atualizaDadosBancarios",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"banco\": \"Bantads Atualizado\",\n    \"numeroDaAgencia\": 1,\n    \"numeroDaConta\": 250,\n    \"nomeDaAgencia\": \"Agência\",\n    \"cidadeDaAgencia\": \"Curitiba\",\n    \"enderecoDaAgencia\": \"Rua Agência\",\n    \"bairroDaAgencia\": \"Uberaba\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20204481/dadosBancarios",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20204481",
-								"dadosBancarios"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "gerarPdfTermo",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20204481/gerar-termo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20204481",
-								"gerar-termo"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "uploadTermo",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/home/gabriel/Downloads/arquivo-mm.pdf"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20204481/upload-termo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20204481",
-								"upload-termo"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "downloadTermo",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/pdf",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "http://localhost:5000/aluno/GRR20204481/download-termo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"aluno",
-								"GRR20204481",
-								"download-termo"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "API SIGA - Aluno (Não usar em implementação)",
-			"item": [
-				{
-					"name": "listAluno",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "headerPrefix",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/discentes?grr=GRR20175486",
-							"protocol": "http",
-							"host": [
-								"siga",
-								"ufpr",
-								"br"
-							],
-							"port": "8380",
-							"path": [
-								"siga",
-								"api",
-								"graduacao",
-								"discentes"
-							],
-							"query": [
-								{
-									"key": "grr",
-									"value": "GRR20175486"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "API SIGA - Docentes (Não usar em implementação)",
-			"item": [
-				{
-					"name": "listDocentes",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "headerPrefix",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/docentes?idPrograma=40001016111G0",
-							"protocol": "http",
-							"host": [
-								"siga",
-								"ufpr",
-								"br"
-							],
-							"port": "8380",
-							"path": [
-								"siga",
-								"api",
-								"graduacao",
-								"docentes"
-							],
-							"query": [
-								{
-									"key": "idPrograma",
-									"value": "40001016111G0"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "API SIGA - Curso (Não usar em implementação)",
-			"item": [
-				{
-					"name": "listCurso",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "headerPrefix",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/cursos?idCurso=229",
-							"protocol": "http",
-							"host": [
-								"siga",
-								"ufpr",
-								"br"
-							],
-							"port": "8380",
-							"path": [
-								"siga",
-								"api",
-								"graduacao",
-								"cursos"
-							],
-							"query": [
-								{
-									"key": "idCurso",
-									"value": "229"
-								}
 							]
 						}
 					},
@@ -1524,7 +1609,7 @@
 			"name": "Estagio",
 			"item": [
 				{
-					"name": "NãoUsar-newEstagio",
+					"name": "NãoUsar-novoEstagio",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1544,7 +1629,7 @@
 					"response": []
 				},
 				{
-					"name": "listEstagios",
+					"name": "listarEstagios",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -1564,7 +1649,7 @@
 					"response": []
 				},
 				{
-					"name": "listEstagio",
+					"name": "buscarEstagioPorId",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -1611,7 +1696,7 @@
 					"response": []
 				},
 				{
-					"name": "definirEstagioUpfr",
+					"name": "definirSeEstagioUpfr",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -1638,7 +1723,7 @@
 					"response": []
 				},
 				{
-					"name": "definirEstagioSeed",
+					"name": "definirSeEstagioSeed",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -1796,7 +1881,7 @@
 					"response": []
 				},
 				{
-					"name": "deletarRelatorioDeEstagio",
+					"name": "removerRelatorioDeEstagio",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -1910,7 +1995,7 @@
 					"response": []
 				},
 				{
-					"name": "excluirFichaDeAvaliacao",
+					"name": "removerFichaDeAvaliacao",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -1995,7 +2080,7 @@
 					"response": []
 				},
 				{
-					"name": "excluirCertificadoDeEstagio",
+					"name": "removerCertificadoDeEstagio",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -2020,7 +2105,7 @@
 			"name": "Curso",
 			"item": [
 				{
-					"name": "listCursos",
+					"name": "listarCursos",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2039,7 +2124,7 @@
 					"response": []
 				},
 				{
-					"name": "listCursoPorIdPrograma",
+					"name": "buscarCursoPorIdPrograma",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2059,7 +2144,7 @@
 					"response": []
 				},
 				{
-					"name": "listOrientadoresDoCurso",
+					"name": "listarOrientadoresDoCurso",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2085,7 +2170,7 @@
 			"name": "Apolice",
 			"item": [
 				{
-					"name": "NãoUsar-novoApolice",
+					"name": "NãoUsar-criarApolice",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -2114,7 +2199,7 @@
 					"response": []
 				},
 				{
-					"name": "listApolice",
+					"name": "buscarApolicePorId",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2183,7 +2268,7 @@
 					"response": []
 				},
 				{
-					"name": "deletaApolice",
+					"name": "removerApolice",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -2267,7 +2352,7 @@
 					"response": []
 				},
 				{
-					"name": "listSeguradora",
+					"name": "buscarSeguradoraPorId",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2287,7 +2372,7 @@
 					"response": []
 				},
 				{
-					"name": "listSeguradoras",
+					"name": "listarSeguradoras",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2307,7 +2392,7 @@
 					"response": []
 				},
 				{
-					"name": "atualizaSeguradora",
+					"name": "atualizarSeguradora",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -2336,7 +2421,7 @@
 					"response": []
 				},
 				{
-					"name": "deletaSeguradora",
+					"name": "removerSeguradora",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -2420,7 +2505,7 @@
 					"response": []
 				},
 				{
-					"name": "listSupervisor",
+					"name": "buscarSupervisorPorId",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2440,7 +2525,7 @@
 					"response": []
 				},
 				{
-					"name": "listSupervisores",
+					"name": "listarSupervisores",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2489,7 +2574,7 @@
 					"response": []
 				},
 				{
-					"name": "deletarSupervisor",
+					"name": "removerSupervisor",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -2573,7 +2658,7 @@
 					"response": []
 				},
 				{
-					"name": "listAgenteIntegrador",
+					"name": "buscarAgenteIntegradorPorId",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2593,7 +2678,7 @@
 					"response": []
 				},
 				{
-					"name": "listAgentesIntegradores",
+					"name": "listarAgentesIntegradores",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2613,7 +2698,7 @@
 					"response": []
 				},
 				{
-					"name": "atualizaAgenteIntegrador",
+					"name": "atualizarAgenteIntegrador",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -2642,7 +2727,7 @@
 					"response": []
 				},
 				{
-					"name": "deletaAgenteIntegrador",
+					"name": "removerAgenteIntegrador",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -2667,7 +2752,7 @@
 			"name": "Convenio",
 			"item": [
 				{
-					"name": "NãoUsar-novoConvenio",
+					"name": "NãoUsar-criarConvenio",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -2696,7 +2781,7 @@
 					"response": []
 				},
 				{
-					"name": "listConvenio",
+					"name": "buscarConvenioPorId",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2716,7 +2801,7 @@
 					"response": []
 				},
 				{
-					"name": "listConvenios",
+					"name": "listarConvenios",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2736,7 +2821,7 @@
 					"response": []
 				},
 				{
-					"name": "atualizaConvenio",
+					"name": "atualizarConvenio",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -2765,7 +2850,7 @@
 					"response": []
 				},
 				{
-					"name": "deletaConvenio",
+					"name": "removerConvenio",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -2819,7 +2904,7 @@
 					"response": []
 				},
 				{
-					"name": "listContratante",
+					"name": "buscarContratantePorId",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2839,7 +2924,7 @@
 					"response": []
 				},
 				{
-					"name": "listContratantes",
+					"name": "listarContratantes",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2859,7 +2944,7 @@
 					"response": []
 				},
 				{
-					"name": "listContratantePorNome",
+					"name": "listarContratantesPorNome",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2880,7 +2965,7 @@
 					"response": []
 				},
 				{
-					"name": "listContratantePorNomeContendo",
+					"name": "listarContratantesPorNomeContendo",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2902,7 +2987,7 @@
 					"response": []
 				},
 				{
-					"name": "listContratantePorNomeComecandoPor",
+					"name": "listarContratantesPorNomeComecandoPor",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2924,7 +3009,7 @@
 					"response": []
 				},
 				{
-					"name": "atualizaContratante",
+					"name": "atualizarContratante",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -2953,7 +3038,7 @@
 					"response": []
 				},
 				{
-					"name": "deletaContratante",
+					"name": "removerContratante",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -3038,7 +3123,7 @@
 					"response": []
 				},
 				{
-					"name": "listarEndereco",
+					"name": "buscarEnderecoPorId",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -3107,7 +3192,7 @@
 					"response": []
 				},
 				{
-					"name": "deletarEndereco",
+					"name": "removerEndereco",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -3121,134 +3206,6 @@
 							"path": [
 								"endereco",
 								"2"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "SIGA Via Backend (Não usar em implementação)",
-			"item": [
-				{
-					"name": "listAluno",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "headerPrefix",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/siga/aluno?grr=GRR20200141",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"siga",
-								"aluno"
-							],
-							"query": [
-								{
-									"key": "grr",
-									"value": "GRR20200141"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "listDocentes",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "headerPrefix",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/siga/docentes?idPrograma=40001016111G0",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"siga",
-								"docentes"
-							],
-							"query": [
-								{
-									"key": "idPrograma",
-									"value": "40001016111G0"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "listCurso",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "headerPrefix",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/siga/cursos?idCurso=229",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"siga",
-								"cursos"
-							],
-							"query": [
-								{
-									"key": "idCurso",
-									"value": "229"
-								}
 							]
 						}
 					},
@@ -3383,7 +3340,7 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/coe/termoDeRescisao/2/darCienciaCoe",
+									"raw": "http://localhost:5000/coe/termoDeRescisao/2/darCiencia",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -3393,7 +3350,7 @@
 										"coe",
 										"termoDeRescisao",
 										"2",
-										"darCienciaCoe"
+										"darCiencia"
 									]
 								}
 							},
@@ -3484,7 +3441,7 @@
 					"name": "TermoDeEstagio",
 					"item": [
 						{
-							"name": "indeferirTermoCoe",
+							"name": "indeferirTermoDeEstagioCoe",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -3515,7 +3472,7 @@
 							"response": []
 						},
 						{
-							"name": "solicitarAjutesTermoCoe",
+							"name": "solicitarAjutesTermoDeEstagioCoe",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -3546,7 +3503,7 @@
 							"response": []
 						},
 						{
-							"name": "aprovarTermoCoe",
+							"name": "aprovarTermoDeEstagioCoe",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -3577,7 +3534,7 @@
 							"response": []
 						},
 						{
-							"name": "baixarTermoAluno",
+							"name": "baixarTermoDeEstagioAluno",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3891,7 +3848,7 @@
 							"response": []
 						},
 						{
-							"name": "indeferirTermoCoordenacao",
+							"name": "indeferirTermoDeEstagioCoordenacao",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -3922,7 +3879,7 @@
 							"response": []
 						},
 						{
-							"name": "solicitarAjutesTermoCoordenacao",
+							"name": "solicitarAjutesTermoDeEstagioCoordenacao",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -3953,7 +3910,7 @@
 							"response": []
 						},
 						{
-							"name": "aprovarTermoCoordenacao",
+							"name": "aprovarTermoDeEstagioCoordenacao",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -3984,7 +3941,7 @@
 							"response": []
 						},
 						{
-							"name": "darCienciaTermoIndeferido",
+							"name": "darCienciaTermoDeEstagioIndeferido",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -4015,7 +3972,7 @@
 							"response": []
 						},
 						{
-							"name": "baixarTermoAluno",
+							"name": "baixarTermoDeEstagioAluno",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -4242,7 +4199,7 @@
 					"name": "TermoDeEstagio",
 					"item": [
 						{
-							"name": "consultarAgenteIntegradorAssociadoAoTermo",
+							"name": "consultarAgenteIntegradorAssociadoAoTermoDeEstagio",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -4264,7 +4221,7 @@
 							"response": []
 						},
 						{
-							"name": "consultarSeguradoraAssociadaAoTermo",
+							"name": "consultarSeguradoraAssociadaAoTermoDeEstagio",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -4286,7 +4243,7 @@
 							"response": []
 						},
 						{
-							"name": "consultarApoliceAssociadaAoTermo",
+							"name": "consultarApoliceAssociadaAoTermoDeEstagio",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -4308,7 +4265,7 @@
 							"response": []
 						},
 						{
-							"name": "indeferirTermoCoafe",
+							"name": "indeferirTermoDeEstagioCoafe",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -4339,7 +4296,7 @@
 							"response": []
 						},
 						{
-							"name": "solicitarAjutesTermoCoafe",
+							"name": "solicitarAjutesTermoDeEstagioCoafe",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -4370,7 +4327,7 @@
 							"response": []
 						},
 						{
-							"name": "aprovarTermoCoafe",
+							"name": "aprovarTermoDeEstagioCoafe",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -4401,7 +4358,7 @@
 							"response": []
 						},
 						{
-							"name": "baixarTermoAluno",
+							"name": "baixarTermoDeEstagioAluno",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -4736,7 +4693,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/orientador/1/termoDeRescisao/pendenteCiencia",
+									"raw": "http://localhost:5000/orientador/3/termoDeRescisao/pendenteCiencia",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4744,7 +4701,7 @@
 									"port": "5000",
 									"path": [
 										"orientador",
-										"1",
+										"3",
 										"termoDeRescisao",
 										"pendenteCiencia"
 									]
@@ -4770,6 +4727,289 @@
 										"termoDeRescisao",
 										"2",
 										"darCiencia"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "SIGA Via Backend (Não usar em implementação)",
+			"item": [
+				{
+					"name": "buscarAlunoPorGrr",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/siga/aluno?grr=GRR20200141",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"siga",
+								"aluno"
+							],
+							"query": [
+								{
+									"key": "grr",
+									"value": "GRR20200141"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarDocentesPorIdPrograma",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/siga/docentes?idPrograma=40001016111G0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"siga",
+								"docentes"
+							],
+							"query": [
+								{
+									"key": "idPrograma",
+									"value": "40001016111G0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarCursoPorIdCurso",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/siga/cursos?idCurso=229",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"siga",
+								"cursos"
+							],
+							"query": [
+								{
+									"key": "idCurso",
+									"value": "229"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API SIGA (Não usar em implementação)",
+			"item": [
+				{
+					"name": "API SIGA - Aluno (Não usar em implementação)",
+					"item": [
+						{
+							"name": "buscarAlunoPorGrr",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "headerPrefix",
+											"value": "",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/discentes?grr=GRR20175486",
+									"protocol": "http",
+									"host": [
+										"siga",
+										"ufpr",
+										"br"
+									],
+									"port": "8380",
+									"path": [
+										"siga",
+										"api",
+										"graduacao",
+										"discentes"
+									],
+									"query": [
+										{
+											"key": "grr",
+											"value": "GRR20175486"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "API SIGA - Docentes (Não usar em implementação)",
+					"item": [
+						{
+							"name": "listarDocentesPorIdPrograma",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "headerPrefix",
+											"value": "",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/docentes?idPrograma=40001016111G0",
+									"protocol": "http",
+									"host": [
+										"siga",
+										"ufpr",
+										"br"
+									],
+									"port": "8380",
+									"path": [
+										"siga",
+										"api",
+										"graduacao",
+										"docentes"
+									],
+									"query": [
+										{
+											"key": "idPrograma",
+											"value": "40001016111G0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "API SIGA - Curso (Não usar em implementação)",
+					"item": [
+						{
+							"name": "buscarCursoPorIdCurso",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "headerPrefix",
+											"value": "",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://siga.ufpr.br:8380/siga/api/graduacao/cursos?idCurso=229",
+									"protocol": "http",
+									"host": [
+										"siga",
+										"ufpr",
+										"br"
+									],
+									"port": "8380",
+									"path": [
+										"siga",
+										"api",
+										"graduacao",
+										"cursos"
+									],
+									"query": [
+										{
+											"key": "idCurso",
+											"value": "229"
+										}
 									]
 								}
 							},

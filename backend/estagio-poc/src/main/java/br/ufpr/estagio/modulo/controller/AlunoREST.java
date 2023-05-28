@@ -43,6 +43,7 @@ import br.ufpr.estagio.modulo.dto.DadosBancariosDTO;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.dto.FichaDeAvaliacaoDTO;
+import br.ufpr.estagio.modulo.dto.PeriodoRecessoDTO;
 import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
@@ -58,6 +59,7 @@ import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.DadosBancarios;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.FichaDeAvaliacao;
+import br.ufpr.estagio.modulo.model.PeriodoRecesso;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
@@ -68,6 +70,7 @@ import br.ufpr.estagio.modulo.service.DadosBancariosService;
 import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.FichaDeAvaliacaoService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
+import br.ufpr.estagio.modulo.service.PeriodoRecessoService;
 import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeRescisaoService;
@@ -80,6 +83,9 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 @RestController
 @RequestMapping("/aluno")
 public class AlunoREST {
+
+	@Autowired
+	private AlunoService alunoService;
 
 	@Autowired
 	private EstagioService estagioService;
@@ -100,7 +106,7 @@ public class AlunoREST {
 	private TermoDeRescisaoService termoDeRescisaoService;
 
 	@Autowired
-	private AlunoService alunoService;
+	private PeriodoRecessoService periodoRecessoService;
 
 	@Autowired
 	private DadosAuxiliaresService dadosService;
@@ -1258,7 +1264,7 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-	
+
 	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/solicitarCiencia")
 	public ResponseEntity<TermoDeRescisaoDTO> solicitarCienciaTermoDeRescisao(@PathVariable String grrAlunoURL,
 			@PathVariable long idEstagio, @PathVariable long idTermo) {
@@ -1274,8 +1280,7 @@ public class AlunoREST {
 					if (estagioFind.isEmpty()) {
 						throw new NotFoundException("Estágio não encontrado!");
 					}
-					Optional<TermoDeRescisao> termoDeRescisaoFind = termoDeRescisaoService
-							.buscarPorId(idTermo);
+					Optional<TermoDeRescisao> termoDeRescisaoFind = termoDeRescisaoService.buscarPorId(idTermo);
 					if (termoDeRescisaoFind.isEmpty()) {
 						throw new NotFoundException("Termo de rescisão não encontrado!");
 					}
@@ -1352,9 +1357,10 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-	
+
 	@GetMapping("/{grrAlunoURL}/termoDeRescisao/etapaAluno")
-	public ResponseEntity<List<TermoDeRescisaoDTO>> buscarTermoDeRescisaoEtapaAlunoPorAluno(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<List<TermoDeRescisaoDTO>> buscarTermoDeRescisaoEtapaAlunoPorAluno(
+			@PathVariable String grrAlunoURL) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1363,8 +1369,10 @@ public class AlunoREST {
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
-					List<TermoDeRescisao> listTermoDeRescisao = termoDeRescisaoService.listarTermoDeRescisaoEtapaAlunoPorAluno(aluno);
-					return ResponseEntity.status(HttpStatus.OK).body(listTermoDeRescisao.stream().map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+					List<TermoDeRescisao> listTermoDeRescisao = termoDeRescisaoService
+							.listarTermoDeRescisaoEtapaAlunoPorAluno(aluno);
+					return ResponseEntity.status(HttpStatus.OK).body(listTermoDeRescisao.stream()
+							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
 				}
 			}
 		} catch (NumberFormatException e) {
@@ -1377,7 +1385,7 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-	
+
 	@GetMapping("/{grrAlunoURL}/termoDeRescisao/")
 	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAluno(@PathVariable String grrAlunoURL) {
 		try {
@@ -1388,8 +1396,10 @@ public class AlunoREST {
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
-					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService.listarTermosDeRescisaoPorAluno(aluno);
-					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream().map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService
+							.listarTermosDeRescisaoPorAluno(aluno);
+					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream()
+							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
 				}
 			}
 		} catch (NumberFormatException e) {
@@ -1402,9 +1412,10 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-	
+
 	@GetMapping("/{grrAlunoURL}/termoDeRescisao/etapaCiencia")
-	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAlunoEtapaCiencia(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAlunoEtapaCiencia(
+			@PathVariable String grrAlunoURL) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1413,8 +1424,10 @@ public class AlunoREST {
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
-					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService.listarTermosDeRescisaoPorAlunoEtapaCiencia(aluno);
-					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream().map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService
+							.listarTermosDeRescisaoPorAlunoEtapaCiencia(aluno);
+					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream()
+							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
 				}
 			}
 		} catch (NumberFormatException e) {
@@ -1427,9 +1440,10 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
-	
+
 	@GetMapping("/{grrAlunoURL}/termoDeRescisao/finalizados")
-	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAlunoProcessoFinalizado(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAlunoProcessoFinalizado(
+			@PathVariable String grrAlunoURL) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1438,8 +1452,109 @@ public class AlunoREST {
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
-					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService.listarTermosDeRescisaoPorAlunoProcessoFinalizado(aluno);
-					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream().map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService
+							.listarTermosDeRescisaoPorAlunoProcessoFinalizado(aluno);
+					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream()
+							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+
+	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/periodoRecesso")
+	public ResponseEntity<Object> novoPeriodoDeRecesso(@PathVariable String grrAlunoURL, @PathVariable long idEstagio,
+			@PathVariable Long idTermo) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Estagio estagio = alunoService.buscarEstagioPorId(idEstagio);
+					if (estagio == null) {
+						throw new NotFoundException("Estágio não encontrado!");
+					} else {
+						Optional<TermoDeRescisao> termoDeRescisao = termoDeRescisaoService.buscarPorId(idTermo);
+						if (termoDeRescisao.isEmpty()) {
+							throw new NotFoundException("Termo de rescisão não encontrado!");
+						} else {
+							if (estagio.getAluno().getId() != aluno.getId()) {
+								throw new NotFoundException("O estágio não pertence ao Aluno!");
+							}
+							if (termoDeRescisao.get().getEstagio().getAluno().getId() != aluno.getId()) {
+								throw new NotFoundException("O termo não pertence ao Aluno!");
+							}
+							if (termoDeRescisao.get().isCienciaCOAFE() == true) {
+								return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(
+										"Não é possível adicionar um período de recesso a um termo de rescisão já aprovado."));
+							} else {
+								PeriodoRecesso newPeriodoRecesso = periodoRecessoService.novoPeriodoRecesso(termoDeRescisao.get());
+								return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newPeriodoRecesso, PeriodoRecessoDTO.class));
+							}
+						}
+					}
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+
+	@DeleteMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/periodoRecesso/{idPeriodo}")
+	public ResponseEntity<Object> removerPeriodoDeRecesso(@PathVariable String grrAlunoURL,
+			@PathVariable Long idEstagio, @PathVariable Long idTermo, @PathVariable Long idPeriodo) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Estagio estagio = alunoService.buscarEstagioPorId(idEstagio);
+					if (estagio == null) {
+						throw new NotFoundException("Estágio não encontrado!");
+					} else {
+						Optional<TermoDeRescisao> termoDeRescisao = termoDeRescisaoService.buscarPorId(idTermo);
+						if (termoDeRescisao.isEmpty()) {
+							throw new NotFoundException("Termo de rescisão não encontrado!");
+						} else {
+							Optional<PeriodoRecesso> periodoRecesso = periodoRecessoService.buscarPorId(idPeriodo);
+							if (periodoRecesso.isEmpty()) {
+								throw new NotFoundException("Período de recesso não encontrado!");
+							} else {
+								if (estagio.getAluno().getId() != aluno.getId()) {
+									throw new NotFoundException("O estágio não pertence ao Aluno!");
+								}
+								if (termoDeRescisao.get().getEstagio().getAluno().getId() != aluno.getId()) {
+									throw new NotFoundException("O termo não pertence ao Aluno!");
+								}
+								if (termoDeRescisao.get().isCienciaCOAFE() == true) {
+									return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(
+											"Não é possível deletar um período de recesso associado a um termo de rescisão já aprovado."));
+								} else {
+									periodoRecessoService.deletarPeriodoRecesso(periodoRecesso.get());
+									return ResponseEntity.status(HttpStatus.OK).body("Sucesso!");
+								}
+							}
+						}
+					}
 				}
 			}
 		} catch (NumberFormatException e) {
