@@ -29,7 +29,7 @@ export default defineComponent({
       </h1>
     </div>
     <div>
-      <DataTable :value="processes" rowHover stripedRows>
+      <DataTable :value="processes" rowHover stripedRows :show-gridlines="true">
         <template #header>
           <div class="flex items-center justify-content-between">
             <span class="p-input-icon-left">
@@ -44,11 +44,6 @@ export default defineComponent({
         <Column field="process" header="Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
-        <Column field="process_type" header="Tipo de Processo">
-          <template #body="{ data }">
-            {{ parseTipoProcesso(data.tipoTermoDeEstagio) }}
-          </template>
-        </Column>
         <Column field="student_name" header="Nome do Aluno">
           <template #body="{ data }">
             {{ data?.aluno?.nome }}
@@ -62,6 +57,11 @@ export default defineComponent({
         <Column field="contratante" header="Contratante">
           <template #body="{ data }">
             {{ data?.contratante?.nome }}
+          </template>
+        </Column>
+        <Column field="process_type" header="Data de Criação">
+          <template #body="{ data }">
+            {{ parseDate(data?.dataCriacao) }}
           </template>
         </Column>
         <Column

@@ -12,11 +12,9 @@ const { data: termos } = await useFetch(
   <div>
     <h1>Termos Aditivos</h1>
 
-    <DataTable :value="termos">
+    <DataTable :value="termos" rowHover stripedRows :show-gridlines="true">
       <Column field="termo" header="Termo">
-        <template #body="{ data }">
-          {{ data.id }}
-        </template>
+        <template #body="{ data }"> #{{ data.id }} </template>
       </Column>
       <Column field="tipo" header="Tipo" style="min-width: 12rem">
         <template #body="{ data }"> Termo Aditivo </template>
@@ -33,13 +31,18 @@ const { data: termos } = await useFetch(
         style="min-width: 12rem; font-weight: bold"
       >
         <template #body="{ data }">
-          {{ parseStatusProcessos(data.statusTermo) }}
+          <StatusTag :status="data.statusTermo" />
         </template>
       </Column>
       <Column field="acoes" header="Ações" style="min-width: 12rem">
         <template #body="{ data }">
           <NuxtLink :to="`/aluno/termo-aditivo/${data.id}`">
-            <Button type="primary"> Ver </Button>
+            <Button
+              class="p-button-icon-only p-button-outlined"
+              icon="pi pi-arrow-right"
+              type="primary"
+            >
+            </Button>
           </NuxtLink>
         </template>
       </Column>

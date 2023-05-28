@@ -23,7 +23,7 @@ export default {
       </h1>
     </div>
     <div>
-      <DataTable :value="processes" rowHover stripedRows>
+      <DataTable :value="processes" rowHover stripedRows :show-gridlines="true">
         <template #header>
           <div class="flex items-center justify-content-between">
             <span class="p-input-icon-left">

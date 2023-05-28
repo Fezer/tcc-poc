@@ -29,11 +29,11 @@ export default defineComponent({
       </h1>
     </div>
     <div>
-      <DataTable :value="processes" rowHover stripedRows>
+      <DataTable :value="processes" rowHover stripedRows :show-gridlines="true">
         <template #header>
           <div class="flex items-center justify-content-between">
             <span class="p-input-icon-left">
-              <h4 class="font-bold">Processos pendentes de parecer</h4>
+              <h4 class="font-bold">Processos pendentes parecer</h4>
             </span>
             <span class="p-input-icon-left">
               <i class="pi pi-search" />
@@ -46,11 +46,7 @@ export default defineComponent({
             {{ data.id }}
           </template>
         </Column>
-        <Column field="process_type" header="Tipo de Processo">
-          <template #body="{ data }">
-            {{ parseTipoProcesso(data.tipoTermoDeEstagio) }}
-          </template>
-        </Column>
+
         <Column field="student_name" header="Nome do Aluno">
           <template #body="{ data }">
             {{ data?.aluno?.nome }}
@@ -66,12 +62,19 @@ export default defineComponent({
             {{ data?.contratante?.nome }}
           </template>
         </Column>
+        <Column field="process_type" header="Data de Criação">
+          <template #body="{ data }">
+            {{ parseDate(data?.dataCriacao) }}
+          </template>
+        </Column>
         <Column
           field="action"
           header="Ação necessária"
           bodyStyle="color:orange;"
         >
-          <template #body="{ data }"> Parecer </template>
+          <template #body="{ data }">
+            <Tag value="Parecer" severity="warning" class="font-sm p-2" />
+          </template>
         </Column>
         <Column field="button">
           <template #body="{ data }">

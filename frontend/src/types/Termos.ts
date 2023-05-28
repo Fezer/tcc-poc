@@ -10,7 +10,8 @@ type StatusTermo =
   | "Aprovado"
   | "Reprovado"
   | "EmRevisao"
-  | "EmPreenchimento";
+  | "EmPreenchimento"
+  | "Cancelado";
 
 interface BaseTermo {
   id: number;

@@ -43,19 +43,6 @@ export default defineComponent({
 
     const percentage = getPercentageByEtapa();
 
-    const parseStatus = (status: string): string => {
-      const statusObjects = {
-        EmPreenchimento: "Em preenchimento",
-        EmAprovacao: "Em aprovação",
-        EmRevisao: "Necessita de Ajuste",
-        Aprovado: "Aprovado",
-        Reprovado: "Indeferimento",
-        Cancelado: "Cancelado pelo aluno",
-      };
-
-      return statusObjects[status] || "Erro";
-    };
-
     const handleDownloadTermo = async () => {
       await $fetch("http://localhost:5000/aluno/gerar-termo").then((res) => {
         console.log(res);
@@ -63,7 +50,6 @@ export default defineComponent({
     };
 
     return {
-      parseStatus,
       percentage,
       parseDate,
       motivo,
@@ -86,24 +72,16 @@ export default defineComponent({
 
     <div>
       <div class="grid">
-        <div class="text-box col-4">
+        <div class="flex flex-col items-start col-4">
           <strong>Status</strong>
-          <p
+
+          <Tag
             v-if="status === 'EmAprovacao'"
-            class="text-blue-500 font-bold text-lg uppercase"
-          >
-            ANÁLISE {{ etapa || "" }}
-          </p>
-          <p
-            v-else
-            :class="
-              status === 'Aprovado'
-                ? 'text-green-500 font-bold text-lg uppercase'
-                : 'text-red-500 font-bold text-lg uppercase'
-            "
-          >
-            {{ parseStatus(status) }}
-          </p>
+            :value="`ANÁLISE ${etapa || ''}`"
+            class="mr-2 p-2 w-6 text-sm"
+            severity="info"
+          />
+          <StatusTag v-else :status="termo?.statusTermo" />
         </div>
         <div class="text-box col-4 flex flex-col">
           <strong>Data de Início do processo</strong>

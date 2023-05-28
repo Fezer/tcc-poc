@@ -229,7 +229,7 @@ export default defineComponent({
   <div>
     <Toast />
     <small>Processos > Ver processo</small>
-    <h2>Termo de Compromisso</h2>
+    <h2>{{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}</h2>
 
     <Aluno />
 

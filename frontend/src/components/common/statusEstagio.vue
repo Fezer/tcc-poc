@@ -37,11 +37,9 @@ export default defineComponent({
 
     <div>
       <div class="grid">
-        <div class="text-box col-3">
+        <div class="flex flex-col items-start col-3">
           <strong>Status</strong>
-          <p :class="'font-bold text-xl '.concat(getStatusColor())">
-            {{ estagio?.statusEstagio?.toUpperCase() }}
-          </p>
+          <StatusTag :status="estagio?.statusEstagio" />
         </div>
         <div class="text-box col-3 flex flex-col">
           <strong>Data de Início do Estágio</strong>

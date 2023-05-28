@@ -28,7 +28,12 @@ export default defineComponent({
       </NuxtLink>
     </div>
     <div>
-      <DataTable :value="contratantes" rowHover stripedRows>
+      <DataTable
+        :value="contratantes"
+        rowHover
+        stripedRows
+        :show-gridlines="true"
+      >
         <template #header>
           <div class="flex justify-content-between">
             <span class="p-input-icon-left">

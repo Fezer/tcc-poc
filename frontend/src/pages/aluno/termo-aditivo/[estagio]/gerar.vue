@@ -172,6 +172,18 @@ export default defineComponent({
               life: 3000,
             });
           });
+        if (suspensaoEstagio?.isSuspensao) {
+          toast.add({
+            severity: "success",
+            summary: "Sucesso",
+            detail: "Termo aditivo gerado com sucesso",
+            life: 3000,
+          });
+          setTimeout(() => {
+            router.push(`/aluno/termo-aditivo/${termoAditivoID}`);
+          }, 3000);
+          return;
+        }
 
         const {
           nomeSupervisor,

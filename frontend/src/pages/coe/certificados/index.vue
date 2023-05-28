@@ -20,7 +20,12 @@ export default defineComponent({
   <div>
     <div>
       <h2>Certificados de estágio pendentes de aprovação</h2>
-      <DataTable :value="certificados" rowHover stripedRows>
+      <DataTable
+        :value="certificados"
+        rowHover
+        stripedRows
+        :show-gridlines="true"
+      >
         <Column field="process" header="Processo Certificado">
           <template #body="{ data }"> #{{ data?.id }} </template>
         </Column>

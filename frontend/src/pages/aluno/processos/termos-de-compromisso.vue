@@ -12,7 +12,7 @@ const { data: termos } = await useFetch(
   <div>
     <h1>Termos de compromisso</h1>
 
-    <DataTable :value="termos">
+    <DataTable :value="termos" rowHover stripedRows :show-gridlines="true">
       <Column field="termo" header="Termo">
         <template #body="{ data }">
           {{ data.id }}
@@ -36,7 +36,7 @@ const { data: termos } = await useFetch(
         style="min-width: 12rem; font-weight: bold"
       >
         <template #body="{ data }">
-          {{ parseStatusProcessos(data.statusTermo) }}
+          <StatusTag :status="data.statusTermo" />
         </template>
       </Column>
       <Column field="acoes" header="Ações" style="min-width: 12rem">
