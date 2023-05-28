@@ -22,4 +22,22 @@ export default class ConvenioService extends BaseService {
     }
     return response;
   }
+  async atualizaConvenio(numero:number,descricao:string,dataInicio:string,dataFim:string,id:number,idagente:number) {
+    const response = await $fetch(this.BASE_URL + `/convenio/${id}`, {
+      method: "PUT",
+      body: {
+        numero: numero,   
+        descricao : descricao,
+        dataInicio: dataInicio,
+        dataFim : dataFim,
+        agenteIntegrador: {id: idagente},        
+      },
+    });
+    if (!response?.id) {
+      throw new Error("Erro ao atualizar o gente");
+    }else{
+      console.log(response);
+      return response;
+    }
+  }
 }

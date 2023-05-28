@@ -63,6 +63,15 @@
           {{ data.dataFim }}
         </template>
       </Column>
+      <Column field="button">
+        <template #body="{ data }">
+          <NuxtLink
+            :to="`/coafe/agentes-integracao/convenioEditar?id=${data.id}`"
+          >
+            <Button label="Editar" />
+          </NuxtLink>
+        </template>
+      </Column>
     </DataTable>
     <div class="flex flex-row justify-content-end flex-wrap pb-2 gap-2">
       <NuxtLink to="/coafe/coafeAgentes">
