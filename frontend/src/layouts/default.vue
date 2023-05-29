@@ -6,6 +6,7 @@ import COEMenuVue from "../components/layouts/default/COEMenu.vue";
 import COAFEmenuVue from "../components/layouts/default/COAFEmenu.vue";
 import CoordMenuVue from "../components/layouts/default/CoordMenu.vue";
 import OrientadorMenuVue from "../components/layouts/default/OrientadorMenu.vue";
+import { ofetch } from "ofetch";
 
 export default defineComponent({
   components: {
@@ -62,6 +63,20 @@ export default defineComponent({
     } else {
       this.removeClass(document.body, "body-overflow-hidden");
     }
+  },
+  mounted() {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (!accessToken) {
+      return this.$router.replace("/login");
+    }
+
+    globalThis.$fetch = ofetch.create({
+      baseURL: "http://localhost:5000",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   },
   methods: {
     onWrapperClick() {

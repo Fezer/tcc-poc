@@ -5,7 +5,7 @@ export default {
       "http://localhost:5000/coafe/termo/pendenteAprovacaoCoafe"
     );
 
-    console.log(processes);
+    const accessToken = localStorage.getItem("accessToken");
 
     return {
       processes,
