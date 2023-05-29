@@ -14,6 +14,20 @@ export default {
     topbarImage() {
       return "/images/ufpr.png";
     },
+    login() {
+      const clientId = 'estagios';
+      const redirectUri = 'http://localhost:3000/';
+      const authorizationEndpoint = 'https://login.ufpr.br/realms/master/protocol/openid-connect/auth';
+
+      const params = new URLSearchParams();
+      params.append('response_type', 'code');
+      params.append('client_id', clientId);
+      params.append('redirect_uri', redirectUri);
+      params.append('scope', 'openid'); 
+
+      // Redirecionar para a página de login
+      window.location.href = `${authorizationEndpoint}?${params.toString()}`;
+    }
   },
   components: { Button },
 };
@@ -27,6 +41,9 @@ export default {
     </div>
 
     <div class="flex gap-2">
+      <NuxtLink to="/">
+        <Button @click="login" class="p-button-secondary" label="Login (dev)" />
+      </NuxtLink>
       <NuxtLink to="/aluno">
         <Button class="p-button-secondary" label="Aluno (dev)" />
       </NuxtLink>
