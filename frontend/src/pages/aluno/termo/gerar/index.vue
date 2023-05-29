@@ -40,11 +40,9 @@ export default defineComponent({
         summary: "Termo gerado com sucesso",
         life: 3000,
       });
-      setTimeout(() => {
-        router.push({
-          path: "/aluno/termo/" + termo.value.id,
-        });
-      }, 3000);
+      router.push({
+        path: "/aluno/termo/" + termo.value.id,
+      });
     };
 
     const handleAdvanceStep = () => {

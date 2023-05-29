@@ -29,9 +29,7 @@ export default defineComponent({
           life: 3000,
         });
 
-        setTimeout(() => {
-          router.push("/aluno/estagio/" + estagio);
-        }, 3000);
+        router.push("/aluno/estagio/" + estagio);
       });
     };
 
@@ -48,9 +46,7 @@ export default defineComponent({
             life: 3000,
           });
 
-          setTimeout(() => {
-            router.push("/aluno/estagio/" + estagio);
-          }, 3000);
+          router.push("/aluno/estagio/" + estagio);
         })
         .catch((err) => {
           console.log(err);

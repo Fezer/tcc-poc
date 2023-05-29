@@ -159,6 +159,8 @@ export default defineComponent({
               jornadaSemanal: state.jornadaSemanal,
               valorBolsa: state.bolsaAuxilio,
               valorTransporte: state.auxilioTransporte,
+              dataFimSuspensao: null,
+              dataInicioRetomada: null,
             };
 
         await novoEstagioService
@@ -179,9 +181,8 @@ export default defineComponent({
             detail: "Termo aditivo gerado com sucesso",
             life: 3000,
           });
-          setTimeout(() => {
-            router.push(`/aluno/termo-aditivo/${termoAditivoID}`);
-          }, 3000);
+          router.push(`/aluno/termo-aditivo/${termoAditivoID}`);
+
           return;
         }
 
@@ -230,9 +231,7 @@ export default defineComponent({
           life: 3000,
         });
 
-        setTimeout(() => {
-          router.push(`/aluno/termo-aditivo/${termoAditivoID}`);
-        }, 3000);
+        router.push(`/aluno/termo-aditivo/${termoAditivoID}`);
       } catch (err) {
         console.log(err);
         toast.add({

@@ -134,11 +134,9 @@ export default defineComponent({
         });
         state.cancelationConfirm = false;
 
-        setTimeout(() => {
-          router.push({
-            path: "/aluno",
-          });
-        }, 3000);
+        router.push({
+          path: "/aluno",
+        });
       } catch (err) {
         toast.add({
           severity: "error",
