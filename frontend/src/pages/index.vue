@@ -1,6 +1,35 @@
 <script>
 export default {
+  async mounted() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const authorizationCode = urlParams.get('code');
 
+    if (authorizationCode) {
+      const tokenUrl = 'https://login.ufpr.br/realms/master/protocol/openid-connect/token';
+      const data = new URLSearchParams();
+      data.append('grant_type', 'authorization_code');
+      data.append('code', authorizationCode);
+      data.append('client_id', 'estagios');
+      data.append('client_secret', '2xWHPudAW4hmAsnOYzW9eg4oUUKUHTLu');
+      data.append('redirect_uri', 'http://localhost:3000/');
+
+      try {
+        const response = await fetch(tokenUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: data,
+        });
+        const tokenData = await response.json();
+        const accessToken = tokenData.access_token;
+        console.log(accessToken);
+        localStorage.setItem("accessToken", accessToken);
+      } catch (error) {
+        console.error('Erro ao obter o token de acesso:', error);
+      }
+    }
+  }
 };
 </script>
 
