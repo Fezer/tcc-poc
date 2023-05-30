@@ -51,6 +51,8 @@ export default defineComponent({
           router.replace("/login");
           console.error("Erro ao obter o token de acesso:", error);
         }
+      } else {
+        router.replace("/login");
       }
     });
 
