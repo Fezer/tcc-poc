@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,12 +40,12 @@ public class SigaREST {
 	private ModelMapper mapper;
 	
 	@GetMapping("/aluno")
-	public ResponseEntity<Discente> listarAluno(@RequestParam String grr){
+	public ResponseEntity<Discente> listarAluno(@RequestParam String grr, @RequestHeader("Authorization") String accessToken){
 		try {
 			if(grr.isBlank() || grr.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(grr);
+				Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(grr, accessToken);
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(discente, Discente.class));
 			}
 		}catch (NumberFormatException e) {
@@ -59,12 +60,12 @@ public class SigaREST {
 	}
 		
 	@GetMapping("/docentes")
-	public ResponseEntity<DocentesData> listarDocentes(@RequestParam String idPrograma){
+	public ResponseEntity<DocentesData> listarDocentes(@RequestParam String idPrograma, @RequestHeader("Authorization") String accessToken){
 		try {
 			if(idPrograma.isBlank() || idPrograma.isEmpty()) {
 				throw new BadRequestException("ID do programa não informado!");
 			} else {
-				DocentesData docentesData = sigaApiDiscentesService.buscarDiscentesPorIdPrograma(idPrograma);
+				DocentesData docentesData = sigaApiDiscentesService.buscarDiscentesPorIdPrograma(idPrograma, accessToken);
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(docentesData, DocentesData.class));
 			}
 		}catch (NumberFormatException e) {
@@ -79,12 +80,12 @@ public class SigaREST {
 	}
 	
 	@GetMapping("/cursos")
-	public ResponseEntity<CursoSiga> listarCursos(@RequestParam Long idCurso){
+	public ResponseEntity<CursoSiga> listarCursos(@RequestParam Long idCurso, @RequestHeader("Authorization") String accessToken){
 		try {
 			if(idCurso < 1) {
 				throw new BadRequestException("ID do curso não informado!");
 			} else {
-				CursoSiga cursoSiga = sigaApiCursoSigaService.buscarCursoSigaPorIdCurso(idCurso);
+				CursoSiga cursoSiga = sigaApiCursoSigaService.buscarCursoSigaPorIdCurso(idCurso, accessToken);
 				if(cursoSiga == null) {
 					throw new NotFoundException("Curso não encontrado!");
 				}

@@ -78,13 +78,13 @@ public class AlunoService {
         return alunoRepo.findById(id);
     }
     
-    public Aluno buscarAlunoPorGrr(String matricula) {
+    public Aluno buscarAlunoPorGrr(String matricula, String accessToken) {
     	Optional<Aluno> alunoFind = alunoRepo.findByMatricula(matricula);
     	Aluno aluno = new Aluno();
 
     	if(alunoFind.isEmpty()) {
-    		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula);
-    		aluno = sigaApiModuloEstagioMapping.mapearDiscenteEmAluno(discente);
+    		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula, accessToken);
+    		aluno = sigaApiModuloEstagioMapping.mapearDiscenteEmAluno(discente, accessToken);
     		//aluno = this.salvarAluno(aluno);
     	} else {
     		aluno = alunoFind.get();
@@ -113,13 +113,13 @@ public class AlunoService {
         return aluno;
     }
     
-    public Optional<Aluno> buscarAlunoGrr(String matricula) {
+    public Optional<Aluno> buscarAlunoGrr(String matricula, String accessToken) {
     	Optional<Aluno> alunoFind = alunoRepo.findByMatricula(matricula);
     	Aluno aluno = new Aluno();
 
     	if(alunoFind.isEmpty()) {
-    		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula);
-    		aluno = sigaApiModuloEstagioMapping.mapearDiscenteEmAluno(discente);
+    		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula, accessToken);
+    		aluno = sigaApiModuloEstagioMapping.mapearDiscenteEmAluno(discente, accessToken);
     		aluno = this.salvarAluno(aluno);
     	} else {
     		aluno = alunoFind.get();
@@ -132,11 +132,11 @@ public class AlunoService {
     }
     
     /////////////////////////////////////////////// 
-    public Aluno atualizarAluno(Aluno alunoAtualizado) {
+    public Aluno atualizarAluno(Aluno alunoAtualizado, String accessToken) {
     	
     	System.out.println(alunoAtualizado.getId());
     	
-    	Aluno alunoExistente = buscarAlunoGrr(alunoAtualizado.getMatricula())
+    	Aluno alunoExistente = buscarAlunoGrr(alunoAtualizado.getMatricula(), accessToken)
     			.orElseThrow(() -> new NoSuchElementException("Aluno não encontrado para o ID informado"));
     	
     	DadosAuxiliares dadosAuxiliaresExistente = alunoExistente.getDadosAuxiliares();

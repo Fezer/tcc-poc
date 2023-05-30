@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -60,7 +61,7 @@ public class CursoREST {
 	}
     
     @GetMapping("/{idPrograma}/orientadores")
-	public ResponseEntity<List<OrientadorDTO>> buscarOrientadoresDoCurso(@PathVariable String idPrograma) {
+	public ResponseEntity<List<OrientadorDTO>> buscarOrientadoresDoCurso(@PathVariable String idPrograma, @RequestHeader("Authorization") String accessToken) {
     	try {
 			if (idPrograma.isBlank() || idPrograma.isEmpty()) {
 				throw new BadRequestException("ID do programa do Curso não informado!");
@@ -69,7 +70,7 @@ public class CursoREST {
 				if (curso == null) {
 					throw new NotFoundException("Curso não encontrado!");
 				} else {
-					List<Orientador> listaOrientadores = cursoService.buscarOrientadoresPorIdPrograma(idPrograma);
+					List<Orientador> listaOrientadores = cursoService.buscarOrientadoresPorIdPrograma(idPrograma, accessToken);
 					if (listaOrientadores == null) {
 						throw new NotFoundException("Orientadores não encontrados!");
 					} else {

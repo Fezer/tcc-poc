@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -365,11 +366,11 @@ public class CoafeREST {
 	// Não lembro como veio parar aqui e estou no meio de outra coisa. 
 	// Mantido para não quebrar algo, mas acho que pode apagar. Vou revisar em breve
 	@GetMapping("/{grrAlunoURL}/download-termo")
-	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 	        throw new BadRequestException("GRR do aluno não informado!");
 	    } else {
-	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 	        if (aluno == null) {
 	            throw new NotFoundException("Aluno não encontrado!");
 	        } else {
