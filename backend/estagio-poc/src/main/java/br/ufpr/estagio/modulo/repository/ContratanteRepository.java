@@ -9,7 +9,9 @@ import br.ufpr.estagio.modulo.model.Contratante;
 
 public interface ContratanteRepository extends JpaRepository<Contratante, Long> {
 
-	Optional<Contratante> findByNome(String nome);
+	//Optional<Contratante> findByNome(String nome);
+	
+	List<Contratante> findByNome(String nome);
 
 	List<Contratante> findByNomeContaining(String nomeContratante);
 

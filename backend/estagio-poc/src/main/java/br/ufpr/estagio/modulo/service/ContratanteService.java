@@ -59,7 +59,11 @@ public class ContratanteService {
 		
 	}
 
-	public Optional<Contratante> buscarPorNome(String nomeContratante) {
+	/*public Optional<Contratante> buscarPorNome(String nomeContratante) {
+		return contratanteRepo.findByNome(nomeContratante);
+	}*/
+	
+	public List<Contratante> buscarPorNome(String nomeContratante) {
 		return contratanteRepo.findByNome(nomeContratante);
 	}
 
