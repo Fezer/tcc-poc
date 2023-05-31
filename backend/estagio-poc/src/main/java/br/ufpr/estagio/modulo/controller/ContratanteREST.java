@@ -341,7 +341,7 @@ public class ContratanteREST {
 				throw new NotFoundException("Contratante não encontrado!");
 			} else {
 				if (enderecoDTO.getRua() == null || enderecoDTO.getRua().isEmpty())
-		    		throw new InvalidFieldException("Logradouro inválido.");
+		    		throw new InvalidFieldException("Rua inválida.");
 		    	
 		    	if (enderecoDTO.getNumero() < 1)
 		    		throw new InvalidFieldException("Número inválido.");
