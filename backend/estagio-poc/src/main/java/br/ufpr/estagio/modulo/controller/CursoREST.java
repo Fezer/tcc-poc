@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.CursoDTO;
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.OrientadorDTO;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Curso;
@@ -37,20 +40,21 @@ public class CursoREST {
     
     
     @GetMapping("/{idPrograma}")
-	public ResponseEntity<CursoDTO> buscarCursoPorIdPrograma(@PathVariable String idPrograma) {
+	public ResponseEntity<Object> buscarCursoPorIdPrograma(@PathVariable String idPrograma) {
     	try {
-			if (idPrograma.isBlank() || idPrograma.isEmpty()) {
-				throw new BadRequestException("ID do programa do Curso não informado!");
+			Optional<Curso> curso = Optional.ofNullable(cursoService.buscarCursoPorIdPrograma(idPrograma));
+			
+			if (curso.get() == null) {
+				throw new NotFoundException("Curso não encontrado!");
 			} else {
-				Optional<Curso> curso = Optional.ofNullable(cursoService.buscarCursoPorIdPrograma(idPrograma));
-				if (curso == null) {
-					throw new NotFoundException("Curso não encontrado!");
-				} else {
-					CursoDTO cursoDTO = mapper.map(curso, CursoDTO.class);
-					return ResponseEntity.status(HttpStatus.OK).body(cursoDTO);
-				}
+				CursoDTO cursoDTO = mapper.map(curso, CursoDTO.class);
+				return ResponseEntity.status(HttpStatus.OK).body(cursoDTO);
 			}
-		} catch (PocException e) {
+			
+		} catch (NoSuchElementException ex) {
+	        ErrorResponse response = new ErrorResponse("Curso não encontrado!");
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (PocException e) {
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
@@ -60,24 +64,22 @@ public class CursoREST {
 	}
     
     @GetMapping("/{idPrograma}/orientadores")
-	public ResponseEntity<List<OrientadorDTO>> buscarOrientadoresDoCurso(@PathVariable String idPrograma) {
+	public ResponseEntity<?> buscarOrientadoresDoCurso(@PathVariable String idPrograma) {
     	try {
-			if (idPrograma.isBlank() || idPrograma.isEmpty()) {
-				throw new BadRequestException("ID do programa do Curso não informado!");
+			Optional<Curso> curso = Optional.ofNullable(cursoService.buscarCursoPorIdPrograma(idPrograma));
+			
+			if (curso.get() == null) {
+				throw new NotFoundException("Curso não encontrado!");
 			} else {
-				Optional<Curso> curso = Optional.ofNullable(cursoService.buscarCursoPorIdPrograma(idPrograma));
-				if (curso == null) {
-					throw new NotFoundException("Curso não encontrado!");
-				} else {
-					List<Orientador> listaOrientadores = cursoService.buscarOrientadoresPorIdPrograma(idPrograma);
-					if (listaOrientadores == null) {
-						throw new NotFoundException("Orientadores não encontrados!");
-					} else {
-						return ResponseEntity.status(HttpStatus.OK).body(listaOrientadores.stream().map(e -> mapper.map(e, OrientadorDTO.class)).collect(Collectors.toList()));
-					}
-				}
+				List<Orientador> listaOrientadores = cursoService.buscarOrientadoresPorIdPrograma(idPrograma);
+				
+				return ResponseEntity.status(HttpStatus.OK).body(listaOrientadores.stream().map(e -> mapper.map(e, OrientadorDTO.class)).collect(Collectors.toList()));
+
 			}
-		} catch (PocException e) {
+		} catch (NoSuchElementException ex) {
+	        ErrorResponse response = new ErrorResponse("Curso não encontrado!");
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (PocException e) {
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
@@ -90,11 +92,9 @@ public class CursoREST {
 	public ResponseEntity<List<CursoDTO>> listarCursos() {
 		try {
 		    List<Curso> listaCursos = cursoService.listarTodosCursos();
-			if(listaCursos.isEmpty()) {
-				throw new NotFoundException("Nenhum curso encontrado!");
-			} else {
-				return ResponseEntity.status(HttpStatus.OK).body(listaCursos.stream().map(e -> mapper.map(e, CursoDTO.class)).collect(Collectors.toList()));
-			}
+			
+		    return ResponseEntity.status(HttpStatus.OK).body(listaCursos.stream().map(e -> mapper.map(e, CursoDTO.class)).collect(Collectors.toList()));
+			
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;
