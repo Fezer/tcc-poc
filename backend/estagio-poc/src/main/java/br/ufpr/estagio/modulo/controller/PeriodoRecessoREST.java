@@ -1,7 +1,9 @@
 package br.ufpr.estagio.modulo.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.PeriodoRecessoDTO;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.PeriodoRecesso;
@@ -49,19 +53,33 @@ public class PeriodoRecessoREST {
 	}
 	
 	@GetMapping("")
-	public ResponseEntity<List<PeriodoRecessoDTO>> listarTodos(){
-		List<PeriodoRecesso> lista = periodoRecessoService.listarTodos();
-		if(lista.isEmpty()) {
-			throw new NotFoundException("Nenhum período de recesso encontrado!");
-		} else {
-			return ResponseEntity.status(HttpStatus.OK).body(lista.stream().map(e -> mapper.map(e, PeriodoRecessoDTO.class)).collect(Collectors.toList()));
+	public ResponseEntity<?> listarTodos(){
+		try {
+			List<PeriodoRecesso> lista = periodoRecessoService.listarTodos();
+			if(lista.isEmpty()) {
+				throw new NotFoundException("Nenhum período de recesso encontrado!");
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(lista.stream().map(e -> mapper.map(e, PeriodoRecessoDTO.class)).collect(Collectors.toList()));
+			}
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<PeriodoRecessoDTO> listarPeriodoRecesso(@PathVariable Long id){
+	public ResponseEntity<Object> listarPeriodoRecesso(@PathVariable String id){
 		try {
-			Optional<PeriodoRecesso> periodoRecessoOptional = periodoRecessoService.buscarPorId(id);
+			long idLong = Long.parseLong(id);
+	    	
+		    if (idLong < 1) {
+		   		throw new InvalidFieldException("Id do período de recesso inválido!");
+		   	}
+		    
+			Optional<PeriodoRecesso> periodoRecessoOptional = periodoRecessoService.buscarPorId(idLong);
 		if(periodoRecessoOptional.isEmpty()) {
 			throw new NotFoundException("Período de recesso não encontrado!");
 		} else {
@@ -69,48 +87,90 @@ public class PeriodoRecessoREST {
 			PeriodoRecessoDTO periodoRecessoDTO = mapper.map(periodoRecesso, PeriodoRecessoDTO.class);
 			return new ResponseEntity<>(periodoRecessoDTO, HttpStatus.OK);
 		}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}catch(Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do termo de rescisão deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<PeriodoRecessoDTO> atualizar(@PathVariable Long id, @RequestBody PeriodoRecessoDTO periodoRecesso){
+	public ResponseEntity<Object> atualizar(@PathVariable String id, @RequestBody PeriodoRecessoDTO periodoRecesso){
 		try {
-			Optional<PeriodoRecesso> periodoRecessofind = periodoRecessoService.buscarPorId(id);
-		if(periodoRecessofind.isEmpty()) {
-			throw new NotFoundException("Periodo de recesso não encontrado!");
-		} else {
-			PeriodoRecesso periodoRecessoAtualizado = periodoRecessoService.atualizarDados(periodoRecessofind.get(), periodoRecesso);
-			return ResponseEntity.status(HttpStatus.OK).body(mapper.map(periodoRecessoAtualizado, PeriodoRecessoDTO.class));
-		}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
+			long idLong = Long.parseLong(id);
+	    	
+		    if (idLong < 1) {
+		   		throw new InvalidFieldException("Id do período de recesso inválido!");
+		   	}
+		    
+			Optional<PeriodoRecesso> periodoRecessoOptional = periodoRecessoService.buscarPorId(idLong);
+			if(periodoRecessoOptional.isEmpty()) {
+				throw new NotFoundException("Periodo de recesso não encontrado!");
+			} else {
+				
+				if (periodoRecesso.getDataFim().before(periodoRecesso.getDataInicio())) {
+					throw new InvalidFieldException("Data de término não pode ser igual ou anterior à data de início!");
+				}
+				
+				long diferencaMilissegundos = periodoRecesso.getDataFim().getTime() - periodoRecesso.getDataInicio().getTime();
+				long diferencaDias = TimeUnit.MILLISECONDS.toDays(diferencaMilissegundos);
+				
+				if (diferencaDias > 30) {
+				    throw new InvalidFieldException("O período de recesso deve ser de 30 dias!");
+				}
+				
+				PeriodoRecesso periodoRecessoAtualizado = periodoRecessoService.atualizarDados(periodoRecessoOptional.get(), periodoRecesso);
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(periodoRecessoAtualizado, PeriodoRecessoDTO.class));
+			}
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do termo de rescisão deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 		
 	@DeleteMapping("/{id}")
-	public ResponseEntity<PeriodoRecessoDTO> delete(@PathVariable Long id){
+	public ResponseEntity<Object> delete(@PathVariable String id){
 		try {
-			Optional<PeriodoRecesso> periodoRecessofind = periodoRecessoService.buscarPorId(id);
-		if(periodoRecessofind.isEmpty()) {
-			throw new NotFoundException("Período de recesso não encontrado!");
-		} else {
-			periodoRecessoService.deletar(id);
-			return ResponseEntity.status(HttpStatus.OK).body(null);
-		}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
+			long idLong = Long.parseLong(id);
+	    	
+		    if (idLong < 1) {
+		   		throw new InvalidFieldException("Id do período de recesso inválido!");
+		   	}
+		    
+			Optional<PeriodoRecesso> periodoRecessoOptional = periodoRecessoService.buscarPorId(idLong);
+			if(periodoRecessoOptional.isEmpty()) {
+				throw new NotFoundException("Período de recesso não encontrado!");
+			} else {
+				periodoRecessoService.deletar(idLong);
+				return ResponseEntity.status(HttpStatus.OK).body(null);
+			}
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do termo de rescisão deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}

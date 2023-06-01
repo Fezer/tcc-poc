@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.CertificadoDeEstagioDTO;
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
@@ -57,9 +59,16 @@ public class OrientadorREST {
 	private TermoDeRescisaoService termoDeRescisaoService;
 
 	@GetMapping("/{idOrientador}/estagio")
-	public ResponseEntity<List<EstagioDTO>> listarEstagiosDeOrientandos(@PathVariable Long idOrientador) {
+	public ResponseEntity<?> listarEstagiosDeOrientandos(@PathVariable String idOrientador) {
 		try {
-			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientador);
+			long idLongOrientador = Long.parseLong(idOrientador);
+	    	
+		    if (idLongOrientador < 1) {
+		   		throw new InvalidFieldException("Id do orientador inválido!");
+		   	}
+		    
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idLongOrientador);
+			
 			if (orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");
 			} else {
@@ -71,20 +80,30 @@ public class OrientadorREST {
 				}
 				return new ResponseEntity<>(listaDTO, HttpStatus.OK);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 
 	@GetMapping("/{idOrientador}/estagio/pendenteAprovacao")
-	public ResponseEntity<List<EstagioDTO>> listarEstagiosDeOrientandosPendenteAprovacao(
-			@PathVariable Long idOrientador) {
+	public ResponseEntity<?> listarEstagiosDeOrientandosPendenteAprovacao(
+			@PathVariable String idOrientador) {
 		try {
-			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientador);
+			long idLongOrientador = Long.parseLong(idOrientador);
+	    	
+		    if (idLongOrientador < 1) {
+		   		throw new InvalidFieldException("Id do orientador inválido!");
+		   	}
+		    
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idLongOrientador);
+			
 			if (orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");
 			} else {
@@ -97,19 +116,29 @@ public class OrientadorREST {
 				}
 				return new ResponseEntity<>(listaDTO, HttpStatus.OK);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 
 	@GetMapping("/{idOrientador}/estagio/indeferido")
-	public ResponseEntity<List<EstagioDTO>> listarEstagiosDeOrientandosIndeferido(@PathVariable Long idOrientador) {
+	public ResponseEntity<?> listarEstagiosDeOrientandosIndeferido(@PathVariable String idOrientador) {
 		try {
-			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientador);
+			long idLongOrientador = Long.parseLong(idOrientador);
+	    	
+		    if (idLongOrientador < 1) {
+		   		throw new InvalidFieldException("Id do orientador inválido!");
+		   	}
+		    
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idLongOrientador);
+			
 			if (orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");
 			} else {
@@ -122,20 +151,30 @@ public class OrientadorREST {
 				}
 				return new ResponseEntity<>(listaDTO, HttpStatus.OK);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 
 	@GetMapping("/{idOrientador}/relatorioDeEstagio/")
-	public ResponseEntity<List<RelatorioDeEstagioDTO>> listarRelatoriosDeEstagioDeOrientandos(
-			@PathVariable Long idOrientador) {
+	public ResponseEntity<?> listarRelatoriosDeEstagioDeOrientandos(
+			@PathVariable String idOrientador) {
 		try {
-			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientador);
+			long idLongOrientador = Long.parseLong(idOrientador);
+	    	
+		    if (idLongOrientador < 1) {
+		   		throw new InvalidFieldException("Id do orientador inválido!");
+		   	}
+		    
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idLongOrientador);
+			
 			if (orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");
 			} else {
@@ -146,20 +185,30 @@ public class OrientadorREST {
 						.map(ap -> mapper.map(ap, RelatorioDeEstagioDTO.class)).collect(Collectors.toList());
 				return ResponseEntity.ok().body(listaRelatoriosDTO);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 
 	@GetMapping("/{idOrientador}/relatorioDeEstagio/pendenteCiencia")
-	public ResponseEntity<List<RelatorioDeEstagioDTO>> listarRelatoriosDeEstagioDeOrientandosPendenteCiencia(
-			@PathVariable Long idOrientador) {
+	public ResponseEntity<?> listarRelatoriosDeEstagioDeOrientandosPendenteCiencia(
+			@PathVariable String idOrientador) {
 		try {
-			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientador);
+			long idLongOrientador = Long.parseLong(idOrientador);
+	    	
+		    if (idLongOrientador < 1) {
+		   		throw new InvalidFieldException("Id do orientador inválido!");
+		   	}
+		    
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idLongOrientador);
+			
 			if (orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");
 			} else {
@@ -170,24 +219,42 @@ public class OrientadorREST {
 						.map(ap -> mapper.map(ap, RelatorioDeEstagioDTO.class)).collect(Collectors.toList());
 				return ResponseEntity.ok().body(listaRelatoriosDTO);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 
 	@PutMapping("/{idOrientador}/relatorioDeEstagio/{idRelatorio}/darCiencia")
-	public ResponseEntity<RelatorioDeEstagioDTO> darCienciaRelatorioDeEstagio(@PathVariable Long idOrientador,
-			@PathVariable Long idRelatorio) {
+	public ResponseEntity<Object> darCienciaRelatorioDeEstagio(@PathVariable String idOrientador,
+			@PathVariable String idRelatorio) {
 		try {
-			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientador);
+			long idLongOrientador = Long.parseLong(idOrientador);
+	    	
+		    if (idLongOrientador < 1) {
+		   		throw new InvalidFieldException("Id do orientador inválido!");
+		   	}
+		    
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idLongOrientador);
+			
 			if (orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");
 			}
-			Optional<RelatorioDeEstagio> relatorioFind = relatorioDeEstagioService.buscarRelatorioPorId(idRelatorio);
+			
+			long idLongRelatorio = Long.parseLong(idRelatorio);
+	    	
+		    if (idLongRelatorio < 1) {
+		   		throw new InvalidFieldException("Id do relatório inválido!");
+		   	}
+			
+			Optional<RelatorioDeEstagio> relatorioFind = relatorioDeEstagioService.buscarRelatorioPorId(idLongRelatorio);
+			
 			if (relatorioFind.isEmpty()) {
 				throw new NotFoundException("Relatório não encontrado!");
 			} else {
@@ -195,19 +262,29 @@ public class OrientadorREST {
 				relatorio = relatorioDeEstagioService.darCienciaRelatorioDeEstagioOrientador(relatorio);
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(relatorio, RelatorioDeEstagioDTO.class));
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 
 	@GetMapping("/{idOrientador}/certificadoDeEstagio/")
-	public ResponseEntity<List<CertificadoDeEstagioDTO>> listarCertificadosDeEstagio(@PathVariable Long idOrientador) {
+	public ResponseEntity<?> listarCertificadosDeEstagio(@PathVariable String idOrientador) {
 		try {
-			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientador);
+			long idLongOrientador = Long.parseLong(idOrientador);
+	    	
+		    if (idLongOrientador < 1) {
+		   		throw new InvalidFieldException("Id do orientador inválido!");
+		   	}
+		    
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idLongOrientador);
+			
 			if (orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");
 			} else {
@@ -218,49 +295,77 @@ public class OrientadorREST {
 						.map(ap -> mapper.map(ap, CertificadoDeEstagioDTO.class)).collect(Collectors.toList());
 				return ResponseEntity.ok().body(listaCertificadosDTO);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 
 	@GetMapping("/{idOrientador}/termoDeRescisao/pendenteCiencia")
-	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPendenteCienciaOrientador(
-			@PathVariable Long idOrientador) {
+	public ResponseEntity<?> listarTermosDeRescisaoPendenteCienciaOrientador(
+			@PathVariable String idOrientador) {
 		try {
-			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientador);
+			long idLongOrientador = Long.parseLong(idOrientador);
+	    	
+		    if (idLongOrientador < 1) {
+		   		throw new InvalidFieldException("Id do orientador inválido!");
+		   	}
+		    
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idLongOrientador);
+			
 			if (orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");
 			}
 			List<TermoDeRescisao> listaTermosDeRescisao = termoDeRescisaoService
-					.listarTermosDeRescisaoPendenteCienciaOrientador(idOrientador);
+					.listarTermosDeRescisaoPendenteCienciaOrientador(idLongOrientador);
 			if (listaTermosDeRescisao == null || listaTermosDeRescisao.isEmpty()) {
 				return null;
 			} else {
 				return ResponseEntity.status(HttpStatus.OK).body(listaTermosDeRescisao.stream()
 						.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 
 	@PutMapping("/{idOrientador}/termoDeRescisao/{idTermo}/darCiencia")
-	public ResponseEntity<TermoDeRescisaoDTO> darCienciaTermoDeRescisao(@PathVariable Long idOrientador,
-			@PathVariable Long idTermo) {
+	public ResponseEntity<Object> darCienciaTermoDeRescisao(@PathVariable String idOrientador,
+			@PathVariable String idTermo) {
 		try {
-			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientador);
+			long idLongOrientador = Long.parseLong(idOrientador);
+	    	
+		    if (idLongOrientador < 1) {
+		   		throw new InvalidFieldException("Id do orientador inválido!");
+		   	}
+		    
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idLongOrientador);
+			
 			if (orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");
 			}
-			Optional<TermoDeRescisao> termoOptional = termoDeRescisaoService.buscarPorId(idTermo);
+			
+			long idLongTermo = Long.parseLong(idTermo);
+	    	
+		    if (idLongTermo < 1) {
+		   		throw new InvalidFieldException("Id do termo inválido!");
+		   	}
+		    
+			Optional<TermoDeRescisao> termoOptional = termoDeRescisaoService.buscarPorId(idLongTermo);
+			
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -269,10 +374,13 @@ public class OrientadorREST {
 				TermoDeRescisaoDTO termoDTO = mapper.map(termo, TermoDeRescisaoDTO.class);
 				return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
 			e.printStackTrace();
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
