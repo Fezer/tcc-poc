@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.CertificadoDeEstagioDTO;
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
+import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 
@@ -44,36 +47,76 @@ public class CertificadoDeEstagioREST {
         
     @GetMapping("/")
 	public ResponseEntity<List<CertificadoDeEstagioDTO>> listarCertificadosDeEstagio() {
-	    List<CertificadoDeEstagio> listaCertificadosDeEstagio = certificadoDeEstagioService.listarTodosCertificadosDeEstagio();
-	    List<CertificadoDeEstagioDTO> listaCertificadosDeEstagioDTO = listaCertificadosDeEstagio.stream()
-	            .map(ap -> mapper.map(ap, CertificadoDeEstagioDTO.class))
-	            .collect(Collectors.toList());
-	    return ResponseEntity.ok().body(listaCertificadosDeEstagioDTO);
+	    try {
+		    List<CertificadoDeEstagio> listaCertificadosDeEstagio = certificadoDeEstagioService.listarTodosCertificadosDeEstagio();
+		    List<CertificadoDeEstagioDTO> listaCertificadosDeEstagioDTO = listaCertificadosDeEstagio.stream()
+		            .map(ap -> mapper.map(ap, CertificadoDeEstagioDTO.class))
+		            .collect(Collectors.toList());
+		    return ResponseEntity.ok().body(listaCertificadosDeEstagioDTO);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
 	}
     
     @GetMapping("/{idCertificadoDeEstagio}")
-	public ResponseEntity<CertificadoDeEstagioDTO> buscarCertificadoDeEstagioPorId(@PathVariable long idCertificadoDeEstagio) {
-	    Optional<CertificadoDeEstagio> certificadoDeEstagio = certificadoDeEstagioService.buscarCertificadoDeEstagioPorId(idCertificadoDeEstagio);
+	public ResponseEntity<Object> buscarCertificadoDeEstagioPorId(@PathVariable String idCertificadoDeEstagio) {
+	    try {
+    		long idLongCertificadoDeEstagio = Long.parseLong(idCertificadoDeEstagio);
+	    	
+		    if (idLongCertificadoDeEstagio < 1) {
+		   		throw new InvalidFieldException("Id do certificado de estágio inválido!");
+		   	}
+		    
+    		Optional<CertificadoDeEstagio> certificadoDeEstagio = certificadoDeEstagioService.buscarCertificadoDeEstagioPorId(idLongCertificadoDeEstagio);
+    	
 	    
-	    if (certificadoDeEstagio.isEmpty()) {
-			throw new NotFoundException("Certificado de estágio não encontrado!");
+		    if (certificadoDeEstagio.isEmpty()) {
+				throw new NotFoundException("Certificado de estágio não encontrado!");
+			}
+		    
+		    CertificadoDeEstagioDTO certificadoDeEstagioDTO = mapper.map(certificadoDeEstagio.get(), CertificadoDeEstagioDTO.class);
+		    return ResponseEntity.status(HttpStatus.OK).body(certificadoDeEstagioDTO);
+    	} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do certificado de estágio deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
-	    
-	    CertificadoDeEstagioDTO certificadoDeEstagioDTO = mapper.map(certificadoDeEstagio.get(), CertificadoDeEstagioDTO.class);
-	    return ResponseEntity.status(HttpStatus.OK).body(certificadoDeEstagioDTO);
 	}
 
     @DeleteMapping("/{idCertificadoDeEstagio}")
-    public ResponseEntity<Void> excluirCertificadoDeEstagio(@PathVariable long idCertificadoDeEstagio){
-    	
-	    Optional<CertificadoDeEstagio> certificadoDeEstagio = certificadoDeEstagioService.buscarCertificadoDeEstagioPorId(idCertificadoDeEstagio);
-	    
-	    if (certificadoDeEstagio.isEmpty()) {
-	    	throw new NotFoundException("Certificado de estágio não encontrado!");
+    public ResponseEntity<?> excluirCertificadoDeEstagio(@PathVariable String idCertificadoDeEstagio){
+    	try {
+    		long idLongCertificadoDeEstagio = Long.parseLong(idCertificadoDeEstagio);
+	    	
+		    if (idLongCertificadoDeEstagio < 1) {
+		   		throw new InvalidFieldException("Id do certificado de estágio inválido!");
+		   	}
+		    
+    		Optional<CertificadoDeEstagio> certificadoDeEstagio = certificadoDeEstagioService.buscarCertificadoDeEstagioPorId(idLongCertificadoDeEstagio);
+		    
+		    if (certificadoDeEstagio.isEmpty()) {
+		    	throw new NotFoundException("Certificado de estágio não encontrado!");
+			}
+		    
+		    certificadoDeEstagioService.deletarCertificadoDeEstagio(certificadoDeEstagio.get());
+		    
+		    return ResponseEntity.noContent().build();
+		    
+    	} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do certificado de estágio deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
-	    
-	    certificadoDeEstagioService.deletarCertificadoDeEstagio(certificadoDeEstagio.get());
-	    
-	    return ResponseEntity.noContent().build();
     }
 }
