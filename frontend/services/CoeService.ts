@@ -39,4 +39,13 @@ export default class CoeService extends BaseService {
       },
     });
   }
+  // http://localhost:5000/coe/termoDeRescisao/2/darCiencia
+  async cienciaTermoRescisao(termo: number) {
+    return await $fetch(
+      this.BASE_URL + `/coe/termoDeRescisao/${termo}/darCiencia`,
+      {
+        method: "PUT",
+      }
+    );
+  }
 }

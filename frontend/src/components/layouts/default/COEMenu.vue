@@ -21,6 +21,11 @@ export default defineComponent({
 
         link: "/coe/processos/termoAditivo",
       },
+      {
+        label: "Termos de Rescisão",
+
+        link: "/coe/termo-rescisao",
+      },
     ];
 
     return {
