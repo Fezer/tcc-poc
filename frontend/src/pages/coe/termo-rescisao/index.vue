@@ -1,25 +1,33 @@
 <script>
-export default {
+import { defineComponent } from "vue";
+import parseTipoTermo from "~~/src/utils/parseTipoProcesso";
+
+export default defineComponent({
   setup() {
+    const route = useRoute();
+
+    const { processo } = route.params;
+
     const { data: processes } = useFetch(
-      "http://localhost:5000/coafe/termo/pendenteAprovacaoCoafe"
+      `http://localhost:5000/coe/termoDeRescisao/pendenteCiencia`
     );
 
-    const accessToken = localStorage.getItem("accessToken");
+    console.log(processes);
 
     return {
       processes,
+      parseTipoTermo,
     };
   },
-};
+});
 </script>
 
 <template>
   <div>
     <div>
       <h1>
-        COAFE
-        <h6>COAFE</h6>
+        COE
+        <h6>Comissão Orientadora de Estágio</h6>
       </h1>
     </div>
     <div>
@@ -36,14 +44,10 @@ export default {
           </div>
         </template>
         <Column field="process" header="Processo">
-          <template #body="{ data }">
-            {{ data.id }}
-          </template>
+          <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
         <Column field="process_type" header="Tipo de Processo">
-          <template #body="{ data }">
-            {{ data.tipoTermoDeEstagio }}
-          </template>
+          <template #body="{ data }"> Termo de Rescisão </template>
         </Column>
         <Column field="student_name" header="Nome do Aluno">
           <template #body="{ data }">
@@ -60,18 +64,23 @@ export default {
             {{ data?.contratante?.nome }}
           </template>
         </Column>
+        <Column field="process_type" header="Data Término Estágio">
+          <template #body="{ data }">
+            {{ parseDate(data?.dataTermino) }}
+          </template>
+        </Column>
         <Column
           field="action"
           header="Ação necessária"
           bodyStyle="color:orange;"
         >
           <template #body="{ data }">
-            Parecer {{ data.tipoTermoDeEstagio }}
+            <Tag value="Parecer" severity="warning" class="p-2 font-md" />
           </template>
         </Column>
         <Column field="button">
           <template #body="{ data }">
-            <NuxtLink :to="`/coafe/termo/${data.id}`">
+            <NuxtLink :to="`/coe/termo-rescisao/${data.id}`">
               <Button label="Ver contato"></Button>
             </NuxtLink>
           </template>

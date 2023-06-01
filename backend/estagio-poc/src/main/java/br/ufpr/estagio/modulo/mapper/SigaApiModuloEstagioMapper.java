@@ -54,7 +54,7 @@ public class SigaApiModuloEstagioMapper {
 	@Autowired
 	private ModelMapper mapper;
 	
-	public Aluno mapearDiscenteEmAluno (Discente discente) {
+	public Aluno mapearDiscenteEmAluno (Discente discente, String accessToken) {
 		Optional<Aluno> alunoFind = alunoRepo.findByMatricula(discente.getGrr());
 		Aluno aluno;
 		//Endereco endereco;
@@ -93,7 +93,7 @@ public class SigaApiModuloEstagioMapper {
 			endereco = aluno.getEndereco();*/
 		}
 		
-		Curso curso = mapearCursoSigaEmCurso(discente);
+		Curso curso = mapearCursoSigaEmCurso(discente, accessToken);
 		
 		Coordenador coordenador = coordenadorService.mapearCoordenadorDiscente(discente);
 		
@@ -140,11 +140,11 @@ public class SigaApiModuloEstagioMapper {
 		//return null;
 	}
 	
-	public Curso mapearCursoSigaEmCurso(Discente discente) {
+	public Curso mapearCursoSigaEmCurso(Discente discente, String accessToken) {
 		
 		Optional<Curso> cursoFind = cursoRepo.findByIdCurso(discente.getIdCurso());
 		if(cursoFind.isEmpty()) {
-			CursoSiga cursoSiga = sigaApiCursoSigaService.buscarCursoSigaPorIdCurso(discente.getIdCurso());
+			CursoSiga cursoSiga = sigaApiCursoSigaService.buscarCursoSigaPorIdCurso(discente.getIdCurso(), accessToken);
 			Curso curso = new Curso();
 			curso = mapper.map(cursoSiga, Curso.class);
 			return curso;

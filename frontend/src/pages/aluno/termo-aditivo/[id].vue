@@ -112,6 +112,8 @@ export default defineComponent({
     };
 
     const handleEditarTermo = () => {
+      // seta o termo atual para edição
+      // no caso do termo aditivo, é necessário para comparar com dados do estágio ativo
       setTermo(termo.value);
 
       router.push({
@@ -134,11 +136,9 @@ export default defineComponent({
         });
         state.cancelationConfirm = false;
 
-        setTimeout(() => {
-          router.push({
-            path: "/aluno",
-          });
-        }, 3000);
+        router.push({
+          path: "/aluno",
+        });
       } catch (err) {
         toast.add({
           severity: "error",

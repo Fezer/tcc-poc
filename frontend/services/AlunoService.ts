@@ -4,36 +4,29 @@ import { BaseTermo } from "~~/src/types/Termos";
 
 export default class AlunoService extends BaseService {
   public async getAlunoFromSiga(grr: string) {
-    return await $fetch(`${this.BASE_URL}/aluno/${grr}`).catch((err) =>
-      console.error(err)
-    );
+    return await $fetch(`/aluno/${grr}`).catch((err) => console.error(err));
   }
 
   public async getCursoAlunoFromSiga(idCurso: string) {
-    return await $fetch(`${this.BASE_URL}/curso/${idCurso}`).catch((err) =>
-      console.error(err)
-    );
+    return await $fetch(`/curso/${idCurso}`).catch((err) => console.error(err));
   }
 
   public async getAlunoFullFromSiga(grr: string) {
-    return await $fetch(`${this.BASE_URL}/siga/aluno?grr=${grr}`).catch((err) =>
+    return await $fetch(`/siga/aluno?grr=${grr}`).catch((err) =>
       console.error(err)
     );
   }
 
   public async getEstagioEmAndamento(grr: string) {
-    return await $fetch(
-      `${this.BASE_URL}/aluno/${grr}/estagio/emProgresso`
-    ).catch((err) => console.error(err));
+    return await $fetch(`/aluno/${grr}/estagio/emProgresso`).catch((err) =>
+      console.error(err)
+    );
   }
 
   public async novoRelatorioDeEstagio(grr: string, estagio: number) {
-    return await $fetch(
-      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/relatorioDeEstagio`,
-      {
-        method: "POST",
-      }
-    );
+    return await $fetch(`/aluno/${grr}/estagio/${estagio}/relatorioDeEstagio`, {
+      method: "POST",
+    });
   }
 
   // http://localhost:5000/aluno/GRR20175486/estagio/17/relatorioDeEstagio/7/solicitarCiencia
@@ -43,7 +36,7 @@ export default class AlunoService extends BaseService {
     relatorio: number
   ) {
     return await $fetch(
-      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/relatorioDeEstagio/${relatorio}/solicitarCiencia`,
+      `/aluno/${grr}/estagio/${estagio}/relatorioDeEstagio/${relatorio}/solicitarCiencia`,
       {
         method: "PUT",
       }
@@ -67,7 +60,7 @@ export default class AlunoService extends BaseService {
       emailInstitucional: string;
     }
   ) {
-    return await $fetch(`${this.BASE_URL}/aluno/${grr}/dadosAuxiliares`, {
+    return await $fetch(`/aluno/${grr}/dadosAuxiliares`, {
       method: "PUT",
       body: {
         ...dados,
@@ -76,17 +69,14 @@ export default class AlunoService extends BaseService {
   }
 
   public async criarFichaDeAvaliacao(grr: string, estagio: number) {
-    return await $fetch(
-      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/fichaDeAvaliacao`,
-      {
-        method: "POST",
-      }
-    );
+    return await $fetch(`/aluno/${grr}/estagio/${estagio}/fichaDeAvaliacao`, {
+      method: "POST",
+    });
   }
 
   public async solicitarCertificadoEstagio(grr: string, estagio: number) {
     return await $fetch(
-      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/certificadoDeEstagio`,
+      `/aluno/${grr}/estagio/${estagio}/certificadoDeEstagio`,
       {
         method: "POST",
       }
@@ -94,7 +84,7 @@ export default class AlunoService extends BaseService {
   }
 
   public async criaDadosBancarios(grr: string, dados: any) {
-    return await $fetch(`${this.BASE_URL}/aluno/${grr}/dadosBancarios`, {
+    return await $fetch(`/aluno/${grr}/dadosBancarios`, {
       method: "POST",
       body: {
         ...dados,
@@ -103,7 +93,7 @@ export default class AlunoService extends BaseService {
   }
 
   public async uploadTermo(grr: string, termoData: FormData) {
-    return await $fetch(`${this.BASE_URL}/aluno/${grr}/upload-termo`, {
+    return await $fetch(`/aluno/${grr}/upload-termo`, {
       method: "POST",
       body: termoData,
     });
@@ -112,17 +102,14 @@ export default class AlunoService extends BaseService {
 
   public async getEstagioEmRevisao(grr: string) {
     return await $fetch(
-      `${this.BASE_URL}/aluno/${grr}/estagio/termoCompromisso?statusTermo=EmRevisao`
+      `/aluno/${grr}/estagio/termoCompromisso?statusTermo=EmRevisao`
     );
   }
 
   public async criarTermoAditivo(grr: string, estagio: number) {
-    return await $fetch(
-      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/termoAditivo`,
-      {
-        method: "POST",
-      }
-    );
+    return await $fetch(`/aluno/${grr}/estagio/${estagio}/termoAditivo`, {
+      method: "POST",
+    });
   }
 
   public async cancelarTermoAditivo(
@@ -131,7 +118,7 @@ export default class AlunoService extends BaseService {
     estagio: number
   ) {
     return await $fetch(
-      `${this.BASE_URL}/aluno/${grr}/estagio/${estagio}/termoAditivo/${termo}/cancelarTermoAditivo`,
+      `/aluno/${grr}/estagio/${estagio}/termoAditivo/${termo}/cancelarTermoAditivo`,
       {
         method: "PUT",
       }
@@ -139,7 +126,7 @@ export default class AlunoService extends BaseService {
   }
 
   public async getTermoAditivoAtivo(grr: string): Promise<boolean> {
-    return await $fetch(`${this.BASE_URL}/aluno/${grr}/termoAditivo/`)
+    return await $fetch(`/aluno/${grr}/termoAditivo/`)
       .then((response: BaseTermo[]) => {
         return response?.some((termo: BaseTermo) =>
           ["EmPreenchimento", "EmRevisao", "EmAprovacao"].includes(
@@ -151,5 +138,24 @@ export default class AlunoService extends BaseService {
         console.error(err);
         return false;
       });
+  }
+
+  public async criarTermoDeRecisao(grr: string, estagio: number) {
+    return await $fetch(`/aluno/${grr}/estagio/${estagio}/termoDeRescisao`, {
+      method: "POST",
+    });
+  }
+
+  public async solicitarCienciaDeTermoDeRecisao(
+    grr: string,
+    estagio: number,
+    termo: number
+  ) {
+    return await $fetch(
+      `/aluno/${grr}/estagio/${estagio}/termoDeRescisao/${termo}/solicitarCiencia`,
+      {
+        method: "PUT",
+      }
+    );
   }
 }

@@ -78,9 +78,7 @@ export default defineComponent({
           life: 3000,
         });
 
-        setTimeout(() => {
-          router.push("/aluno/relatorio/" + relatorioID);
-        }, 3000);
+        router.push("/aluno/relatorio/" + relatorioID);
       } catch (error) {
         console.log(error);
         toast.add({

@@ -30,7 +30,7 @@ export default defineComponent({
       {
         label: "Termos de Recisão",
 
-        link: "/aluno/processos/termos-de-recisao",
+        link: "/aluno/processos/termos-de-rescisao",
       },
       {
         label: "Relatórios de Estágio",

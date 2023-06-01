@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -127,12 +128,12 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}")
-	public ResponseEntity<Aluno> listarAluno(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<Aluno> listarAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -151,12 +152,12 @@ public class AlunoREST {
 	}
 
 	@PostMapping("/{grrAlunoURL}/estagio")
-	public ResponseEntity<EstagioDTO> novoEstagio(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<EstagioDTO> novoEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -177,12 +178,12 @@ public class AlunoREST {
 	}
 
 	@DeleteMapping("/{grrAlunoURL}/estagio/{idEstagio}")
-	public ResponseEntity<Void> deletarEstagio(@PathVariable String grrAlunoURL, @PathVariable Long idEstagio) {
+	public ResponseEntity<Void> deletarEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @PathVariable Long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -208,12 +209,12 @@ public class AlunoREST {
 
 	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}")
 	@ResponseBody
-	public ResponseEntity<Object> cancelarEstagio(@PathVariable String grrAlunoURL, @PathVariable Long idEstagio) {
+	public ResponseEntity<Object> cancelarEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @PathVariable Long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -244,12 +245,12 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/dadosAuxiliares")
 	@ResponseBody
-	public ResponseEntity<Object> listarDadosAuxiliares(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<Object> listarDadosAuxiliares(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Optional<Aluno> alunoOptional = alunoService.buscarAlunoGrr(grrAlunoURL);
+				Optional<Aluno> alunoOptional = alunoService.buscarAlunoGrr(grrAlunoURL, accessToken);
 				Aluno aluno = alunoOptional.get();
 
 				if (aluno == null)
@@ -280,10 +281,10 @@ public class AlunoREST {
 
 	@PutMapping("/{grrAlunoURL}/dadosAuxiliares")
 	@ResponseBody
-	public ResponseEntity<Object> atualizarDadosAuxiliares(@PathVariable String grrAlunoURL,
+	public ResponseEntity<Object> atualizarDadosAuxiliares(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@RequestBody DadosAuxiliaresDTO dadosDTO) {
 		try {
-			Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL);
+			Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL, accessToken);
 			Aluno alunoAntigo = aluno.get();
 
 			if (aluno.isPresent()) {
@@ -312,10 +313,10 @@ public class AlunoREST {
 	}
 
 	@PostMapping("/{grrAlunoURL}/dadosBancarios")
-	public ResponseEntity<DadosBancariosDTO> criarDadosBancarios(@PathVariable String grrAlunoURL,
+	public ResponseEntity<DadosBancariosDTO> criarDadosBancarios(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@RequestBody DadosBancariosDTO dadosBancariosDTO) {
 		try {
-			Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL);
+			Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL, accessToken);
 			Aluno alunoAntigo = aluno.get();
 
 			if (aluno.isPresent()) {
@@ -337,12 +338,12 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/dadosBancarios")
 	@ResponseBody
-	public ResponseEntity<Object> listarDadosBancarios(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<Object> listarDadosBancarios(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Optional<Aluno> alunoOptional = alunoService.buscarAlunoGrr(grrAlunoURL);
+				Optional<Aluno> alunoOptional = alunoService.buscarAlunoGrr(grrAlunoURL, accessToken);
 				Aluno aluno = alunoOptional.get();
 
 				if (aluno == null)
@@ -373,10 +374,10 @@ public class AlunoREST {
 
 	@PutMapping("/{grrAlunoURL}/dadosBancarios")
 	@ResponseBody
-	public ResponseEntity<Object> atualizarDadosBancarios(@PathVariable String grrAlunoURL,
+	public ResponseEntity<Object> atualizarDadosBancarios(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@RequestBody DadosBancariosDTO dadosDTO) {
 		try {
-			Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL);
+			Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL, accessToken);
 			Aluno alunoAntigo = aluno.get();
 
 			if (aluno.isPresent()) {
@@ -405,13 +406,13 @@ public class AlunoREST {
 	}
 
 	@PutMapping("/{grrAlunoURL}/termo/{idTermo}/solicitarAprovacaoTermo")
-	public ResponseEntity<TermoDeEstagioDTO> solicitarAprovacaoTermo(@PathVariable String grrAlunoURL,
+	public ResponseEntity<TermoDeEstagioDTO> solicitarAprovacaoTermo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@PathVariable Long idTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -438,12 +439,12 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/estagio/emPreenchimento")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmPreenchimento(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmPreenchimento(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -473,12 +474,12 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/estagio/emAprovacao")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmAprovacao(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmAprovacao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -513,12 +514,12 @@ public class AlunoREST {
 	 * andamento.
 	 **/
 	@GetMapping("/{grrAlunoURL}/estagio/emProgresso")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmProgresso(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmProgresso(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -548,13 +549,13 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/estagio")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioPorStatus(@PathVariable String grrAlunoURL,
+	public ResponseEntity<List<EstagioDTO>> buscarEstagioPorStatus(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@RequestParam String statusEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -584,12 +585,12 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/estagio/")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioPorAluno(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<List<EstagioDTO>> buscarEstagioPorAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -619,13 +620,13 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/estagio/termoCompromisso")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioPorStatusTermoCompromisso(@PathVariable String grrAlunoURL,
+	public ResponseEntity<List<EstagioDTO>> buscarEstagioPorStatusTermoCompromisso(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@RequestParam String statusTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -656,13 +657,13 @@ public class AlunoREST {
 
 	/*
 	 * @GetMapping("/{grrAlunoURL}/gerar-termo") public ResponseEntity<byte[]>
-	 * gerarTermoPdf(@PathVariable String grrAlunoURL) throws IOException {
+	 * gerarTermoPdf(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) throws IOException {
 	 * 
 	 * // TO-DO: Jogar dentro de um try-catch
 	 * 
 	 * if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) { throw new
 	 * BadRequestException("GRR do aluno não informado!"); } else { Aluno aluno =
-	 * alunoService.buscarAlunoPorGrr(grrAlunoURL); if (aluno == null) { throw new
+	 * alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken); if (aluno == null) { throw new
 	 * NotFoundException("Aluno não encontrado!"); } else { List<Estagio> estagio =
 	 * estagioService.buscarEstagioPorAluno(aluno); if (estagio.get(0) == null) {
 	 * throw new NotFoundException("Estágio não encontrado para o aluno " +
@@ -678,7 +679,7 @@ public class AlunoREST {
 	 */
 
 	@GetMapping("/{grrAlunoURL}/gerar-termo")
-	public ResponseEntity<byte[]> gerarTermoPdf(@PathVariable String grrAlunoURL)
+	public ResponseEntity<byte[]> gerarTermoPdf(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken)
 			throws IOException, DocumentException {
 
 		// TO-DO: Jogar dentro de um try-catch
@@ -686,7 +687,7 @@ public class AlunoREST {
 		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 			throw new BadRequestException("GRR do aluno não informado!");
 		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 			if (aluno == null) {
 				throw new NotFoundException("Aluno não encontrado!");
 			} else {
@@ -708,7 +709,7 @@ public class AlunoREST {
 	}
 
 	@PostMapping("/{grrAlunoURL}/upload-termo")
-	public ResponseEntity<String> uploadTermo(@PathVariable String grrAlunoURL,
+	public ResponseEntity<String> uploadTermo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@RequestParam("file") MultipartFile file) {
 
 		// TO-DO: Jogar dentro de um try-catch
@@ -716,7 +717,7 @@ public class AlunoREST {
 		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 			throw new BadRequestException("GRR do aluno não informado!");
 		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 			if (aluno == null) {
 				throw new NotFoundException("Aluno não encontrado!");
 			} else {
@@ -745,11 +746,11 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/download-termo")
-	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 			throw new BadRequestException("GRR do aluno não informado!");
 		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 			if (aluno == null) {
 				throw new NotFoundException("Aluno não encontrado!");
 			} else {
@@ -779,13 +780,13 @@ public class AlunoREST {
 	}
 
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/relatorioDeEstagio")
-	public ResponseEntity<RelatorioDeEstagioDTO> criarRelatorioDeEstagio(@PathVariable String grrAlunoURL,
+	public ResponseEntity<RelatorioDeEstagioDTO> criarRelatorioDeEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@PathVariable long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -816,13 +817,13 @@ public class AlunoREST {
 	}
 
 	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/relatorioDeEstagio/{idRelatorio}/solicitarCiencia")
-	public ResponseEntity<RelatorioDeEstagioDTO> solicitarCienciaRelatorioDeEstagio(@PathVariable String grrAlunoURL,
+	public ResponseEntity<RelatorioDeEstagioDTO> solicitarCienciaRelatorioDeEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@PathVariable long idEstagio, @PathVariable long idRelatorio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -863,13 +864,13 @@ public class AlunoREST {
 	}
 
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/fichaDeAvaliacao")
-	public ResponseEntity<FichaDeAvaliacaoDTO> criarFichaDeAvaliacao(@PathVariable String grrAlunoURL,
+	public ResponseEntity<FichaDeAvaliacaoDTO> criarFichaDeAvaliacao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@PathVariable long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -903,13 +904,13 @@ public class AlunoREST {
 	}
 
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/certificadoDeEstagio")
-	public ResponseEntity<CertificadoDeEstagioDTO> solicitarCertificadoDeEstagio(@PathVariable String grrAlunoURL,
+	public ResponseEntity<CertificadoDeEstagioDTO> solicitarCertificadoDeEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@PathVariable long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -948,12 +949,12 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/certificadoDeEstagio")
-	public ResponseEntity<List<CertificadoDeEstagioDTO>> listarCertificadosDeEstagio(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<List<CertificadoDeEstagioDTO>> listarCertificadosDeEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -980,13 +981,13 @@ public class AlunoREST {
 	}
 
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoAditivo")
-	public ResponseEntity<TermoDeEstagioDTO> novoTermoAditivo(@PathVariable String grrAlunoURL,
+	public ResponseEntity<TermoDeEstagioDTO> novoTermoAditivo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@PathVariable long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1017,13 +1018,13 @@ public class AlunoREST {
 
 	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoAditivo/{idTermo}/cancelarTermoAditivo")
 	@ResponseBody
-	public ResponseEntity<Object> cancelarTermoAditivo(@PathVariable String grrAlunoURL, @PathVariable Long idEstagio,
+	public ResponseEntity<Object> cancelarTermoAditivo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @PathVariable Long idEstagio,
 			@PathVariable Long idTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1066,12 +1067,12 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/termoAditivo/emPreenchimento")
 	public ResponseEntity<List<TermoDeEstagioDTO>> buscarTermoAditivoEmPreenchimentoPorAluno(
-			@PathVariable String grrAlunoURL) {
+			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1093,12 +1094,12 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/termoAditivo/")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoPorAluno(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoPorAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1120,12 +1121,12 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/termoAditivo/porStatus")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoPorAlunoPorStatusTermo(
-			@PathVariable String grrAlunoURL, @RequestParam String statusTermo) {
+			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @RequestParam String statusTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1148,12 +1149,12 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/termoDeCompromisso/emPreenchimento")
 	public ResponseEntity<List<TermoDeEstagioDTO>> buscarTermoDeCompromissoEmPreenchimentoPorAluno(
-			@PathVariable String grrAlunoURL) {
+			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1175,12 +1176,12 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/termoDeCompromisso/")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosDeCompromissoPorAluno(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosDeCompromissoPorAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1203,12 +1204,12 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/termoDeCompromisso/porStatus")
 	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosDeCompromissoPorAlunoPorStatusTermo(
-			@PathVariable String grrAlunoURL, @RequestParam String statusTermo) {
+			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @RequestParam String statusTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1230,13 +1231,13 @@ public class AlunoREST {
 	}
 
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao")
-	public ResponseEntity<TermoDeRescisaoDTO> novoTermoDeRescisao(@PathVariable String grrAlunoURL,
+	public ResponseEntity<TermoDeRescisaoDTO> novoTermoDeRescisao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@PathVariable long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1266,13 +1267,13 @@ public class AlunoREST {
 	}
 
 	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/solicitarCiencia")
-	public ResponseEntity<TermoDeRescisaoDTO> solicitarCienciaTermoDeRescisao(@PathVariable String grrAlunoURL,
+	public ResponseEntity<TermoDeRescisaoDTO> solicitarCienciaTermoDeRescisao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@PathVariable long idEstagio, @PathVariable long idTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1312,13 +1313,13 @@ public class AlunoREST {
 	}
 
 	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/cancelarTermoDeRescisao")
-	public ResponseEntity<Object> cancelarTermoDeRescisao(@PathVariable String grrAlunoURL,
+	public ResponseEntity<Object> cancelarTermoDeRescisao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@PathVariable Long idEstagio, @PathVariable Long idTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1360,12 +1361,12 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/termoDeRescisao/etapaAluno")
 	public ResponseEntity<List<TermoDeRescisaoDTO>> buscarTermoDeRescisaoEtapaAlunoPorAluno(
-			@PathVariable String grrAlunoURL) {
+			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1387,12 +1388,12 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/termoDeRescisao/")
-	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAluno(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1415,12 +1416,12 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/termoDeRescisao/etapaCiencia")
 	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAlunoEtapaCiencia(
-			@PathVariable String grrAlunoURL) {
+			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1443,12 +1444,12 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/termoDeRescisao/finalizados")
 	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAlunoProcessoFinalizado(
-			@PathVariable String grrAlunoURL) {
+			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1470,13 +1471,13 @@ public class AlunoREST {
 	}
 
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/periodoRecesso")
-	public ResponseEntity<Object> novoPeriodoDeRecesso(@PathVariable String grrAlunoURL, @PathVariable long idEstagio,
+	public ResponseEntity<Object> novoPeriodoDeRecesso(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @PathVariable long idEstagio,
 			@PathVariable Long idTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -1517,13 +1518,13 @@ public class AlunoREST {
 	}
 
 	@DeleteMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/periodoRecesso/{idPeriodo}")
-	public ResponseEntity<Object> removerPeriodoDeRecesso(@PathVariable String grrAlunoURL,
+	public ResponseEntity<Object> removerPeriodoDeRecesso(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
 			@PathVariable Long idEstagio, @PathVariable Long idTermo, @PathVariable Long idPeriodo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {

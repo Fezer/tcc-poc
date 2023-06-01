@@ -25,10 +25,19 @@
     </div>
     <DataTable class="flex-column" :value="agente.convenio" rowHover>
       <template #header>
-        <div>
-          <span>
-            <h4><b>Cônvênios</b></h4>
+        <div class="flex flex-row justify-content-between gap-10">
+          <span class="flex align-items-left flex-column pb-4">
+            <p><b>Cônvênios</b></p>
           </span>
+          <div class="w-full flex justify-end gap-2">
+            <NuxtLink :to="`novo/adicionarConvenio?id=${agente.id}`">
+              <Button
+                :label="'Adicionar'"
+                class="p-button-success"
+                icon="pi pi-plus"
+              />
+            </NuxtLink>
+          </div>
         </div>
       </template>
       <template #empty>
@@ -54,6 +63,15 @@
           {{ data.dataFim }}
         </template>
       </Column>
+      <Column field="button">
+        <template #body="{ data }">
+          <NuxtLink
+            :to="`/coafe/agentes-integracao/convenioEditar?id=${data.id}`"
+          >
+            <Button label="Editar" />
+          </NuxtLink>
+        </template>
+      </Column>
     </DataTable>
     <div class="flex flex-row justify-content-end flex-wrap pb-2 gap-2">
       <NuxtLink to="/coafe/coafeAgentes">
@@ -63,7 +81,9 @@
           icon="pi pi-arrow-left"
         />
       </NuxtLink>
-      <Button label="Editar" severity="info" />
+      <NuxtLink :to="`agenteEditar?id=${agente.id}`">
+        <Button label="Editar" />
+      </NuxtLink>
     </div>
   </div>
 </template>

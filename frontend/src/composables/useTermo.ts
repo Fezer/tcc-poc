@@ -4,11 +4,11 @@ import { BaseTermo } from "../types/Termos";
 
 const useTermo = (): {
   termo: Ref<BaseTermo>;
-  setTermo(termoData: BaseTermo): void;
+  setTermo(termoData: Ref<BaseTermo>): void;
 } => {
   const termo = useState<BaseTermo>("termo");
 
-  const setTermo = (termoData: any) => {
+  const setTermo = (termoData: Ref<BaseTermo>) => {
     console.log("setting termo", termoData);
     termo.value = termoData;
   };

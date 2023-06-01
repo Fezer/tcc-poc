@@ -112,7 +112,7 @@ export default defineComponent({
       <h4>Ações</h4>
       <div class="flex gap-2">
         <Button
-          label="Termo de Recisão"
+          label="Termo de Rescisão"
           class="p-button-danger"
           icon="pi pi-times"
           @click="() => (cancelationConfirm = true)"
@@ -190,13 +190,13 @@ export default defineComponent({
 
     <Dialog
       :visible="cancelationConfirm"
-      header="Confirmar Termo de Recisão"
+      header="Confirmar Termo de Rescisão"
       :closable="false"
       style="width: 500px"
       :modal="true"
     >
       <p>
-        Tem certeza que deseja iniciar o processo de recisão do estágio? O
+        Tem certeza que deseja iniciar o processo de Rescisão do estágio? O
         processo será cancelado e o aluno não poderá mais realizar atividades
         referentes a esse estágio.
       </p>
@@ -207,12 +207,14 @@ export default defineComponent({
           class="p-button-secondary"
           @click="cancelationConfirm = false"
         />
-        <Button
-          label="Cancelar"
-          icon="pi pi-check"
-          class="p-button-danger"
-          autofocus
-        />
+        <NuxtLink :to="`/aluno/termo-rescisao/${id}/gerar`">
+          <Button
+            label="Inicar termo de recisão"
+            icon="pi pi-check"
+            class="p-button-danger"
+            autofocus
+          />
+        </NuxtLink>
       </template>
     </Dialog>
   </div>

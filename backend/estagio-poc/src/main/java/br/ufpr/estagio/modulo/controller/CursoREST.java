@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -64,7 +65,7 @@ public class CursoREST {
 	}
     
     @GetMapping("/{idPrograma}/orientadores")
-	public ResponseEntity<?> buscarOrientadoresDoCurso(@PathVariable String idPrograma) {
+	public ResponseEntity<?> buscarOrientadoresDoCurso(@PathVariable String idPrograma, @RequestHeader("Authorization") String accessToken) {
     	try {
 			Optional<Curso> curso = Optional.ofNullable(cursoService.buscarCursoPorIdPrograma(idPrograma));
 			
@@ -74,7 +75,6 @@ public class CursoREST {
 				List<Orientador> listaOrientadores = cursoService.buscarOrientadoresPorIdPrograma(idPrograma);
 				
 				return ResponseEntity.status(HttpStatus.OK).body(listaOrientadores.stream().map(e -> mapper.map(e, OrientadorDTO.class)).collect(Collectors.toList()));
-
 			}
 		} catch (NoSuchElementException ex) {
 	        ErrorResponse response = new ErrorResponse("Curso não encontrado!");
