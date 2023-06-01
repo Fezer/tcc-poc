@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.FichaDeAvaliacaoDTO;
+import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAcomp;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
+import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.FichaDeAvaliacao;
 import br.ufpr.estagio.modulo.service.FichaDeAvaliacaoService;
 
@@ -46,50 +51,179 @@ public class FichaDeAvaliacaoREST {
         
     @GetMapping("/")
 	public ResponseEntity<List<FichaDeAvaliacaoDTO>> listarFichasDeAvaliacao() {
-	    List<FichaDeAvaliacao> listaFichasDeAvaliacao = fichaDeAvaliacaoService.listarTodosFichasDeAvaliacao();
-	    List<FichaDeAvaliacaoDTO> listaFichasDeAvaliacaoDTO = listaFichasDeAvaliacao.stream()
-	            .map(ap -> mapper.map(ap, FichaDeAvaliacaoDTO.class))
-	            .collect(Collectors.toList());
-	    return ResponseEntity.ok().body(listaFichasDeAvaliacaoDTO);
+    	try {
+		    List<FichaDeAvaliacao> listaFichasDeAvaliacao = fichaDeAvaliacaoService.listarTodosFichasDeAvaliacao();
+		    List<FichaDeAvaliacaoDTO> listaFichasDeAvaliacaoDTO = listaFichasDeAvaliacao.stream()
+		            .map(ap -> mapper.map(ap, FichaDeAvaliacaoDTO.class))
+		            .collect(Collectors.toList());
+		    return ResponseEntity.ok().body(listaFichasDeAvaliacaoDTO);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
 	}
     
     @GetMapping("/{idFichaDeAvaliacao}")
-	public ResponseEntity<FichaDeAvaliacaoDTO> buscarFichaDeAvaliacaoPorId(@PathVariable long idFichaDeAvaliacao) {
-	    Optional<FichaDeAvaliacao> fichaDeAvaliacao = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idFichaDeAvaliacao);
-	    
-	    if (fichaDeAvaliacao.isEmpty()) {
-			throw new NotFoundException("Ficha de avaliação não encontrada!");
+	public ResponseEntity<Object> buscarFichaDeAvaliacaoPorId(@PathVariable String idFichaDeAvaliacao) {
+    	try {
+    		long idLongFichaDeAvaliacao = Long.parseLong(idFichaDeAvaliacao);
+	    	
+		    if (idLongFichaDeAvaliacao < 1) {
+		   		throw new InvalidFieldException("Id da ficha de avaliação inválido!");
+		   	}
+		    
+    		Optional<FichaDeAvaliacao> fichaDeAvaliacao = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idLongFichaDeAvaliacao);
+		    
+		    if (fichaDeAvaliacao.isEmpty()) {
+				throw new NotFoundException("Ficha de avaliação não encontrada!");
+			}
+		    
+		    FichaDeAvaliacaoDTO fichaDeAvaliacaoDTO = mapper.map(fichaDeAvaliacao.get(), FichaDeAvaliacaoDTO.class);
+		    return ResponseEntity.status(HttpStatus.OK).body(fichaDeAvaliacaoDTO);
+    	} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
-	    
-	    FichaDeAvaliacaoDTO fichaDeAvaliacaoDTO = mapper.map(fichaDeAvaliacao.get(), FichaDeAvaliacaoDTO.class);
-	    return ResponseEntity.status(HttpStatus.OK).body(fichaDeAvaliacaoDTO);
 	}
 
     @PutMapping("/{idFichaDeAvaliacao}")
-    public ResponseEntity<FichaDeAvaliacaoDTO> atualizarFichaDeAvaliacao(@PathVariable long idFichaDeAvaliacao, @RequestBody FichaDeAvaliacaoDTO fichaDeAvaliacaoDTO){
-    	
-	    Optional<FichaDeAvaliacao> fichaDeAvaliacao = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idFichaDeAvaliacao);
-	    
-	    if (fichaDeAvaliacao.isEmpty()) {
-			throw new NotFoundException("Ficha de avaliação não encontrada!");
+    public ResponseEntity<Object> atualizarFichaDeAvaliacao(@PathVariable String idFichaDeAvaliacao, @RequestBody FichaDeAvaliacaoDTO fichaDeAvaliacaoDTO){
+    	try {
+    		long idLongFichaDeAvaliacao = Long.parseLong(idFichaDeAvaliacao);
+	    	
+		    if (idLongFichaDeAvaliacao < 1) {
+		   		throw new InvalidFieldException("Id da ficha de avaliação inválido!");
+		   	}
+		    
+    		Optional<FichaDeAvaliacao> fichaDeAvaliacao = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idLongFichaDeAvaliacao);
+		    
+		    if (fichaDeAvaliacao.isEmpty()) {
+				throw new NotFoundException("Ficha de avaliação não encontrada!");
+			}
+		    
+		    if (fichaDeAvaliacaoDTO.getTotalHorasEstagioEfetivamenteRealizadas() < 1) {
+		        throw new InvalidFieldException("Total de horas inválido!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAtividadesRealizadasConsideracoes() == null || fichaDeAvaliacaoDTO.getAtividadesRealizadasConsideracoes().isEmpty()) {
+		        throw new InvalidFieldException("Campo 'atividadesRealizadasConsideracoes' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAcompanhamentoOrientador() == null) {
+		        throw new InvalidFieldException("Campo 'acompanhamentoOrientador' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAcompanhamentoOrientadorComentario() == null || fichaDeAvaliacaoDTO.getAcompanhamentoOrientadorComentario().isEmpty()) {
+		        throw new InvalidFieldException("Campo 'acompanhamentoOrientadorComentario' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAcompanhamentoCoordenador() == null) {
+		        throw new InvalidFieldException("Campo 'acompanhamentoCoordenador' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAcompanhamentoCoordenadorComentario() == null || fichaDeAvaliacaoDTO.getAcompanhamentoCoordenadorComentario().isEmpty()) {
+		        throw new InvalidFieldException("Campo 'acompanhamentoCoordenadorComentario' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getContribuicaoEstagio() == null || fichaDeAvaliacaoDTO.getContribuicaoEstagio().isEmpty()) {
+		        throw new InvalidFieldException("Campo 'contribuicaoEstagio' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAvalPontualidade() == null) {
+		        throw new InvalidFieldException("Campo 'avalPontualidade' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAvalCriatividade() == null) {
+		        throw new InvalidFieldException("Campo 'avalCriatividade' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAvalProtagonismo() == null) {
+		        throw new InvalidFieldException("Campo 'avalProtagonismo' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAvalResponsabilidade() == null) {
+		        throw new InvalidFieldException("Campo 'avalResponsabilidade' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAvalConduta() == null) {
+		        throw new InvalidFieldException("Campo 'avalConduta' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAvalDominioTecnico() == null) {
+		        throw new InvalidFieldException("Campo 'avalDominioTecnico' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAvalHabilidades() == null) {
+		        throw new InvalidFieldException("Campo 'avalHabilidades' não informado!");
+		    }
+
+		    if (fichaDeAvaliacaoDTO.getAvalEfetivacao() == null) {
+		        throw new InvalidFieldException("Campo 'avalEfetivacao' não informado!");
+		    }
+
+		    FichaDeAvaliacao fichaDeAvaliacaoAtualizada = fichaDeAvaliacaoService.atualizarFichaAvaliacao(fichaDeAvaliacao.get(), fichaDeAvaliacaoDTO);
+		    fichaDeAvaliacaoDTO = mapper.map(fichaDeAvaliacaoAtualizada, FichaDeAvaliacaoDTO.class);
+	        return ResponseEntity.ok().body(fichaDeAvaliacaoDTO);
+    	} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (HttpMessageNotReadableException ex) {
+	    	ErrorResponse response = new ErrorResponse("Valor de avaliação inválido.");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (IllegalArgumentException ex) {
+			ErrorResponse response = new ErrorResponse("Valor de avaliação inválido.");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
-        
-	    FichaDeAvaliacao fichaDeAvaliacaoAtualizada = fichaDeAvaliacaoService.atualizarFichaAvaliacao(fichaDeAvaliacao.get(), fichaDeAvaliacaoDTO);
-	    fichaDeAvaliacaoDTO = mapper.map(fichaDeAvaliacaoAtualizada, FichaDeAvaliacaoDTO.class);
-        return ResponseEntity.ok().body(fichaDeAvaliacaoDTO);
     }
 
     @DeleteMapping("/{idFichaDeAvaliacao}")
-    public ResponseEntity<Void> excluirFichaDeAvaliacao(@PathVariable long idFichaDeAvaliacao){
-    	
-	    Optional<FichaDeAvaliacao> fichaDeAvaliacao = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idFichaDeAvaliacao);
-	    
-	    if (fichaDeAvaliacao.isEmpty()) {
-			throw new NotFoundException("Ficha de avaliação não encontrada!");
+    public ResponseEntity<?> excluirFichaDeAvaliacao(@PathVariable String idFichaDeAvaliacao){
+    	try {
+    		long idLongFichaDeAvaliacao = Long.parseLong(idFichaDeAvaliacao);
+	    	
+		    if (idLongFichaDeAvaliacao < 1) {
+		   		throw new InvalidFieldException("Id da ficha de avaliação inválido!");
+		   	}
+		    
+    		Optional<FichaDeAvaliacao> fichaDeAvaliacao = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idLongFichaDeAvaliacao);
+		    
+		    if (fichaDeAvaliacao.isEmpty()) {
+				throw new NotFoundException("Ficha de avaliação não encontrada!");
+			}
+		    
+		    fichaDeAvaliacaoService.deletarFichaDeAvaliacao(fichaDeAvaliacao.get());
+		    
+		    return ResponseEntity.noContent().build();
+    	} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
-	    
-	    fichaDeAvaliacaoService.deletarFichaDeAvaliacao(fichaDeAvaliacao.get());
-	    
-	    return ResponseEntity.noContent().build();
     }
 }
