@@ -112,6 +112,8 @@ export default defineComponent({
     };
 
     const handleEditarTermo = () => {
+      // seta o termo atual para edição
+      // no caso do termo aditivo, é necessário para comparar com dados do estágio ativo
       setTermo(termo.value);
 
       router.push({

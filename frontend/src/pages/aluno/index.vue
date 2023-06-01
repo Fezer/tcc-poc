@@ -16,6 +16,7 @@ export default defineComponent({
     const { setAluno, alunoData } = useAluno();
     const { setTermo } = useTermo();
 
+    // busca os dados do aluno ao carregar a página
     const { data: aluno, error: errAluno } = useAsyncData("aluno", async () => {
       if (alunoData?.value) return alunoData.value;
       const response = await alunoService
@@ -23,6 +24,10 @@ export default defineComponent({
         .then(async (res) => {
           setAluno(res);
 
+          // busca por estágio em revisão, estágios ativos, estágio
+          // em processo de aprovação e termo de compromisso em termo de aprovação
+          // respectivamente
+          // caso exista, redireciona para página referente ao processo
           const emRevisao = await alunoService
             .getEstagioEmRevisao(grr)
             .then((res) => {

@@ -2,7 +2,7 @@
 const grr = "GRR20200141";
 
 const { data: termos } = await useFetch(
-  `http://localhost:5000/aluno/${grr}/termosAditivos/`
+  `http://localhost:5000/aluno/${grr}/termoDeRescisao/`
 );
 
 // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
@@ -12,22 +12,26 @@ const { data: termos } = await useFetch(
   <div>
     <h1>Termos de Recisão</h1>
 
-    <DataTable :value="termos">
+    <DataTable :value="termos" rowHover stripedRows :show-gridlines="true">
       <Column field="termo" header="Termo">
-        <template #body="{ data }">
-          {{ data.id }}
-        </template>
+        <template #body="{ data }"> #{{ data.id }} </template>
       </Column>
       <Column field="tipo" header="Tipo" style="min-width: 12rem">
         <template #body="{ data }">
           <!-- {{ data.tipoTermoDeEstagio }} -->
-          Termo de Recisão
+          Termo de Rescisão
         </template>
       </Column>
-      <Column field="contratante" header="Contratante" style="min-width: 12rem">
+      <Column field="estagio" header="Estágio">
+        <template #body="{ data }"> #{{ data?.estagio?.id }} </template>
+      </Column>
+      <Column
+        field="dataTermino"
+        header="Data Término"
+        style="min-width: 12rem"
+      >
         <template #body="{ data }">
-          {{ data?.contratante?.nome }} -
-          {{ data?.contratante?.cnpj || data?.contratante?.cpf }}
+          {{ parseDate(data?.dataTermino) }}
         </template>
       </Column>
       <Column
@@ -36,12 +40,12 @@ const { data: termos } = await useFetch(
         style="min-width: 12rem; font-weight: bold"
       >
         <template #body="{ data }">
-          {{ data.statusTermo }}
+          {{ data.etapaFluxo }}
         </template>
       </Column>
       <Column field="acoes" header="Ações" style="min-width: 12rem">
         <template #body="{ data }">
-          <NuxtLink :to="`/aluno/termo/${data.id}`">
+          <NuxtLink :to="`/aluno/termo-rescisao/${data.id}`">
             <Button type="primary"> Ver </Button>
           </NuxtLink>
         </template>
