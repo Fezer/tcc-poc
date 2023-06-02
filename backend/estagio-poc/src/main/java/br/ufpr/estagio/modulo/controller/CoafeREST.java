@@ -1,15 +1,21 @@
 package br.ufpr.estagio.modulo.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+//import org.apache.poi.ss.usermodel.Workbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.ContentDisposition;
@@ -424,6 +430,32 @@ public class CoafeREST {
 
 	}
 	
+	/*@GetMapping("/gerar-relatorio-seguradora-ufpr/excel")
+	public ResponseEntity<Resource> gerarRelatorioSeguradoraUfprExcel() throws IOException, DocumentException {
+		
+		try {
+			List<Estagio> estagios = estagioService.buscarEstagioPorSeguradoraUfpr();
+			
+			Workbook workbook = geradorService.gerarExcelEstagioSeguradoraUfpr(estagios);
+
+	        // Criar arquivo temporário
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	        workbook.write(outputStream);
+	        byte[] bytes = outputStream.toByteArray();
+	        
+	        // Salvar o workbook no arquivo temporário
+	        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(bytes));
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-seguradora-ufpr.xlsx").build());
+	
+			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+		}  catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    }
+	}*/
+	
 	@GetMapping("/gerar-relatorio-empresa/{idContratanteURL}")
 	public ResponseEntity<byte[]> gerarPdfEmpresa(@PathVariable String idContratanteURL) throws IOException, DocumentException {
 		
@@ -558,9 +590,6 @@ public class CoafeREST {
 	    } catch (PocException e) {
 	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
 	    }
-		
-				
-
 	}
 
 }

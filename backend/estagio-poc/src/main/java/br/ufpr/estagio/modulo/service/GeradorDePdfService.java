@@ -7,7 +7,12 @@ import org.springframework.stereotype.Service;
 import com.itextpdf.html2pdf.HtmlConverter;
 
 import org.apache.commons.io.IOUtils;
-//import com.lowagie.text.DocumentException;
+/*import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+*/
+import com.lowagie.text.DocumentException;
 import org.springframework.core.io.ClassPathResource;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 import com.itextpdf.html2pdf.HtmlConverter;
@@ -644,4 +649,30 @@ public class GeradorDePdfService {
 
 	    return html;
 	}
+	
+	/*public Workbook gerarExcelEstagioSeguradoraUfpr(List<Estagio> estagios) {
+	    Workbook workbook = new XSSFWorkbook();
+	    Sheet sheet = workbook.createSheet("Estágios Seguradora UFPR");
+
+	    // Cabeçalho
+	    Row headerRow = sheet.createRow(0);
+	    headerRow.createCell(0).setCellValue("ID");
+	    headerRow.createCell(1).setCellValue("Nome");
+	    headerRow.createCell(2).setCellValue("Período");
+
+	    int rowNum = 1;
+	    for (Estagio estagio : estagios) {
+	        Row row = sheet.createRow(rowNum++);
+	        row.createCell(0).setCellValue(estagio.getId());
+	        row.createCell(1).setCellValue(estagio.getAluno().getNome());
+	        row.createCell(2).setCellValue(estagio.getDataCriacao());
+	    }
+
+	    // Formatação
+	    sheet.autoSizeColumn(0);
+	    sheet.autoSizeColumn(1);
+	    sheet.autoSizeColumn(2);
+
+	    return workbook;
+	}*/
 }
