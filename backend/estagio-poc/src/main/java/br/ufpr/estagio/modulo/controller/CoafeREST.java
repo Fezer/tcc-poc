@@ -12,9 +12,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-//import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -448,13 +453,59 @@ public class CoafeREST {
 			
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-seguradora-ufpr.xlsx").build());
+			headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-seguradora-ufpr.xlsx").build());
 	
 			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 		}  catch (PocException e) {
 	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 	    }
 	}*/
+	
+	@GetMapping("/gerar-relatorio-seguradora-ufpr-excel")
+	public ResponseEntity<Resource> gerarRelatorioSeguradoraUfprExcel() throws IOException {
+	    List<Estagio> estagios = estagioService.buscarEstagioPorSeguradoraUfpr();
+
+	    // Criar um novo arquivo Excel
+	    Workbook workbook = new XSSFWorkbook();
+
+	    // Criar uma nova planilha
+	    Sheet sheet = workbook.createSheet("Relatório Estágios");
+
+	    // Criar o cabeçalho da planilha
+	    String[] headersTitle = {"Id do Estágio", "Nome Aluno", "GRR", "IRA", "Curso", "Status do Estágio"};
+	    Row headerRow = sheet.createRow(0);
+	    for (int i = 0; i < headersTitle.length; i++) {
+	        Cell cell = headerRow.createCell(i);
+	        cell.setCellValue(headersTitle[i]);
+	    }
+
+	    // Preencher os dados dos estágios na planilha
+	    int rowNum = 1;
+	    for (Estagio estagio : estagios) {
+	        Row row = sheet.createRow(rowNum++);
+	        row.createCell(0).setCellValue(estagio.getId());
+	        row.createCell(1).setCellValue(estagio.getAluno().getNome());
+	        row.createCell(2).setCellValue(estagio.getAluno().getMatricula());
+	        row.createCell(3).setCellValue(estagio.getAluno().getIra());
+	        row.createCell(4).setCellValue(estagio.getAluno().getCurso().getNome());
+	        row.createCell(5).setCellValue(String.valueOf(estagio.getStatusEstagio()));
+	    }
+
+	    // Salvar o arquivo Excel em um fluxo de bytes
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    workbook.write(outputStream);
+
+	    // Criar um recurso de byte array a partir do fluxo de bytes
+	    ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+
+        // Configurar os cabeçalhos da resposta
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-seguradora-ufpr.xlsx").build());
+        headers.set("Content-Encoding", "UTF-8");
+
+        // Retornar a resposta com o recurso de byte array
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+    }
 	
 	@GetMapping("/gerar-relatorio-empresa/{idContratanteURL}")
 	public ResponseEntity<byte[]> gerarPdfEmpresa(@PathVariable String idContratanteURL) throws IOException, DocumentException {

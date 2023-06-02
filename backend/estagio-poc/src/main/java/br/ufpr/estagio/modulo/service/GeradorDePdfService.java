@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import com.itextpdf.html2pdf.HtmlConverter;
 
 import org.apache.commons.io.IOUtils;
-/*import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-*/
+
 import com.lowagie.text.DocumentException;
 import org.springframework.core.io.ClassPathResource;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -650,7 +650,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	/*public Workbook gerarExcelEstagioSeguradoraUfpr(List<Estagio> estagios) {
+	public Workbook gerarExcelEstagioSeguradoraUfpr(List<Estagio> estagios) {
 	    Workbook workbook = new XSSFWorkbook();
 	    Sheet sheet = workbook.createSheet("Estágios Seguradora UFPR");
 
@@ -674,5 +674,5 @@ public class GeradorDePdfService {
 	    sheet.autoSizeColumn(2);
 
 	    return workbook;
-	}*/
+	}
 }
