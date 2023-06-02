@@ -27,6 +27,7 @@ export default defineComponent({
       `http://localhost:5000/estagio/${id}`
     );
 
+    const { perfil, termoDeRescisao, termo } = route.query;
     console.log(estagio);
 
     // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
@@ -35,10 +36,21 @@ export default defineComponent({
 
     const cancelationConfirm = ref(false);
 
+    const tipoTermo = termoDeRescisao ? "termo-rescisao" : "termo";
+
+    // ()=> {
+    //   if(!!termoDeRescisao) return "termo-rescisao";
+    //   return "termo"
+    // }
+
     return {
       tipoUsuario,
       cancelationConfirm,
       estagio,
+      perfil,
+      termoDeRescisao,
+      termo,
+      tipoTermo,
     };
   },
   methods: {},
@@ -48,6 +60,19 @@ export default defineComponent({
 <template>
   <div>
     <Toast />
+
+    <NuxtLink
+      :to="`/${perfil}/${tipoTermo}/${termoDeRescisao || termo}`"
+      v-if="perfil && tipoTermo"
+    >
+      <Button
+        label="Voltar ao Termo"
+        icon="pi pi-arrow-left"
+        class="p-button-primary absolute right-8"
+      >
+      </Button>
+    </NuxtLink>
+
     <small class="m-0">Estágios > Ver estágio</small>
     <h2 class="m-0 mb-4">Estágio</h2>
 
@@ -63,14 +88,6 @@ export default defineComponent({
     />
 
     <Contratante :termo="estagio" />
-
-    <!-- v-for relatorio in estagio?.relatorios -->
-    <!-- <div v-for="relatorio in estagio?.relatorioDeEstagio" :key="relatorio">
-      <h3>Relatório {{ relatorio }}</h3>
-      <NuxtLink :to="`/relatorio/${relatorio}`">
-        <Button label="Ver relatório" class="p-button-secondary"></Button>
-      </NuxtLink>
-    </div> -->
   </div>
 </template>
 

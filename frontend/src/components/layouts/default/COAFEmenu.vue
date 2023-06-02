@@ -38,6 +38,11 @@ export default defineComponent({
 
         link: "/coafe/processos/termoAditivo",
       },
+      {
+        label: "Termos de Rescisão",
+
+        link: "/coafe/termo-rescisao",
+      },
     ];
 
     return {

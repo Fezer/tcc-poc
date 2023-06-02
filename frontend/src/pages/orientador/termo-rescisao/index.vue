@@ -8,7 +8,7 @@ export default defineComponent({
 
     const { processo } = route.params;
 
-    const orientador = 3;
+    const orientador = 6;
 
     const { data: processes } = useFetch(
       `/orientador/${orientador}/termoDeRescisao/pendenteCiencia`
@@ -27,24 +27,10 @@ export default defineComponent({
 <template>
   <div>
     <div>
-      <h1>
-        COE
-        <h6>Comissão Orientadora de Estágio</h6>
-      </h1>
+      <h1>Termos de Rescisão</h1>
     </div>
     <div>
       <DataTable :value="processes" rowHover stripedRows :show-gridlines="true">
-        <template #header>
-          <div class="flex items-center justify-content-between">
-            <span class="p-input-icon-left">
-              <h4 class="font-bold">Processos pendentes de parecer</h4>
-            </span>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search" />
-              <InputText placeholder="Keyword Search" />
-            </span>
-          </div>
-        </template>
         <Column field="process" header="Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
@@ -82,7 +68,7 @@ export default defineComponent({
         </Column>
         <Column field="button">
           <template #body="{ data }">
-            <NuxtLink :to="`/coe/termo-rescisao/${data.id}`">
+            <NuxtLink :to="`/orientador/termo-rescisao/${data.id}`">
               <Button label="Ver contato"></Button>
             </NuxtLink>
           </template>

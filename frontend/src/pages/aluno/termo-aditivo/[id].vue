@@ -227,9 +227,9 @@ export default defineComponent({
 
     <NuxtLink :to="`/aluno/estagio/${termo?.estagio?.id}`">
       <Button
-        label="Ir para estágio"
-        icon="pi pi-arrow-right"
-        class="absolute right-0 top-10"
+        label="Ver estágio"
+        icon="pi pi-eye"
+        class="p-button-secondary absolute right-0 top-10"
       />
     </NuxtLink>
 

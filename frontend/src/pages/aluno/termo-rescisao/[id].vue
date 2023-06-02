@@ -71,12 +71,21 @@ export default defineComponent({
       }
     };
 
+    const todasAsCiencias =
+      termo?.value?.cienciaCOE &&
+      termo?.value?.cienciaCOAFE &&
+      termo?.value?.cienciaCoordenacao &&
+      termo?.value?.cienciaOrientador;
+
+    console.log(todasAsCiencias);
+
     return {
       termo,
       handleSolicitarAprovacao,
       handleCancelarTermo,
       handleEditarTermo,
       cancelVisible,
+      todasAsCiencias,
     };
   },
 });
@@ -102,6 +111,30 @@ export default defineComponent({
           <strong>Período total de recesso</strong>
           <p>{{ termo?.periodoTotalRecesso }} dias</p>
         </div>
+
+        <div class="col-4">
+          <strong>Ciência COE</strong>
+          <p>{{ termo?.cienciaCOE ? "Sim" : "Não" }}</p>
+        </div>
+
+        <div class="col-4">
+          <strong>Ciência Coordenação</strong>
+          <p>{{ termo?.cienciaCoordenacao ? "Sim" : "Não" }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Ciência COAFE</strong>
+          <p>{{ termo?.cienciaCOAFE ? "Sim" : "Não" }}</p>
+        </div>
+
+        <div class="col-4">
+          <strong>Ciência Orientador</strong>
+          <p>{{ termo?.cienciaOrientador ? "Sim" : "Não" }}</p>
+        </div>
+
+        <div class="col-4">
+          <strong>Termo Aprovado</strong>
+          <p>{{ todasAsCiencias ? "Sim" : "Não" }}</p>
+        </div>
       </div>
     </div>
 
@@ -112,7 +145,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="w-full flex justify-end gap-2 mt-4">
+    <div class="w-full flex justify-end gap-2 mt-4" v-if="!todasAsCiencias">
       <Button
         label="Cancelar termo"
         class="p-button-danger"
@@ -124,12 +157,14 @@ export default defineComponent({
         class="p-button-secondary"
         icon="pi pi-pencil"
         @click="handleEditarTermo"
+        v-if="termo?.etapaFluxo === 'Aluno' && !todasAsCiencias"
       />
       <Button
         label="Solicitar Aprovação"
         class="p-button-primary"
         icon="pi pi-check"
         @click="handleSolicitarAprovacao"
+        v-if="termo?.etapaFluxo === 'Aluno'"
       />
     </div>
 

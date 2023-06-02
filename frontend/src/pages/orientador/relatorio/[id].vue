@@ -26,7 +26,7 @@ export default defineComponent({
             summary: "Sucesso",
             detail: "Ciência de relatório de estágio realizada com sucesso",
           });
-          router.push("/orientador");
+          router.push("/orientador/relatorio");
         })
         .catch((err) => {
           console.log(err);

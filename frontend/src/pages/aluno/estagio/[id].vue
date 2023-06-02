@@ -27,11 +27,32 @@ export default defineComponent({
     const alunoService = new AlunoService();
     const toast = useToast();
 
+    const { setTermoRescisao } = useTermoRescisao();
+
     const { id } = route.params;
 
     const { data: estagio, refresh } = await useFetch(
       `http://localhost:5000/estagio/${id}`
     );
+
+    const handleNovoTermoRescisao = () => {
+      if (estagio?.termoDeRescisao) {
+        toast.add({
+          severity: "error",
+          summary: "Erro ao gerar termo de rescisão",
+          detail:
+            "Você já possui um termo de rescisão em processo de aprovação",
+          life: 3000,
+        });
+
+        return;
+      }
+
+      setTermoRescisao(null);
+
+      cancelationConfirm.value = false;
+      router.push(`/aluno/termo-rescisao/${estagio?.value?.id}/gerar`);
+    };
 
     const handleNovoTermoAditivo = async () => {
       const grr = "GRR20200141";
@@ -97,6 +118,7 @@ export default defineComponent({
       handleSolicitarCertificado,
       handleNovoTermoAditivo,
       handleRedirectToTermoAditivo,
+      handleNovoTermoRescisao,
     };
   },
 });
@@ -196,7 +218,7 @@ export default defineComponent({
       :modal="true"
     >
       <p>
-        Tem certeza que deseja iniciar o processo de Rescisão do estágio? O
+        Tem certeza que deseja iniciar o processo de rescisao do estágio? O
         processo será cancelado e o aluno não poderá mais realizar atividades
         referentes a esse estágio.
       </p>
@@ -207,14 +229,13 @@ export default defineComponent({
           class="p-button-secondary"
           @click="cancelationConfirm = false"
         />
-        <NuxtLink :to="`/aluno/termo-rescisao/${id}/gerar`">
-          <Button
-            label="Inicar termo de recisão"
-            icon="pi pi-check"
-            class="p-button-danger"
-            autofocus
-          />
-        </NuxtLink>
+        <Button
+          label="Inicar termo de recisão"
+          icon="pi pi-check"
+          class="p-button-danger"
+          autofocus
+          @click="handleNovoTermoRescisao"
+        />
       </template>
     </Dialog>
   </div>

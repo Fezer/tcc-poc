@@ -6,6 +6,7 @@ import periodoRecesso from "../../../components/termo-rescisao/periodo-recesso.v
 import CancelationConfirm from "../../../components/common/cancelation-confirm.vue";
 
 import { useToast } from "primevue/usetoast";
+import CoafeService from "~~/services/CoafeService";
 
 export default defineComponent({
   components: { periodoRecesso, CancelationConfirm },
@@ -31,7 +32,7 @@ export default defineComponent({
             summary: "Ciência dada com sucesso",
             detail: "Ciência dada com sucesso",
           });
-          router.push("/coe/termo-rescisao");
+          router.push("/coafe/termo-rescisao");
         })
         .catch((err) => {
           console.error(err);
@@ -82,6 +83,15 @@ export default defineComponent({
     </div>
 
     <div class="w-full flex justify-end gap-2 mt-4">
+      <NuxtLink
+        :to="`/estagio/${termo?.estagio?.id}?perfil=coafe&termoDeRescisao=5`"
+      >
+        <Button
+          label="Ver estágio"
+          class="p-button-secondary"
+          icon="pi pi-eye"
+        />
+      </NuxtLink>
       <Button
         label="Ciência de Termo de Rescisão"
         class="p-button-primary"

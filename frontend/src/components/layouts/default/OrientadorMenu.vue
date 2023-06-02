@@ -2,22 +2,20 @@
 export default {
   data() {
     return {
-      menu: [
+      processos: [
         {
-          label: "Pendências",
-          link: "/orientador",
-          icon: "pi-envelope",
+          label: "Relatórios de Estágio",
+          link: "/orientador/relatorio",
         },
         {
-          label: "Processos",
-          link: "/orientador/processes",
-          icon: "pi-envelope",
+          label: "Termos de Rescisão",
+          link: "/orientador/termo-rescisao",
         },
       ],
     };
   },
   methods: {
-    getIsTabActive(tab: "coord") {
+    getIsTabActive(tab: "orientador") {
       console.log(this.$route.path);
 
       return this.$route.path === tab;
@@ -32,7 +30,16 @@ export default {
       <strong class=" ">Prof. Orientador Orientador</strong>
       <p class=" ">Orientador</p>
     </div>
-    <div v-for="item in menu" :key="item.label">
+
+    <span>
+      <span
+        :class="`pi pi-file-export pi-fw  mr-2 text-lg`"
+        style="vertical-align: center"
+      />
+      <strong>PROCESSOS</strong>
+    </span>
+
+    <div v-for="item in processos" :key="item.label">
       <div
         :class="
           'mb-4 mt-3 hover:opacity-70 transition-all '.concat(
