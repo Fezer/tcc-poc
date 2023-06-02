@@ -7,7 +7,12 @@ import org.springframework.stereotype.Service;
 import com.itextpdf.html2pdf.HtmlConverter;
 
 import org.apache.commons.io.IOUtils;
-//import com.lowagie.text.DocumentException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.lowagie.text.DocumentException;
 import org.springframework.core.io.ClassPathResource;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 import com.itextpdf.html2pdf.HtmlConverter;
@@ -22,6 +27,7 @@ import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -35,6 +41,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GeradorDePdfService {
@@ -370,24 +377,26 @@ public class GeradorDePdfService {
 	        		+ "        </tr>\n"
 	        		+ "        <br></br>\n"
 	        		+ "		<tr>\n"
-	        		+ "            <th>Contratante</th>\n"
+	        		+ "            <th colspan=\"2\">Contratante</th>\n"
 	        		+ "            <th>Seguradora</th>\n"
 	        		+ "			<th>Apólice</th>\n"
+	        		+ "            <td></td>\n"
 	        		+ "        </tr>\n"
 	        		+ "		<tr>\n"
-	        		+ "            <td>{{contratante}}</td>\n"
+	        		+ "            <td colspan=\"2\">{{contratante}}</td>\n"
 	        		+ "            <td>{{seguradora}}</td>\n"
 	        		+ "			<td>{{apolice}}</td>\n"
+	        		+ "            <td></td>\n"
 	        		+ "        </tr>\n"
 	        		+ "        <br></br>\n"
 	        		+ "		<tr>\n"
+	        		+ "            <th colspan=\"2\">Orientador</th>\n"
 	        		+ "            <th>Agente Integrador</th>\n"
-	        		+ "            <th>Orientador</th>\n"
 	        		+ "			<th>Supervisor</th>\n"
 	        		+ "        </tr>\n"
 	        		+ "		<tr>\n"
+	        		+ "            <td colspan=\"2\">{{orientador}}</td>\n"
 	        		+ "            <td>{{agente}}</td>\n"
-	        		+ "            <td>{{orientador}}</td>\n"
 	        		+ "			<td>{{supervisor}}</td>\n"
 	        		+ "        </tr>\n"
 	        		+ "        <br></br>\n"
@@ -405,12 +414,12 @@ public class GeradorDePdfService {
 	        		+ "        </tr>\n"
 	        		+ "        <br></br>\n"
 	        		+ "		<tr>\n"
-	        		+ "            <th>Valor da Bolsa</th>\n"
-	        		+ "            <th>Valor de Transporte</th>\n"
+	        		+ "            <th colspan=\"2\">Valor da Bolsa</th>\n"
+	        		+ "            <th colspan=\"2\">Valor de Transporte</th>\n"
 	        		+ "        </tr>\n"
 	        		+ "		<tr>\n"
-	        		+ "            <td>{{valorBolsa}}</td>\n"
-	        		+ "            <td>{{valorTransporte}}</td>\n"
+	        		+ "            <td colspan=\"2\">{{valorBolsa}}</td>\n"
+	        		+ "            <td colspan=\"2\">{{valorTransporte}}</td>\n"
 	        		+ "        </tr>\n"
 	        		+ "    </table>\n"
 	        		+ "\n"
@@ -419,11 +428,11 @@ public class GeradorDePdfService {
 	        		+ "    <table>\n"
 	        		+ "        <caption>Endereço do Estágio</caption>\n"
 	        		+ "        <tr>\n"
-	        		+ "            <th>Rua</th>\n"
+	        		+ "            <th colspan=\"2\">Rua</th>\n"
 	        		+ "            <th>Número</th>\n"
 	        		+ "		</tr>\n"
 	        		+ "		<tr>\n"
-	        		+ "            <td>Rua XXXXXXXX YYYYYYY ZZZZZZZZ</td>\n"
+	        		+ "            <td colspan=\"2\">Rua XXXXXXXX YYYYYYY ZZZZZZZZ</td>\n"
 	        		+ "            <td>123</td>\n"
 	        		+ "		</tr>\n"
 	        		+ "\n"
@@ -529,5 +538,141 @@ public class GeradorDePdfService {
 	    html = html.replace("{{certificados}}", estagiosHtml.toString());
 
 	    return html;
+	}
+	
+	public byte[] gerarPdfRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlRelatoriosDeEstagio(relatorios);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
+	
+	private String getHtmlRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) {
+	    // Carregar o HTML do arquivo
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    String html = "";
+	    try {
+	        html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-relatorios-de-estagio.html"), StandardCharsets.UTF_8);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    StringBuilder estagiosHtml = new StringBuilder();
+	    for (RelatorioDeEstagio relatorio : relatorios) {
+	        String estagioHtml = "<h2>Relatório de Estágio de {{nome}}</h2>\n"
+	        		+ "    <table>\n"
+	        		+ "        <caption>Somente jogando os dados</caption>\n"
+	        		+ "        <tr>\n"
+	        		+ "            <th>Ciência Orientador</th>\n"
+	        		+ "            <th>Considerações</th>\n"
+	        		+ "        </tr>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <td>{{cienciaOrientador}}</td>\n"
+	        		+ "            <td>{{consideracoes}}</td>\n"
+	        		+ "        </tr>\n"
+	        		+ "        <br></br>\n"
+	        		+ "		\n"
+	        		+ "    </table>";
+	        estagioHtml = estagioHtml.replace("{{cienciaOrientador}}", String.valueOf(relatorio.isCienciaOrientador()));
+	        estagioHtml = estagioHtml.replace("{{consideracoes}}", relatorio.getConsideracoes());
+	        estagioHtml = estagioHtml.replace("{{nome}}", relatorio.getEstagio().getAluno().getNome());
+	        // Adicionar o HTML do estágio à lista
+	        estagiosHtml.append(estagioHtml);
+	    }
+
+	    // Substituir a tag no HTML principal com os estágios
+	    html = html.replace("{{relatorios}}", estagiosHtml.toString());
+
+	    return html;
+	}
+	
+	public byte[] gerarPdfRelatorioDeEstagio(Optional<RelatorioDeEstagio> relatorio) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlRelatorioDeEstagio(relatorio);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
+	
+	private String getHtmlRelatorioDeEstagio(Optional<RelatorioDeEstagio> relatorioFind) {
+	    // Carregar o HTML do arquivo
+		RelatorioDeEstagio relatorio = relatorioFind.get();
+		
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    String html = "";
+	    try {
+	        html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-relatorio-de-estagio.html"), StandardCharsets.UTF_8);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    StringBuilder estagiosHtml = new StringBuilder();
+	    
+	        String estagioHtml = "<h2>Relatório de Estágio de {{nome}}</h2>\n"
+	        		+ "    <table>\n"
+	        		+ "        <caption>Somente jogando os dados</caption>\n"
+	        		+ "        <tr>\n"
+	        		+ "            <th>Ciência Orientador</th>\n"
+	        		+ "            <th>Considerações</th>\n"
+	        		+ "        </tr>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <td>{{cienciaOrientador}}</td>\n"
+	        		+ "            <td>{{consideracoes}}</td>\n"
+	        		+ "        </tr>\n"
+	        		+ "        <br></br>\n"
+	        		+ "		\n"
+	        		+ "    </table>";
+	        estagioHtml = estagioHtml.replace("{{cienciaOrientador}}", String.valueOf(relatorio.isCienciaOrientador()));
+	        estagioHtml = estagioHtml.replace("{{consideracoes}}", relatorio.getConsideracoes());
+	        estagioHtml = estagioHtml.replace("{{nome}}", relatorio.getEstagio().getAluno().getNome());
+	        // Adicionar o HTML do estágio à lista
+	        estagiosHtml.append(estagioHtml);
+	    
+
+	    // Substituir a tag no HTML principal com os estágios
+	    html = html.replace("{{relatorio}}", estagiosHtml.toString());
+
+	    return html;
+	}
+	
+	public Workbook gerarExcelEstagioSeguradoraUfpr(List<Estagio> estagios) {
+	    Workbook workbook = new XSSFWorkbook();
+	    Sheet sheet = workbook.createSheet("Estágios Seguradora UFPR");
+
+	    // Cabeçalho
+	    Row headerRow = sheet.createRow(0);
+	    headerRow.createCell(0).setCellValue("ID");
+	    headerRow.createCell(1).setCellValue("Nome");
+	    headerRow.createCell(2).setCellValue("Período");
+
+	    int rowNum = 1;
+	    for (Estagio estagio : estagios) {
+	        Row row = sheet.createRow(rowNum++);
+	        row.createCell(0).setCellValue(estagio.getId());
+	        row.createCell(1).setCellValue(estagio.getAluno().getNome());
+	        row.createCell(2).setCellValue(estagio.getDataCriacao());
+	    }
+
+	    // Formatação
+	    sheet.autoSizeColumn(0);
+	    sheet.autoSizeColumn(1);
+	    sheet.autoSizeColumn(2);
+
+	    return workbook;
 	}
 }
