@@ -22,6 +22,7 @@ import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -529,6 +530,60 @@ public class GeradorDePdfService {
 
 	    // Substituir a tag no HTML principal com os estágios
 	    html = html.replace("{{certificados}}", estagiosHtml.toString());
+
+	    return html;
+	}
+	
+	public byte[] gerarPdfRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlRelatoriosDeEstagio(relatorios);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
+	
+	private String getHtmlRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) {
+	    // Carregar o HTML do arquivo
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    String html = "";
+	    try {
+	        html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-relatorio-de-estagio.html"), StandardCharsets.UTF_8);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    StringBuilder estagiosHtml = new StringBuilder();
+	    for (RelatorioDeEstagio relatorio : relatorios) {
+	        String estagioHtml = "<h2>Relatório de Estágio de {{nome}}</h2>\n"
+	        		+ "    <table>\n"
+	        		+ "        <caption>Somente jogando os dados</caption>\n"
+	        		+ "        <tr>\n"
+	        		+ "            <th>Ciência Orientador</th>\n"
+	        		+ "            <th>Considerações</th>\n"
+	        		+ "        </tr>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <td>{{cienciaOrientador}}</td>\n"
+	        		+ "            <td>{{consideracoes}}</td>\n"
+	        		+ "        </tr>\n"
+	        		+ "        <br></br>\n"
+	        		+ "		\n"
+	        		+ "    </table>";
+	        estagioHtml = estagioHtml.replace("{{cienciaOrientador}}", String.valueOf(relatorio.isCienciaOrientador()));
+	        estagioHtml = estagioHtml.replace("{{consideracoes}}", relatorio.getConsideracoes());
+	        estagioHtml = estagioHtml.replace("{{nome}}", relatorio.getEstagio().getAluno().getNome());
+	        // Adicionar o HTML do estágio à lista
+	        estagiosHtml.append(estagioHtml);
+	    }
+
+	    // Substituir a tag no HTML principal com os estágios
+	    html = html.replace("{{relatorios}}", estagiosHtml.toString());
 
 	    return html;
 	}

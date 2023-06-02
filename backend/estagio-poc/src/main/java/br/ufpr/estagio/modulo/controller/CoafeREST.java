@@ -46,6 +46,7 @@ import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
@@ -55,6 +56,7 @@ import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.ContratanteService;
 import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
+import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeRescisaoService;
 
@@ -77,6 +79,9 @@ public class CoafeREST {
 	
 	@Autowired
 	private CertificadoDeEstagioService certificadoDeEstagioService;
+	
+	@Autowired
+	private RelatorioDeEstagioService relatorioDeEstagioService;
 	
 	@Autowired
 	private ContratanteService contratanteService;
@@ -467,8 +472,6 @@ public class CoafeREST {
 				AgenteIntegrador agenteIntegrador = agenteIntegradorFind.get();
 				
 				byte[] pdf = geradorService.gerarPdfAgenteIntegrador(agenteIntegrador);
-				
-//				byte[] pdf = geradorService.gerarPdfSimples();
 					
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_PDF);
@@ -482,18 +485,43 @@ public class CoafeREST {
 	@GetMapping("/gerar-relatorio-certificados")
 	public ResponseEntity<byte[]> gerarRelatorioCertificadosPdf() throws IOException, DocumentException {
 		
-		// TO-DO: Jogar dentro de um try-catch
-		
-				List<CertificadoDeEstagio> certificados = certificadoDeEstagioService.listarTodosCertificadosDeEstagio();
-				
-				 // Alterar para gerar relatórios de N estágios
-					byte[] pdf = geradorService.gerarPdfCertificadosDeEstagio(certificados);
-					
-					HttpHeaders headers = new HttpHeaders();
-					headers.setContentType(MediaType.APPLICATION_PDF);
-					headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-certificados.pdf").build());
+		try {
+			List<CertificadoDeEstagio> certificados = certificadoDeEstagioService.listarTodosCertificadosDeEstagio();
 			
-					return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+			// Alterar para gerar relatórios de N estágios
+			byte[] pdf = geradorService.gerarPdfCertificadosDeEstagio(certificados);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-certificados.pdf").build());
+	
+			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+		}  catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
+	    }
+		
+				
+
+	}
+	
+	@GetMapping("/gerar-relatorio-relatorioDeEstagio")
+	public ResponseEntity<byte[]> gerarRelatorioRealtoriosDeEstagioPdf() throws IOException, DocumentException {
+		
+		try {
+			List<RelatorioDeEstagio> relatorios = relatorioDeEstagioService.listarTodosRelatorios();
+			
+			byte[] pdf = geradorService.gerarPdfRelatoriosDeEstagio(relatorios);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-relatorios-de-estagio.pdf").build());
+	
+			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+		}  catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
+	    }
+		
+				
 
 	}
 

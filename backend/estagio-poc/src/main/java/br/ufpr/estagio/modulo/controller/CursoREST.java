@@ -72,7 +72,7 @@ public class CursoREST {
 			if (curso.get() == null) {
 				throw new NotFoundException("Curso não encontrado!");
 			} else {
-				List<Orientador> listaOrientadores = cursoService.buscarOrientadoresPorIdPrograma(idPrograma);
+				List<Orientador> listaOrientadores = cursoService.buscarOrientadoresPorIdPrograma(idPrograma, accessToken);
 				
 				return ResponseEntity.status(HttpStatus.OK).body(listaOrientadores.stream().map(e -> mapper.map(e, OrientadorDTO.class)).collect(Collectors.toList()));
 			}
