@@ -36,6 +36,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GeradorDePdfService {
@@ -554,7 +555,7 @@ public class GeradorDePdfService {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    String html = "";
 	    try {
-	        html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-relatorio-de-estagio.html"), StandardCharsets.UTF_8);
+	        html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-relatorios-de-estagio.html"), StandardCharsets.UTF_8);
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
@@ -584,6 +585,62 @@ public class GeradorDePdfService {
 
 	    // Substituir a tag no HTML principal com os estágios
 	    html = html.replace("{{relatorios}}", estagiosHtml.toString());
+
+	    return html;
+	}
+	
+	public byte[] gerarPdfRelatorioDeEstagio(Optional<RelatorioDeEstagio> relatorio) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlRelatorioDeEstagio(relatorio);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
+	
+	private String getHtmlRelatorioDeEstagio(Optional<RelatorioDeEstagio> relatorioFind) {
+	    // Carregar o HTML do arquivo
+		RelatorioDeEstagio relatorio = relatorioFind.get();
+		
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    String html = "";
+	    try {
+	        html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-relatorio-de-estagio.html"), StandardCharsets.UTF_8);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    StringBuilder estagiosHtml = new StringBuilder();
+	    
+	        String estagioHtml = "<h2>Relatório de Estágio de {{nome}}</h2>\n"
+	        		+ "    <table>\n"
+	        		+ "        <caption>Somente jogando os dados</caption>\n"
+	        		+ "        <tr>\n"
+	        		+ "            <th>Ciência Orientador</th>\n"
+	        		+ "            <th>Considerações</th>\n"
+	        		+ "        </tr>\n"
+	        		+ "		<tr>\n"
+	        		+ "            <td>{{cienciaOrientador}}</td>\n"
+	        		+ "            <td>{{consideracoes}}</td>\n"
+	        		+ "        </tr>\n"
+	        		+ "        <br></br>\n"
+	        		+ "		\n"
+	        		+ "    </table>";
+	        estagioHtml = estagioHtml.replace("{{cienciaOrientador}}", String.valueOf(relatorio.isCienciaOrientador()));
+	        estagioHtml = estagioHtml.replace("{{consideracoes}}", relatorio.getConsideracoes());
+	        estagioHtml = estagioHtml.replace("{{nome}}", relatorio.getEstagio().getAluno().getNome());
+	        // Adicionar o HTML do estágio à lista
+	        estagiosHtml.append(estagioHtml);
+	    
+
+	    // Substituir a tag no HTML principal com os estágios
+	    html = html.replace("{{relatorio}}", estagiosHtml.toString());
 
 	    return html;
 	}

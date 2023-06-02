@@ -32,12 +32,14 @@ import com.lowagie.text.DocumentException;
 import br.ufpr.estagio.modulo.dto.AgenteIntegradorResumidoDTO;
 import br.ufpr.estagio.modulo.dto.ApoliceResumidoDTO;
 import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.SeguradoraResumidoDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
@@ -504,7 +506,7 @@ public class CoafeREST {
 
 	}
 	
-	@GetMapping("/gerar-relatorio-relatorioDeEstagio")
+	@GetMapping("/gerar-relatorios-relatorioDeEstagio")
 	public ResponseEntity<byte[]> gerarRelatorioRealtoriosDeEstagioPdf() throws IOException, DocumentException {
 		
 		try {
@@ -519,6 +521,42 @@ public class CoafeREST {
 			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 		}  catch (PocException e) {
 	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
+	    }
+		
+				
+
+	}
+	
+	@GetMapping("/gerar-relatorio-relatorioDeEstagio/{id}")
+	public ResponseEntity<Object> gerarRelatorioRealtorioDeEstagioPdf(@PathVariable String id) throws IOException, DocumentException {
+		
+		try {
+			long idLong = Long.parseLong(id);
+	    	
+	    	if (idLong < 1L)
+        		throw new InvalidFieldException("Id inválido.");
+			
+	    	Optional<RelatorioDeEstagio> relatorio = relatorioDeEstagioService.buscarRelatorioPorId(idLong);
+			
+	    	if (relatorio.isEmpty()) {
+				throw new NotFoundException("Relatório não encontrado!");
+			}
+	    	
+			byte[] pdf = geradorService.gerarPdfRelatorioDeEstagio(relatorio);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-relatorio-de-estagio.pdf").build());
+	
+			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
 	    }
 		
 				
