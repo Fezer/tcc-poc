@@ -3,8 +3,6 @@ import { defineComponent, ref } from "vue";
 import aluno from "../../../components/common/aluno.vue";
 import Contratante from "../../../components/common/contratante.vue";
 import planoAtividades from "../../../components/common/plano-atividades.vue";
-import historicoDeMudancasVue from "./historicoDeMudancas.vue";
-import relatoriosVue from "./relatorios.vue";
 import Status from "../../../components/common/statusEstagio.vue";
 import AlunoService from "~~/services/AlunoService";
 import { useToast } from "primevue/usetoast";
@@ -17,8 +15,6 @@ export default defineComponent({
     PlanoAtividades: planoAtividades,
     Contratante,
     Status,
-    HistoricoDeMudancas: historicoDeMudancasVue,
-    Relatorios: relatoriosVue,
   },
   async setup() {
     const { setTermo } = useTermo();

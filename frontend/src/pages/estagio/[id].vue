@@ -3,8 +3,6 @@ import { defineComponent, ref } from "vue";
 import aluno from "../../components/common/aluno.vue";
 import Contratante from "../../components/common/contratante.vue";
 import planoAtividades from "../../components/common/plano-atividades.vue";
-import historicoDeMudancasVue from "./historicoDeMudancas.vue";
-import relatoriosVue from "./relatorios.vue";
 import Status from "../../components/common/statusEstagio.vue";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
@@ -15,8 +13,6 @@ export default defineComponent({
     PlanoAtividades: planoAtividades,
     Contratante,
     Status,
-    HistoricoDeMudancas: historicoDeMudancasVue,
-    Relatorios: relatoriosVue,
   },
   async setup() {
     const route = useRoute();
