@@ -68,6 +68,7 @@ import br.ufpr.estagio.modulo.service.AlunoService;
 import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.ContratanteService;
 import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.GeradorDeExcelService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
 import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
@@ -101,6 +102,9 @@ public class CoafeREST {
 	
 	@Autowired
 	private AgenteIntegradorService agenteIntegradorService;
+	
+	@Autowired
+	private GeradorDeExcelService geradorExcelService;
 	
 	@Autowired
 	private GeradorDePdfService geradorService;
@@ -462,49 +466,31 @@ public class CoafeREST {
 	}*/
 	
 	@GetMapping("/gerar-relatorio-seguradora-ufpr-excel")
-	public ResponseEntity<Resource> gerarRelatorioSeguradoraUfprExcel() throws IOException {
-	    List<Estagio> estagios = estagioService.buscarEstagioPorSeguradoraUfpr();
-
-	    // Criar um novo arquivo Excel
-	    Workbook workbook = new XSSFWorkbook();
-
-	    // Criar uma nova planilha
-	    Sheet sheet = workbook.createSheet("Relatório Estágios");
-
-	    // Criar o cabeçalho da planilha
-	    String[] headersTitle = {"Id do Estágio", "Nome Aluno", "GRR", "IRA", "Curso", "Status do Estágio"};
-	    Row headerRow = sheet.createRow(0);
-	    for (int i = 0; i < headersTitle.length; i++) {
-	        Cell cell = headerRow.createCell(i);
-	        cell.setCellValue(headersTitle[i]);
-	    }
-
-	    // Preencher os dados dos estágios na planilha
-	    int rowNum = 1;
-	    for (Estagio estagio : estagios) {
-	        Row row = sheet.createRow(rowNum++);
-	        row.createCell(0).setCellValue(estagio.getId());
-	        row.createCell(1).setCellValue(estagio.getAluno().getNome());
-	        row.createCell(2).setCellValue(estagio.getAluno().getMatricula());
-	        row.createCell(3).setCellValue(estagio.getAluno().getIra());
-	        row.createCell(4).setCellValue(estagio.getAluno().getCurso().getNome());
-	        row.createCell(5).setCellValue(String.valueOf(estagio.getStatusEstagio()));
-	    }
-
-	    // Salvar o arquivo Excel em um fluxo de bytes
-	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-	    workbook.write(outputStream);
-
-	    // Criar um recurso de byte array a partir do fluxo de bytes
-	    ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
-
-        // Configurar os cabeçalhos da resposta
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-seguradora-ufpr.xlsx").build());
-        headers.set("Content-Encoding", "UTF-8");
-
-        // Retornar a resposta com o recurso de byte array
-        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+	public ResponseEntity<Object> gerarRelatorioSeguradoraUfprExcel() throws IOException {
+		try {
+		    List<Estagio> estagios = estagioService.buscarEstagioPorSeguradoraUfpr();
+	
+		    if (estagios.isEmpty())
+		    	throw new NotFoundException("Não foi encontrado estágio com seguradora UFPR");
+		    
+		    ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelEstagioSeguradoraUfpr(estagios);
+	
+		    // Criar um recurso de byte array a partir do fluxo de bytes
+		    ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+	
+	        // Configurar os cabeçalhos da resposta
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-seguradora-ufpr.xlsx").build());
+	        headers.set("Content-Encoding", "UTF-8");
+	
+	        // Retornar a resposta com o recurso de byte array
+	        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    }  
     }
 	
 	@GetMapping("/gerar-relatorio-empresa/{idContratanteURL}")
