@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "f6f8cb31-81bb-4974-a4ba-8f75fb3ce1a3",
+		"_postman_id": "7ec48d39-f515-4846-817e-667038a1a3ec",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18567474"
+		"_exporter_id": "17301767"
 	},
 	"item": [
 		{
@@ -2827,7 +2827,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"numero\": \"1222\",\n    \"descricao\": \"Inconveniente\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\",\n    \"agenteIntegrador\": {\n        \"id\": 13,\n        \"cnpj\": \"00010001\"\n    }\n}",
+							"raw": "{\n    \"numero\": \"1222\",\n    \"descricao\": \"Conveniente\",\n    \"dataInicio\": \"2022-01-01\",\n    \"dataFim\": \"2022-12-31\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2835,7 +2835,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/convenio/1",
+							"raw": "http://localhost:5000/convenio/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2843,7 +2843,7 @@
 							"port": "5000",
 							"path": [
 								"convenio",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -3064,7 +3064,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"logradouro\": \"Rua das Flores\",\r\n    \"numero\": 123,\r\n    \"complemento\": \"Apto 123\",\r\n    \"cidade\": \"Curitiba\",\r\n    \"estado\": \"Parana\",\r\n    \"cep\": \"80123-123\"\r\n}",
+							"raw": "{\r\n    \"rua\": \"Rua das Flores\",\r\n    \"numero\": \"123\",\r\n    \"complemento\": null,\r\n    \"cidade\": \"Curitiba\",\r\n    \"uf\": \"Parana\",\r\n    \"cep\": \"80123-123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3100,7 +3100,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"logradouro\": \"Rua das Flores\",\n    \"numero\": 123,\n    \"complemento\": \"Apto 123\",\n    \"cidade\": \"Curitiba\",\n    \"estado\": \"Parana\",\n    \"cep\": \"80123-123\"\n}",
+							"raw": "{\n    \"rua\": \"Rua das Flores\",\n    \"numero\": 123,\n    \"complemento\": \"Apto 123\",\n    \"cidade\": \"Curitiba\",\n    \"uf\": \"Parana\",\n    \"cep\": \"80123-123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3169,7 +3169,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"logradouro\": \"Rua das Flores 123\",\n    \"numero\": 123,\n    \"complemento\": \"Apto 123\",\n    \"cidade\": \"Curitiba\",\n    \"estado\": \"Parana\",\n    \"cep\": \"80123-123\"\n}",
+							"raw": "{\n    \"rua\": \"Rua das Flores 12\",\n    \"numero\": 123,\n    \"complemento\": \"Apto 123\",\n    \"cidade\": \"Curitiba\",\n    \"uf\": \"Parana\",\n    \"cep\": \"80123-123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3177,7 +3177,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/endereco/3",
+							"raw": "http://localhost:5000/endereco/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3185,7 +3185,7 @@
 							"port": "5000",
 							"path": [
 								"endereco",
-								"3"
+								"4"
 							]
 						}
 					},
@@ -4512,6 +4512,165 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "gerarRelatorioRelatoriosDeEstagio",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/gerar-relatorios-relatorioDeEstagio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"gerar-relatorios-relatorioDeEstagio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "gerarRelatorioRelatorioDeEstagio",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/gerar-relatorio-relatorioDeEstagio/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"gerar-relatorio-relatorioDeEstagio",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "gerarRelatorioEstagioSeguradoraUfprExcel",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:5000/coafe/gerar-relatorio-seguradora-ufpr-excel",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"gerar-relatorio-seguradora-ufpr-excel"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "New Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:5000/coafe/gerar-relatorio-seguradora-ufpr-excel",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "5000",
+											"path": [
+												"coafe",
+												"gerar-relatorio-seguradora-ufpr-excel"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "raw",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "Content-Disposition",
+											"value": "form-data; name=\"attachment\"; filename=\"relatorio-seguradora-ufpr.xlsx\""
+										},
+										{
+											"key": "Accept-Ranges",
+											"value": "bytes"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate"
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache"
+										},
+										{
+											"key": "Expires",
+											"value": "0"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/octet-stream"
+										},
+										{
+											"key": "Content-Length",
+											"value": "3492"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 02 Jun 2023 21:58:48 GMT"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "PK\u0003\u0004\u0014\u0000\b\b\b\u0000X��V\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0013\u0000\u0000\u0000[Content_Types].xml�S�n�0\u0010����*6�PU\u0015�C\u001f�\u0016��\u0003\\{�X�%����]\u00078�R�\nq�cfgfW�d�q�ZCB\u0013|��|�*�*h㻆},^�{Va�^K\u001b<4l\u000b�f��b\u001b\u0001+��ذ>�� \u0004�\u001e�D\u001e\"xBڐ��tL��R-e\u0007�v4�\u0013*�\f>׹h���\tZ���z��\u0017��\u0018�Q2S,���H��\u000b�\u0004v�`o\"�\u0010�U�\u001bRٵC(2q��qa9S�\u001b\r&\u0019\r��\u0016��(�A�\u001c�p(�\u001at\u001d\u0013\u0011S6��9�)�JG���sBQ�4���0\u0016\u0015\u0012�eX�\u00179\u001eu�1���\u0003dg9�2�~ω^��\u0010\u001b+~\u0010��#o�)�\u0000\u0003r�\t�ʝ4���WH��\u0010���/\u000e��/�\u0001D1,�C\u000e1|��7PK\u0007\b�,(�;\u0001\u0000\u0000\u001d\u0004\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000X��V\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000b\u0000\u0000\u0000_rels/.rels���J\u00031\u0010�_%̽�m\u0005\u0011iڋ\b���\u0007\u0018��ݰ�LHFݾ����lA��03��1�v?�I�S.���uӂ�h���\u001bx9>��@\u0015��p�H\u0006NT`��>ӄRW��SQ�\u0011��A$�k]�@\u0001KÉb�t�\u0003J-s�\u0013�\u0011{қ����'\u0003Ι��\f�[�:b�I\f̓��<�2�M���)�oB�뼥\u0007�o��,d_L�^v�|�8�O��&���24\u000bEGn�j\u0002e���W�n\u0016�,g����Gс\u0004\u001d\n~Q/���\u001f�}\u0002PK\u0007\bn2\bK�\u0000\u0000\u0000J\u0002\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000X��V\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000docProps/app.xmlM��\n�0\u0010D�~EȽ��ADҔ�\b��A? ��6�lB�J?ߜ���0���ͯ�)�@��׍\u0014H6���V>\u001f��$;�SC\n\u0011\u0013;̢\u001c(�ra�g�l\u0017�&�e��L!y�%�\u0019�49��`_\u001e���4G���F\u001c��\u0005J��\u0018Wg\r\u0017\u0007�GS�b��\u0014��\n~\u000e�\u0003PK\u0007\b�|wؑ\u0000\u0000\u0000�\u0000\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000X��V\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0011\u0000\u0000\u0000docProps/core.xmlm�]K�0\u0014��J�}���QB�!�@P\u001cXqx\u0017�c[l>H����i�\u0015Ի$�s\u001eN�j{T#�\u0000�\u0007�k��\u0014#���Aw5~jwI��\u000f\\K>\u001a\r5>��ۦ\u0012�\t�`�\u0005\u0017\u0006�(z�g�ָ\u000f�2B��Aq�FB���8�C���X.�x\u0007$�tC\u0014\u0004.y�d\u0016&v5�R�Ui�ݸ\b� 0�\u0002\u001d<�Ҍ��\u0001���\u000e,�J\u001e��R�4�S�pq��\u001c��\u001e��A�\u0017���f�\u0001\u000f Q\u0014�p����乸�iw��i^$t�м�3vY���\"��g��ٸ�*\u0016�\u0003�?����\\�?57�PK\u0007\b2W:�\u0006\u0001\u0000\u0000�\u0001\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000X��V\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0014\u0000\u0000\u0000xl/sharedStrings.xmlu��J�@\u0010E���a��nb�FIRbM%\u0018��VзЎ�Bv7f6���[�1�(\b\t>\rs���2\u0013->T\r=�$���7\u0011\fP��^�C̶O��-������tں\u0019�A��{��_�1p.�bv����vGT\u0015ML��)o�U�um{�ԴX��hU�}!\u0002�*�Y\u0012�L\"�<\u0018��֝6\u0011�I�O�G�-�!��t��]K����̳\u0002����z\u0005��K6�r����t\u001azCIL.�����볖��p���7u/\u0015jk`���dO7\u0018n\u0015�|\u0003���\u001f3W^����g�0\u0018�\b.��r���\u001bPK\u0007\b����\u0007\u0001\u0000\u0000�\u0001\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000X��V\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\r\u0000\u0000\u0000xl/styles.xml���n� \u0010��>\u0005bop2TQ��P)U�RWb�6*\u001c\u0016����\u0017�ӤS�Nw�s���3ߍ֐\u000b��\u001d�t��(\u0001l��������ҝx�!N\u0006\u000e=@$ɀ��}��3c���ʰr\u0003`:i��2��w,\f\u001e�\n�d\r�T�\u0013�R#\u0015\u001c�voc �;c�iE��Û��E\u0010<|��4Iɣ���\u0019�F\u0005#��n���B�z�F���y�j3\u0015y��yҥ�jt>���2��Lژ�!6�\b�\u000f2F�O\u0005Y��4@M�!\u0014���G��������1�t��y��p��\"\tn����u��\u0018���a�ΦDi�9�&#��%I�\u0006�9��}���cK�\u000e�T��$?������`J������7���o��f��M|\u0003PK\u0007\b�1X@C\u0001\u0000\u0000�\u0002\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000X��V\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000f\u0000\u0000\u0000xl/workbook.xml��AN�0\u0010E��=u\u0002\bA\u0014�\u001b@�\u000e��ލ'���\u0013͘��p\u0006�Ћ��\n�d5������\b�: ��h _e�0��|l\r�n�.�`]]�G���h�F<��.���Z�\u000e��\u0015\r\u0018�OC\u001cl\u001a#�Z\u0006F�CL��WYv���\u0011Ά��㠦�5>P�\u001e0�����i\u001c+�\u001f\u0004��eϬ�M��g7\u0006\u001a�\u000b�������(��\u0014���?���\fd\u0013������h\u0003\u001ax�ZO_�I=J:}��\u0004\u0014\u0017�\u0019���\u00065ӛ1�o�襶�\u0006PK\u0007\b�,�r�\u0000\u0000\u0000k\u0001\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000X��V\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u001a\u0000\u0000\u0000xl/_rels/workbook.xml.rels��Mk�0\f@���}q��\u0018�n/c�k?~���84����˿����@\u0007;�$��{\u000f�\\��:Q�>\u0006\u0003MU��`��Cg��xz\u0005ł��\u0010\u0003\u0019��a�Zni@)_���Ua\u00046�Eқ�l=��UL\u0014ʦ�yD)�����\u001d�E]��|ˀ9Sm���q\r�=��\u0000{��v�K\u001aW\u0005\\VS��hc���ޣ�\u001c)�\u001d���AߏY���4��+����瘏��Z^F��\u001f�5FϮ��\u0000PK\u0007\bg뢨�\u0000\u0000\u00004\u0002\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000X��V\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0018\u0000\u0000\u0000xl/worksheets/sheet1.xml}�Ko�0\f���\u0015Q�kx��U@�\rU�aҴ�=\u0005\u0003Q!AIZ��gX�R6�f��\u0017�h����\u0004�\b%c��<J@f*\u0017������zE7�U�)}0\u0015�%X/ML+k�5c&���f�Z�H\n�\u001bn1�%3�\u0006�\u000fMM�\u0002�[��\u000bI�(\u0017\r�~ �P�t�Ӑ�$\u001aj?\u0004tƉI?z�ԡO\u001e󘢡��W�!����G�ٯ��`�I\u000e\u0005?��Eu\u000f ���C��ҟ�)�<���F��Y\u001fl}\u001c\u0014S��)�\"v�\u0011ٙݹ̿d�.\u000b.Y�pd\fg�\u0002�(\u00108�7\u0013\u0001��'\u0002.[L\u0004\\��[ \u001c\u0005B�x5\u0011p��D�e��ץ�?\u0006��G�Kx�\u0014Ґ��V5���rNI��\u0005�g��\n�lLj(�PE��^�\u0010[՞{�;\u0019o9�\u0002PK\u0007\b�yK�R\u0001\u0000\u0000�\u0002\u0000\u0000PK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000X��V�,(�;\u0001\u0000\u0000\u001d\u0004\u0000\u0000\u0013\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000[Content_Types].xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000X��Vn2\bK�\u0000\u0000\u0000J\u0002\u0000\u0000\u000b\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000|\u0001\u0000\u0000_rels/.relsPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000X��V�|wؑ\u0000\u0000\u0000�\u0000\u0000\u0000\u0010\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�\u0002\u0000\u0000docProps/app.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000X��V2W:�\u0006\u0001\u0000\u0000�\u0001\u0000\u0000\u0011\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000i\u0003\u0000\u0000docProps/core.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000X��V����\u0007\u0001\u0000\u0000�\u0001\u0000\u0000\u0014\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�\u0004\u0000\u0000xl/sharedStrings.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000X��V�1X@C\u0001\u0000\u0000�\u0002\u0000\u0000\r\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�\u0005\u0000\u0000xl/styles.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000X��V�,�r�\u0000\u0000\u0000k\u0001\u0000\u0000\u000f\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000u\u0007\u0000\u0000xl/workbook.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000X��Vg뢨�\u0000\u0000\u00004\u0002\u0000\u0000\u001a\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�\b\u0000\u0000xl/_rels/workbook.xml.relsPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000X��V�yK�R\u0001\u0000\u0000�\u0002\u0000\u0000\u0018\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�\t\u0000\u0000xl/worksheets/sheet1.xmlPK\u0005\u0006\u0000\u0000\u0000\u0000\t\u0000\t\u0000?\u0002\u0000\u0000O\u000b\u0000\u0000\u0000\u0000"
+								}
+							]
 						}
 					]
 				}
