@@ -51,4 +51,13 @@ export default class CoordService extends BaseService {
       }
     );
   }
+
+  async cienciaTermoRescisao(termo: number) {
+    return await $fetch(
+      this.BASE_URL + `/coordenacao/termoDeRescisao/${termo}/darCiencia`,
+      {
+        method: "PUT",
+      }
+    );
+  }
 }

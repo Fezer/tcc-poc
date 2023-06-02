@@ -39,4 +39,13 @@ export default class CoafeService extends BaseService {
       }
     );
   }
+
+  async cienciaTermoRescisao(termo: number) {
+    return await $fetch(
+      this.BASE_URL + `/coafe/termoDeRescisao/${termo}/darCiencia`,
+      {
+        method: "PUT",
+      }
+    );
+  }
 }
