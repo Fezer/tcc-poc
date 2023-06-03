@@ -2,30 +2,14 @@
 import dayjs from "dayjs";
 import { defineComponent } from "vue";
 import parseDate from "../../utils/parseDate";
+import { Estagio } from "~~/src/types/NovoEstagio";
 export default defineComponent({
   props: {
     estagio: Object,
-    tipoUsuario: String,
   },
-  setup({
-    estagio,
-    tipoUsuario,
-  }: {
-    estagio: any;
-    tipoUsuario: "ALUNO" | "OUTRO";
-  }) {
-    const getStatusColor = () => {
-      const status = estagio?.statusEstagio;
-
-      if (status === "Aprovado") return "text-green-500";
-      if (status === "Reprovado") return "text-red-500";
-      return "text-orange-500";
-    };
-
+  setup({ estagio }: { estagio: Estagio }) {
     return {
       parseDate,
-      tipoUsuario,
-      getStatusColor,
     };
   },
 });
@@ -45,9 +29,9 @@ export default defineComponent({
           <strong>Data de Início do Estágio</strong>
           <span>{{ parseDate(estagio?.dataInicio) }}</span>
         </div>
-        <div class="text-box col-3 flex flex-col" v-if="estagio?.dataFinal">
-          <strong>Data de Início do Estágio</strong>
-          <span>{{ parseDate(estagio?.dataFinal) }}</span>
+        <div class="col-4" v-if="!!estagio?.termoDeRescisao">
+          <strong>Data de Término</strong>
+          <p>{{ parseDate(estagio?.dataTermino) }}</p>
         </div>
         <div class="col-3" v-else></div>
       </div>

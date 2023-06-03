@@ -92,7 +92,6 @@ export default defineComponent({
 </script>
 <template>
   <div class="m-1">
-    <Toast />
     <h2>Parecer certificado de estágio</h2>
     <div class="card grid">
       <div class="col-4">

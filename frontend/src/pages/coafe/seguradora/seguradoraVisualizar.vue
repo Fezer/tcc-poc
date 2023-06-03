@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Toast />
     <div class="flex justify-content-between">
       <h6>
         Seguradora

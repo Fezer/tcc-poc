@@ -49,4 +49,25 @@ interface BaseTermo {
   estagio?: BasicEstagio;
 }
 
-export { StatusTermo, BaseTermo };
+interface TermoRescisao {
+  id: number;
+  dataTermino: string;
+  periodoTotalRecesso: number;
+
+  periodoRecesso: PeriodoRecesso[];
+
+  estagio: BasicEstagio;
+
+  cienciaCOE?: boolean;
+  cienciaCoordenacao?: boolean;
+  cienciaCOAFE?: boolean;
+  cienciaOrientador?: boolean;
+}
+
+type PeriodoRecesso = {
+  id: number;
+  dataInicio: string;
+  dataFim: string;
+};
+
+export { StatusTermo, BaseTermo, TermoRescisao, PeriodoRecesso };

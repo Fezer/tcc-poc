@@ -112,6 +112,8 @@ export default defineComponent({
     };
 
     const handleEditarTermo = () => {
+      // seta o termo atual para edição
+      // no caso do termo aditivo, é necessário para comparar com dados do estágio ativo
       setTermo(termo.value);
 
       router.push({
@@ -219,15 +221,14 @@ export default defineComponent({
 
 <template>
   <div class="relative">
-    <Toast />
     <small>Processos > Termos Aditivos</small>
     <h2>Termo Aditivo</h2>
 
     <NuxtLink :to="`/aluno/estagio/${termo?.estagio?.id}`">
       <Button
-        label="Ir para estágio"
-        icon="pi pi-arrow-right"
-        class="absolute right-0 top-10"
+        label="Ver estágio"
+        icon="pi pi-eye"
+        class="p-button-secondary absolute right-0 top-10"
       />
     </NuxtLink>
 
@@ -236,6 +237,7 @@ export default defineComponent({
       :status="termo?.statusTermo"
       :motivo="termo?.motivoIndeferimento"
       :termo="termo"
+      v-if="termo?.statusTermo"
     />
 
     <Estagio :termo="termo" />

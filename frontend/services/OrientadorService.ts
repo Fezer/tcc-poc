@@ -10,4 +10,14 @@ export default class OrientadorService extends BaseService {
       }
     );
   }
+
+  async cienciaTermoRescisao(orientador: number, termo: number) {
+    return await $fetch(
+      this.BASE_URL +
+        `/orientador/${orientador}/termoDeRescisao/${termo}/darCiencia`,
+      {
+        method: "PUT",
+      }
+    );
+  }
 }

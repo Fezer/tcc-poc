@@ -20,6 +20,8 @@ export default defineComponent({
     const relatorioService = new RelatorioEstagioService();
     const alunoService = new AlunoService();
 
+    const consideracoesError = ref("");
+
     const state = reactive<RelatorioEstagio>({
       avalAtividades: "",
       avalFormacaoProfissional: "",
@@ -43,6 +45,18 @@ export default defineComponent({
 
     const handleGenerateRelatorio = async () => {
       const validate = validation.safeParse(state);
+
+      const consideracoesLength = state?.consideracoes.length;
+
+      if (consideracoesLength < 50) {
+        return (consideracoesError.value =
+          "O campo considerações deve ter no mínimo 50 caracteres");
+      }
+
+      if (consideracoesLength > 700) {
+        return (consideracoesError.value =
+          "O campo considerações deve ter no máximo 700 caracteres");
+      }
 
       if (!validate.success) {
         return toast.add({
@@ -70,11 +84,11 @@ export default defineComponent({
           updateRelatorio
         );
 
+        // keep toast alive on redirect
         toast.add({
           severity: "success",
           summary: "Sucesso",
-          detail:
-            "Relatório criado com sucesso. Agora você precisa pedir a ciência do seu orientador, através da tela do relatório.",
+          detail: "Relatório criado com sucesso",
           life: 3000,
         });
 
@@ -95,13 +109,13 @@ export default defineComponent({
       evaluateOptions,
       completionOptions,
       handleGenerateRelatorio,
+      consideracoesError,
     };
   },
 });
 </script>
 <template>
   <div>
-    <Toast />
     <span>
       <small>Estágio > Novo Relatório de Estágio</small>
       <h3>Novo Relatório de Estágio</h3>
@@ -188,7 +202,9 @@ export default defineComponent({
                 v-model="state.consideracoes"
                 maxlength="700"
                 class="h-32"
+                :class="!!consideracoesError ? 'p-invalid' : ''"
               />
+              <small class="p-error">{{ consideracoesError }}</small>
             </div>
           </div>
         </div>

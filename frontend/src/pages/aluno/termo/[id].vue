@@ -217,7 +217,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <small>Processos > Ver processo</small>
     <h2>Termo de Compromisso</h2>
 
@@ -226,6 +225,7 @@ export default defineComponent({
       :status="termo?.statusTermo"
       :motivo="termo?.motivoIndeferimento"
       :termo="termo"
+      v-if="termo?.statusTermo"
     />
 
     <Aluno />

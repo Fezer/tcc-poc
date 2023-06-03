@@ -62,7 +62,7 @@ export default defineComponent({
         <strong>Data de Inicio</strong>
         <p>{{ parseDate(termo?.dataInicio) }}</p>
       </div>
-      <div class="col-4">
+      <div class="col-4" v-if="!termo?.termoDeRescisao">
         <strong>Data prevista de Fim</strong>
         <p>{{ parseDate(termo?.dataTermino) }}</p>
       </div>

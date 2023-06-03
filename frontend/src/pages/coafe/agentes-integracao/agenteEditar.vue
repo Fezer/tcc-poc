@@ -75,7 +75,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <h2 class="mb-0 p-2 mt-4">Editar</h2>
 
     <div class="col-12">

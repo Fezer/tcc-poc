@@ -75,13 +75,13 @@ public class CursoService {
 		return null;
 	}
 
-	public List<Orientador> buscarOrientadoresPorIdPrograma(String idPrograma) {
+	public List<Orientador> buscarOrientadoresPorIdPrograma(String idPrograma, String accessToken) {
 		Curso cursoFind = cursoRepo.findByIdPrograma(idPrograma);
 		List<Orientador> orientadores = new ArrayList<>();
 		if(cursoFind != null) {
 			List<Orientador> listaOrientador = cursoFind.getOrientador();
 			if(listaOrientador != null && listaOrientador.isEmpty()) {
-				List<String> docentes = sigaApiDiscentesService.buscarDiscentesPorIdPrograma(idPrograma).getDocentes();
+				List<String> docentes = sigaApiDiscentesService.buscarDiscentesPorIdPrograma(idPrograma, accessToken).getDocentes();
 				orientadores = orientadorService.salvarListaDocentes(docentes, cursoFind);
 				//this.salvarCurso(cursoFind);
 			}

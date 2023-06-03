@@ -3,11 +3,10 @@ import { defineComponent, ref } from "vue";
 import aluno from "../../../components/common/aluno.vue";
 import Contratante from "../../../components/common/contratante.vue";
 import planoAtividades from "../../../components/common/plano-atividades.vue";
-import historicoDeMudancasVue from "./historicoDeMudancas.vue";
-import relatoriosVue from "./relatorios.vue";
 import Status from "../../../components/common/statusEstagio.vue";
 import AlunoService from "~~/services/AlunoService";
 import { useToast } from "primevue/usetoast";
+import { Estagio } from "~~/src/types/NovoEstagio";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
 
@@ -17,8 +16,6 @@ export default defineComponent({
     PlanoAtividades: planoAtividades,
     Contratante,
     Status,
-    HistoricoDeMudancas: historicoDeMudancasVue,
-    Relatorios: relatoriosVue,
   },
   async setup() {
     const { setTermo } = useTermo();
@@ -27,11 +24,32 @@ export default defineComponent({
     const alunoService = new AlunoService();
     const toast = useToast();
 
+    const { setTermoRescisao } = useTermoRescisao();
+
     const { id } = route.params;
 
-    const { data: estagio, refresh } = await useFetch(
+    const { data: estagio, refresh } = await useFetch<Estagio>(
       `http://localhost:5000/estagio/${id}`
     );
+
+    const handleNovoTermoRescisao = () => {
+      if (estagio?.termoDeRescisao) {
+        toast.add({
+          severity: "error",
+          summary: "Erro ao gerar termo de rescisão",
+          detail:
+            "Você já possui um termo de rescisão em processo de aprovação",
+          life: 3000,
+        });
+
+        return;
+      }
+
+      setTermoRescisao(null);
+
+      cancelationConfirm.value = false;
+      router.push(`/aluno/termo-rescisao/${estagio?.value?.id}/gerar`);
+    };
 
     const handleNovoTermoAditivo = async () => {
       const grr = "GRR20200141";
@@ -97,6 +115,7 @@ export default defineComponent({
       handleSolicitarCertificado,
       handleNovoTermoAditivo,
       handleRedirectToTermoAditivo,
+      handleNovoTermoRescisao,
     };
   },
 });
@@ -104,7 +123,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <small class="m-0">Estágios > Ver estágio</small>
     <h2 class="m-0 mb-4">Estágio</h2>
 
@@ -112,7 +130,7 @@ export default defineComponent({
       <h4>Ações</h4>
       <div class="flex gap-2">
         <Button
-          label="Termo de Recisão"
+          label="Termo de Rescisão"
           class="p-button-danger"
           icon="pi pi-times"
           @click="() => (cancelationConfirm = true)"
@@ -124,7 +142,7 @@ export default defineComponent({
             icon="pi pi-file"
           />
         </NuxtLink>
-        <NuxtLink :to="`/aluno/avaliacao/gerar/${id}`">
+        <NuxtLink :to="`/aluno/estagio/avaliacao/${id}`">
           <Button
             label="Ficha de Avaliação"
             class="p-button"
@@ -160,43 +178,17 @@ export default defineComponent({
 
     <SuspensaoEstagio :termo="termo" />
 
-    <h3 v-if="estagio?.relatorioDeEstagio?.length">Relatórios de Estágio</h3>
-
-    <div
-      class="card flex items-center justify-between"
-      v-for="idRelatorio in estagio?.relatorioDeEstagio"
-      :key="idRelatorio"
-    >
-      <h5>Relatório #{{ idRelatorio }}</h5>
-      <NuxtLink :to="`/aluno/relatorio/${idRelatorio}`">
-        <Button label="Ver relatório" class="p-button-secondary"></Button>
-      </NuxtLink>
-    </div>
-
-    <h3 v-if="estagio?.termoAdivito?.length">Termos aditivos</h3>
-
-    <div
-      class="card flex items-center justify-between"
-      v-for="idTermoAditivo in estagio?.termoAdivito"
-      :key="idTermoAditivo"
-    >
-      <h5>Termo Aditivo #{{ idTermoAditivo }}</h5>
-      <Button
-        label="Ver termo aditivo"
-        class="p-button-secondary"
-        @click="() => handleRedirectToTermoAditivo(idTermoAditivo)"
-      ></Button>
-    </div>
+    <objetos-de-estagio :estagio="estagio" perfil="aluno" />
 
     <Dialog
       :visible="cancelationConfirm"
-      header="Confirmar Termo de Recisão"
+      header="Confirmar Termo de Rescisão"
       :closable="false"
       style="width: 500px"
       :modal="true"
     >
       <p>
-        Tem certeza que deseja iniciar o processo de recisão do estágio? O
+        Tem certeza que deseja iniciar o processo de rescisao do estágio? O
         processo será cancelado e o aluno não poderá mais realizar atividades
         referentes a esse estágio.
       </p>
@@ -208,10 +200,11 @@ export default defineComponent({
           @click="cancelationConfirm = false"
         />
         <Button
-          label="Cancelar"
+          label="Inicar termo de recisão"
           icon="pi pi-check"
           class="p-button-danger"
           autofocus
+          @click="handleNovoTermoRescisao"
         />
       </template>
     </Dialog>

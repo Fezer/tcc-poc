@@ -387,11 +387,11 @@ public class CoordenacaoREST {
 	}
 	
 	@GetMapping("/{grrAlunoURL}/download-termo")
-	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL, @RequestParam("Authorization") String accessToken) {
 	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 	        throw new BadRequestException("GRR do aluno não informado!");
 	    } else {
-	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 	        if (aluno == null) {
 	            throw new NotFoundException("Aluno não encontrado!");
 	        } else {

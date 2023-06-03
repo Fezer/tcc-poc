@@ -1,3 +1,19 @@
+<script>
+export default {
+  setup() {
+    const { data: processes } = useFetch(
+      "http://localhost:5000/orientador/6/relatorioDeEstagio/pendenteCiencia"
+    );
+
+    console.log(processes);
+
+    return {
+      processes,
+    };
+  },
+};
+</script>
+
 <template>
   <div>
     <div>
@@ -9,9 +25,9 @@
     <div>
       <DataTable :value="processes" rowHover stripedRows :show-gridlines="true">
         <template #header>
-          <div class="flex justify-content-between">
+          <div class="flex items-center justify-content-between">
             <span class="p-input-icon-left">
-              <h4><b>Procesos</b></h4>
+              <h4 class="font-bold">Processos pendentes de parecer</h4>
             </span>
             <span class="p-input-icon-left">
               <i class="pi pi-search" />
@@ -19,21 +35,19 @@
             </span>
           </div>
         </template>
-        <template #empty> No customers found. </template>
-        <template #loading> Loading customers data. Please wait. </template>
         <Column field="process" header="Processo">
           <template #body="{ data }">
-            {{ data.process }}
+            {{ data.id }}
           </template>
         </Column>
         <Column field="process_type" header="Tipo de Processo">
           <template #body="{ data }">
-            {{ data.process_type }}
+            {{ data.tipoRelatorio }}
           </template>
         </Column>
         <Column field="student_name" header="Nome do Aluno">
           <template #body="{ data }">
-            {{ data.student_name }}
+            {{ data?.aluno?.nome }}
           </template>
         </Column>
         <Column field="curse" header="Curso">
@@ -41,14 +55,23 @@
             {{ data.curse }}
           </template>
         </Column>
-        <Column field="last_update" header="Última Atualização">
+        <Column field="contratante" header="Contratante">
           <template #body="{ data }">
-            {{ data.last_update }}
+            {{ data?.contratante?.nome }}
           </template>
         </Column>
+        <Column
+          field="action"
+          header="Ação necessária"
+          bodyStyle="color:orange;"
+        >
+          <template #body="{ data }"> Ciência Relatório Estágio </template>
+        </Column>
         <Column field="button">
-          <template #body>
-            <Button label="Ver contato"></Button>
+          <template #body="{ data }">
+            <NuxtLink :to="`/orientador/relatorio/${data.id}`">
+              <Button label="Ver contato"></Button>
+            </NuxtLink>
           </template>
         </Column>
       </DataTable>

@@ -169,9 +169,18 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <small>Processos > Ver processo</small>
     <h2>{{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}</h2>
+
+    <NuxtLink
+      :to="`/estagio/${termo?.estagio?.id}?perfil=coe&termo=${termo?.id}`"
+    >
+      <Button
+        label="Ver estágio"
+        class="p-button-secondary absolute right-8 top-36"
+        icon="pi pi-eye"
+      />
+    </NuxtLink>
 
     <Aluno />
 
@@ -186,9 +195,7 @@ export default defineComponent({
     <SuspensaoEstagio :termo="termo" />
 
     <div
-      v-if="
-        termo?.statusTermo === 'EmAprovacao' && state.tipoUsuario !== 'ALUNO'
-      "
+      v-if="termo?.statusTermo === 'EmAprovacao'"
       class="flex align-items-end justify-content-end gap-2"
     >
       <Button

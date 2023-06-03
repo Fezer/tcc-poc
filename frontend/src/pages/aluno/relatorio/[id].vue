@@ -69,7 +69,6 @@ export default defineComponent({
 </script>
 <template>
   <div>
-    <Toast />
     <h2 class="m-0">Relatório de estágio</h2>
     <h4 class="m-0 mt-2 mb-2">Dados do relatório</h4>
     <div class="card grid mt-2">

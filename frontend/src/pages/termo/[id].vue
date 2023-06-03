@@ -217,7 +217,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <small>Processos > Ver processo</small>
     <h2>Termo de Compromisso</h2>
 

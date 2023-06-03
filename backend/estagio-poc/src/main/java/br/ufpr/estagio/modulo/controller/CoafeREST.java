@@ -1,15 +1,26 @@
 package br.ufpr.estagio.modulo.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.ContentDisposition;
@@ -22,6 +33,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,12 +43,14 @@ import com.lowagie.text.DocumentException;
 import br.ufpr.estagio.modulo.dto.AgenteIntegradorResumidoDTO;
 import br.ufpr.estagio.modulo.dto.ApoliceResumidoDTO;
 import br.ufpr.estagio.modulo.dto.DescricaoAjustesDTO;
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.SeguradoraResumidoDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
@@ -45,6 +59,7 @@ import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
@@ -53,7 +68,9 @@ import br.ufpr.estagio.modulo.service.AlunoService;
 import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.ContratanteService;
 import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.GeradorDeExcelService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
+import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeRescisaoService;
 
@@ -78,10 +95,16 @@ public class CoafeREST {
 	private CertificadoDeEstagioService certificadoDeEstagioService;
 	
 	@Autowired
+	private RelatorioDeEstagioService relatorioDeEstagioService;
+	
+	@Autowired
 	private ContratanteService contratanteService;
 	
 	@Autowired
 	private AgenteIntegradorService agenteIntegradorService;
+	
+	@Autowired
+	private GeradorDeExcelService geradorExcelService;
 	
 	@Autowired
 	private GeradorDePdfService geradorService;
@@ -365,11 +388,11 @@ public class CoafeREST {
 	// Não lembro como veio parar aqui e estou no meio de outra coisa. 
 	// Mantido para não quebrar algo, mas acho que pode apagar. Vou revisar em breve
 	@GetMapping("/{grrAlunoURL}/download-termo")
-	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL) {
+	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 	        throw new BadRequestException("GRR do aluno não informado!");
 	    } else {
-	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL);
+	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 	        if (aluno == null) {
 	            throw new NotFoundException("Aluno não encontrado!");
 	        } else {
@@ -415,6 +438,60 @@ public class CoafeREST {
 					return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 
 	}
+	
+	/*@GetMapping("/gerar-relatorio-seguradora-ufpr/excel")
+	public ResponseEntity<Resource> gerarRelatorioSeguradoraUfprExcel() throws IOException, DocumentException {
+		
+		try {
+			List<Estagio> estagios = estagioService.buscarEstagioPorSeguradoraUfpr();
+			
+			Workbook workbook = geradorService.gerarExcelEstagioSeguradoraUfpr(estagios);
+
+	        // Criar arquivo temporário
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	        workbook.write(outputStream);
+	        byte[] bytes = outputStream.toByteArray();
+	        
+	        // Salvar o workbook no arquivo temporário
+	        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(bytes));
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+			headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-seguradora-ufpr.xlsx").build());
+	
+			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+		}  catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    }
+	}*/
+	
+	@GetMapping("/gerar-relatorio-seguradora-ufpr-excel")
+	public ResponseEntity<Object> gerarRelatorioSeguradoraUfprExcel() throws IOException {
+		try {
+		    List<Estagio> estagios = estagioService.buscarEstagioPorSeguradoraUfpr();
+	
+		    if (estagios.isEmpty())
+		    	throw new NotFoundException("Não foi encontrado estágio com seguradora UFPR");
+		    
+		    ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelEstagioSeguradoraUfpr(estagios);
+	
+		    // Criar um recurso de byte array a partir do fluxo de bytes
+		    ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+	
+	        // Configurar os cabeçalhos da resposta
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-seguradora-ufpr.xlsx").build());
+	        headers.set("Content-Encoding", "UTF-8");
+	
+	        // Retornar a resposta com o recurso de byte array
+	        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    }  
+    }
 	
 	@GetMapping("/gerar-relatorio-empresa/{idContratanteURL}")
 	public ResponseEntity<byte[]> gerarPdfEmpresa(@PathVariable String idContratanteURL) throws IOException, DocumentException {
@@ -466,8 +543,6 @@ public class CoafeREST {
 				AgenteIntegrador agenteIntegrador = agenteIntegradorFind.get();
 				
 				byte[] pdf = geradorService.gerarPdfAgenteIntegrador(agenteIntegrador);
-				
-//				byte[] pdf = geradorService.gerarPdfSimples();
 					
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_PDF);
@@ -481,19 +556,77 @@ public class CoafeREST {
 	@GetMapping("/gerar-relatorio-certificados")
 	public ResponseEntity<byte[]> gerarRelatorioCertificadosPdf() throws IOException, DocumentException {
 		
-		// TO-DO: Jogar dentro de um try-catch
-		
-				List<CertificadoDeEstagio> certificados = certificadoDeEstagioService.listarTodosCertificadosDeEstagio();
-				
-				 // Alterar para gerar relatórios de N estágios
-					byte[] pdf = geradorService.gerarPdfCertificadosDeEstagio(certificados);
-					
-					HttpHeaders headers = new HttpHeaders();
-					headers.setContentType(MediaType.APPLICATION_PDF);
-					headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-certificados.pdf").build());
+		try {
+			List<CertificadoDeEstagio> certificados = certificadoDeEstagioService.listarTodosCertificadosDeEstagio();
 			
-					return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+			// Alterar para gerar relatórios de N estágios
+			byte[] pdf = geradorService.gerarPdfCertificadosDeEstagio(certificados);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-certificados.pdf").build());
+	
+			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+		}  catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
+	    }
+		
+				
 
+	}
+	
+	@GetMapping("/gerar-relatorios-relatorioDeEstagio")
+	public ResponseEntity<byte[]> gerarRelatorioRealtoriosDeEstagioPdf() throws IOException, DocumentException {
+		
+		try {
+			List<RelatorioDeEstagio> relatorios = relatorioDeEstagioService.listarTodosRelatorios();
+			
+			byte[] pdf = geradorService.gerarPdfRelatoriosDeEstagio(relatorios);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-relatorios-de-estagio.pdf").build());
+	
+			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+		}  catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
+	    }
+		
+				
+
+	}
+	
+	@GetMapping("/gerar-relatorio-relatorioDeEstagio/{id}")
+	public ResponseEntity<Object> gerarRelatorioRealtorioDeEstagioPdf(@PathVariable String id) throws IOException, DocumentException {
+		
+		try {
+			long idLong = Long.parseLong(id);
+	    	
+	    	if (idLong < 1L)
+        		throw new InvalidFieldException("Id inválido.");
+			
+	    	Optional<RelatorioDeEstagio> relatorio = relatorioDeEstagioService.buscarRelatorioPorId(idLong);
+			
+	    	if (relatorio.isEmpty()) {
+				throw new NotFoundException("Relatório não encontrado!");
+			}
+	    	
+			byte[] pdf = geradorService.gerarPdfRelatorioDeEstagio(relatorio);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-relatorio-de-estagio.pdf").build());
+	
+			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
+	    }
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class BadRequestControllerAdvice {
@@ -20,4 +21,5 @@ public class BadRequestControllerAdvice {
         response.setError(ex.getMessage());
         return response;
     }
+	
 }
