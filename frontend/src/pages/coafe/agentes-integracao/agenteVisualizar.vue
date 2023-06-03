@@ -37,6 +37,12 @@
                 icon="pi pi-plus"
               />
             </NuxtLink>
+            <Button
+              @click="handleDeleteAgente(agente.id, agente.convenio.length)"
+              :label="'Deletar'"
+              icon="pi pi-times"
+              class="p-button-danger"
+            />
           </div>
         </div>
       </template>
@@ -102,20 +108,25 @@ import Button from "primevue/button";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import parseDate from "~/utils/parseDate";
 import ConvenioService from "~~/services/ConvenioService";
+import AgenteService from "~~/services/AgenteService";
 const route = useRoute();
+const router = useRouter();
+
 const id = route.query.id;
 const { data: agente, refresh } = await useFetch(
   `http://localhost:5000/agente-integrador/${id}`
 );
 const convenioService = new ConvenioService();
+const agenteService = new AgenteService();
 const toast = useToast();
 const handleDeleteConvenio = async (id) => {
   try {
     const response = await convenioService.deletaConvenio(id).then(() => {
-      toast.add({
+      return toast.add({
         severity: "success",
         summary: "Convênio deletado com sucesso",
         life: 3000,
@@ -131,6 +142,44 @@ const handleDeleteConvenio = async (id) => {
     console.log(e);
   }
   refresh();
+  return {
+    state,
+    id,
+    response,
+    handleDeleteConvenio,
+  };
+};
+const handleDeleteAgente = async (id, numeroCovenios) => {
+  console.log("tamanho:" + numeroCovenios);
+  if (numeroCovenios != 0) {
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "O Agente não pode ser Deletado pois possui convênios",
+      life: 3000,
+    });
+  }
+  try {
+    const response = await agenteService.deletaAgente(id).then(() => {
+      return (
+        toast.add({
+          severity: "success",
+          summary: "Agente de Integração deletado com sucesso",
+          life: 3000,
+        }),
+        router.push(`../coafeAgentes`)
+      );
+    });
+  } catch (e) {
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Erro ao deletar o Agente de Integração",
+      life: 3000,
+    });
+    console.log(e);
+  }
+
   return {
     state,
     id,

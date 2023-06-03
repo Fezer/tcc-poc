@@ -86,13 +86,6 @@ export default defineComponent({
             </div> -->
         </div>
       </div>
-      <div class="w-full flex justify-end mb-3">
-        <Button
-          @click="handleRegisterAgentes"
-          :label="'Adicionar'"
-          class="p-button-success"
-        />
-      </div>
       <div class="w-full flex justify-end gap-2">
         <NuxtLink to="/coafe/coafeAgentes">
           <Button

@@ -48,5 +48,19 @@ export default class AgenteService extends BaseService {
       return response;
     }
   }
+  async deletaAgente(id:number) {
+    const response = await $fetch(this.BASE_URL + `/agente-integrador/${id}`, {
+      method: "DELETE",
+      body: {
+      },
+    });
+    console.log("Resposta do servidor: "+response)
+    if (response?.error) {
+      throw new Error("Erro ao Deletar Agente");
+    }else{
+      console.log(response);
+      return response;
+    }
+  }
 
 }
