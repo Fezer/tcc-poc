@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
+import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
@@ -43,6 +44,17 @@ public class RelatorioDeEstagioService {
 			+ "INNER JOIN r.estagio e "
 			+ "INNER JOIN e.orientador o "
     		+ "WHERE o.id = :idOrientador";
+	
+	private static final String selectPorIdAluno = "SELECT r FROM RelatorioDeEstagio r "
+			+ "INNER JOIN r.estagio e "
+			+ "INNER JOIN e.aluno a "
+    		+ "WHERE a.id = :idAluno";
+	
+	private static final String selectPorIdAlunoStatusCienciaOrientador = "SELECT r FROM RelatorioDeEstagio r "
+			+ "INNER JOIN r.estagio e "
+			+ "INNER JOIN e.aluno a "
+    		+ "WHERE a.id = :idAluno "
+    		+ "AND r.cienciaOrientador = :cienciaOrientador";
      
     public List<RelatorioDeEstagio> listarTodosRelatorios() {
         return relatorioRepo.findAll();
@@ -163,5 +175,24 @@ public class RelatorioDeEstagioService {
 		relatorioEstagio.setEtapaFluxo(etapaFluxo);
 		
 		return relatorioRepo.save(relatorioEstagio); 
+	}
+
+	public List<RelatorioDeEstagio> listarRelatorioDeEstagioPorAluno(Aluno aluno) {
+		
+        TypedQuery<RelatorioDeEstagio> query = em.createQuery(selectPorIdAluno, RelatorioDeEstagio.class);
+        
+        query.setParameter("idAluno", aluno.getId());
+        
+        return query.getResultList();
+	}
+
+	public List<RelatorioDeEstagio> listarRelatoriosDeEstagioPorAlunoPendenteCiencia(Aluno aluno) {
+				
+        TypedQuery<RelatorioDeEstagio> query = em.createQuery(selectPorIdAlunoStatusCienciaOrientador, RelatorioDeEstagio.class);
+        
+        query.setParameter("idAluno", aluno.getId());
+        query.setParameter("cienciaOrientador", false);
+        
+        return query.getResultList();
 	}
 }

@@ -1328,7 +1328,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/17/relatorioDeEstagio",
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio/5/relatorioDeEstagio",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1338,7 +1338,7 @@
 										"aluno",
 										"GRR20175486",
 										"estagio",
-										"17",
+										"5",
 										"relatorioDeEstagio"
 									]
 								}
@@ -1365,6 +1365,49 @@
 										"relatorioDeEstagio",
 										"7",
 										"solicitarCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarRelatoriosDeEstagioPorAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/relatorioDeEstagio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"relatorioDeEstagio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarRelatoriosDeEstagioPorAlunoPendenteCiencia",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20175486/relatorioDeEstagio/pendenteCiencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20175486",
+										"relatorioDeEstagio",
+										"pendenteCiencia"
 									]
 								}
 							},

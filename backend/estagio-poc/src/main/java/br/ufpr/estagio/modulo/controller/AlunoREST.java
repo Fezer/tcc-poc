@@ -886,6 +886,62 @@ public class AlunoREST {
 			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
+	
+	@GetMapping("/{grrAlunoURL}/relatorioDeEstagio")
+	public ResponseEntity<List<RelatorioDeEstagioDTO>> listarRelatorioDeEstagioPorAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					List<RelatorioDeEstagio> relatorioDeEstagio = relatorioDeEstagioService.listarRelatorioDeEstagioPorAluno(aluno);
+				    List<RelatorioDeEstagioDTO> listaRelatoriosDTO = relatorioDeEstagio.stream()
+				            .map(ap -> mapper.map(ap, RelatorioDeEstagioDTO.class))
+				            .collect(Collectors.toList());
+				    return ResponseEntity.ok().body(listaRelatoriosDTO);
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/{grrAlunoURL}/relatorioDeEstagio/pendenteCiencia")
+	public ResponseEntity<List<RelatorioDeEstagioDTO>> listarRelatoriosDeEstagioPorAlunoPendenteCiencia(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					List<RelatorioDeEstagio> relatorioDeEstagio = relatorioDeEstagioService.listarRelatoriosDeEstagioPorAlunoPendenteCiencia(aluno);
+				    List<RelatorioDeEstagioDTO> listaRelatoriosDTO = relatorioDeEstagio.stream()
+				            .map(ap -> mapper.map(ap, RelatorioDeEstagioDTO.class))
+				            .collect(Collectors.toList());
+				    return ResponseEntity.ok().body(listaRelatoriosDTO);
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
 
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/fichaDeAvaliacao")
 	public ResponseEntity<FichaDeAvaliacaoDTO> criarFichaDeAvaliacao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
