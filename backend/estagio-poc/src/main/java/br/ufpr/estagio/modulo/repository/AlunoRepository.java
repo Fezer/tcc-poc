@@ -10,4 +10,6 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long>{
 
 	Optional<Aluno> findByMatricula(String matricula);
 
+	Optional<Aluno> findByEmail(String emailAluno);
+
 }

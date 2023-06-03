@@ -106,13 +106,10 @@ public class ConvenioREST {
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> atualizarConvenio(@PathVariable String id, @RequestBody ConvenioDTO convenioDTO){
 		try {
-			
 			long idLong = Long.parseLong(id);	
-		    	
 			if (idLong < 1) {
 				throw new InvalidFieldException("Id do convênio inválido!");
 			}
-	    
 			Optional<Convenio> convenio = convenioService.buscarPorId(idLong);
 	    
 			if(convenio.isPresent()) {

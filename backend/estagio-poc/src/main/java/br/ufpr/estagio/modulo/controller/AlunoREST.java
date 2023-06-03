@@ -128,7 +128,7 @@ public class AlunoREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}")
-	public ResponseEntity<Aluno> listarAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Aluno> buscarAlunoPorGrr(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -138,6 +138,30 @@ public class AlunoREST {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
 					return ResponseEntity.status(HttpStatus.OK).body(mapper.map(aluno, Aluno.class));
+				}
+			}
+		} catch (NumberFormatException e) {
+			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
+		} catch (PocException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+	
+	@GetMapping("/email/{emailAluno}")
+	public ResponseEntity<Aluno> buscarAlunoPorEmail(@PathVariable String emailAluno, @RequestHeader("Authorization") String accessToken) {
+		try {
+			if (emailAluno.isBlank() || emailAluno.isEmpty()) {
+				throw new BadRequestException("email do aluno não informado!");
+			} else {
+				Optional<Aluno> aluno = alunoService.buscarAlunoPorEmail(emailAluno, accessToken);
+				if (aluno.isEmpty()) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					return ResponseEntity.status(HttpStatus.OK).body(mapper.map(aluno.get(), Aluno.class));
 				}
 			}
 		} catch (NumberFormatException e) {
