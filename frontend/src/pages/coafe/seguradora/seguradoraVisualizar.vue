@@ -44,11 +44,15 @@
         />
       </NuxtLink>
       <Button
-        @click="handleInativateSeguradora"
-        :label="'Inativar'"
+        @click="
+          seguradora.ativa
+            ? handleInativateSeguradora()
+            : handleAtivateSeguradora()
+        "
+        :label="seguradora.ativa ? 'Inativar' : 'Ativar'"
         class="p-button-info"
-        :disabled="!seguradora.ativa"
       />
+
       <Button label="Editar" severity="info" />
     </div>
     <DataTable class="flex-column" :value="seguradora.apolice" rowHover>
@@ -107,6 +111,20 @@ const handleInativateSeguradora = async () => {
       toast.add({
         severity: "success",
         summary: "Seguradora Inativada com sucesso",
+        life: 3000,
+      });
+    });
+  } catch (e) {
+    console.log(e);
+  }
+  refresh();
+};
+const handleAtivateSeguradora = async () => {
+  try {
+    await seguradoraService.ativarSeguradora(id).then(() => {
+      toast.add({
+        severity: "success",
+        summary: "Seguradora Ativada com sucesso",
         life: 3000,
       });
     });

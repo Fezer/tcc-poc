@@ -34,7 +34,21 @@ export default class ConvenioService extends BaseService {
       },
     });
     if (!response?.id) {
-      throw new Error("Erro ao atualizar o gente");
+      throw new Error("Erro ao atualizar o Convênio");
+    }else{
+      console.log(response);
+      return response;
+    }
+  }
+  async deletaConvenio(id:number) {
+    const response = await $fetch(this.BASE_URL + `/convenio/${id}`, {
+      method: "DELETE",
+      body: {
+      },
+    });
+    console.log("Resposta do servidor: "+response)
+    if (response?.error) {
+      throw new Error("Erro ao Deletar Convênio");
     }else{
       console.log(response);
       return response;

@@ -11,6 +11,15 @@ export default class SeguradoraService extends BaseService {
     });
     return response;
   }
+  async ativarSeguradora(id: number){
+    const response = await $fetch(this.BASE_URL + "/seguradora/ativar-desativar/"+id, {
+      method: "PUT",
+      body:{
+        ativa: "true"
+      },
+    });
+    return response;
+  }
   async criarSeguradora(seguradora: Seguradora) {
     const response = await $fetch(this.BASE_URL + "/seguradora/", {
       method: "POST",

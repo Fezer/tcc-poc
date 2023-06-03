@@ -58,7 +58,7 @@ export default defineComponent({
           .then(() => {
             toast.add({
               severity: "success",
-              summary: "Agente de Integração adicionado com sucesso",
+              summary: "Convênio adicionado com sucesso",
               life: 3000,
             });
           });

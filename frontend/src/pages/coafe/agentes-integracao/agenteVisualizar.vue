@@ -72,6 +72,16 @@
           </NuxtLink>
         </template>
       </Column>
+      <Column field="button">
+        <template #body="{ data }">
+          <Button
+            @click="handleDeleteConvenio(data.id)"
+            :label="'Deletar'"
+            icon="pi pi-times"
+            class="p-button-danger"
+          />
+        </template>
+      </Column>
     </DataTable>
     <div class="flex flex-row justify-content-end flex-wrap pb-2 gap-2">
       <NuxtLink to="/coafe/coafeAgentes">
@@ -92,10 +102,40 @@ import Button from "primevue/button";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import { useRoute } from "vue-router";
+import { useToast } from "primevue/usetoast";
 import parseDate from "~/utils/parseDate";
+import ConvenioService from "~~/services/ConvenioService";
 const route = useRoute();
 const id = route.query.id;
-const { data: agente } = await useFetch(
+const { data: agente, refresh } = await useFetch(
   `http://localhost:5000/agente-integrador/${id}`
 );
+const convenioService = new ConvenioService();
+const toast = useToast();
+const handleDeleteConvenio = async (id) => {
+  try {
+    const response = await convenioService.deletaConvenio(id).then(() => {
+      toast.add({
+        severity: "success",
+        summary: "Convênio deletado com sucesso",
+        life: 3000,
+      });
+    });
+  } catch (e) {
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Erro ao deletar o convênio",
+      life: 3000,
+    });
+    console.log(e);
+  }
+  refresh();
+  return {
+    state,
+    id,
+    response,
+    handleDeleteConvenio,
+  };
+};
 </script>
