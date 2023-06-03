@@ -44,7 +44,6 @@ public class ConvenioService {
         convenioExistente.setDescricao(convenioAtualizado.getDescricao());
         convenioExistente.setDataInicio(convenioAtualizado.getDataInicio());
         convenioExistente.setDataFim(convenioAtualizado.getDataFim());
-        convenioExistente.setAgenteIntegrador(convenioAtualizado.getAgenteIntegrador());
 
         return convenioRepository.save(convenioExistente);
 	}
@@ -53,6 +52,14 @@ public class ConvenioService {
 		Optional<Convenio> convenioOptional = convenioRepository.findById(c.getId());
         if (convenioOptional.isPresent()) {
         	Convenio convenio = convenioOptional.get();
+        	AgenteIntegrador agente = convenio.getAgenteIntegrador();
+        	List<Convenio> listaConvenios = agente.getConvenio();
+        	if(listaConvenios != null) {
+        		listaConvenios.remove(convenio);
+        	}
+        	agente.setConvenio(listaConvenios);
+        	agenteIntegradorRepository.save(agente);
+        	convenio.setAgenteIntegrador(null);
         	convenioRepository.delete(convenio);
         } else {
         	throw new RuntimeException("Não foi encontrado um convenio com o ID informado.");
