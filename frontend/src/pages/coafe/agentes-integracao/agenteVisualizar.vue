@@ -55,12 +55,12 @@
       </Column>
       <Column field="dataInicio" header="Data de Inicio">
         <template #body="{ data }">
-          {{ data.dataInicio }}
+          <p>{{ parseDate(data?.dataInicio) }}</p>
         </template>
       </Column>
       <Column field="dataFim" header="Data de Fim">
         <template #body="{ data }">
-          {{ data.dataFim }}
+          {{ parseDate(data?.dataFim) }}
         </template>
       </Column>
       <Column field="button">
@@ -92,6 +92,7 @@ import Button from "primevue/button";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import { useRoute } from "vue-router";
+import parseDate from "~/utils/parseDate";
 const route = useRoute();
 const id = route.query.id;
 const { data: agente } = await useFetch(

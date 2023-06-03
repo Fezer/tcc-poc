@@ -70,12 +70,12 @@
       </Column>
       <Column field="dataInicio" header="Data de Inicio">
         <template #body="{ data }">
-          {{ data.dataInicio }}
+          <p>{{ parseDate(data?.dataInicio) }}</p>
         </template>
       </Column>
       <Column field="dataFim" header="Data de Fim">
         <template #body="{ data }">
-          {{ data.dataFim }}
+          <p>{{ parseDate(data?.dataFim) }}</p>
         </template>
       </Column>
       <Column field="links" header="Links">
@@ -94,6 +94,7 @@ import DataTable from "primevue/datatable";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import SeguradoraService from "~~/services/SeguradoraService";
+import parseDate from "~/utils/parseDate";
 const route = useRoute();
 const toast = useToast();
 const id = route.query.id;
