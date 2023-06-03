@@ -7,7 +7,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const { id: estagioID } = route.params;
+    const { estagio: estagioID } = route.params;
     const alunoService = new AlunoService();
     const toast = useToast();
 
@@ -63,7 +63,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <div v-if="!idFichaAvaliacao">
       <h1>Gerar Ficha de Avaliação</h1>
       <div class="card">

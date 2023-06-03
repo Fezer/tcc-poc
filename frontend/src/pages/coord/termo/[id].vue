@@ -277,7 +277,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <small>Processos > Ver processo</small>
     <h2>
       {{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}

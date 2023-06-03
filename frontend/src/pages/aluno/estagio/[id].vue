@@ -6,6 +6,7 @@ import planoAtividades from "../../../components/common/plano-atividades.vue";
 import Status from "../../../components/common/statusEstagio.vue";
 import AlunoService from "~~/services/AlunoService";
 import { useToast } from "primevue/usetoast";
+import { Estagio } from "~~/src/types/NovoEstagio";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
 
@@ -27,7 +28,7 @@ export default defineComponent({
 
     const { id } = route.params;
 
-    const { data: estagio, refresh } = await useFetch(
+    const { data: estagio, refresh } = await useFetch<Estagio>(
       `http://localhost:5000/estagio/${id}`
     );
 
@@ -122,7 +123,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <small class="m-0">Estágios > Ver estágio</small>
     <h2 class="m-0 mb-4">Estágio</h2>
 
@@ -142,7 +142,7 @@ export default defineComponent({
             icon="pi pi-file"
           />
         </NuxtLink>
-        <NuxtLink :to="`/aluno/avaliacao/gerar/${id}`">
+        <NuxtLink :to="`/aluno/estagio/avaliacao/${id}`">
           <Button
             label="Ficha de Avaliação"
             class="p-button"
@@ -178,33 +178,7 @@ export default defineComponent({
 
     <SuspensaoEstagio :termo="termo" />
 
-    <h3 v-if="estagio?.relatorioDeEstagio?.length">Relatórios de Estágio</h3>
-
-    <div
-      class="card flex items-center justify-between"
-      v-for="idRelatorio in estagio?.relatorioDeEstagio"
-      :key="idRelatorio"
-    >
-      <h5>Relatório #{{ idRelatorio }}</h5>
-      <NuxtLink :to="`/aluno/relatorio/${idRelatorio}`">
-        <Button label="Ver relatório" class="p-button-secondary"></Button>
-      </NuxtLink>
-    </div>
-
-    <h3 v-if="estagio?.termoAdivito?.length">Termos aditivos</h3>
-
-    <div
-      class="card flex items-center justify-between"
-      v-for="idTermoAditivo in estagio?.termoAdivito"
-      :key="idTermoAditivo"
-    >
-      <h5>Termo Aditivo #{{ idTermoAditivo }}</h5>
-      <Button
-        label="Ver termo aditivo"
-        class="p-button-secondary"
-        @click="() => handleRedirectToTermoAditivo(idTermoAditivo)"
-      ></Button>
-    </div>
+    <objetos-de-estagio :estagio="estagio" perfil="aluno" />
 
     <Dialog
       :visible="cancelationConfirm"

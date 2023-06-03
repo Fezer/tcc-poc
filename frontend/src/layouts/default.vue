@@ -184,6 +184,8 @@ export default defineComponent({
       </div>
     </div>
 
+    <Toast/>
+
     <!-- <AppConfig :layout-mode="layoutMode" @layout-change="onLayoutChange" /> -->
     <transition name="layout-mask">
       <div v-if="mobileMenuActive" class="layout-mask p-component-overlay" />

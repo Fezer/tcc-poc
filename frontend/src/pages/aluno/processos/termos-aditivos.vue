@@ -39,7 +39,7 @@ const { data: termos } = await useFetch(
           <NuxtLink :to="`/aluno/termo-aditivo/${data.id}`">
             <Button
               class="p-button-icon-only p-button-outlined"
-              icon="pi pi-arrow-right"
+              icon="pi pi-eye"
               type="primary"
             >
             </Button>

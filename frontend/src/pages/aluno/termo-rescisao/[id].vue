@@ -71,11 +71,17 @@ export default defineComponent({
       }
     };
 
-    const todasAsCiencias =
-      termo?.value?.cienciaCOE &&
-      termo?.value?.cienciaCOAFE &&
-      termo?.value?.cienciaCoordenacao &&
-      termo?.value?.cienciaOrientador;
+    const getTodasAsCiencias = () => {
+      return (
+        !!termo?.value &&
+        !!termo?.value?.cienciaCOE &&
+        !!termo?.value?.cienciaCOAFE &&
+        !!termo?.value?.cienciaCoordenacao &&
+        !!termo?.value?.cienciaOrientador
+      );
+    };
+
+    const todasAsCiencias = getTodasAsCiencias();
 
     console.log(todasAsCiencias);
 
@@ -85,7 +91,7 @@ export default defineComponent({
       handleCancelarTermo,
       handleEditarTermo,
       cancelVisible,
-      todasAsCiencias,
+      getTodasAsCiencias,
     };
   },
 });
@@ -133,7 +139,7 @@ export default defineComponent({
 
         <div class="col-4">
           <strong>Termo Aprovado</strong>
-          <p>{{ todasAsCiencias ? "Sim" : "Não" }}</p>
+          <p>{{ getTodasAsCiencias ? "Sim" : "Não" }}</p>
         </div>
       </div>
     </div>
@@ -145,7 +151,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="w-full flex justify-end gap-2 mt-4" v-if="!todasAsCiencias">
+    <div class="w-full flex justify-end gap-2 mt-4" v-if="!getTodasAsCiencias">
       <Button
         label="Cancelar termo"
         class="p-button-danger"
@@ -157,7 +163,7 @@ export default defineComponent({
         class="p-button-secondary"
         icon="pi pi-pencil"
         @click="handleEditarTermo"
-        v-if="termo?.etapaFluxo === 'Aluno' && !todasAsCiencias"
+        v-if="termo?.etapaFluxo === 'Aluno' && !getTodasAsCiencias"
       />
       <Button
         label="Solicitar Aprovação"
@@ -167,8 +173,6 @@ export default defineComponent({
         v-if="termo?.etapaFluxo === 'Aluno'"
       />
     </div>
-
-    <Toast />
 
     <div v-if="cancelVisible">
       <CancelationConfirm

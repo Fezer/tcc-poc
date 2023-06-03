@@ -1,8 +1,22 @@
+import { StatusTermo } from "./Termos";
+
 export default interface NovoEstagio
   extends BasicEstagio,
     PlanoAtividades,
     DadosAuxiliares,
     DadoEstagio {}
+
+export interface Estagio extends BasicEstagio, PlanoAtividades, DadoEstagio {
+  termoDeCompromisso: number;
+  termoAdivito: number[];
+  termoDeRescisao?: number;
+  fichaDeAvaliacao?: number;
+  certificadoDeEstagio?: number;
+  dataCriacao: string;
+  relatorioDeEstagio?: number[];
+
+  statusEstagio?: StatusTermo;
+}
 
 export interface BasicEstagio {
   id: number | null;

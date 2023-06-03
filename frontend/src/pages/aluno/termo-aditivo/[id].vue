@@ -221,7 +221,6 @@ export default defineComponent({
 
 <template>
   <div class="relative">
-    <Toast />
     <small>Processos > Termos Aditivos</small>
     <h2>Termo Aditivo</h2>
 
@@ -238,6 +237,7 @@ export default defineComponent({
       :status="termo?.statusTermo"
       :motivo="termo?.motivoIndeferimento"
       :termo="termo"
+      v-if="termo?.statusTermo"
     />
 
     <Estagio :termo="termo" />

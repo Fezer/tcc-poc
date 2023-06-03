@@ -180,7 +180,6 @@ export default defineComponent({
 </script>
 <template>
   <div>
-    <Toast />
     <h3 class="m-0">Termo de Recisão</h3>
     <small>Estágio #{{ estagio }}</small>
 

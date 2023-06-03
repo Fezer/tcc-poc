@@ -2,6 +2,7 @@
 import { defineComponent, ref } from "vue";
 import aluno from "../../components/common/aluno.vue";
 import Contratante from "../../components/common/contratante.vue";
+import ObjetosDeEstagio from "../../components/common/objetos-de-estagio.vue";
 import planoAtividades from "../../components/common/plano-atividades.vue";
 import Status from "../../components/common/statusEstagio.vue";
 
@@ -13,6 +14,7 @@ export default defineComponent({
     PlanoAtividades: planoAtividades,
     Contratante,
     Status,
+    ObjetosDeEstagio,
   },
   async setup() {
     const route = useRoute();
@@ -55,8 +57,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
-
     <NuxtLink
       :to="`/${perfil}/${tipoTermo}/${termoDeRescisao || termo}`"
       v-if="perfil && tipoTermo"
@@ -84,6 +84,10 @@ export default defineComponent({
     />
 
     <Contratante :termo="estagio" />
+
+    <SuspensaoEstagio :termo="estagio" />
+
+    <objetos-de-estagio :estagio="estagio" perfil="coe" />
   </div>
 </template>
 

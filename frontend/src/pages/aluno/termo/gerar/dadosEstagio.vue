@@ -208,7 +208,6 @@ export default defineComponent({
 
 <template>
   <div class="grid mt-2">
-    <Toast />
     <h5 class="mb-0 p-2 mt-4">Dados do Estágio</h5>
 
     <div class="col-12">

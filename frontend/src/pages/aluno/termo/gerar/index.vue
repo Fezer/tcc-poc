@@ -129,7 +129,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <small>Processos > Iniciar novo estágio</small>
     <h3>Novo termo de compromisso</h3>
     <ProgressBar

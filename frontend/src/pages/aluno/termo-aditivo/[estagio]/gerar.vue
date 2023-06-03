@@ -334,7 +334,6 @@ export default defineComponent({
 
 <template>
   <div class="grid">
-    <Toast />
     <h1 class="mb-0 p-2 mt-2">Gerar termo aditivo</h1>
 
     <div class="col-12">
