@@ -26,9 +26,6 @@ public class Endereco implements Serializable{
 	@Column(name = "id")
 	private long id;
 	
-	/*@Column(name = "logradouro")
-	private String logradouro;*/
-	
 	@Column(name = "rua")
 	private String rua;
 	
@@ -40,9 +37,6 @@ public class Endereco implements Serializable{
 	
 	@Column(name = "cidade")
 	private String cidade;
-	
-	/*@Column(name = "estado")
-	private String estado;*/
 	
 	@Column(name = "uf")
 	private String uf;
@@ -112,14 +106,6 @@ public class Endereco implements Serializable{
 		this.id = id;
 	}
 
-	/*public String getLogradouro() {
-		return logradouro;
-	}
-
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
-	}*/
-
 	public int getNumero() {
 		return numero;
 	}
@@ -151,14 +137,6 @@ public class Endereco implements Serializable{
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
 	}
-
-	/*public String getEstado() {
-		return estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}*/
 	
 	public String getUf() {
 		return uf;
