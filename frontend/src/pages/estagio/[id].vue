@@ -26,20 +26,12 @@ export default defineComponent({
     );
 
     const { perfil, termoDeRescisao, termo } = route.query;
-    console.log(estagio);
-
-    // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 
     const tipoUsuario = ref("ALUNO" as TipoUsuario);
 
     const cancelationConfirm = ref(false);
 
     const tipoTermo = termoDeRescisao ? "termo-rescisao" : "termo";
-
-    // ()=> {
-    //   if(!!termoDeRescisao) return "termo-rescisao";
-    //   return "termo"
-    // }
 
     return {
       tipoUsuario,
@@ -87,7 +79,7 @@ export default defineComponent({
 
     <SuspensaoEstagio :termo="estagio" />
 
-    <objetos-de-estagio :estagio="estagio" perfil="coe" />
+    <objetos-de-estagio :estagio="estagio" :perfil="perfil" />
   </div>
 </template>
 
