@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.repository.ContratanteRepository;
@@ -32,7 +33,8 @@ public class ContratanteService {
 	}
 
 	public List<Contratante> listarContratantes() {
-		return contratanteRepo.findAll();
+		EnumTipoContratante tipoContratante = EnumTipoContratante.PessoaJuridica;
+		return contratanteRepo.findByTipo(tipoContratante);
 	}
 
 	public Contratante atualizarContratante(Contratante contratanteAtualizado) {
@@ -68,7 +70,9 @@ public class ContratanteService {
 	}
 
 	public List<Contratante> buscarPorNomeContendo(String nomeContratante) {
-		return contratanteRepo.findByNomeContainingIgnoreCase(nomeContratante);
+		EnumTipoContratante tipoContratante = EnumTipoContratante.PessoaJuridica;
+		return contratanteRepo.findByNomeContainingIgnoreCaseAndTipo(nomeContratante, tipoContratante);
+		//return contratanteRepo.findByNomeContainingIgnoreCase(nomeContratante);
 	}
 
 	public List<Contratante> buscarContratantePorNomeComecandoPor(String nomeContratante) {
