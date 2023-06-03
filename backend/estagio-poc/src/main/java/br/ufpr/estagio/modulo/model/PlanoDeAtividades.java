@@ -41,7 +41,7 @@ public class PlanoDeAtividades implements Serializable{
 	@Column(name = "formacaoSupervisor")
 	private String formacaoSupervisor;
 	
-	@Column(name = "descricaoAtividades")
+	@Column(name = "descricaoAtividades", length = 3000)
 	private String descricaoAtividades;
 	
 	@JsonIgnore

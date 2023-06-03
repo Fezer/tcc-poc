@@ -67,11 +67,6 @@ public class Estagio extends RepresentationModel<Estagio> implements Serializabl
 	@JoinColumn(name="orientador_id", referencedColumnName="id", nullable=true)
 	private Orientador orientador;
 	
-	/*@JsonIgnore
-	@ManyToOne(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
-	private Supervisor supervisor;*/
-
 	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="plano_de_atividades_id", referencedColumnName="id",nullable=true)

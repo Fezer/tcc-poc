@@ -59,12 +59,7 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="orientador_id", referencedColumnName="id", nullable=true)
 	private Orientador orientador;
-	
-	/*@JsonIgnore
-	@ManyToOne(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="supervisor_id", referencedColumnName="id", nullable=true)
-	private Supervisor supervisor;*/
-	
+		
 	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="coordenador_id", referencedColumnName="id", nullable=true)
@@ -122,10 +117,10 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@Column(name = "parecer_coordenacao")
 	private EnumParecerAprovadores parecerCoordenacao;
 
-	@Column(name = "motivo_indeferimento")
+	@Column(name = "motivo_indeferimento", length = 1000)
 	private String motivoIndeferimento;
 	
-	@Column(name = "descricao_ajustes")
+	@Column(name = "descricao_ajustes", length = 1000)
 	private String descricaoAjustes;
 	
 	public TermoDeEstagio() {
