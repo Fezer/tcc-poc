@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "7ec48d39-f515-4846-817e-667038a1a3ec",
+		"_postman_id": "686d29f7-645b-4650-b139-ace23ea92259",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17301767"
+		"_exporter_id": "18567474"
 	},
 	"item": [
 		{
@@ -1552,9 +1552,6 @@
 				{
 					"name": "buscarAlunoPorGrr",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -1573,6 +1570,33 @@
 							"path": [
 								"aluno",
 								"GRR20175486"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarAlunoPorEmail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/aluno/email/fezer@ufpr.br",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"email",
+								"fezer@ufpr.br"
 							]
 						}
 					},
@@ -2642,7 +2666,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/53/convenio",
+							"raw": "http://localhost:5000/agente-integrador/202/convenio",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2650,7 +2674,7 @@
 							"port": "5000",
 							"path": [
 								"agente-integrador",
-								"53",
+								"202",
 								"convenio"
 							]
 						}
@@ -2663,7 +2687,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/104",
+							"raw": "http://localhost:5000/agente-integrador/202",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2671,7 +2695,7 @@
 							"port": "5000",
 							"path": [
 								"agente-integrador",
-								"104"
+								"202"
 							]
 						}
 					},
@@ -2712,7 +2736,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/52",
+							"raw": "http://localhost:5000/agente-integrador/152",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2720,7 +2744,7 @@
 							"port": "5000",
 							"path": [
 								"agente-integrador",
-								"52"
+								"152"
 							]
 						}
 					},
@@ -2732,7 +2756,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/12",
+							"raw": "http://localhost:5000/agente-integrador/152",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2740,7 +2764,7 @@
 							"port": "5000",
 							"path": [
 								"agente-integrador",
-								"12"
+								"152"
 							]
 						}
 					},
@@ -2786,7 +2810,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/convenio/1",
+							"raw": "http://localhost:5000/convenio/6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2794,7 +2818,7 @@
 							"port": "5000",
 							"path": [
 								"convenio",
-								"1"
+								"6"
 							]
 						}
 					},
@@ -2835,7 +2859,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/convenio/2",
+							"raw": "http://localhost:5000/convenio/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2843,7 +2867,7 @@
 							"port": "5000",
 							"path": [
 								"convenio",
-								"2"
+								"5"
 							]
 						}
 					},
@@ -2855,7 +2879,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/convenio/4",
+							"raw": "http://localhost:5000/convenio/6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2863,7 +2887,7 @@
 							"port": "5000",
 							"path": [
 								"convenio",
-								"4"
+								"6"
 							]
 						}
 					},
