@@ -100,7 +100,8 @@ export default defineComponent({
           toast.add({
             severity: "error",
             summary: "Erro ao solicitar certificado",
-            detail: "Erro ao solicitar certificado",
+            detail:
+              err?.response?._data?.error || "Erro ao solicitar certificado",
             life: 3000,
           });
           console.error(err);

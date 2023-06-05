@@ -33,6 +33,17 @@ export default defineComponent({
       });
     };
 
+    const parseTipoRelatorio = (
+      tipo: "RelatorioParcial" | "RelatorioFinal"
+    ) => {
+      const tipos = {
+        RelatorioParcial: "Relatório Parcial",
+        RelatorioFinal: "Relatório Final",
+      };
+
+      return tipos[tipo] || "Relatório";
+    };
+
     const handlePedirCienciaOrientador = async () => {
       const estagio = relatorio?.value?.estagio?.id;
       await alunoService
@@ -62,6 +73,7 @@ export default defineComponent({
     return {
       relatorio,
       handleCancelarRelatorio,
+      parseTipoRelatorio,
       handlePedirCienciaOrientador,
     };
   },
@@ -74,7 +86,7 @@ export default defineComponent({
     <div class="card grid mt-2">
       <div class="col-6">
         <strong class="text-md mb-2">Tipo do relatório</strong>
-        <p>{{ relatorio?.tipoRelatorio }}</p>
+        <p>{{ parseTipoRelatorio(relatorio?.tipoRelatorio) }}</p>
       </div>
 
       <div class="col-6">
@@ -148,7 +160,10 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="flex gap-2 justify-end" v-if="!relatorio?.cienciaOrientador">
+    <div
+      class="flex gap-2 justify-end"
+      v-if="relatorio?.etapaFluxo === 'Aluno'"
+    >
       <Button
         label="Cancelar relatório"
         icon="pi pi-times"

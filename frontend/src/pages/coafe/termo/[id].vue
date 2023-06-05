@@ -231,7 +231,7 @@ export default defineComponent({
     <h2>{{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}</h2>
 
     <NuxtLink
-      :to="`/estagio/${termo?.estagio?.id}?perfil=coe&termo=${termo?.id}`"
+      :to="`/estagio/${termo?.estagio?.id}?perfil=coafe&termo=${termo?.id}`"
     >
       <Button
         label="Ver estágio"

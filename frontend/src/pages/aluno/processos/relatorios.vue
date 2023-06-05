@@ -2,10 +2,8 @@
 const grr = "GRR20200141";
 
 const { data: relatorios } = await useFetch(
-  `http://localhost:5000/aluno/${grr}/relatorios/`
+  `/aluno/${grr}/relatorioDeEstagio/`
 );
-
-// const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 </script>
 
 <template>
@@ -21,7 +19,7 @@ const { data: relatorios } = await useFetch(
       <Column field="tipo" header="Tipo" style="min-width: 12rem">
         <template #body="{ data }">
           <!-- {{ data.tipoTermoDeEstagio }} -->
-          Termo Aditivo
+          Relatório de Estágio
         </template>
       </Column>
       <Column field="contratante" header="Contratante" style="min-width: 12rem">
