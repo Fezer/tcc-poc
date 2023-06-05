@@ -12,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
+import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
 
@@ -111,7 +112,7 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 	
-public ByteArrayOutputStream gerarExcelAgenteIntegrador(AgenteIntegrador agenteIntegrador) throws IOException {
+	public ByteArrayOutputStream gerarExcelAgenteIntegrador(AgenteIntegrador agenteIntegrador) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
 
@@ -147,4 +148,62 @@ public ByteArrayOutputStream gerarExcelAgenteIntegrador(AgenteIntegrador agenteI
 	    
 	    return outputStream;
 	}
+
+	public ByteArrayOutputStream gerarExcelCertificadosDeEstagio(List<CertificadoDeEstagio> certificados) throws IOException {
+		
+	    Workbook workbook = new XSSFWorkbook();
+
+	    Sheet sheet = workbook.createSheet("Certificados de Estágio");
+
+	    String[] headersTitle = {"Id do Estágio", "Nome Aluno", "GRR", "Curso", "Etapa do Fluxo", "Motivo da Reprovação", 
+	    		"Parecer COE", "Seguradora", "Apólice", "Orientador", "Agente Integrador", "Supervisor", "Data de Início", 
+	    		"Data de Término", "Jornada Diária", "Jornada Semanal", "Valor da Bolsa", "Valor de Transporte", 
+	    		"Rua do Estágio", "Número", "Cidade", "Estado", "CEP"};
+	    Row headerRow = sheet.createRow(0);
+	    for (int i = 0; i < headersTitle.length; i++) {
+	        Cell cell = headerRow.createCell(i);
+	        cell.setCellValue(headersTitle[i]);
+	    }
+
+	    int rowNum = 1;
+	    for (CertificadoDeEstagio certificado : certificados) {
+	        Row row = sheet.createRow(rowNum++);
+	        row.createCell(0).setCellValue(certificado.getEstagio().getId());
+	        row.createCell(1).setCellValue(certificado.getEstagio().getAluno().getNome());
+	        row.createCell(2).setCellValue(certificado.getEstagio().getAluno().getMatricula());
+	        row.createCell(3).setCellValue(certificado.getEstagio().getAluno().getCurso().getNome());
+	        row.createCell(4).setCellValue(String.valueOf(certificado.getEtapaFluxo()));
+	        if (certificado.getMotivoReprovacao().isEmpty())
+	        	row.createCell(5).setCellValue("Não houve reprovação.");
+	        else
+	        	row.createCell(5).setCellValue(String.valueOf(certificado.getMotivoReprovacao()));
+	        row.createCell(6).setCellValue(String.valueOf(certificado.getParecerCOE()));
+	        row.createCell(7).setCellValue(certificado.getEstagio().getSeguradora().getNome());
+	        row.createCell(8).setCellValue(certificado.getEstagio().getApolice().getNumero());
+	        row.createCell(9).setCellValue(certificado.getEstagio().getOrientador().getNome());
+	        row.createCell(10).setCellValue(certificado.getEstagio().getAgenteIntegrador().getNome());
+	        row.createCell(11).setCellValue(certificado.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
+	        row.createCell(12).setCellValue(certificado.getEstagio().getDataInicio());
+	        row.createCell(13).setCellValue(certificado.getEstagio().getDataTermino());
+	        row.createCell(14).setCellValue(certificado.getEstagio().getJornadaDiaria());
+	        row.createCell(15).setCellValue(certificado.getEstagio().getJornadaSemanal());
+	        /*row.createCell(16).setCellValue(certificado.getEstagio().getContratante().getEndereco().getRua());
+	        row.createCell(17).setCellValue(certificado.getEstagio().getContratante().getEndereco().getNumero());
+	        row.createCell(18).setCellValue(certificado.getEstagio().getContratante().getEndereco().getCidade());
+	        row.createCell(19).setCellValue(certificado.getEstagio().getContratante().getEndereco().getUf());
+	        row.createCell(20).setCellValue(certificado.getEstagio().getContratante().getEndereco().getCep());*/
+	        row.createCell(16).setCellValue("Rua A");
+	        row.createCell(17).setCellValue(42);
+	        row.createCell(18).setCellValue("Curitiba");
+	        row.createCell(19).setCellValue("Paraná");
+	        row.createCell(20).setCellValue("74329-214");
+	        break;
+	    }
+
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    workbook.write(outputStream);
+	    
+	    return outputStream;
+	}
+
 }
