@@ -703,7 +703,7 @@ public class CoafeREST {
 			List<RelatorioDeEstagio> relatorios = relatorioDeEstagioService.listarTodosRelatorios();
 			
 			// Alterar para gerar relatórios de N estágios
-			ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelRelatorioDeEstagio(relatorios);
+			ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelRelatoriosDeEstagio(relatorios);
 			
 		    // Criar um recurso de byte array a partir do fluxo de bytes
 		    ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
@@ -717,9 +717,7 @@ public class CoafeREST {
 	        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 		}  catch (PocException e) {
 	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
-	    }
-		
-				
+	    }		
 
 	}
 	
@@ -745,6 +743,47 @@ public class CoafeREST {
 			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-relatorio-de-estagio.pdf").build());
 	
 			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
+	    }
+	}
+	
+	@GetMapping("/gerar-relatorio-relatorioDeEstagio-excel/{id}")
+	public ResponseEntity<Object> gerarRelatorioRealtorioDeEstagioExcel(@PathVariable String id) throws IOException, DocumentException {
+		
+		try {
+			long idLong = Long.parseLong(id);
+	    	
+	    	if (idLong < 1L)
+        		throw new InvalidFieldException("Id inválido.");
+			
+	    	Optional<RelatorioDeEstagio> relatorioFind = relatorioDeEstagioService.buscarRelatorioPorId(idLong);
+	    	
+	    	if (relatorioFind.isEmpty()) {
+				throw new NotFoundException("Relatório não encontrado!");
+			}
+	    	
+	    	RelatorioDeEstagio relatorio = relatorioFind.get();
+	    	
+	    	// Alterar para gerar relatórios de N estágios
+			ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelRelatorioDeEstagio(relatorio);
+			
+		    // Criar um recurso de byte array a partir do fluxo de bytes
+		    ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+	
+	        // Configurar os cabeçalhos da resposta
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-relatorio-estagio.xlsx").build());
+	        headers.set("Content-Encoding", "UTF-8");
+	
+	        // Retornar a resposta com o recurso de byte array
+	        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 		} catch (NotFoundException ex) {
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
