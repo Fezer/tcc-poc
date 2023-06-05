@@ -696,6 +696,33 @@ public class CoafeREST {
 
 	}
 	
+	@GetMapping("/gerar-relatorios-relatorioDeEstagio-excel")
+	public ResponseEntity<Object> gerarRelatorioRealtoriosDeEstagioExcel() throws IOException, DocumentException {
+		
+		try {
+			List<RelatorioDeEstagio> relatorios = relatorioDeEstagioService.listarTodosRelatorios();
+			
+			// Alterar para gerar relatórios de N estágios
+			ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelRelatorioDeEstagio(relatorios);
+			
+		    // Criar um recurso de byte array a partir do fluxo de bytes
+		    ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+	
+	        // Configurar os cabeçalhos da resposta
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-relatorios-estagio.xlsx").build());
+	        headers.set("Content-Encoding", "UTF-8");
+	
+	        // Retornar a resposta com o recurso de byte array
+	        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+		}  catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
+	    }
+		
+				
+
+	}
+	
 	@GetMapping("/gerar-relatorio-relatorioDeEstagio/{id}")
 	public ResponseEntity<Object> gerarRelatorioRealtorioDeEstagioPdf(@PathVariable String id) throws IOException, DocumentException {
 		

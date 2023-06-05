@@ -15,6 +15,7 @@ import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 
 @Service
 public class GeradorDeExcelService {
@@ -198,6 +199,61 @@ public class GeradorDeExcelService {
 	        row.createCell(19).setCellValue("Paraná");
 	        row.createCell(20).setCellValue("74329-214");
 	        break;
+	    }
+
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    workbook.write(outputStream);
+	    
+	    return outputStream;
+	}
+	
+	public ByteArrayOutputStream gerarExcelRelatorioDeEstagio(List<RelatorioDeEstagio> relatorios) throws IOException {
+		
+	    Workbook workbook = new XSSFWorkbook();
+
+	    Sheet sheet = workbook.createSheet("Certificados de Estágio");
+
+	    String[] headersTitle = {"Id do Estágio", "Nome Aluno", "GRR", "Curso", "Desempenho nas Atividades",
+	    		"Contribuição no Estágio", "Desenvolvimento de Atividades", "Efetivação", "Formação Profissional",
+	    		"Relações Interpessoais", "Considerações", "Seguradora", "Apólice", "Orientador", "Agente Integrador", 
+	    		"Supervisor", "Data de Início", "Data de Término", "Rua do Estágio", "Número", "Cidade", "Estado", "CEP"};
+	    Row headerRow = sheet.createRow(0);
+	    for (int i = 0; i < headersTitle.length; i++) {
+	        Cell cell = headerRow.createCell(i);
+	        cell.setCellValue(headersTitle[i]);
+	    }
+
+	    int rowNum = 1;
+	    for (RelatorioDeEstagio relatorio : relatorios) {
+	        Row row = sheet.createRow(rowNum++);
+	        row.createCell(0).setCellValue(relatorio.getEstagio().getId());
+	        row.createCell(1).setCellValue(relatorio.getEstagio().getAluno().getNome());
+	        row.createCell(2).setCellValue(relatorio.getEstagio().getAluno().getMatricula());
+	        row.createCell(3).setCellValue(relatorio.getEstagio().getAluno().getCurso().getNome());
+	        row.createCell(4).setCellValue(String.valueOf(relatorio.getAvalAtividades()));
+	        row.createCell(5).setCellValue(String.valueOf(relatorio.getAvalContribuicaoEstagio()));
+	        row.createCell(6).setCellValue(String.valueOf(relatorio.getAvalDesenvolvimentoAtividades()));
+	        row.createCell(7).setCellValue(String.valueOf(relatorio.getAvalEfetivacao()));
+	        row.createCell(8).setCellValue(String.valueOf(relatorio.getAvalFormacaoProfissional()));
+	        row.createCell(9).setCellValue(String.valueOf(relatorio.getAvalRelacoesInterpessoais()));
+	        row.createCell(10).setCellValue(relatorio.getConsideracoes());
+	        row.createCell(11).setCellValue(relatorio.getEstagio().getSeguradora().getNome());
+	        row.createCell(12).setCellValue(relatorio.getEstagio().getApolice().getNumero());
+	        row.createCell(13).setCellValue(relatorio.getEstagio().getOrientador().getNome());
+	        row.createCell(14).setCellValue(relatorio.getEstagio().getAgenteIntegrador().getNome());
+	        row.createCell(15).setCellValue(relatorio.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
+	        row.createCell(16).setCellValue(relatorio.getEstagio().getDataInicio());
+	        row.createCell(17).setCellValue(relatorio.getEstagio().getDataTermino());
+	        /*row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
+	        row.createCell(19).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getNumero());
+	        row.createCell(20).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCidade());
+	        row.createCell(21).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getUf());
+	        row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());*/
+	        row.createCell(18).setCellValue("Rua A");
+	        row.createCell(19).setCellValue(42);
+	        row.createCell(20).setCellValue("Curitiba");
+	        row.createCell(21).setCellValue("Paraná");
+	        row.createCell(22).setCellValue("74329-214");
 	    }
 
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
