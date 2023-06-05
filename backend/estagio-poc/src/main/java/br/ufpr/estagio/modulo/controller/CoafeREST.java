@@ -524,6 +524,46 @@ public class CoafeREST {
 		}
 	}
 	
+	@GetMapping("/gerar-relatorio-empresa-excel/{idContratanteURL}")
+	public ResponseEntity<Object> gerarExcelEmpresa(@PathVariable String idContratanteURL) throws IOException, DocumentException {
+		
+		try {
+		
+			if (idContratanteURL.isBlank() || idContratanteURL.isEmpty()) {
+				throw new BadRequestException("Id do contratante não informado!");
+			} else {
+				long idInt = Long.parseLong(idContratanteURL);
+				
+				Optional<Contratante> contratanteFind = contratanteService.buscarPorId(idInt);
+				
+				if (!contratanteFind.isPresent()) {
+					throw new NotFoundException("Contratante não encontrado!");
+				} else {
+					
+					Contratante contratante = contratanteFind.get();
+					
+					ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelContratante(contratante);
+					
+				    // Criar um recurso de byte array a partir do fluxo de bytes
+				    ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+			
+			        // Configurar os cabeçalhos da resposta
+			        HttpHeaders headers = new HttpHeaders();
+			        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-c.xlsx").build());
+			        headers.set("Content-Encoding", "UTF-8");
+			
+			        // Retornar a resposta com o recurso de byte array
+			        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+				}
+			}
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    }  
+	}
+	
 	@GetMapping("/gerar-relatorio-agenteIntegrador/{idAgenteURL}")
 	public ResponseEntity<byte[]> gerarPdfAgenteIntegrador(@PathVariable String idAgenteURL) throws IOException, DocumentException {
 		
@@ -549,6 +589,40 @@ public class CoafeREST {
 				headers.setContentDisposition(ContentDisposition.builder("inline").filename("agente-integrador.pdf").build());
 			
 				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+			}
+		}
+	}
+	
+	@GetMapping("/gerar-relatorio-agenteIntegrador-excel/{idAgenteURL}")
+	public ResponseEntity<Object> gerarExcelAgenteIntegrador(@PathVariable String idAgenteURL) throws IOException, DocumentException {
+		
+		// TO-DO: Jogar dentro de um try-catch
+		
+		if (idAgenteURL.isBlank() || idAgenteURL.isEmpty()) {
+			throw new BadRequestException("Id do agente integrador não informado!");
+		} else {
+			long idInt = Long.parseLong(idAgenteURL);
+			
+			Optional<AgenteIntegrador> agenteIntegradorFind = agenteIntegradorService.buscarPorId(idInt);
+			
+			if (!agenteIntegradorFind.isPresent()) {
+				throw new NotFoundException("Agente integrador não encontrado!");
+			} else {
+				
+				AgenteIntegrador agenteIntegrador = agenteIntegradorFind.get();
+				
+				ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelAgenteIntegrador(agenteIntegrador);
+				
+			    // Criar um recurso de byte array a partir do fluxo de bytes
+			    ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+		
+		        // Configurar os cabeçalhos da resposta
+		        HttpHeaders headers = new HttpHeaders();
+		        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-agente-integrador.xlsx").build());
+		        headers.set("Content-Encoding", "UTF-8");
+		
+		        // Retornar a resposta com o recurso de byte array
+		        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 			}
 		}
 	}
