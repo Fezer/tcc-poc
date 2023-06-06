@@ -433,7 +433,7 @@ public class CoafeREST {
 					
 					HttpHeaders headers = new HttpHeaders();
 					headers.setContentType(MediaType.APPLICATION_PDF);
-					headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-seguradora-ufpr.pdf").build());
+					headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-estagios-seguradora-ufpr.pdf").build());
 			
 					return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 
@@ -480,7 +480,7 @@ public class CoafeREST {
 	
 	        // Configurar os cabeçalhos da resposta
 	        HttpHeaders headers = new HttpHeaders();
-	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-seguradora-ufpr.xlsx").build());
+	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-estagios-seguradora-ufpr-excel.xlsx").build());
 	        headers.set("Content-Encoding", "UTF-8");
 	
 	        // Retornar a resposta com o recurso de byte array
@@ -517,7 +517,7 @@ public class CoafeREST {
 					
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_PDF);
-				headers.setContentDisposition(ContentDisposition.builder("inline").filename("contratante.pdf").build());
+				headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-contratante" + contratante.getId() + ".pdf").build());
 			
 				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 			}
@@ -549,7 +549,7 @@ public class CoafeREST {
 			
 			        // Configurar os cabeçalhos da resposta
 			        HttpHeaders headers = new HttpHeaders();
-			        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-c.xlsx").build());
+			        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-contratante-" + contratante.getId() + "-excel.xlsx").build());
 			        headers.set("Content-Encoding", "UTF-8");
 			
 			        // Retornar a resposta com o recurso de byte array
@@ -586,7 +586,7 @@ public class CoafeREST {
 					
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_PDF);
-				headers.setContentDisposition(ContentDisposition.builder("inline").filename("agente-integrador.pdf").build());
+				headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-agente-integrador-" + agenteIntegrador.getId() + ".pdf").build());
 			
 				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 			}
@@ -618,7 +618,7 @@ public class CoafeREST {
 		
 		        // Configurar os cabeçalhos da resposta
 		        HttpHeaders headers = new HttpHeaders();
-		        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-agente-integrador.xlsx").build());
+		        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-agente-integrador-" + agenteIntegrador.getId() + "-excel.xlsx").build());
 		        headers.set("Content-Encoding", "UTF-8");
 		
 		        // Retornar a resposta com o recurso de byte array
@@ -638,7 +638,7 @@ public class CoafeREST {
 			
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_PDF);
-			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-certificados.pdf").build());
+			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-certificados-de-estagio.pdf").build());
 	
 			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 		}  catch (PocException e) {
@@ -664,7 +664,7 @@ public class CoafeREST {
 	
 	        // Configurar os cabeçalhos da resposta
 	        HttpHeaders headers = new HttpHeaders();
-	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-certificados-estagio.xlsx").build());
+	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-certificados-de-estagio-excel.xlsx").build());
 	        headers.set("Content-Encoding", "UTF-8");
 	
 	        // Retornar a resposta com o recurso de byte array
@@ -710,7 +710,7 @@ public class CoafeREST {
 	
 	        // Configurar os cabeçalhos da resposta
 	        HttpHeaders headers = new HttpHeaders();
-	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-relatorios-estagio.xlsx").build());
+	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-relatorios-de-estagio-excel.xlsx").build());
 	        headers.set("Content-Encoding", "UTF-8");
 	
 	        // Retornar a resposta com o recurso de byte array
@@ -738,9 +738,11 @@ public class CoafeREST {
 	    	
 			byte[] pdf = geradorService.gerarPdfRelatorioDeEstagio(relatorio);
 			
+			RelatorioDeEstagio rel = relatorio.get();
+			
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_PDF);
-			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-relatorio-de-estagio.pdf").build());
+			headers.setContentDisposition(ContentDisposition.builder("inline").filename("relatorio-relatorio-de-estagio-" + rel.getId() + ".pdf").build());
 	
 			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 		} catch (NotFoundException ex) {
@@ -779,7 +781,7 @@ public class CoafeREST {
 	
 	        // Configurar os cabeçalhos da resposta
 	        HttpHeaders headers = new HttpHeaders();
-	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-relatorio-estagio.xlsx").build());
+	        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio-relatorio-de-estagio-" + relatorio.getId() + "-excel.xlsx").build());
 	        headers.set("Content-Encoding", "UTF-8");
 	
 	        // Retornar a resposta com o recurso de byte array

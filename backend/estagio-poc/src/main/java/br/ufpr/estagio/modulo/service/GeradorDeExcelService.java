@@ -80,9 +80,10 @@ public class GeradorDeExcelService {
 	    Workbook workbook = new XSSFWorkbook();
 
 	    Sheet sheet = workbook.createSheet("Relatório Contratante");
-
-	    String[] headersTitle = {"CPF", "Nome", "Representante", "Telefone", "Rua", "Número", "Cidade", 
+	    
+	    String[] headersTitle = {"CNPJ", "CPF", "Nome", "Representante", "Telefone", "Rua", "Número", "Cidade", 
 	    		"Estado", "CEP"};
+	    
 	    Row headerRow = sheet.createRow(0);
 	    for (int i = 0; i < headersTitle.length; i++) {
 	        Cell cell = headerRow.createCell(i);
@@ -92,20 +93,21 @@ public class GeradorDeExcelService {
 	    int rowNum = 1;
 	    
         Row row = sheet.createRow(rowNum++);
-        row.createCell(0).setCellValue(contratante.getCpf());
-        row.createCell(1).setCellValue(contratante.getNome());
-        row.createCell(2).setCellValue(contratante.getRepresentanteEmpresa());
-        row.createCell(3).setCellValue(contratante.getTelefone());
-        /*row.createCell(4).setCellValue(contratante.getEndereco().getRua());
-        row.createCell(5).setCellValue(contratante.getEndereco().getNumero());
-        row.createCell(6).setCellValue(contratante.getEndereco().getCidade());
-        row.createCell(7).setCellValue(contratante.getEndereco().getUf());
-        row.createCell(8).setCellValue(contratante.getEndereco().getCep());*/
-        row.createCell(4).setCellValue("Rua A");
-        row.createCell(5).setCellValue(42);
-        row.createCell(6).setCellValue("Curitiba");
-        row.createCell(7).setCellValue("Paraná");
-        row.createCell(8).setCellValue("74329-214");
+        row.createCell(0).setCellValue(contratante.getCnpj());
+        row.createCell(1).setCellValue(contratante.getCpf());
+        row.createCell(2).setCellValue(contratante.getNome());
+        row.createCell(3).setCellValue(contratante.getRepresentanteEmpresa());
+        row.createCell(4).setCellValue(contratante.getTelefone());
+        /*row.createCell(5).setCellValue(contratante.getEndereco().getRua());
+        row.createCell(6).setCellValue(contratante.getEndereco().getNumero());
+        row.createCell(7).setCellValue(contratante.getEndereco().getCidade());
+        row.createCell(8).setCellValue(contratante.getEndereco().getUf());
+        row.createCell(9).setCellValue(contratante.getEndereco().getCep());*/
+        row.createCell(5).setCellValue("Rua A");
+        row.createCell(6).setCellValue(42);
+        row.createCell(7).setCellValue("Curitiba");
+        row.createCell(8).setCellValue("Paraná");
+        row.createCell(9).setCellValue("74329-214");
 
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    workbook.write(outputStream);
@@ -174,7 +176,7 @@ public class GeradorDeExcelService {
 	        row.createCell(2).setCellValue(certificado.getEstagio().getAluno().getMatricula());
 	        row.createCell(3).setCellValue(certificado.getEstagio().getAluno().getCurso().getNome());
 	        row.createCell(4).setCellValue(String.valueOf(certificado.getEtapaFluxo()));
-	        if (certificado.getMotivoReprovacao().isEmpty())
+	        if (certificado.getMotivoReprovacao() == null)
 	        	row.createCell(5).setCellValue("Não houve reprovação.");
 	        else
 	        	row.createCell(5).setCellValue(String.valueOf(certificado.getMotivoReprovacao()));
