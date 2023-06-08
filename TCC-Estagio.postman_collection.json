@@ -1417,7 +1417,22 @@
 							"name": "baixarRelatorioDeEstagio",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/relatorio/1/gerar-relatorio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"relatorio",
+										"1",
+										"gerar-relatorio"
+									]
+								}
 							},
 							"response": []
 						}
