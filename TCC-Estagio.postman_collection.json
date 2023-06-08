@@ -1547,7 +1547,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20204481/1/gerar-termo",
+									"raw": "http://localhost:5000/aluno/GRR20204481/1/gerar-ficha",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1557,7 +1557,39 @@
 										"aluno",
 										"GRR20204481",
 										"1",
-										"gerar-termo"
+										"gerar-ficha"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "uploadPdfFichaDeAvaliacao",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/gabriel/Documentos/ufpr/tcc/relatorios/GRR20204481-ficha-de-avaliacao-1.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/upload-ficha/FichaDeAvaliacaoParcial",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"upload-ficha",
+										"FichaDeAvaliacaoParcial"
 									]
 								}
 							},
