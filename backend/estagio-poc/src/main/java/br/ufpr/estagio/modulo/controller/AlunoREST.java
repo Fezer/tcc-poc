@@ -1745,4 +1745,48 @@ public class AlunoREST {
 		}
 	}
 	
+	@GetMapping("/{grrAlunoURL}/relatorio/{id}/gerar-relatorio")
+	public ResponseEntity<Object> gerarRelatorioPdf(@PathVariable String grrAlunoURL, @PathVariable String id, @RequestHeader("Authorization") String accessToken)
+			throws IOException, DocumentException {
+
+		try {
+
+			long idLong = Long.parseLong(id);
+	    	
+	    	if (idLong < 1L)
+        		throw new InvalidFieldException("Id inválido.");
+	    	
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new InvalidFieldException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Optional<RelatorioDeEstagio> relatorioFind = relatorioDeEstagioService.buscarRelatorioPorId(idLong);
+					if (relatorioFind == null) {
+						throw new NotFoundException("Ficha não encontrada.");
+					} else {
+						RelatorioDeEstagio relatorio = relatorioFind.get();
+						
+						byte[] pdf = geradorService.gerarPdfAlunoRelatorioDeEstagio(relatorio);
+	
+						HttpHeaders headers = new HttpHeaders();
+						headers.setContentType(MediaType.APPLICATION_PDF);
+						headers.setContentDisposition(ContentDisposition.builder("inline").filename(aluno.getMatricula() + "-relatorio-de-estagio-" + relatorio.getId() + ".pdf").build());
+	
+						return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+					}
+				}
+			}
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
+	    }
+	}
 }

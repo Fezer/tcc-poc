@@ -669,7 +669,7 @@ public class GeradorDePdfService {
 	
 	private String getHtmlCertificadoOrientador(Orientador orientador, CertificadoDeEstagio certificado) {
 	    // Carregar o HTML do arquivo
-ClassLoader classLoader = getClass().getClassLoader();
+		ClassLoader classLoader = getClass().getClassLoader();
 		
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
     	
@@ -841,6 +841,84 @@ ClassLoader classLoader = getClass().getClassLoader();
 	    html = html.replace("{{relatorio}}", estagiosHtml.toString());
 
 	    return html;
+	}
+	
+	public byte[] gerarPdfAlunoRelatorioDeEstagio(RelatorioDeEstagio relatorio) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlAlunoRelatorioDeEstagio(relatorio);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
+	
+	private String getHtmlAlunoRelatorioDeEstagio(RelatorioDeEstagio relatorio) {
+	    // Carregar o HTML do arquivo
+		ClassLoader classLoader = getClass().getClassLoader();
+		
+		Path diretorioAtual = Paths.get("").toAbsolutePath();
+    	
+    	String resources = diretorioAtual + "/src/main/resources/";
+		
+		String cssPath = resources + "termo/bootstrap.min.css";
+		String estiloPath = resources + "termo/estilo.css";
+		String jqueryPath = resources + "termo/jquery.js";
+		String bootstrapPath = resources + "termo/bootstrap.js";
+		String scriptPath = resources + "termo/script.js";
+
+		//System.out.println(scriptPath);
+		
+		/*URL cssUrl = classLoader.getResource(cssPath);
+		URL estiloUrl = classLoader.getResource(estiloPath);
+		URL jqueryUrl = classLoader.getResource(jqueryPath);
+		URL bootstrapUrl = classLoader.getResource(bootstrapPath);
+		URL scriptUrl = classLoader.getResource(scriptPath);
+		
+		System.out.println("cssUrl: " + cssUrl);
+		System.out.println("estiloUrl: " + estiloUrl);
+		System.out.println("jqueryUrl: " + jqueryUrl);
+		System.out.println("bootstrapUrl: " + bootstrapUrl);
+		System.out.println("scriptUrl: " + scriptUrl);
+		*/
+		String html = "";
+		try {
+			
+			html = IOUtils.toString(classLoader.getResourceAsStream("RelatorioDeEstagio.html"), StandardCharsets.UTF_8);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//html = html.replace("${cssPath}", cssPath);
+		//html = html.replace("${estiloPath}", estiloPath);
+		//html = html.replace("${jqueryPath}", jqueryPath);
+		html = html.replace("${bootstrapPath}", bootstrapPath);
+		//html = html.replace("${scriptPath}", scriptPath);
+		
+		
+		String imagePath = resources + "termo/prograd.png";
+		html = html.replace("{{imagePath}}", imagePath);
+		
+		// Informacoes do relatório
+		html = html.replace("{{consideracoes}}", relatorio.getConsideracoes());
+		html = html.replace("{{avalAtividades}}", String.valueOf(relatorio.getAvalAtividades()));
+		html = html.replace("{{contribuicao}}", String.valueOf(relatorio.getAvalContribuicaoEstagio()));
+		html = html.replace("{{desenvolvimento}}", String.valueOf(relatorio.getAvalDesenvolvimentoAtividades()));
+		html = html.replace("{{efetivacao}}", String.valueOf(relatorio.getAvalEfetivacao()));
+		html = html.replace("{{formacao}}", String.valueOf(relatorio.getAvalFormacaoProfissional()));
+		html = html.replace("{{relacoesInterpessoais}}", String.valueOf(relatorio.getAvalRelacoesInterpessoais()));
+		html = html.replace("{{nome}}", relatorio.getEstagio().getAluno().getNome());
+		html = html.replace("{{grr}}", relatorio.getEstagio().getAluno().getMatricula());
+		html = html.replace("{{ira}}", relatorio.getEstagio().getAluno().getIra());
+		html = html.replace("{{curso}}", relatorio.getEstagio().getAluno().getCurso().getNome());
+		
+		return html;
 	}
 	
 	public Workbook gerarExcelEstagioSeguradoraUfpr(List<Estagio> estagios) {
