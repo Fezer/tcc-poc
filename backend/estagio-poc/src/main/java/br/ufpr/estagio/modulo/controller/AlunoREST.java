@@ -1650,7 +1650,7 @@ public class AlunoREST {
 		}
 	}
 
-	@GetMapping("/{grrAlunoURL}/{id}/gerar-termo")
+	@GetMapping("/{grrAlunoURL}/{id}/gerar-ficha")
 	public ResponseEntity<Object> gerarFichaPdf(@PathVariable String grrAlunoURL, @PathVariable String id, @RequestHeader("Authorization") String accessToken)
 			throws IOException, DocumentException {
 
@@ -1694,4 +1694,55 @@ public class AlunoREST {
 	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
 	    }
 	}
+
+	@PostMapping("/{grrAlunoURL}/upload-ficha/{tipoFicha}")
+	public ResponseEntity<Object> uploadFicha(@PathVariable String grrAlunoURL, @PathVariable String tipoFicha, @RequestHeader("Authorization") String accessToken,
+			@RequestParam("file") MultipartFile file) {
+
+		// TO-DO: Jogar dentro de um try-catch
+
+		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+			throw new BadRequestException("GRR do aluno não informado!");
+		} else {
+			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+			if (aluno == null) {
+				throw new NotFoundException("Aluno não encontrado!");
+			} else {
+				if (file.isEmpty()) {
+					throw new InvalidFieldException("Arquivo não informado!");
+				} else {
+					try {
+
+						Path diretorioAtual = Paths.get("").toAbsolutePath();
+
+						String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+						
+						if (tipoFicha.equals(String.valueOf(EnumTipoDocumento.FichaDeAvaliacaoParcial))) {
+							String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoParcial;
+							Path destino = Paths.get(diretorioDestino + nomeArquivo);
+							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+						} else if (tipoFicha.equals(String.valueOf(EnumTipoDocumento.FichaDeAvaliacaoFinal))) {
+							String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoFinal;
+							Path destino = Paths.get(diretorioDestino + nomeArquivo);
+							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+						} else {
+							throw new InvalidFieldException("O tipo de documento deve ser 'FichaDeAvaliacaoParcial' ou 'FichaDeAvaliacaoFinal'.");
+						}
+
+						return ResponseEntity.ok("Ficha de avaliação salva com sucesso!");
+					}  catch (NotFoundException ex) {
+				        ErrorResponse response = new ErrorResponse(ex.getMessage());
+				        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+				    } catch (InvalidFieldException ex) {
+				        ErrorResponse response = new ErrorResponse(ex.getMessage());
+				        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+				    } catch (Exception e) {
+						e.printStackTrace();
+						throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+					}
+				}
+			}
+		}
+	}
+	
 }
