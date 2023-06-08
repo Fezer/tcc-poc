@@ -52,6 +52,7 @@ import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
@@ -1649,4 +1650,48 @@ public class AlunoREST {
 		}
 	}
 
+	@GetMapping("/{grrAlunoURL}/{id}/gerar-termo")
+	public ResponseEntity<Object> gerarFichaPdf(@PathVariable String grrAlunoURL, @PathVariable String id, @RequestHeader("Authorization") String accessToken)
+			throws IOException, DocumentException {
+
+		try {
+
+			long idLong = Long.parseLong(id);
+	    	
+	    	if (idLong < 1L)
+        		throw new InvalidFieldException("Id inválido.");
+	    	
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new InvalidFieldException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Optional<FichaDeAvaliacao> fichaFind = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idLong);
+					if (fichaFind == null) {
+						throw new NotFoundException("Ficha não encontrada.");
+					} else {
+						FichaDeAvaliacao ficha = fichaFind.get();
+						
+						byte[] pdf = geradorService.gerarPdfFicha(aluno, ficha);
+	
+						HttpHeaders headers = new HttpHeaders();
+						headers.setContentType(MediaType.APPLICATION_PDF);
+						headers.setContentDisposition(ContentDisposition.builder("inline").filename(aluno.getMatricula() + "-ficha-de-avaliacao-" + ficha.getId() + ".pdf").build());
+	
+						return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+					}
+				}
+			}
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
+	    }
+	}
 }

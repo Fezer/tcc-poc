@@ -27,6 +27,7 @@ import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.FichaDeAvaliacao;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 
 import java.io.ByteArrayOutputStream;
@@ -177,6 +178,116 @@ public class GeradorDePdfService {
 			html = html.replace("{{ufContratante}}", "Paraná");
 			html = html.replace("{{cepContratante}}", "80213-931");
 		}
+		
+		// Informacoes do aluno
+		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(aluno.getDataNascimento());
+
+		html = html.replace("{{nome}}", aluno.getNome());
+		html = html.replace("{{rg}}", aluno.getRg());
+		html = html.replace("{{dataNascimento}}", dataFormatada);
+		html = html.replace("{{telefone}}", aluno.getTelefone());
+		html = html.replace("{{email}}", aluno.getEmail());
+		/*html = html.replace("{{rua}}", aluno.getEndereco().getRua());
+		html = html.replace("{{numeroEndereco}}", String.valueOf(aluno.getEndereco().getNumero()));
+		html = html.replace("{{complemento}}", aluno.getEndereco().getComplemento());
+		html = html.replace("{{cidade}}", aluno.getEndereco().getCidade());
+		html = html.replace("{{uf}}", aluno.getEndereco().getUf());
+		html = html.replace("{{cep}}", aluno.getEndereco().getCep());*/
+		html = html.replace("{{rua}}", "Rua X");
+		html = html.replace("{{numeroEndereco}}", "0");
+		html = html.replace("{{complemento}}", "Casa 2");
+		html = html.replace("{{cidade}}", "Curitiba");
+		html = html.replace("{{uf}}", "Paraná");
+		html = html.replace("{{cep}}", "81810-481");
+		
+		html = html.replace("{{curso}}", aluno.getCurso().getNome());
+		
+		html = html.replace("{{matricula}}", aluno.getMatricula());
+		html = html.replace("{{nivel}}", "4º Período"); // NULO!!
+		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
+		
+		return html;
+	}
+	
+	public byte[] gerarPdfFicha(Aluno aluno, FichaDeAvaliacao ficha) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlFichaAluno(aluno, ficha);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
+	
+	private String getHtmlFichaAluno(Aluno aluno, FichaDeAvaliacao ficha) {
+		// carregar o HTML do arquivo
+		ClassLoader classLoader = getClass().getClassLoader();
+		
+		Path diretorioAtual = Paths.get("").toAbsolutePath();
+    	
+    	String resources = diretorioAtual + "/src/main/resources/";
+		
+		String cssPath = resources + "termo/bootstrap.min.css";
+		String estiloPath = resources + "termo/estilo.css";
+		String jqueryPath = resources + "termo/jquery.js";
+		String bootstrapPath = resources + "termo/bootstrap.js";
+		String scriptPath = resources + "termo/script.js";
+
+		//System.out.println(scriptPath);
+		
+		/*URL cssUrl = classLoader.getResource(cssPath);
+		URL estiloUrl = classLoader.getResource(estiloPath);
+		URL jqueryUrl = classLoader.getResource(jqueryPath);
+		URL bootstrapUrl = classLoader.getResource(bootstrapPath);
+		URL scriptUrl = classLoader.getResource(scriptPath);
+		
+		System.out.println("cssUrl: " + cssUrl);
+		System.out.println("estiloUrl: " + estiloUrl);
+		System.out.println("jqueryUrl: " + jqueryUrl);
+		System.out.println("bootstrapUrl: " + bootstrapUrl);
+		System.out.println("scriptUrl: " + scriptUrl);
+		*/
+		String html = "";
+		try {
+			
+			html = IOUtils.toString(classLoader.getResourceAsStream("FichaDeAvaliacao.html"), StandardCharsets.UTF_8);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//html = html.replace("${cssPath}", cssPath);
+		//html = html.replace("${estiloPath}", estiloPath);
+		//html = html.replace("${jqueryPath}", jqueryPath);
+		html = html.replace("${bootstrapPath}", bootstrapPath);
+		//html = html.replace("${scriptPath}", scriptPath);
+		
+		
+		String imagePath = resources + "termo/prograd.png";
+		html = html.replace("{{imagePath}}", imagePath);
+		// Informacoes do concedente
+		
+		// Informacoes da ficha
+		html = html.replace("{{comentarioCoordenador}}", ficha.getAcompanhamentoCoordenadorComentario());
+		html = html.replace("{{comentarioOrientador}}", ficha.getAcompanhamentoOrientadorComentario());
+		html = html.replace("{{atividadesRealizadas}}", ficha.getAtividadesRealizadasConsideracoes());
+		html = html.replace("{{contribuicao}}", ficha.getContribuicaoEstagio());
+		html = html.replace("{{acompanhamentoCoordenador}}", String.valueOf(ficha.getAcompanhamentoCoordenador()));
+		html = html.replace("{{acompanhamentoOrientador}}", String.valueOf(ficha.getAcompanhamentoOrientador()));
+		html = html.replace("{{conduta}}", String.valueOf(ficha.getAvalConduta()));
+		html = html.replace("{{criatividade}}", String.valueOf(ficha.getAvalCriatividade()));
+		html = html.replace("{{dominio}}", String.valueOf(ficha.getAvalDominioTecnico()));
+		html = html.replace("{{efetivacao}}", String.valueOf(ficha.getAvalEfetivacao()));
+		html = html.replace("{{habilidades}}", String.valueOf(ficha.getAvalHabilidades()));
+		html = html.replace("{{pontualidade}}", String.valueOf(ficha.getAvalPontualidade()));
+		html = html.replace("{{protagonismo}}", String.valueOf(ficha.getAvalProtagonismo()));
+		html = html.replace("{{responsabilidade}}", String.valueOf(ficha.getAvalResponsabilidade()));
+		
 		
 		// Informacoes do aluno
 		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(aluno.getDataNascimento());
