@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fbb26f9e-6688-48f0-8f60-89309e637361",
+		"_postman_id": "6b2cc1ed-a13d-42ce-b2a6-bdfe36f4f3a2",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "17301767"
@@ -1536,6 +1536,28 @@
 										"estagio",
 										"2",
 										"fichaDeAvaliacao"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "gerarPdfFichaDeAvaliacao",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/1/gerar-termo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"1",
+										"gerar-termo"
 									]
 								}
 							},
