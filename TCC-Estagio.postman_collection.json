@@ -5124,7 +5124,22 @@
 							"name": "gerarCertificadoEstagioNaoObrigatorioDeOrientando",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/orientador/5/certificado/1/imprimir-certificado",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"orientador",
+										"5",
+										"certificado",
+										"1",
+										"imprimir-certificado"
+									]
+								}
 							},
 							"response": []
 						}
