@@ -5116,6 +5116,19 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "CertificadoDeEstagio",
+					"item": [
+						{
+							"name": "gerarCertificadoEstagioNaoObrigatorioDeOrientando",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
