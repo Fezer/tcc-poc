@@ -28,6 +28,7 @@ import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.FichaDeAvaliacao;
+import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 
 import java.io.ByteArrayOutputStream;
@@ -649,6 +650,87 @@ public class GeradorDePdfService {
 	    html = html.replace("{{certificados}}", estagiosHtml.toString());
 
 	    return html;
+	}
+	
+	public byte[] gerarPdfCertificadoOrientador(Orientador orientador, CertificadoDeEstagio certificado) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlCertificadoOrientador(orientador, certificado);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
+	
+	private String getHtmlCertificadoOrientador(Orientador orientador, CertificadoDeEstagio certificado) {
+	    // Carregar o HTML do arquivo
+ClassLoader classLoader = getClass().getClassLoader();
+		
+		Path diretorioAtual = Paths.get("").toAbsolutePath();
+    	
+    	String resources = diretorioAtual + "/src/main/resources/";
+		
+		String cssPath = resources + "termo/bootstrap.min.css";
+		String estiloPath = resources + "termo/estilo.css";
+		String jqueryPath = resources + "termo/jquery.js";
+		String bootstrapPath = resources + "termo/bootstrap.js";
+		String scriptPath = resources + "termo/script.js";
+
+		//System.out.println(scriptPath);
+		
+		/*URL cssUrl = classLoader.getResource(cssPath);
+		URL estiloUrl = classLoader.getResource(estiloPath);
+		URL jqueryUrl = classLoader.getResource(jqueryPath);
+		URL bootstrapUrl = classLoader.getResource(bootstrapPath);
+		URL scriptUrl = classLoader.getResource(scriptPath);
+		
+		System.out.println("cssUrl: " + cssUrl);
+		System.out.println("estiloUrl: " + estiloUrl);
+		System.out.println("jqueryUrl: " + jqueryUrl);
+		System.out.println("bootstrapUrl: " + bootstrapUrl);
+		System.out.println("scriptUrl: " + scriptUrl);
+		*/
+		String html = "";
+		try {
+			
+			html = IOUtils.toString(classLoader.getResourceAsStream("CertificadoDeEstagioOrientador.html"), StandardCharsets.UTF_8);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//html = html.replace("${cssPath}", cssPath);
+		//html = html.replace("${estiloPath}", estiloPath);
+		//html = html.replace("${jqueryPath}", jqueryPath);
+		html = html.replace("${bootstrapPath}", bootstrapPath);
+		//html = html.replace("${scriptPath}", scriptPath);
+		
+		
+		String imagePath = resources + "termo/prograd.png";
+		html = html.replace("{{imagePath}}", imagePath);
+		// Informacoes do concedente
+		
+		// Informacoes da ficha
+		if (certificado.getMotivoReprovacao() == null)
+			html = html.replace("{{reprovacao}}", "Não houve reprovação.");
+		else
+			html = html.replace("{{reprovacao}}", certificado.getMotivoReprovacao());
+		
+		html = html.replace("{{nome}}", certificado.getEstagio().getAluno().getNome());
+		html = html.replace("{{grr}}", certificado.getEstagio().getAluno().getMatricula());
+		html = html.replace("{{ira}}", certificado.getEstagio().getAluno().getIra());
+		html = html.replace("{{orientador}}", certificado.getEstagio().getOrientador().getNome());
+		html = html.replace("{{curso}}", certificado.getEstagio().getAluno().getCurso().getNome());
+		html = html.replace("{{etapaFluxo}}", String.valueOf(certificado.getEtapaFluxo()));
+		html = html.replace("{{parecerCoe}}", String.valueOf(certificado.getParecerCOE()));
+		html = html.replace("{{statusEstagio}}", String.valueOf(certificado.getEstagio().getStatusEstagio()));
+		
+		return html;
 	}
 	
 	public byte[] gerarPdfRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) throws IOException, DocumentException {
