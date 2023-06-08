@@ -1412,6 +1412,14 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "baixarRelatorioDeEstagio",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					]
 				},
