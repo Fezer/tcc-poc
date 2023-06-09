@@ -960,6 +960,14 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "listarTermoAditivoPorId",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					]
 				},
