@@ -1831,4 +1831,48 @@ public class AlunoREST {
 			}
 		}
 	}
+
+	@GetMapping("/{grrAlunoURL}/termo-aditivo/{id}/gerar-termo-aditivo")
+	public ResponseEntity<Object> gerarTermoAditivoPdf(@PathVariable String grrAlunoURL, @PathVariable String id, @RequestHeader("Authorization") String accessToken)
+			throws IOException, DocumentException {
+
+		try {
+
+			long idLong = Long.parseLong(id);
+	    	
+	    	if (idLong < 1L)
+        		throw new InvalidFieldException("Id inválido.");
+	    	
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new InvalidFieldException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					TermoDeEstagio termo = termoDeEstagioService.listarTermoAditivoPorId(aluno, idLong);
+					if (termo == null) {
+						throw new NotFoundException("Ficha não encontrada.");
+					} else {
+												
+						byte[] pdf = geradorService.gerarPdfAlunoTermoAditivo(termo);
+	
+						HttpHeaders headers = new HttpHeaders();
+						headers.setContentType(MediaType.APPLICATION_PDF);
+						headers.setContentDisposition(ContentDisposition.builder("inline").filename(aluno.getMatricula() + "-termo-aditivo-" + termo.getId() + ".pdf").build());
+	
+						return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+					}
+				}
+			}
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
+	    }
+	}
 }

@@ -30,6 +30,7 @@ import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.FichaDeAvaliacao;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
+import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -917,6 +918,140 @@ public class GeradorDePdfService {
 		html = html.replace("{{grr}}", relatorio.getEstagio().getAluno().getMatricula());
 		html = html.replace("{{ira}}", relatorio.getEstagio().getAluno().getIra());
 		html = html.replace("{{curso}}", relatorio.getEstagio().getAluno().getCurso().getNome());
+		
+		return html;
+	}
+	
+	public byte[] gerarPdfAlunoTermoAditivo(TermoDeEstagio termo) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlAlunoTermoAditivo(termo);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
+	
+	private String getHtmlAlunoTermoAditivo(TermoDeEstagio termo) {
+	    // Carregar o HTML do arquivo
+		ClassLoader classLoader = getClass().getClassLoader();
+		
+		Path diretorioAtual = Paths.get("").toAbsolutePath();
+    	
+    	String resources = diretorioAtual + "/src/main/resources/";
+		
+		String cssPath = resources + "termo/bootstrap.min.css";
+		String estiloPath = resources + "termo/estilo.css";
+		String jqueryPath = resources + "termo/jquery.js";
+		String bootstrapPath = resources + "termo/bootstrap.js";
+		String scriptPath = resources + "termo/script.js";
+
+		//System.out.println(scriptPath);
+		
+		/*URL cssUrl = classLoader.getResource(cssPath);
+		URL estiloUrl = classLoader.getResource(estiloPath);
+		URL jqueryUrl = classLoader.getResource(jqueryPath);
+		URL bootstrapUrl = classLoader.getResource(bootstrapPath);
+		URL scriptUrl = classLoader.getResource(scriptPath);
+		
+		System.out.println("cssUrl: " + cssUrl);
+		System.out.println("estiloUrl: " + estiloUrl);
+		System.out.println("jqueryUrl: " + jqueryUrl);
+		System.out.println("bootstrapUrl: " + bootstrapUrl);
+		System.out.println("scriptUrl: " + scriptUrl);
+		*/
+		String html = "";
+		try {
+			
+			html = IOUtils.toString(classLoader.getResourceAsStream("TermoAditivo.html"), StandardCharsets.UTF_8);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//html = html.replace("${cssPath}", cssPath);
+		//html = html.replace("${estiloPath}", estiloPath);
+		//html = html.replace("${jqueryPath}", jqueryPath);
+		html = html.replace("${bootstrapPath}", bootstrapPath);
+		//html = html.replace("${scriptPath}", scriptPath);
+		
+		
+		String imagePath = resources + "termo/prograd.png";
+		html = html.replace("{{imagePath}}", imagePath);
+		
+		// Informacoes do relatório
+		if (termo.getEstagio().isEstagioUfpr()) {
+			html = html.replace("{{razaoSocial}}", "Universidade Federal do Paraná");
+			html = html.replace("{{cnpj}}", "CNPJ UFPR");
+			html = html.replace("{{representante}}", "Dieval Guizelini");
+			html = html.replace("{{telefoneContratante}}", "41 92924 9201");
+			html = html.replace("{{ruaContratante}}", "Rua Alguma Coisa Arcoverde");
+			html = html.replace("{{numeroContratante}}", "1725");
+			html = html.replace("{{cidadeContratante}}", "Curitiba");
+			html = html.replace("{{ufContratante}}", "Paraná");
+			html = html.replace("{{cepContratante}}", "80213-931");
+		} else {
+			html = html.replace("{{razaoSocial}}", termo.getEstagio().getContratante().getNome());
+			html = html.replace("{{cnpj}}", termo.getEstagio().getContratante().getCnpj());
+			html = html.replace("{{representante}}", termo.getEstagio().getContratante().getRepresentanteEmpresa());
+			html = html.replace("{{telefoneContratante}}", termo.getEstagio().getContratante().getTelefone());
+			/*html = html.replace("{{ruaContratante}}", termo.getEstagio().getContratante().getEndereco().getRua());
+			html = html.replace("{{numeroContratante}}", termo.getEstagio().valueOf(estagio.getContratante().getEndereco().getNumero()));
+			html = html.replace("{{cidadeContratante}}", termo.getEstagio().getContratante().getEndereco().getCidade());
+			html = html.replace("{{ufContratante}}", termo.getEstagio().getContratante().getEndereco().getUf());
+			html = html.replace("{{cepContratante}}", termo.getEstagio().getContratante().getEndereco().getCep());
+			*/
+			html = html.replace("{{ruaContratante}}", "Rua");
+			html = html.replace("{{numeroContratante}}", "5");
+			html = html.replace("{{cidadeContratante}}", "Curitiba");
+			html = html.replace("{{ufContratante}}", "Paraná");
+			html = html.replace("{{cepContratante}}", "80213-931");
+		}
+		
+		// Informacoes do aluno
+		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getEstagio().getAluno().getDataNascimento());
+
+		html = html.replace("{{nome}}", termo.getEstagio().getAluno().getNome());
+		html = html.replace("{{rg}}", termo.getEstagio().getAluno().getRg());
+		html = html.replace("{{dataNascimento}}", dataFormatada);
+		html = html.replace("{{telefone}}", termo.getEstagio().getAluno().getTelefone());
+		html = html.replace("{{email}}", termo.getEstagio().getAluno().getEmail());
+		/*html = html.replace("{{rua}}", termo.getEstagio().getAluno().getEndereco().getRua());
+		html = html.replace("{{numeroEndereco}}", String.valueOf(termo.getEstagio().getAluno().getEndereco().getNumero()));
+		html = html.replace("{{complemento}}", termo.getEstagio().getAluno().getEndereco().getComplemento());
+		html = html.replace("{{cidade}}", termo.getEstagio().getAluno().getEndereco().getCidade());
+		html = html.replace("{{uf}}", termo.getEstagio().getAluno().getEndereco().getUf());
+		html = html.replace("{{cep}}", termo.getEstagio().getAluno().getEndereco().getCep());*/
+		html = html.replace("{{rua}}", "Rua X");
+		html = html.replace("{{numeroEndereco}}", "0");
+		html = html.replace("{{complemento}}", "Casa 2");
+		html = html.replace("{{cidade}}", "Curitiba");
+		html = html.replace("{{uf}}", "Paraná");
+		html = html.replace("{{cep}}", "81810-481");
+		
+		html = html.replace("{{curso}}", termo.getEstagio().getAluno().getCurso().getNome());
+		
+		html = html.replace("{{matricula}}", termo.getEstagio().getAluno().getMatricula());
+		html = html.replace("{{nivel}}", "4º Período"); // NULO!!
+		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
+		
+		html = html.replace("{{agente}}", termo.getAgenteIntegrador().getNome());
+		html = html.replace("{{apolice}}", String.valueOf(termo.getApolice().getNumero()));
+		html = html.replace("{{contratante}}", termo.getContratante().getNome());
+		//html = html.replace("{{coordenador}}", termo.getCoordenador().getNome());
+		html = html.replace("{{coordenador}}", "Alessandro Brawerman");
+		html = html.replace("{{orientador}}", termo.getOrientador().getNome());
+		//html = html.replace("{{supervisor}}", termo.getPlanoAtividades().getNomeSupervisor());
+		html = html.replace("{{supervisor}}", "Supervisor A");
+		
+		//html = html.replace("{{ajustes}}", termo.getDescricaoAjustes());
+		html = html.replace("{{ajustes}}", "Ajustando o teste");
+		
 		
 		return html;
 	}
