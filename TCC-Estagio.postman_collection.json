@@ -965,7 +965,21 @@
 							"name": "listarTermoAditivoPorId",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-aditivo/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"termo-aditivo",
+										"2"
+									]
+								}
 							},
 							"response": []
 						}
@@ -1267,6 +1281,29 @@
 										"3",
 										"periodoRecesso",
 										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "gerarTermoDeRescisaoPdf",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-rescisao/1/gerar-termo-rescisao",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"termo-rescisao",
+										"1",
+										"gerar-termo-rescisao"
 									]
 								}
 							},
