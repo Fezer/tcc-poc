@@ -906,6 +906,29 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "gerarTermoAditivoPdf",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/gerar-termo-aditivo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"termo-aditivo",
+										"2",
+										"gerar-termo-aditivo"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
