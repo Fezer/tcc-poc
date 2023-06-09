@@ -1789,4 +1789,46 @@ public class AlunoREST {
 	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
 	    }
 	}
+
+	@PostMapping("/{grrAlunoURL}/upload-relatorio")
+	public ResponseEntity<Object> uploadRelatorio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
+			@RequestParam("file") MultipartFile file) {
+
+		// TO-DO: Jogar dentro de um try-catch
+
+		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+			throw new BadRequestException("GRR do aluno não informado!");
+		} else {
+			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+			if (aluno == null) {
+				throw new NotFoundException("Aluno não encontrado!");
+			} else {
+				if (file.isEmpty()) {
+					throw new InvalidFieldException("Arquivo não informado!");
+				} else {
+					try {
+
+						Path diretorioAtual = Paths.get("").toAbsolutePath();
+
+						String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+						
+						String nomeArquivo = grrAlunoURL + "-RelatorioDeEstagio";
+						Path destino = Paths.get(diretorioDestino + nomeArquivo);
+						Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+
+						return ResponseEntity.ok("Relatório de estágio salvo com sucesso!");
+					}  catch (NotFoundException ex) {
+				        ErrorResponse response = new ErrorResponse(ex.getMessage());
+				        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+				    } catch (InvalidFieldException ex) {
+				        ErrorResponse response = new ErrorResponse(ex.getMessage());
+				        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+				    } catch (Exception e) {
+						e.printStackTrace();
+						throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+					}
+				}
+			}
+		}
+	}
 }
