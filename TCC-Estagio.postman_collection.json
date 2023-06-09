@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fbb26f9e-6688-48f0-8f60-89309e637361",
+		"_postman_id": "6b2cc1ed-a13d-42ce-b2a6-bdfe36f4f3a2",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "17301767"
@@ -906,6 +906,82 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "gerarTermoAditivoPdf",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/gerar-termo-aditivo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"termo-aditivo",
+										"2",
+										"gerar-termo-aditivo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "uploadTermoAditivo",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/gabriel/Documentos/ufpr/tcc/relatorios/GRR20204481-termo-aditivo-2.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/upload-termo-aditivo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"upload-termo-aditivo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listarTermoAditivoPorId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-aditivo/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"termo-aditivo",
+										"2"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1209,6 +1285,60 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "gerarTermoDeRescisaoPdf",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-rescisao/1/gerar-termo-rescisao",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"termo-rescisao",
+										"1",
+										"gerar-termo-rescisao"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "uploadTermoDeRescisao",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/gabriel/Documentos/ufpr/tcc/relatorios/GRR20204481-termo-de-rescisao-1.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/upload-termo-de-rescisao",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"upload-termo-de-rescisao"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1412,6 +1542,60 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "baixarRelatorioDeEstagio",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/relatorio/1/gerar-relatorio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"relatorio",
+										"1",
+										"gerar-relatorio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "uploadRelatorioDeEstagio",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/gabriel/Documentos/ufpr/tcc/relatorios/GRR20204481-relatorio-de-estagio-1.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/upload-relatorio",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"upload-relatorio"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1536,6 +1720,60 @@
 										"estagio",
 										"2",
 										"fichaDeAvaliacao"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "gerarPdfFichaDeAvaliacao",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/1/gerar-ficha",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"1",
+										"gerar-ficha"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "uploadPdfFichaDeAvaliacao",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/gabriel/Documentos/ufpr/tcc/relatorios/GRR20204481-ficha-de-avaliacao-1.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/upload-ficha/FichaDeAvaliacaoParcial",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"upload-ficha",
+										"FichaDeAvaliacaoParcial"
 									]
 								}
 							},
@@ -5056,6 +5294,34 @@
 										"termoDeRescisao",
 										"2",
 										"darCiencia"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CertificadoDeEstagio",
+					"item": [
+						{
+							"name": "gerarCertificadoEstagioNaoObrigatorioDeOrientando",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/orientador/5/certificado/1/imprimir-certificado",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"orientador",
+										"5",
+										"certificado",
+										"1",
+										"imprimir-certificado"
 									]
 								}
 							},

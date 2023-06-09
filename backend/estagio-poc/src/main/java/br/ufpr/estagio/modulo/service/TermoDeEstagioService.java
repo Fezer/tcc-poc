@@ -68,6 +68,13 @@ public class TermoDeEstagioService {
 			+ "WHERE t.tipoTermoDeEstagio = :tipoTermoDeEstagio "
 			+ "AND a.id = :idAluno";
 	
+	private static final String selectTermoDeEstagioPorIdPorTipoTermoPorAluno = "SELECT t FROM TermoDeEstagio t "
+			+ "INNER JOIN t.estagio e "
+			+ "INNER JOIN e.aluno a "
+			+ "WHERE t.tipoTermoDeEstagio = :tipoTermoDeEstagio "
+			+ "AND t.id = :id "
+			+ "AND a.id = :idAluno";
+	
 	private static final String selectTermosDeEstagioTipoTermoPorStatusTermoPorAluno = "SELECT t FROM TermoDeEstagio t "
 			+ "INNER JOIN t.estagio e "
 			+ "INNER JOIN e.aluno a "
@@ -910,6 +917,18 @@ public class TermoDeEstagioService {
         query.setParameter("idAluno", aluno.getId());
 		
 		return query.getResultList();
+	}
+	
+	public TermoDeEstagio listarTermoAditivoPorId(Aluno aluno, Long id) {
+		EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoAditivo;
+
+		TypedQuery<TermoDeEstagio> query = em.createQuery(selectTermoDeEstagioPorIdPorTipoTermoPorAluno, TermoDeEstagio.class);
+		
+        query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+        query.setParameter("id", id);
+        query.setParameter("idAluno", aluno.getId());
+		
+		return query.getSingleResult();
 	}
 	
 	public List<TermoDeEstagio> listarTermosAditivosEmPreenchimentoPorAluno(Aluno aluno) {
