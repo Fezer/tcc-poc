@@ -929,6 +929,37 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "uploadTermoAditivo",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/gabriel/Documentos/ufpr/tcc/relatorios/GRR20204481-termo-aditivo-2.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/upload-termo-aditivo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"upload-termo-aditivo"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
