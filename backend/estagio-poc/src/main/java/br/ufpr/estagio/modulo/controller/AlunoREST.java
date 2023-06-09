@@ -1200,8 +1200,8 @@ public class AlunoREST {
 		}
 	}
 	
-	@GetMapping("/{grrAlunoURL}/termoAditivo/")
-	public ResponseEntity<TermoDeEstagioDTO> listarTermosAditivoPorId(@PathVariable String grrAlunoURL, @PathVariable String id, @RequestHeader("Authorization") String accessToken) {
+	@GetMapping("/{grrAlunoURL}/termo-aditivo/{id}")
+	public ResponseEntity<Object> listarTermoAditivoPorId(@PathVariable String grrAlunoURL, @PathVariable String id, @RequestHeader("Authorization") String accessToken) {
 		try {
 			long idLong = Long.parseLong(id);
 	    	
@@ -1220,7 +1220,10 @@ public class AlunoREST {
 					return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAditivo, TermoDeEstagioDTO.class));
 				}
 			}
-		} catch (NumberFormatException e) {
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException e) {
 			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
 		} catch (PocException e) {
 			e.printStackTrace();
