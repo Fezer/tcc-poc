@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <div class="w-full flex justify-between mb-3">
+    <div class="w-full flex justify-content-between mb-3">
       <NuxtLink to="/coafe/coafeSeguradoras">
         <Button
           label="Voltar"
@@ -52,8 +52,17 @@
         :label="seguradora.ativa ? 'Inativar' : 'Ativar'"
         class="p-button-info"
       />
-
-      <Button label="Editar" severity="info" />
+      <NuxtLink :to="`seguradoraEditar?id=${seguradora.id}`">
+        <Button label="Editar" />
+      </NuxtLink>
+      <Button
+        @click="
+          handleDeleteSeguradora(seguradora.id, seguradora.apolice.length)
+        "
+        :label="'Deletar'"
+        icon="pi pi-times"
+        class="p-button-danger"
+      />
     </div>
     <DataTable class="flex-column" :value="seguradora.apolice" rowHover>
       <template #header>
@@ -94,12 +103,14 @@
 import Button from "primevue/button";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
+import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import SeguradoraService from "~~/services/SeguradoraService";
 import parseDate from "~/utils/parseDate";
 const route = useRoute();
 const toast = useToast();
+const router = useRouter();
 const id = route.query.id;
 const seguradoraService = new SeguradoraService();
 const { data: seguradora, refresh } = await useFetch(
@@ -132,5 +143,40 @@ const handleAtivateSeguradora = async () => {
     console.log(e);
   }
   refresh();
+};
+const handleDeleteSeguradora = async (id, numeroapolices) => {
+  if (numeroapolices != 0) {
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "A Seguradora não pode ser deletada pois possui apólices",
+      life: 3000,
+    });
+  }
+  try {
+    const response = await seguradoraService.deletaSeguradora(id).then(() => {
+      return (
+        toast.add({
+          severity: "success",
+          summary: "Seguradora deletada com sucesso123",
+          life: 3000,
+        }),
+        router.push(`../coafeSeguradoras`)
+      );
+    });
+  } catch (e) {
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Erro ao deletar a Seguradora",
+      life: 3000,
+    });
+  }
+  return {
+    state,
+    id,
+    response,
+    handleDeleteConvenio,
+  };
 };
 </script>

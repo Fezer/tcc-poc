@@ -49,4 +49,32 @@ export default class SeguradoraService extends BaseService {
       return "Não";
     }
   }
+  async atualizaSeguradora(id:number,nome:string,ativa:boolean) {
+    const response = await $fetch(this.BASE_URL + `/seguradora/${id}`, {
+      method: "PUT",
+      body: {
+        nome : nome,
+        ativa: ativa,        
+      },
+    });
+    if (!response?.id) {
+      throw new Error("Erro ao atualizar a Seguradora");
+    }else{
+      console.log(response);
+      return response;
+    }
+  }
+  async deletaSeguradora(id:number) {
+    const response = await $fetch(this.BASE_URL + `/seguradora/${id}`, {
+      method: "DELETE",
+      body: {
+      },
+    });
+    if (response?.error) {
+      throw new Error("Erro ao Deletar Seguradora");
+    }else{
+      console.log(response);
+      return response;
+    }
+  }
 }

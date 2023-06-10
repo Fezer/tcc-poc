@@ -18,9 +18,6 @@ export default class AgenteService extends BaseService {
     }
   }
   async atualizaAgente(id:number,nome:string,cnpj:string,telefone:string) {
-    console.log(nome);
-    console.log(cnpj);
-    console.log(telefone);
     const response = await $fetch(this.BASE_URL + `/agente-integrador/${id}`, {
       method: "PUT",
       body: {
@@ -30,7 +27,7 @@ export default class AgenteService extends BaseService {
       },
     });
     if (!response?.id) {
-      throw new Error("Erro ao atualizar o gente");
+      throw new Error("Erro ao atualizar o Agente");
     }else{
       console.log(response);
       return response;

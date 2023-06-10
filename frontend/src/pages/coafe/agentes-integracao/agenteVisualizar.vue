@@ -150,7 +150,6 @@ const handleDeleteConvenio = async (id) => {
   };
 };
 const handleDeleteAgente = async (id, numeroCovenios) => {
-  console.log("tamanho:" + numeroCovenios);
   if (numeroCovenios != 0) {
     return toast.add({
       severity: "error",
