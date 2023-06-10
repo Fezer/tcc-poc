@@ -13,9 +13,11 @@
     </div>
     <div>
       <DataTable
+        v-model:filters="filtros"
         :value="agentes"
         paginator
         :rows="5"
+        :globalFilterFields="['nome']"
         :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
         paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
         rowHover
@@ -28,7 +30,10 @@
             </span>
             <span class="p-input-icon-left">
               <i class="pi pi-search" />
-              <InputText placeholder="Keyword Search" />
+              <InputText
+                v-model="filtros['nome'].value"
+                placeholder="Pesquisar Agentes"
+              />
             </span>
           </div>
         </template>
@@ -62,13 +67,14 @@
     </div>
   </div>
 </template>
-
-<script>
+<script setup>
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Button from "primevue/button";
-</script>
-<script scoped></script>
-<script setup>
+import { FilterMatchMode } from "primevue/api";
+import { ref } from "vue";
 const { data: agentes } = useFetch(`http://localhost:5000/agente-integrador/`);
+const filtros = ref({
+  nome: { value: null, matchMode: FilterMatchMode.CONTAINS },
+});
 </script>

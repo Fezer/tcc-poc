@@ -11,11 +11,13 @@
     </div>
     <div>
       <DataTable
+        v-model:filters="filtros"
         :value="seguradoras"
         rowHover
         stripedRows
         paginator
         :rows="5"
+        :globalFilterFields="['nome']"
         :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
         paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
       >
@@ -26,7 +28,10 @@
             </span>
             <span class="p-input-icon-left">
               <i class="pi pi-search" />
-              <InputText placeholder="Keyword Search" />
+              <InputText
+                v-model="filtros['nome'].value"
+                placeholder="Pesquisar Seguradoras"
+              />
             </span>
           </div>
         </template>
@@ -34,7 +39,7 @@
         <template #loading>
           Carregando seguradoras, por favor aguarde.
         </template>
-        <Column field="nome" header="Nome da Seguradora">
+        <Column field="nome" header="Nome da Seguradora" filterField="name">
           <template #body="{ data }">
             {{ data.nome }}
           </template>
@@ -77,14 +82,16 @@
     </div>
   </div>
 </template>
-
-<script>
+<script setup>
+import { ref } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Button from "primevue/button";
 import SeguradoraService from "~~/services/SeguradoraService";
-</script>
-<script setup>
+import { FilterMatchMode } from "primevue/api";
 const { data: seguradoras } = useFetch(`http://localhost:5000/seguradora/`);
 const seguradoraService = new SeguradoraService();
+const filtros = ref({
+  nome: { value: null, matchMode: FilterMatchMode.CONTAINS },
+});
 </script>
