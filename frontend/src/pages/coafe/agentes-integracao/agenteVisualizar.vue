@@ -23,6 +23,24 @@
         </div>
       </div>
     </div>
+    <div class="flex flex-row justify-content-between flex-wrap pb-2 gap-2">
+      <NuxtLink to="/coafe/coafeAgentes">
+        <Button
+          label="Voltar"
+          class="p-button-secondary"
+          icon="pi pi-arrow-left"
+        />
+      </NuxtLink>
+      <NuxtLink :to="`agenteEditar?id=${agente.id}`">
+        <Button label="Editar" />
+      </NuxtLink>
+      <Button
+        @click="handleDeleteAgente(agente.id, agente.convenio.length)"
+        :label="'Deletar'"
+        icon="pi pi-times"
+        class="p-button-danger"
+      />
+    </div>
     <DataTable class="flex-column" :value="agente.convenio" rowHover>
       <template #header>
         <div class="flex flex-row justify-content-between gap-10">
@@ -37,12 +55,6 @@
                 icon="pi pi-plus"
               />
             </NuxtLink>
-            <Button
-              @click="handleDeleteAgente(agente.id, agente.convenio.length)"
-              :label="'Deletar'"
-              icon="pi pi-times"
-              class="p-button-danger"
-            />
           </div>
         </div>
       </template>
@@ -69,7 +81,7 @@
           {{ parseDate(data?.dataFim) }}
         </template>
       </Column>
-      <Column field="button">
+      <Column field="button" header="Editar">
         <template #body="{ data }">
           <NuxtLink
             :to="`/coafe/agentes-integracao/convenioEditar?id=${data.id}`"
@@ -78,7 +90,7 @@
           </NuxtLink>
         </template>
       </Column>
-      <Column field="button">
+      <Column field="button" header="Deletar">
         <template #body="{ data }">
           <Button
             @click="handleDeleteConvenio(data.id)"
@@ -89,18 +101,6 @@
         </template>
       </Column>
     </DataTable>
-    <div class="flex flex-row justify-content-end flex-wrap pb-2 gap-2">
-      <NuxtLink to="/coafe/coafeAgentes">
-        <Button
-          label="Voltar"
-          class="p-button-secondary"
-          icon="pi pi-arrow-left"
-        />
-      </NuxtLink>
-      <NuxtLink :to="`agenteEditar?id=${agente.id}`">
-        <Button label="Editar" />
-      </NuxtLink>
-    </div>
   </div>
 </template>
 <script setup>

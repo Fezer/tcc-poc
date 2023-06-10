@@ -68,8 +68,17 @@
       <template #header>
         <div>
           <span>
-            <h4><b>Apolices</b></h4>
+            <p><b>Apolices</b></p>
           </span>
+        </div>
+        <div class="w-full flex justify-end gap-2">
+          <NuxtLink :to="`novo/adicionarApolice?id=${seguradora.id}`">
+            <Button
+              :label="'Adicionar'"
+              class="p-button-success"
+              icon="pi pi-plus"
+            />
+          </NuxtLink>
         </div>
       </template>
       <template #empty>
@@ -95,6 +104,23 @@
           {{ data.links }}
         </template>
       </Column>
+      <Column field="button" header="Editar">
+        <template #body="{ data }">
+          <NuxtLink :to="`/coafe/seguradora/apoliceEditar?id=${data.id}`">
+            <Button label="Editar" />
+          </NuxtLink>
+        </template>
+      </Column>
+      <Column field="button" header="Deletar">
+        <template #body="{ data }">
+          <Button
+            @click="handleDeleteApolice(data.id)"
+            :label="'Deletar'"
+            icon="pi pi-times"
+            class="p-button-danger"
+          />
+        </template>
+      </Column>
     </DataTable>
   </div>
 </template>
@@ -107,12 +133,14 @@ import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import SeguradoraService from "~~/services/SeguradoraService";
+import ApoliceService from "~~/services/ApoliceService";
 import parseDate from "~/utils/parseDate";
 const route = useRoute();
 const toast = useToast();
 const router = useRouter();
 const id = route.query.id;
 const seguradoraService = new SeguradoraService();
+const apoliceService = new ApoliceService();
 const { data: seguradora, refresh } = await useFetch(
   `http://localhost:5000/seguradora/${id}`
 );
@@ -158,7 +186,7 @@ const handleDeleteSeguradora = async (id, numeroapolices) => {
       return (
         toast.add({
           severity: "success",
-          summary: "Seguradora deletada com sucesso123",
+          summary: "Seguradora deletada com sucesso",
           life: 3000,
         }),
         router.push(`../coafeSeguradoras`)
@@ -177,6 +205,32 @@ const handleDeleteSeguradora = async (id, numeroapolices) => {
     id,
     response,
     handleDeleteConvenio,
+  };
+};
+const handleDeleteApolice = async (id) => {
+  try {
+    const response = await apoliceService.deletaApolice(id).then(() => {
+      return toast.add({
+        severity: "success",
+        summary: "Apólice deletada com sucesso",
+        life: 3000,
+      });
+    });
+  } catch (e) {
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Erro ao deletar a apólice",
+      life: 3000,
+    });
+    console.log(e);
+  }
+  refresh();
+  return {
+    state,
+    id,
+    response,
+    handleDeleteApolice,
   };
 };
 </script>

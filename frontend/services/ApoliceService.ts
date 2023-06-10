@@ -20,4 +20,35 @@ export default class ApoliceService extends BaseService {
 
     return response;
   }
+  async atualizaApolice(numero:number,dataInicio:string,dataFim:string,id:number,idseguradora:number) {
+    const response = await $fetch(this.BASE_URL + `/apolice/${id}`, {
+      method: "PUT",
+      body: {
+        numero: numero,   
+        dataInicio: dataInicio,
+        dataFim : dataFim,
+        seguradora: {id: idseguradora},        
+      },
+    });
+    if (!response?.id) {
+      throw new Error("Erro ao atualizar a Apólice");
+    }else{
+      console.log(response);
+      return response;
+    }
+  }
+  async deletaApolice(id:number) {
+    const response = await $fetch(this.BASE_URL + `/apolice/${id}`, {
+      method: "DELETE",
+      body: {
+      },
+    });
+    console.log("Resposta do servidor: "+response)
+    if (response?.error) {
+      throw new Error("Erro ao Deletar Apólice");
+    }else{
+      console.log(response);
+      return response;
+    }
+  }
 }
