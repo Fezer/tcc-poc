@@ -207,6 +207,9 @@ public class ApoliceREST {
 	    } catch (InvalidFieldException ex) {
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (RuntimeException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao excluir agente integrador!");

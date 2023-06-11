@@ -54,7 +54,20 @@ public class ApoliceService {
 	    Optional<Apolice> apoliceOptional = apoliceRepository.findById(apolice.getId());
 	    if (apoliceOptional.isPresent()) {
 	        Apolice apoliceExistente = apoliceOptional.get();
-	        apoliceRepository.delete(apoliceExistente);
+	        if (apoliceExistente.getEstagio() != null || apoliceExistente.getTermoDeEstagio() != null) {
+	        	throw new RuntimeException("Não é possível deletar uma apólice que esteja associada a um Estágio ou a um Termo de Estágio.");
+	        }else {
+	        	Seguradora seguradora = apoliceExistente.getSeguradora();
+	        	if(seguradora != null) {
+	        		List<Apolice> listaApolices = seguradora.getApolice();
+	        		if (listaApolices != null) {
+	        			listaApolices.remove(apoliceExistente);
+	        			seguradora.setApolice(listaApolices);
+	        		}
+	        	}
+	        	apoliceExistente.setSeguradora(null);
+	        	apoliceRepository.delete(apoliceExistente);
+	        }
 	    } else {
 	    	throw new RuntimeException("Não foi encontrado uma apólice com o ID informado.");
 	    }
