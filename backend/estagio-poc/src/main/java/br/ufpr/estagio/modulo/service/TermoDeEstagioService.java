@@ -154,8 +154,8 @@ public class TermoDeEstagioService {
 		termoAtualizado.setJornadaSemanal(termo.getJornadaSemanal() == 0 ? termoAtualizado.getJornadaSemanal() : termo.getJornadaSemanal());
 		termoAtualizado.setValorBolsa(termo.getValorBolsa() == 0 ? termoAtualizado.getValorBolsa() : termo.getValorBolsa());
 		termoAtualizado.setValorTransporte(termo.getValorTransporte() == 0 ? termoAtualizado.getValorTransporte() : termo.getValorTransporte());
-		termoAtualizado.setDataFimSuspensao(termo.getDataFimSuspensao() == null ? termoAtualizado.getDataFimSuspensao() : termo.getDataFimSuspensao());
-		termoAtualizado.setDataInicioRetomada(termo.getDataInicioRetomada() == null ? termoAtualizado.getDataInicioRetomada() : termo.getDataInicioRetomada());
+		termoAtualizado.setDataFimSuspensao(termo.getDataFimSuspensao());
+		termoAtualizado.setDataInicioRetomada(termo.getDataInicioRetomada());
 		return termoRepo.save(termoAtualizado);
 	}
 
