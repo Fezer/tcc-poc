@@ -1,5 +1,6 @@
 package br.ufpr.estagio.modulo.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -38,31 +39,45 @@ public class TermoDeRescisaoREST {
 	private ModelMapper mapper;
 	
 	@PostMapping("")
-	public ResponseEntity<TermoDeRescisaoDTO> inserir(@RequestBody TermoDeRescisaoDTO termo){
+	public ResponseEntity<Object> inserir(@RequestBody TermoDeRescisaoDTO termo){
 		try {
-		TermoDeRescisao newTermo = termoDeRescisaoService.novo(mapper.map(termo, TermoDeRescisao.class));
-		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newTermo, TermoDeRescisaoDTO.class));
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+			TermoDeRescisao newTermo = termoDeRescisaoService.novo(mapper.map(termo, TermoDeRescisao.class));
+			return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newTermo, TermoDeRescisaoDTO.class));
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new NotFoundException("Não foi possível criar um novo termo de rescisão.");
+	    	e.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 	
 	@GetMapping("")
-	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTodos(){
+	public ResponseEntity<Object> listarTodos(){
 		try {
 			List<TermoDeRescisao> lista = termoDeRescisaoService.listarTodos();
 			if(lista.isEmpty()) {
 				throw new NotFoundException("Nenhum termo encontrado!");
 			} else {
-				return ResponseEntity.status(HttpStatus.OK).body(lista.stream().map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+				List<TermoDeRescisaoDTO> listaTermosDTO = new ArrayList<>();
+				for (TermoDeRescisao t : lista) {
+					TermoDeRescisaoDTO termoRescisaoDTO = mapper.map(t, TermoDeRescisaoDTO.class);
+					termoRescisaoDTO.setAluno(t.getEstagio().getAluno().getNome());
+					termoRescisaoDTO.setGrrAluno(t.getEstagio().getAluno().getMatricula());
+					listaTermosDTO.add(termoRescisaoDTO);
+				}
+				return ResponseEntity.status(HttpStatus.OK).body(listaTermosDTO);
 			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    	e.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não foi possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 	
@@ -82,20 +97,26 @@ public class TermoDeRescisaoREST {
 			} else {
 				TermoDeRescisao termo = termoOptional.get();
 				TermoDeRescisaoDTO termoDTO = mapper.map(termo, TermoDeRescisaoDTO.class);
+				termoDTO.setAluno(termo.getEstagio().getAluno().getNome());
+				termoDTO.setGrrAluno(termo.getEstagio().getAluno().getMatricula());
 				return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 			}
 		} catch (NotFoundException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Id do termo de rescisão deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    	e.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não foi possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 	
@@ -125,36 +146,42 @@ public class TermoDeRescisaoREST {
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeRescisaoDTO.class));
 			}
 		} catch (NotFoundException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Id do termo de rescisão deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    	e.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não foi possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 		
 	@DeleteMapping("/{id}")
-	public ResponseEntity<TermoDeRescisaoDTO> delete(@PathVariable Long id){
+	public ResponseEntity<Object> delete(@PathVariable Long id){
 		try {
 			Optional<TermoDeRescisao> termofind = termoDeRescisaoService.buscarPorId(id);
-		if(termofind.isEmpty()) {
-			throw new NotFoundException("Termo de rescisão não encontrado!");
-		} else {
-			termoDeRescisaoService.deletar(id);
-			return ResponseEntity.status(HttpStatus.OK).body(null);
-		}
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+			if(termofind.isEmpty()) {
+				throw new NotFoundException("Termo de rescisão não encontrado!");
+			} else {
+				termoDeRescisaoService.deletar(id);
+				return ResponseEntity.status(HttpStatus.OK).body(null);
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch(Exception e) {
+	    	e.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 	
