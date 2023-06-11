@@ -47,7 +47,6 @@ export default class ApoliceService extends BaseService {
     if (response?.error) {
       throw new Error("Erro ao Deletar Apólice");
     }else{
-      console.log(response);
       return response;
     }
   }

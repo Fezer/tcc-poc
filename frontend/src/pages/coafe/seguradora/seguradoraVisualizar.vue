@@ -204,7 +204,7 @@ const handleDeleteSeguradora = async (id, numeroapolices) => {
     state,
     id,
     response,
-    handleDeleteConvenio,
+    handleDeleteSeguradora,
   };
 };
 const handleDeleteApolice = async (id) => {
@@ -223,7 +223,6 @@ const handleDeleteApolice = async (id) => {
       detail: "Erro ao deletar a apólice",
       life: 3000,
     });
-    console.log(e);
   }
   refresh();
   return {
