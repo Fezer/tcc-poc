@@ -18,8 +18,11 @@ import br.ufpr.estagio.modulo.model.Seguradora;
 
 public class TermoDeEstagioDTO {
 	private long id;
+	private String aluno;
+	private String grrAluno;
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
 	private Estagio estagio;
+
 	private Seguradora seguradora;
 	private Apolice apolice;
 	
@@ -53,56 +56,20 @@ public class TermoDeEstagioDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoDeEstagioDTO(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
-			Apolice apolice, AgenteIntegrador agenteIntegrador, Orientador orientador,
-			Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
-			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte, Date dataFimSuspensao,
-			Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo, EnumEtapaFluxo etapaFluxo,
-			CienciaCoordenacao cienciaCoordenacao, EnumParecerAprovadores parecerCOE,
-			EnumParecerAprovadores parecerCOAFE, EnumParecerAprovadores parecerCoordenacao, String motivoIndeferimento,
-			String descricaoAjustes) {
+	public TermoDeEstagioDTO(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, String aluno,
+			String grrAluno, Seguradora seguradora, Apolice apolice, Contratante contratante,
+			AgenteIntegrador agenteIntegrador, Orientador orientador, Coordenador coordenador,
+			PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria, int jornadaSemanal,
+			float valorBolsa, float valorTransporte, Date dataFimSuspensao, Date dataInicioRetomada, Date dataCriacao,
+			EnumStatusTermo statusTermo, EnumEtapaFluxo etapaFluxo, CienciaCoordenacao cienciaCoordenacao,
+			EnumParecerAprovadores parecerCOE, EnumParecerAprovadores parecerCOAFE,
+			EnumParecerAprovadores parecerCoordenacao, String motivoIndeferimento, String descricaoAjustes) {
 		super();
 		this.id = id;
 		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
 		this.estagio = estagio;
-		this.seguradora = seguradora;
-		this.apolice = apolice;
-		this.agenteIntegrador = agenteIntegrador;
-		this.orientador = orientador;
-		this.coordenador = coordenador;
-		this.planoAtividades = planoAtividades;
-		this.dataInicio = dataInicio;
-		this.dataTermino = dataTermino;
-		this.jornadaDiaria = jornadaDiaria;
-		this.jornadaSemanal = jornadaSemanal;
-		this.valorBolsa = valorBolsa;
-		this.valorTransporte = valorTransporte;
-		this.dataFimSuspensao = dataFimSuspensao;
-		this.dataInicioRetomada = dataInicioRetomada;
-		this.dataCriacao = dataCriacao;
-		this.statusTermo = statusTermo;
-		this.etapaFluxo = etapaFluxo;
-		this.cienciaCoordenacao = cienciaCoordenacao;
-		this.parecerCOE = parecerCOE;
-		this.parecerCOAFE = parecerCOAFE;
-		this.parecerCoordenacao = parecerCoordenacao;
-		this.motivoIndeferimento = motivoIndeferimento;
-		this.descricaoAjustes = descricaoAjustes;
-	}
-
-	// adicionado para concluir a task de associar contratante ao termo
-	public TermoDeEstagioDTO(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
-			Apolice apolice, Contratante contratante, AgenteIntegrador agenteIntegrador, Orientador orientador,
-			Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio,
-			Date dataTermino, int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte,
-			Date dataFimSuspensao, Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo,
-			EnumEtapaFluxo etapaFluxo, CienciaCoordenacao cienciaCoordenacao, EnumParecerAprovadores parecerCOE,
-			EnumParecerAprovadores parecerCOAFE, EnumParecerAprovadores parecerCoordenacao, String motivoIndeferimento,
-			String descricaoAjustes) {
-		super();
-		this.id = id;
-		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
-		this.estagio = estagio;
+		this.aluno = aluno;
+		this.grrAluno = grrAluno;
 		this.seguradora = seguradora;
 		this.apolice = apolice;
 		this.contratante = contratante;
@@ -153,6 +120,22 @@ public class TermoDeEstagioDTO {
 		this.estagio = estagio;
 	}
 
+	public String getAluno() {
+		return aluno;
+	}
+
+	public void setAluno(String aluno) {
+		this.aluno = aluno;
+	}
+
+	public String getGrrAluno() {
+		return grrAluno;
+	}
+
+	public void setGrrAluno(String grrAluno) {
+		this.grrAluno = grrAluno;
+	}
+
 	public Seguradora getSeguradora() {
 		return seguradora;
 	}
@@ -169,12 +152,10 @@ public class TermoDeEstagioDTO {
 		this.apolice = apolice;
 	}
 
-	// adicionado para concluir a task de associar contratante ao termo
 	public Contratante getContratante() {
 		return contratante;
 	}
 
-	// adicionado para concluir a task de associar contratante ao termo
 	public void setContratante(Contratante contratante) {
 		this.contratante = contratante;
 	}
