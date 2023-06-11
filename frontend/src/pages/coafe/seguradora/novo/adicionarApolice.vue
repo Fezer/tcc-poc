@@ -2,6 +2,7 @@
 import { useToast } from "primevue/usetoast";
 import { defineComponent, reactive } from "vue";
 import ApoliceService from "~~/services/ApoliceService";
+import InputNumber from "primevue/inputnumber";
 export default defineComponent({
   setup() {
     const toast = useToast();
@@ -39,6 +40,13 @@ export default defineComponent({
           detail: "Preencha todos os campos",
           life: 3000,
         });
+      } else if (state.dataInicio > state.dataFim) {
+        return toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "A data incial precisa ser antes da Data final ",
+          life: 3000,
+        });
       }
       try {
         const response = await apoliceService
@@ -72,8 +80,12 @@ export default defineComponent({
         <h3>Dados de Registro</h3>
         <div class="flex flex-column gap-1 formgrid grid">
           <div class="field col">
-            <label style="font-size: 20px" for="nome">Numero</label>
-            <InputText id="nome" type="text" v-model="state.numero" />
+            <label style="font-size: 20px" for="numero">Número</label>
+            <InputNumber
+              v-model="state.numero"
+              inputId="numero"
+              :useGrouping="false"
+            />
           </div>
           <div class="field col">
             <label style="font-size: 20px" for="dataInicio">Data Inicial</label>

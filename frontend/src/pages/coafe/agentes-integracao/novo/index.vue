@@ -74,11 +74,21 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label style="font-size: 20px" for="cnpj">CNPJ</label>
-            <InputText id="cnpj" type="text" v-model="state.cnpj" />
+            <InputMask
+              id="cnpj"
+              v-model="state.cnpj"
+              mask="99.999.999/9999-99"
+              placeholder="##.###.###/####-##"
+            />
           </div>
           <div class="field col">
             <label style="font-size: 20px" for="telefone">Telefone</label>
-            <InputText id="telefone" type="text" v-model="state.telefone" />
+            <InputMask
+              id="telefone"
+              v-model="state.telefone"
+              mask="(99)9 9999-9999"
+              placeholder="(99) 9-9999-9999"
+            />
           </div>
           <!-- <div class="field col">
               <label for="orgaoEmissor">Órgão Emissor</label>

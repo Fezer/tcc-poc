@@ -72,6 +72,13 @@ export default defineComponent({
           detail: "Os campos não podem ficar vazios",
           life: 3000,
         });
+      } else if (state.dataInicio > state.dataFim) {
+        return toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "A data incial precisa ser antes da Data final ",
+          life: 3000,
+        });
       }
       try {
         const response = await convenioService
@@ -113,7 +120,11 @@ export default defineComponent({
         <div class="flex flex-column gap-1 formgrid grid">
           <div class="field col">
             <label style="font-size: 20px" for="numero">Numero</label>
-            <InputText id="numero" type="text" v-model="state.numero" />
+            <InputNumber
+              v-model="state.numero"
+              inputId="numero"
+              :useGrouping="false"
+            />
           </div>
           <div class="field col">
             <label style="font-size: 20px" for="descricao">Descrição</label>
