@@ -159,23 +159,23 @@ export default defineComponent({
     <AppTopBar @menu-toggle="onMenuToggle" />
 
     <div class="layout-sidebar" v-if="$route.path.includes('coe')">
-      <CoeMenu :model="menu" @menuitem-click="onMenuItemClick" />
+      <CoeMenu @menuitem-click="onMenuItemClick" />
     </div>
 
     <div class="layout-sidebar" v-else-if="$route.path.includes('coord')">
-      <CoordMenu :model="menu" @menuitem-click="onMenuItemClick" />
+      <CoordMenu @menuitem-click="onMenuItemClick" />
     </div>
 
     <div class="layout-sidebar" v-else-if="$route.path.includes('coafe')">
-      <CoafeMenu :model="menu" @menuitem-click="onMenuItemClick" />
+      <CoafeMenu @menuitem-click="onMenuItemClick" />
     </div>
 
     <div class="layout-sidebar" v-else-if="$route.path.includes('orientador')">
-      <OrientadorMenu :model="menu" @menuitem-click="onMenuItemClick" />
+      <OrientadorMenu @menuitem-click="onMenuItemClick" />
     </div>
 
     <div class="layout-sidebar" @click="onSidebarClick" v-else>
-      <AlunoMenu :model="menu" @menuitem-click="onMenuItemClick" />
+      <AlunoMenu @menuitem-click="onMenuItemClick" />
     </div>
 
     <div class="layout-main-container">

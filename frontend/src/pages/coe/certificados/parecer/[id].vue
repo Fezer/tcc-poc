@@ -89,26 +89,30 @@ export default defineComponent({
 <template>
   <div class="m-1">
     <h2>Parecer certificado de estágio</h2>
-    <div class="card grid">
-      <div class="col-4">
-        <strong>Processo certificado</strong>
-        <p>#{{ certificado?.id }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Processo Estágio</strong>
-        <p>#{{ estagio?.id }}</p>
-      </div>
+    <div class="card">
+      <div class="grid">
+        <div class="col-4">
+          <strong>Processo certificado</strong>
+          <p>#{{ certificado?.id }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Processo Estágio</strong>
+          <p>#{{ estagio?.id }}</p>
+        </div>
 
-      <div class="col-4">
-        <strong>Etapa fluxo</strong>
-        <p>Parecer COE</p>
+        <div class="col-4">
+          <strong>Etapa fluxo</strong>
+          <p>Parecer COE</p>
+        </div>
       </div>
     </div>
 
     <Estagio :termo="estagio" />
 
     <div class="w-full flex justify-end gap-2">
-      <NuxtLink :to="`/estagio/${estagio?.id}`">
+      <NuxtLink
+        :to="`/estagio/${estagio?.id}?perfil=coe&certificado=${certificado?.id}`"
+      >
         <Button
           label="Ver mais informações do estágio"
           icon="pi pi-arrow-right"

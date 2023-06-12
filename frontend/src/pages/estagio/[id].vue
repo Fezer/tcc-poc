@@ -23,13 +23,21 @@ export default defineComponent({
 
     const { data: estagio, refresh } = await useFetch(`/estagio/${id}`);
 
-    const { perfil, termoDeRescisao, termo } = route.query;
+    const { perfil, termoDeRescisao, termo, certificado } = route.query;
 
     const tipoUsuario = ref("ALUNO" as TipoUsuario);
 
     const cancelationConfirm = ref(false);
 
-    const tipoTermo = termoDeRescisao ? "termo-rescisao" : "termo";
+    const getTipoTermo = () => {
+      if (termoDeRescisao) return "termo-rescisao";
+
+      if (certificado) return "certificados/parecer";
+
+      return "termo";
+    };
+
+    const tipoTermo = getTipoTermo();
 
     return {
       tipoUsuario,
@@ -39,6 +47,7 @@ export default defineComponent({
       termoDeRescisao,
       termo,
       tipoTermo,
+      certificado,
     };
   },
   methods: {},
@@ -48,7 +57,7 @@ export default defineComponent({
 <template>
   <div>
     <NuxtLink
-      :to="`/${perfil}/${tipoTermo}/${termoDeRescisao || termo}`"
+      :to="`/${perfil}/${tipoTermo}/${termoDeRescisao || termo || certificado}`"
       v-if="perfil && tipoTermo"
     >
       <Button

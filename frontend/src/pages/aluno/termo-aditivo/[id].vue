@@ -166,6 +166,27 @@ export default defineComponent({
         });
     };
 
+    const handleDownloadTermo = async () => {
+      try {
+        const file = await alunoService.downloadTermoAditivo(
+          "GRR20200141",
+          termo.value.id
+        );
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        return toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail: "Tivemos um problema ao baixar o termo.",
+          life: 3000,
+        });
+      }
+    };
+
     return {
       termo,
       refreshData,
@@ -174,6 +195,7 @@ export default defineComponent({
       handleSolicitarAprovacao,
       handleCancelarTermo,
       handleUploadTermo,
+      handleDownloadTermo,
     };
   },
 });
@@ -184,13 +206,21 @@ export default defineComponent({
     <small>Processos > Termos Aditivos</small>
     <h2>Termo Aditivo</h2>
 
-    <NuxtLink :to="`/aluno/estagio/${termo?.estagio?.id}`">
+    <div class="absolute right-0 top-10 gap-2 flex">
       <Button
-        label="Ver estágio"
-        icon="pi pi-eye"
-        class="p-button-secondary absolute right-0 top-10"
+        label="Ver documento"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        @click="handleDownloadTermo"
       />
-    </NuxtLink>
+      <NuxtLink :to="`/aluno/estagio/${termo?.estagio?.id}`">
+        <Button
+          label="Ver estágio"
+          icon="pi pi-eye"
+          class="p-button-secondary"
+        />
+      </NuxtLink>
+    </div>
 
     <StatusTermo
       :etapa="termo?.etapaFluxo"

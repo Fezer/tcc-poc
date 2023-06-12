@@ -181,4 +181,14 @@ export default class AlunoService {
       `http://siga.ufpr.br:8380/siga/api/graduacao/discente?email=${email}`
     ).catch((err) => console.error(err));
   }
+
+  // http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/gerar-termo-aditivo
+  public async downloadTermoAditivo(grr: string, termo: number) {
+    return await $fetch(
+      `/aluno/${grr}/termo-aditivo/${termo}/gerar-termo-aditivo`,
+      {
+        method: "GET",
+      }
+    );
+  }
 }

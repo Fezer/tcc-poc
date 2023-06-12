@@ -12,7 +12,12 @@ export default defineComponent({
       console.log(certificadoID);
     };
 
-    return { certificados, parseDate, handleDownloadCertificado };
+    return {
+      certificados,
+      parseDate,
+      handleDownloadCertificado,
+      parseObrigatoriedadeEstagio,
+    };
   },
 });
 </script>
@@ -44,7 +49,7 @@ export default defineComponent({
         </Column>
         <Column field="student_name" header="Tipo Estágio">
           <template #body="{ data }">
-            {{ data?.estagio?.tipoEstagio }}
+            {{ parseObrigatoriedadeEstagio(data?.estagio?.tipoEstagio) }}
           </template>
         </Column>
 

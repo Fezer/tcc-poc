@@ -26,6 +26,11 @@ export default defineComponent({
 
         link: "/coe/termo-rescisao",
       },
+      {
+        label: "Certificados",
+
+        link: "/coe/certificados",
+      },
     ];
 
     return {
