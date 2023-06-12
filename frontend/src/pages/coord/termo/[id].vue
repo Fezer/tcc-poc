@@ -29,9 +29,7 @@ export default defineComponent({
 
     const coordService = new CoordService();
 
-    const { data: termo, refresh } = useFetch<BaseTermo>(
-      `http://localhost:5000/termo/${id}`
-    );
+    const { data: termo, refresh } = useFetch<BaseTermo>(`/termo/${id}`);
 
     function refreshData() {
       refresh();

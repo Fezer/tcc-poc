@@ -74,7 +74,7 @@ export default defineComponent({
       console.log(aluno.value);
 
       const response = await $fetch(
-        `http://localhost:5000/curso/${aluno.value?.idPrograma}/orientadores`
+        `/curso/${aluno.value?.idPrograma}/orientadores`
       );
 
       docentes.value = response;

@@ -12,7 +12,7 @@ export default defineComponent({
     const orientadorService = new OrientadorService();
     const { id } = route.params;
     const { data: relatorio } = useFetch<RelatorioEstagio>(
-      `http://localhost:5000/relatorioDeEstagio/${id}`
+      `/relatorioDeEstagio/${id}`
     );
     const router = useRouter();
     const toast = useToast();

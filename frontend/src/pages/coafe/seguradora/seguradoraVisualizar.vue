@@ -141,9 +141,7 @@ const router = useRouter();
 const id = route.query.id;
 const seguradoraService = new SeguradoraService();
 const apoliceService = new ApoliceService();
-const { data: seguradora, refresh } = await useFetch(
-  `http://localhost:5000/seguradora/${id}`
-);
+const { data: seguradora, refresh } = await useFetch(`/seguradora/${id}`);
 const handleInativateSeguradora = async () => {
   try {
     await seguradoraService.desativarSeguradora(id).then(() => {

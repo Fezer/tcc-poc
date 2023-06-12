@@ -117,9 +117,7 @@ const route = useRoute();
 const router = useRouter();
 
 const id = route.query.id;
-const { data: agente, refresh } = await useFetch(
-  `http://localhost:5000/agente-integrador/${id}`
-);
+const { data: agente, refresh } = await useFetch(`/agente-integrador/${id}`);
 const convenioService = new ConvenioService();
 const agenteService = new AgenteService();
 const toast = useToast();

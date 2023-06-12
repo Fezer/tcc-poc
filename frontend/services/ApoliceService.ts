@@ -4,15 +4,12 @@ import BaseService from "./BaseService";
 
 export default class ApoliceService extends BaseService {
   async criarApolice(apolice: Apolice, seguradora: Seguradora) {
-    const response = await $fetch(
-      this.BASE_URL + `/seguradora/${seguradora.id}/apolice`,
-      {
-        method: "POST",
-        body: {
-          ...apolice,
-        },
-      }
-    );
+    const response = await $fetch(`/seguradora/${seguradora.id}/apolice`, {
+      method: "POST",
+      body: {
+        ...apolice,
+      },
+    });
 
     if (!response?.id) {
       throw new Error("Erro ao criar nova apolice");
@@ -20,33 +17,38 @@ export default class ApoliceService extends BaseService {
 
     return response;
   }
-  async atualizaApolice(numero:number,dataInicio:string,dataFim:string,id:number,idseguradora:number) {
-    const response = await $fetch(this.BASE_URL + `/apolice/${id}`, {
+  async atualizaApolice(
+    numero: number,
+    dataInicio: string,
+    dataFim: string,
+    id: number,
+    idseguradora: number
+  ) {
+    const response = await $fetch(`/apolice/${id}`, {
       method: "PUT",
       body: {
-        numero: numero,   
+        numero: numero,
         dataInicio: dataInicio,
-        dataFim : dataFim,
-        seguradora: {id: idseguradora},        
+        dataFim: dataFim,
+        seguradora: { id: idseguradora },
       },
     });
     if (!response?.id) {
       throw new Error("Erro ao atualizar a Apólice");
-    }else{
+    } else {
       console.log(response);
       return response;
     }
   }
-  async deletaApolice(id:number) {
-    const response = await $fetch(this.BASE_URL + `/apolice/${id}`, {
+  async deletaApolice(id: number) {
+    const response = await $fetch(`/apolice/${id}`, {
       method: "DELETE",
-      body: {
-      },
+      body: {},
     });
-    console.log("Resposta do servidor: "+response)
+    console.log("Resposta do servidor: " + response);
     if (response?.error) {
       throw new Error("Erro ao Deletar Apólice");
-    }else{
+    } else {
       return response;
     }
   }

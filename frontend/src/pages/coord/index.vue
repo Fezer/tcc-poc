@@ -2,7 +2,7 @@
 export default {
   setup() {
     const { data: processes } = useFetch(
-      "http://localhost:5000/coordenacao/termo/pendenteAprovacaoCoordenacao"
+      "/coordenacao/termo/pendenteAprovacaoCoordenacao"
     );
 
     console.log(processes);

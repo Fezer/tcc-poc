@@ -5,7 +5,7 @@ import parseDate from "../../../utils/parseDate";
 export default defineComponent({
   setup() {
     const { data: certificados } = useFetch(
-      "http://localhost:5000/coe/certificado/pendenteAprovacaoCoe"
+      "/coe/certificado/pendenteAprovacaoCoe"
     );
 
     const handleDownloadCertificado = (certificadoID: string) => {

@@ -17,18 +17,14 @@ export default defineComponent({
     const justificativa = ref("");
 
     const { data: certificado } = useAsyncData("aluno", async () => {
-      const response = await $fetch(
-        `http://localhost:5000/certificadoDeEstagio/${id}`
-      );
+      const response = await $fetch(`/certificadoDeEstagio/${id}`);
 
       await handleGetEstagio(response?.estagio?.id);
       return response;
     });
 
     const handleGetEstagio = async (estagioID: string) => {
-      const response = await $fetch(
-        `http://localhost:5000/estagio/${estagioID}`
-      );
+      const response = await $fetch(`/estagio/${estagioID}`);
 
       estagio.value = response;
       return response;

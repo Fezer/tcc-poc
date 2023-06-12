@@ -11,9 +11,7 @@ export default defineComponent({
     const alunoService = new AlunoService();
     const toast = useToast();
 
-    const { data: estagio, refresh } = useFetch(
-      `http://localhost:5000/estagio/${estagioID}`
-    );
+    const { data: estagio, refresh } = useFetch(`/estagio/${estagioID}`);
 
     const idFichaAvaliacao = ref("");
 
@@ -27,6 +25,9 @@ export default defineComponent({
         .criarFichaDeAvaliacao(grr, estagioID)
         .then((res) => {
           idFichaAvaliacao.value = res.id;
+          const grr = "GRR20200141";
+          const url = `/aluno/${grr}/${estagioID}/gerar-ficha`;
+          window.open(url, "_blank");
         })
         .catch((err) => {
           console.log(err);
@@ -42,6 +43,37 @@ export default defineComponent({
 
     const handleDownloadBaseDocument = () => {
       console.log("DownloadBaseDocument");
+      const grr = "GRR20200141";
+      const url = `/aluno/${grr}/${estagioID}/gerar-ficha`;
+      window.open(url, "_blank");
+    };
+
+    const handleUploadFicha = async (event) => {
+      console.log("upload");
+      const file = event.files[0];
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      await alunoService
+        .uploadFichaDeAvaliacao("GRR20200141", formData)
+        .then(() => {
+          toast.add({
+            severity: "success",
+            summary: `Ficha de avaliação enviada!`,
+            detail: `A ficha de avaliação foi enviada com sucesso!`,
+            life: 3000,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.add({
+            severity: "error",
+            summary: "Ops!",
+            detail: "Tivemos um problema ao enviar o termo.",
+            life: 3000,
+          });
+        });
     };
 
     onMounted(() => {
@@ -56,6 +88,7 @@ export default defineComponent({
       handleGerarFichaAvaliacao,
       idFichaAvaliacao,
       handleDownloadBaseDocument,
+      handleUploadFicha,
     };
   },
 });
@@ -107,9 +140,11 @@ export default defineComponent({
           <FileUpload
             accept=".pdf"
             :multiple="false"
-            :maxFileSize="1000000"
+            :maxFileSize="10000000"
             chooseLabel="Adicionar ficha assinada"
             mode="basic"
+            customUpload
+            @uploader="handleUploadFicha"
           />
         </div>
       </div>

@@ -36,9 +36,7 @@ export default defineComponent({
 
     const { setTermo } = useTermo();
 
-    const { data: termo, refresh } = useFetch<BaseTermo>(
-      `http://localhost:5000/termo/${id}`
-    );
+    const { data: termo, refresh } = useFetch<BaseTermo>(`/termo/${id}`);
 
     // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 
@@ -79,18 +77,15 @@ export default defineComponent({
       const respostaFormated =
         resposta === "aprovar" ? "aprovado" : "reprovado";
 
-      await fetch(
-        `http://localhost:5000/termo/${resposta}/coafe/${route.params.id}`,
-        {
-          method: "PUT",
-          body: JSON.stringify({
-            justificativa: state.justificativa,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      await fetch(`/termo/${resposta}/coafe/${route.params.id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          justificativa: state.justificativa,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
         .then(() => {
           console.log("Aprovado com sucesso");
           toast.add({
