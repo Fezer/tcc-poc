@@ -76,6 +76,12 @@ Utilizando o pnpm, instale as dependencias com:
 pnpm i
 ```
 
+Então copie as variáveis de ambiente a partir do arquivo exemplo:
+
+```
+cp .env.example .env
+```
+
 E rode o projeto com:
 
 ```
