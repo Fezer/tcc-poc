@@ -32,4 +32,18 @@ export default class RelatorioEstagioService extends BaseService {
       method: "DELETE",
     });
   }
+  // http://localhost:5000/aluno/GRR20204481/relatorio/1/gerar-relatorio
+  public async baixarRelatorioBase(grr: string, id: number) {
+    return $fetch(`/aluno/${grr}/relatorio/${id}/gerar-relatorio`, {
+      method: "GET",
+    });
+  }
+
+  // http://localhost:5000/aluno/GRR20204481/upload-relatorio
+  public async uploadRelatorio(grr: string, dados: FormData) {
+    return $fetch(`/aluno/${grr}/upload-relatorio`, {
+      method: "POST",
+      body: dados,
+    });
+  }
 }

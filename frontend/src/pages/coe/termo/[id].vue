@@ -20,6 +20,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const config = useRuntimeConfig();
     const route = useRoute();
     const toast = useToast();
 
@@ -33,6 +34,7 @@ export default defineComponent({
       refresh();
     }
 
+    console.log(termo);
     const state = reactive({
       confirmAction: null as null | "APROVAR" | "AJUSTAR" | "INDEFERIR",
 
@@ -153,10 +155,12 @@ export default defineComponent({
     };
 
     const handleDownloadTermo = async () => {
-      let url = `http://localhost:5000/coe/GRR20200141/download-termo`;
-      if (termo?.tipoTermoDeEstagio === "TermoAditivo") {
-        url = `http://localhost:5000/aluno/${grr}/termo-aditivo/${termo?.id}/gerar-termo-aditivo`;
-      }
+      const grrAluno = termo?.value?.grrAluno;
+
+      let url = `${config.BACKEND_URL}/coe/${grrAluno}/download-termo`;
+      // if (termo?.tipoTermoDeEstagio === "TermoAditivo") {
+      //   url = `${config.BACKEND_URL}/aluno/${grrAluno}/termo-aditivo/${termo?.id}/gerar-termo-aditivo`;
+      // }
 
       const file = await $fetch(url, {
         method: "GET",

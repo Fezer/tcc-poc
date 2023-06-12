@@ -17,7 +17,7 @@ export default defineComponent({
     const router = useRouter();
     const toast = useToast();
 
-    console.log(relatorio?.value);
+    const uploadVisible = ref(false);
 
     const handleCancelarRelatorio = async () => {
       const estagio = relatorio?.value?.estagio?.id;
@@ -70,11 +70,63 @@ export default defineComponent({
         });
     };
 
+    const handleDownloadRelatorio = async () => {
+      try {
+        const file = await relatorioService.baixarRelatorioBase(
+          "GRR20200141",
+          id
+        );
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.log(err);
+        toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Não foi possível baixar o relatório",
+          life: 3000,
+        });
+      }
+    };
+
+    const handleUploadRelatorio = async (event: any) => {
+      console.log("upload");
+      const file = event.files[0];
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      await relatorioService
+        .uploadRelatorio("GRR20200141", formData)
+        .then(() => {
+          toast.add({
+            severity: "success",
+            summary: `Relatório de Estágio enviado!`,
+            detail: `O relatório de estágio foi enviado com sucesso!`,
+            life: 3000,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.add({
+            severity: "error",
+            summary: "Ops!",
+            detail: "Tivemos um problema ao enviar o relatório.",
+            life: 3000,
+          });
+        });
+    };
+
     return {
       relatorio,
       handleCancelarRelatorio,
       parseTipoRelatorio,
       handlePedirCienciaOrientador,
+      handleDownloadRelatorio,
+      uploadVisible,
+      handleUploadRelatorio,
     };
   },
 });
@@ -160,11 +212,16 @@ export default defineComponent({
       </div>
     </div>
 
-    <div
-      class="flex gap-2 justify-end"
-      v-if="relatorio?.etapaFluxo === 'Aluno'"
-    >
+    <div class="flex gap-2 justify-end">
       <Button
+        label="Ver documento"
+        icon="pi pi-file"
+        class="p-button-secondary"
+        @click="handleDownloadRelatorio"
+      ></Button>
+
+      <Button
+        v-if="relatorio?.etapaFluxo === 'Aluno'"
         label="Cancelar relatório"
         icon="pi pi-times"
         class="p-button-danger"
@@ -172,12 +229,24 @@ export default defineComponent({
       ></Button>
 
       <Button
+        v-if="relatorio?.etapaFluxo === 'Aluno'"
         label="Pedir ciência orientador"
         icon="pi pi-check"
         class="p-button-success"
-        @click="handlePedirCienciaOrientador"
+        @click="uploadVisible = true"
       >
       </Button>
+    </div>
+
+    <div v-if="uploadVisible">
+      <UploadConfirm
+        :onClose="() => (uploadVisible = false)"
+        :onConfirm="handlePedirCienciaOrientador"
+        description="Você precisa enviar esse relatório de estágio assinado pela contratante para pedir ciência."
+        :handleUpload="handleUploadRelatorio"
+        :confirmBlocked="false"
+      >
+      </UploadConfirm>
     </div>
   </div>
 </template>

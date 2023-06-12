@@ -47,7 +47,7 @@ export default defineComponent({
           // redirect to aluno page
 
           globalThis.$fetch = ofetch.create({
-            baseURL: config.BACKEND_URL,
+            baseURL: config.BACKEND_URL || "http://localhost:5000",
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },

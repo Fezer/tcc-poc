@@ -100,6 +100,14 @@ export default class AlunoService {
     });
   }
 
+  // http://localhost:5000/aluno/GRR20204481/upload-termo-aditivo
+  public async uploadTermoAditivo(grr: string, termoData: FormData) {
+    return await $fetch(`/aluno/${grr}/upload-termo-aditivo`, {
+      method: "POST",
+      body: termoData,
+    });
+  }
+
   public async getEstagioEmRevisao(grr: string) {
     return await $fetch(
       `/aluno/${grr}/estagio/termoCompromisso?statusTermo=EmRevisao`
@@ -162,13 +170,10 @@ export default class AlunoService {
   // http://localhost:5000/aluno/GRR20204481/upload-ficha/FichaDeAvaliacaoParcial
 
   public async uploadFichaDeAvaliacao(grr: string, fichaData: FormData) {
-    return await $fetch(
-      `/aluno/${grr}/estagio/upload-ficha/FichaDeAvaliacaoParcial`,
-      {
-        method: "POST",
-        body: fichaData,
-      }
-    );
+    return await $fetch(`/aluno/${grr}/upload-ficha/FichaDeAvaliacaoParcial`, {
+      method: "POST",
+      body: fichaData,
+    });
   }
 
   public async getGRRAluno(email: string) {

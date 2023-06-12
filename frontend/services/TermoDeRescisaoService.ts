@@ -65,4 +65,11 @@ export default class TermoDeRescisaoService {
       }
     );
   }
+
+  public async uploadTermoDeRescisao(grr: string, termoData: FormData) {
+    return await $fetch(`/aluno/${grr}/upload-termo-de-rescisao`, {
+      method: "POST",
+      body: termoData,
+    });
+  }
 }

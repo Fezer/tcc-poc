@@ -64,12 +64,12 @@ export default defineComponent({
         </Column>
         <Column field="student_name" header="Nome do Aluno">
           <template #body="{ data }">
-            {{ data?.aluno?.nome }}
+            {{ data?.aluno }}
           </template>
         </Column>
-        <Column field="curse" header="Curso">
+        <Column field="grr" header="GRR">
           <template #body="{ data }">
-            {{ data.curse }}
+            {{ data.grrAluno }}
           </template>
         </Column>
         <Column field="contratante" header="Contratante">

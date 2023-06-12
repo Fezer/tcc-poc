@@ -72,7 +72,7 @@ export default defineComponent({
     }
 
     globalThis.$fetch = ofetch.create({
-      baseURL: this.$config.BACKEND_URL,
+      baseURL: this.$config.BACKEND_URL || "http://localhost:5000",
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

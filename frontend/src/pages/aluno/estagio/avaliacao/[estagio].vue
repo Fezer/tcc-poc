@@ -5,6 +5,7 @@ import AlunoService from "~~/services/AlunoService";
 
 export default defineComponent({
   setup() {
+    const config = useRuntimeConfig();
     const route = useRoute();
     const router = useRouter();
     const { estagio: estagioID } = route.params;
@@ -41,11 +42,17 @@ export default defineComponent({
         });
     };
 
-    const handleDownloadBaseDocument = () => {
-      console.log("DownloadBaseDocument");
+    const handleDownloadBaseDocument = async () => {
       const grr = "GRR20200141";
-      const url = `/aluno/${grr}/${estagioID}/gerar-ficha`;
-      window.open(url, "_blank");
+      const url = `${config.BACKEND_URL}/aluno/${grr}/${estagioID}/gerar-ficha`;
+
+      const file = await $fetch(url, {
+        method: "GET",
+      });
+
+      const fileURL = URL.createObjectURL(file);
+
+      return window.open(fileURL, "_blank");
     };
 
     const handleUploadFicha = async (event) => {
@@ -70,7 +77,7 @@ export default defineComponent({
           toast.add({
             severity: "error",
             summary: "Ops!",
-            detail: "Tivemos um problema ao enviar o termo.",
+            detail: "Tivemos um problema ao enviar a ficha de avaliação.",
             life: 3000,
           });
         });
