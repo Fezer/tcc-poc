@@ -35,11 +35,20 @@
         <Button label="Editar" />
       </NuxtLink>
       <Button
-        @click="handleDeleteAgente(agente.id, agente.convenio.length)"
+        @click="cancelVisibleAgente = true"
         :label="'Deletar'"
         icon="pi pi-times"
         class="p-button-danger"
       />
+    </div>
+    <div v-if="cancelVisibleAgente">
+      <CancelationConfirm
+        :onClose="() => (cancelVisibleAgente = false)"
+        :onConfirm="() => handleDeleteAgente(agente.id, agente.convenio.length)"
+        :header="`Remover Agente ${agente.nome}`"
+        :description="`Você realmente deseja remover o Agente ${agente.nome}? Essa ação não poderá ser desfeita.`"
+      >
+      </CancelationConfirm>
     </div>
     <DataTable class="flex-column" :value="agente.convenio" rowHover>
       <template #header>
@@ -93,11 +102,20 @@
       <Column field="button" header="Deletar">
         <template #body="{ data }">
           <Button
-            @click="handleDeleteConvenio(data.id)"
+            @click="cancelVisibleConvenio = true"
             :label="'Deletar'"
             icon="pi pi-times"
             class="p-button-danger"
           />
+          <div v-if="cancelVisibleConvenio">
+            <CancelationConfirm
+              :onClose="() => (cancelVisibleConvenio = false)"
+              :onConfirm="() => handleDeleteConvenio(data.id)"
+              :header="`Remover Convênio ${data.numero}`"
+              :description="`Você realmente deseja remover o Convênio ${data.numero}? Essa ação não poderá ser desfeita.`"
+            >
+            </CancelationConfirm>
+          </div>
         </template>
       </Column>
     </DataTable>
@@ -111,11 +129,13 @@ import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import parseDate from "~/utils/parseDate";
+import CancelationConfirm from "~~/src/components/common/cancelation-confirm.vue";
 import ConvenioService from "~~/services/ConvenioService";
 import AgenteService from "~~/services/AgenteService";
 const route = useRoute();
 const router = useRouter();
-
+const cancelVisibleAgente = ref(false);
+const cancelVisibleConvenio = ref(false);
 const id = route.query.id;
 const { data: agente, refresh } = await useFetch(
   `http://localhost:5000/agente-integrador/${id}`
@@ -124,6 +144,7 @@ const convenioService = new ConvenioService();
 const agenteService = new AgenteService();
 const toast = useToast();
 const handleDeleteConvenio = async (id) => {
+  cancelVisibleConvenio.value = false;
   try {
     const response = await convenioService.deletaConvenio(id).then(() => {
       return toast.add({
@@ -146,10 +167,12 @@ const handleDeleteConvenio = async (id) => {
     state,
     id,
     response,
+    cancelVisibleConvenio,
     handleDeleteConvenio,
   };
 };
 const handleDeleteAgente = async (id, numeroCovenios) => {
+  cancelVisibleAgente.value = false;
   if (numeroCovenios != 0) {
     return toast.add({
       severity: "error",
@@ -183,6 +206,7 @@ const handleDeleteAgente = async (id, numeroCovenios) => {
     state,
     id,
     response,
+    cancelVisibleAgente,
     handleDeleteConvenio,
   };
 };
