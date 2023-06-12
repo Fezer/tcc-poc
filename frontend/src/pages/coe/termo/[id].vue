@@ -27,9 +27,7 @@ export default defineComponent({
 
     const coeService = new CoeService();
 
-    const { data: termo, refresh } = useFetch(
-      `http://localhost:5000/termo/${id}`
-    );
+    const { data: termo, refresh } = useFetch(`/termo/${id}`);
 
     function refreshData() {
       refresh();
@@ -154,6 +152,21 @@ export default defineComponent({
       }
     };
 
+    const handleDownloadTermo = async () => {
+      let url = `http://localhost:5000/coe/GRR20200141/download-termo`;
+      if (termo?.tipoTermoDeEstagio === "TermoAditivo") {
+        url = `http://localhost:5000/aluno/${grr}/termo-aditivo/${termo?.id}/gerar-termo-aditivo`;
+      }
+
+      const file = await $fetch(url, {
+        method: "GET",
+      });
+
+      const fileURL = URL.createObjectURL(file);
+
+      return window.open(fileURL, "_blank");
+    };
+
     return {
       termo,
       refreshData,
@@ -162,6 +175,7 @@ export default defineComponent({
       getConfirmationHeader,
       getConfirmationButtonClass,
       handleParecerTermo,
+      handleDownloadTermo,
     };
   },
 });
@@ -172,15 +186,24 @@ export default defineComponent({
     <small>Processos > Ver processo</small>
     <h2>{{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}</h2>
 
-    <NuxtLink
-      :to="`/estagio/${termo?.estagio?.id}?perfil=coe&termo=${termo?.id}`"
-    >
+    <div class="absolute right-8 top-36 flex gap-2">
       <Button
-        label="Ver estágio"
-        class="p-button-secondary absolute right-8 top-36"
-        icon="pi pi-eye"
+        label="Ver documento"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        @click="handleDownloadTermo"
       />
-    </NuxtLink>
+
+      <NuxtLink
+        :to="`/estagio/${termo?.estagio?.id}?perfil=coe&termo=${termo?.id}`"
+      >
+        <Button
+          label="Ver estágio"
+          class="p-button-secondary"
+          icon="pi pi-eye"
+        />
+      </NuxtLink>
+    </div>
 
     <Aluno />
 

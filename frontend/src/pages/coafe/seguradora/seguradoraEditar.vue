@@ -22,9 +22,7 @@ export default defineComponent({
       state.ativa = seguradora.value.ativa;
       state.seguradoraUfpr = seguradora.value.seguradoraUfpr;
     });
-    const { data: seguradora, refresh } = await useFetch(
-      `http://localhost:5000/seguradora/${id}`
-    );
+    const { data: seguradora, refresh } = await useFetch(`/seguradora/${id}`);
 
     const seguradoraService = new SeguradoraService();
     const handleUpdateSeguradora = async () => {

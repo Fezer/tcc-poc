@@ -2,7 +2,7 @@
 export default {
   setup() {
     const { data: processes } = useFetch(
-      "http://localhost:5000/orientador/6/relatorioDeEstagio/pendenteCiencia"
+      "/orientador/6/relatorioDeEstagio/pendenteCiencia"
     );
 
     console.log(processes);

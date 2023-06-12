@@ -38,9 +38,7 @@ export default defineComponent({
       state.dataInicio = dataInicioFormatada;
       state.dataFim = dataFimFormatada;
     });
-    const { data: convenio, refresh } = await useFetch(
-      `http://localhost:5000/convenio/${id}`
-    );
+    const { data: convenio, refresh } = await useFetch(`/convenio/${id}`);
 
     const convenioService = new ConvenioService();
     const handleUpdateAgentes = async () => {

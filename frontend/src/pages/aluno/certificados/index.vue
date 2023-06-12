@@ -5,7 +5,7 @@ import parseDate from "../../../utils/parseDate";
 export default defineComponent({
   setup() {
     const { data: certificados } = useFetch(
-      "http://localhost:5000/aluno/GRR20200141/certificadoDeEstagio"
+      "/aluno/GRR20200141/certificadoDeEstagio"
     );
 
     const reprovacaoModalInfo = ref(null);

@@ -7,7 +7,7 @@ export default class RelatorioEstagioService extends BaseService {
 
     relatorio: RelatorioEstagio
   ) {
-    return $fetch(`${this.BASE_URL}/relatorioDeEstagio/${id}`, {
+    return $fetch(`/relatorioDeEstagio/${id}`, {
       method: "PUT",
       body: {
         ...relatorio,
@@ -20,7 +20,7 @@ export default class RelatorioEstagioService extends BaseService {
     tipo: Pick<RelatorioEstagio, "tipo">
   ) {
     return $fetch(
-      `${this.BASE_URL}/relatorioDeEstagio/${id}/definirTipo?tipoRelatorio=${tipo}`,
+      `/relatorioDeEstagio/${id}/definirTipo?tipoRelatorio=${tipo}`,
       {
         method: "PUT",
       }
@@ -28,7 +28,7 @@ export default class RelatorioEstagioService extends BaseService {
   }
 
   public async cancelarRelatorioDeEstagio(id: number) {
-    return $fetch(`${this.BASE_URL}/relatorioDeEstagio/${id}`, {
+    return $fetch(`/relatorioDeEstagio/${id}`, {
       method: "DELETE",
     });
   }

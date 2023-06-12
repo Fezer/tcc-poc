@@ -49,7 +49,7 @@ export default defineComponent({
     };
 
     const handleDownloadTermo = async () => {
-      await $fetch("http://localhost:5000/aluno/gerar-termo").then((res) => {
+      await $fetch("/aluno/gerar-termo").then((res) => {
         console.log(res);
       });
     };

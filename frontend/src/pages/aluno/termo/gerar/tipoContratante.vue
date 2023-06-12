@@ -69,7 +69,7 @@ export default defineComponent({
         state.apoliceSeguradora = apolice?.numero || null;
       }
 
-      await fetch(`http://localhost:5000/contratante/`, {
+      await fetch(`/contratante/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

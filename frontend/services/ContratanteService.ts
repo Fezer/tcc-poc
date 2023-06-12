@@ -3,7 +3,7 @@ import BaseService from "./BaseService";
 
 export default class ContratanteService extends BaseService {
   async criarContratante(contratante: Contratante, termoID: number) {
-    const response = await $fetch(this.BASE_URL + "/contratante/", {
+    const response = await $fetch("/contratante/", {
       method: "POST",
       body: {
         ...contratante,
@@ -28,15 +28,12 @@ export default class ContratanteService extends BaseService {
       cep: string;
     }
   ) {
-    const response = await $fetch(
-      this.BASE_URL + `/contratante/${contratanteID}/endereco/`,
-      {
-        method: "POST",
-        body: {
-          ...endereco,
-        },
-      }
-    );
+    const response = await $fetch(`/contratante/${contratanteID}/endereco/`, {
+      method: "POST",
+      body: {
+        ...endereco,
+      },
+    });
 
     if (!response?.id) {
       throw new Error("Erro ao criar novo endereço");
@@ -46,15 +43,13 @@ export default class ContratanteService extends BaseService {
   }
 
   async listContratantes() {
-    const response = await $fetch(this.BASE_URL + "/contratante/");
+    const response = await $fetch("/contratante/");
 
     return response;
   }
 
   async getContratantePerNome(nome: string) {
-    const response = await $fetch(
-      this.BASE_URL + `/contratante/nome/contendo/${nome}`
-    );
+    const response = await $fetch(`/contratante/nome/contendo/${nome}`);
 
     return response;
   }

@@ -29,6 +29,7 @@ export default defineComponent({
     motivo: string;
     termo: NovoEstagio;
   }) {
+    const grr = "GRR20200141";
     const getPercentageByEtapa = () => {
       if (status === "EmAprovacao") {
         if (etapa === "COE") return 40;
@@ -44,9 +45,18 @@ export default defineComponent({
     const percentage = getPercentageByEtapa();
 
     const handleDownloadTermo = async () => {
-      await $fetch("http://localhost:5000/aluno/gerar-termo").then((res) => {
-        console.log(res);
+      let url = `/aluno/${grr}/gerar-termo`;
+      if (termo?.tipoTermoDeEstagio === "TermoAditivo") {
+        url = `/aluno/${grr}/termo-aditivo/${termo?.id}/gerar-termo-aditivo`;
+      }
+
+      const file = await $fetch(url, {
+        method: "GET",
       });
+
+      const fileURL = URL.createObjectURL(file);
+
+      return window.open(fileURL, "_blank");
     };
 
     return {
@@ -54,6 +64,7 @@ export default defineComponent({
       parseDate,
       motivo,
       termo,
+      handleDownloadTermo,
     };
   },
 });
@@ -93,16 +104,12 @@ export default defineComponent({
             ['EmPreenchimento', 'Aprovado'].includes(termo?.statusTermo || '')
           "
         >
-          <a
-            href="http://localhost:5000/aluno/GRR20200141/gerar-termo"
-            target="_blank"
-          >
-            <Button
-              label="Baixar documento"
-              class="p-button-secondary self-center"
-              icon="pi pi-file"
-            />
-          </a>
+          <Button
+            label="Baixar documento"
+            class="p-button-secondary self-center"
+            icon="pi pi-file"
+            @click="handleDownloadTermo"
+          />
         </div>
       </div>
       <div v-if="!!termo?.descricaoAjustes">

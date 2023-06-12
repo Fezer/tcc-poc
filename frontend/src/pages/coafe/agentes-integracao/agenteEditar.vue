@@ -22,7 +22,7 @@ export default defineComponent({
       state.telefone = agente.value.telefone;
     });
     const { data: agente, refresh } = await useFetch(
-      `http://localhost:5000/agente-integrador/${id}`
+      `/agente-integrador/${id}`
     );
 
     const agenteService = new AgenteService();

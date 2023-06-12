@@ -2,16 +2,25 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  setup() {
+  async setup() {
+    const config = useRuntimeConfig();
     const route = useRoute();
 
     const { processo } = route.params;
 
-    const { data: processes } = useFetch(
-      `http://localhost:5000/coafe/${processo}/pendenteAprovacaoCoafe`
-    );
+    const { data: processes } = useAsyncData(
+      "coafeProcesses",
+      () => {
+        if (!config.BACKEND_URL) return [];
 
-    console.log(processes);
+        return $fetch(
+          `${config.BACKEND_URL}/coafe/${processo}/pendenteAprovacaoCoafe`
+        );
+      },
+      {
+        watch: [config.BACKEND_URL, processo],
+      }
+    );
 
     return {
       processes,

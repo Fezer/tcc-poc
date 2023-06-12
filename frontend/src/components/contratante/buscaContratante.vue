@@ -20,7 +20,7 @@ export default defineComponent({
       localContratante.value = props.modelValue;
 
       if (props.modelValue) {
-        await fetch(`http://localhost:5000/contratante/${props.modelValue}`)
+        await $fetch(`/contratante/${props.modelValue}`)
           .then((response) => response.json())
           .then((data) => {
             contratantesInput.value = `${data.nome} - ${data.cnpj}`;
@@ -48,7 +48,7 @@ export default defineComponent({
 
           try {
             const response = await $fetch(
-              `http://localhost:5000/contratante/nome/contendo/${input}`,
+              `/contratante/nome/contendo/${input}`,
               {
                 signal, // Passa o sinal de cancelamento para a opção 'signal' do fetch
               }

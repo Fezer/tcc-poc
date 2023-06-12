@@ -21,9 +21,7 @@ export default defineComponent({
 
     const { id } = route.params;
 
-    const { data: estagio, refresh } = await useFetch(
-      `http://localhost:5000/estagio/${id}`
-    );
+    const { data: estagio, refresh } = await useFetch(`/estagio/${id}`);
 
     const { perfil, termoDeRescisao, termo } = route.query;
 

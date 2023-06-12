@@ -4,11 +4,13 @@ import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import AlunoService from "~~/services/AlunoService";
 import NovoEstagioService from "../../../services/NovoEstagioService";
+import { ofetch } from "ofetch";
 
 export default defineComponent({
   components: { DataTable, Column },
-  async setup() {
+  setup() {
     const grr = "GRR20200141";
+    const config = useRuntimeConfig();
     const alunoService = new AlunoService();
     const novoEstagioService = new NovoEstagioService();
     const router = useRouter();
@@ -19,6 +21,7 @@ export default defineComponent({
     // busca os dados do aluno ao carregar a página
     const { data: aluno, error: errAluno } = useAsyncData("aluno", async () => {
       if (alunoData?.value) return alunoData.value;
+
       const response = await alunoService
         .getAlunoFromSiga(grr)
         .then(async (res) => {

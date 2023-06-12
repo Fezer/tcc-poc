@@ -72,7 +72,7 @@ export default defineComponent({
     }
 
     globalThis.$fetch = ofetch.create({
-      baseURL: "http://localhost:5000",
+      baseURL: this.$config.BACKEND_URL,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -184,7 +184,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <Toast/>
+    <Toast />
 
     <!-- <AppConfig :layout-mode="layoutMode" @layout-change="onLayoutChange" /> -->
     <transition name="layout-mask">

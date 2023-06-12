@@ -32,14 +32,12 @@ export default defineComponent({
 
     const { estagio: idEstagio } = route.params;
 
-    const { data: estagio } = useFetch<NovoEstagio>(
-      `http://localhost:5000/estagio/${idEstagio}`
-    );
+    const { data: estagio } = useFetch<NovoEstagio>(`/estagio/${idEstagio}`);
 
     const { aluno } = useAluno();
     const handleLoadDocentes = async () => {
       const response = await $fetch(
-        `http://localhost:5000/curso/${aluno.value?.idPrograma}/orientadores`
+        `/curso/${aluno.value?.idPrograma}/orientadores`
       );
 
       docentes.value = response;

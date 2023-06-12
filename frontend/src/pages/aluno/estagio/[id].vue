@@ -29,7 +29,7 @@ export default defineComponent({
     const { id } = route.params;
 
     const { data: estagio, refresh } = await useFetch<Estagio>(
-      `http://localhost:5000/estagio/${id}`
+      `/estagio/${id}`
     );
 
     const handleNovoTermoRescisao = () => {

@@ -25,9 +25,7 @@ export default defineComponent({
       state.dataInicio = dataInicioFormatada;
       state.dataFim = dataFimFormatada;
     });
-    const { data: apolice, refresh } = await useFetch(
-      `http://localhost:5000/apolice/${id}`
-    );
+    const { data: apolice, refresh } = await useFetch(`/apolice/${id}`);
 
     const apoliceService = new ApoliceService();
     const handleUpdateApolices = async () => {

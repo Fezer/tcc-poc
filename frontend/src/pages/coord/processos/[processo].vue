@@ -3,12 +3,23 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   setup() {
+    const config = useRuntimeConfig();
     const route = useRoute();
 
     const { processo } = route.params;
 
-    const { data: processes } = useFetch(
-      `http://localhost:5000/coordenacao/${processo}/pendenteAprovacaoCoordenacao`
+    const { data: processes } = useAsyncData(
+      "coordProcesses",
+      () => {
+        if (!config.BACKEND_URL) return [];
+
+        return $fetch(
+          `${config.BACKEND_URL}/coordenacao/${processo}/pendenteAprovacaoCoordenacao`
+        );
+      },
+      {
+        watch: [config.BACKEND_URL, processo],
+      }
     );
 
     console.log(processes);
