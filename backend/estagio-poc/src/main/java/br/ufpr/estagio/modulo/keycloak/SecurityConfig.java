@@ -23,11 +23,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(requests -> requests
-                .requestMatchers("/siga*")
-                .hasRole("USER")
-                .anyRequest()
-                .permitAll());
+
+        // disable csrf for /auth/login
+        http.csrf()
+                .ignoringRequestMatchers("/auth/login")
+                .and()
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/auth/login")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated());
+
+        // http.authorizeHttpRequests(requests -> requests
+        // .requestMatchers("/siga*")
+        // .hasRole("USER")
+        // .anyRequest()
+        // .permitAll());
+
         http.oauth2Login(withDefaults());
         http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         return http.build();
