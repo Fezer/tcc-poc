@@ -1,26 +1,67 @@
 <script lang="ts">
+import { useToast } from "primevue/usetoast";
+import AuthService from "~~/services/AuthService";
+
 definePageMeta({
   layout: "empty",
 });
 export default defineComponent({
   setup() {
-    const handleLogin = () => {
-      const clientId = "estagios";
-      const redirectUri = "http://localhost:3000/login/callback";
-      const authorizationEndpoint =
-        "https://login.ufpr.br/realms/master/protocol/openid-connect/auth";
+    const authService = new AuthService();
+    const toast = useToast();
+    const router = useRouter();
+    const { setAuth } = useAuth();
+    const state = reactive({
+      email: "",
+      password: "",
+    });
 
-      const params = new URLSearchParams();
-      params.append("response_type", "code");
-      params.append("client_id", clientId);
-      params.append("redirect_uri", redirectUri);
-      params.append("scope", "openid");
-
-      // Redirecionar para a página de login
-      window.location.href = `${authorizationEndpoint}?${params.toString()}`;
+    const getHomeRouteByPerfil = (
+      perfil: "coe" | "coafe" | "orientador" | "coordenacao"
+    ) => {
+      const rotas = {
+        coe: "/coe",
+        coafe: "/coafe",
+        orientador: "/orientador",
+        coordenacao: "/coord",
+      };
+      return rotas[perfil] || "/login";
     };
 
-    return { handleLogin };
+    const handleLogin = async () => {
+      const { email, password } = state;
+      if (!email || !password) {
+        return toast.add({
+          severity: "error",
+          summary: "Erro ao fazer login!",
+          detail: "Preencha todos os campos",
+        });
+      }
+
+      try {
+        await authService
+          .login({
+            email,
+            password,
+          })
+          .then((res: { perfil: string; token: string }) => {
+            setAuth(res);
+
+            const route = getHomeRouteByPerfil(res?.perfil);
+
+            router.push(route);
+          });
+      } catch (err) {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: "Erro ao fazer login!",
+          detail: err?.response?._data?.error || "Email ou senha incorretos",
+        });
+      }
+    };
+
+    return { handleLogin, state };
   },
 });
 </script>
@@ -29,28 +70,29 @@ export default defineComponent({
   <div class="h-screen w-full flex items-center justify-center bg-white">
     <div class="flex flex-col max-w-md w-full">
       <img alt="Logo" src="/images/ufpr.png" class="h-24 object-contain" />
-      <h2 class="text-center font-bold mb-6">Módulo Estágios</h2>
+      <h2 class="text-center font-bold mb-2">Módulo Estágios</h2>
 
-      <NuxtLink to="/coe/processos/termo" class="w-full flex flex-col mb-2">
-        <Button class="p-button-secondary" label="COE"></Button>
-      </NuxtLink>
-      <NuxtLink class="w-full flex flex-col mb-2" to="/coafe/processos/termo">
-        <Button class="p-button-secondary" label="COAFE"></Button>
-      </NuxtLink>
-      <NuxtLink class="w-full flex flex-col mb-2" to="/orientador">
-        <Button class="p-button-secondary" label="Orientador(a)"></Button>
-      </NuxtLink>
-      <NuxtLink class="w-full flex flex-col mb-2" to="/coord/processos/termo">
-        <Button class="p-button-secondary" label="Coordenação"></Button>
-      </NuxtLink>
+      <label for="value" class="mt-2">Email</label>
+      <InputText type="email" class="mb-2" v-model="state.email" />
 
-      <NuxtLink to="/login">
+      <label for="value" class="mt-2">Senha</label>
+      <InputText type="password" class="mb-4" v-model="state.password" />
+
+      <div class="flex items-center justify-end gap-2">
+        <NuxtLink to="/login">
+          <Button
+            class="p-button-secondary"
+            label="Voltar"
+            icon="pi pi-arrow-left"
+          ></Button>
+        </NuxtLink>
         <Button
-          class="p-button-secondary"
-          label="Voltar"
-          icon="pi pi-arrow-left"
+          class="p-button-primary"
+          label="Login"
+          icon="pi pi-sign-in"
+          @click="handleLogin"
         ></Button>
-      </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
