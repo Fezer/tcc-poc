@@ -9,7 +9,7 @@ export default defineComponent({
     const { processo } = route.params;
 
     const { data: processes } = useFetch(
-      `http://localhost:5000/coe/termoDeRescisao/pendenteCiencia`
+      `/coe/termoDeRescisao/pendenteCiencia`
     );
 
     console.log(processes);

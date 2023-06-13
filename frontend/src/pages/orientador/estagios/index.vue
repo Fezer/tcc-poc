@@ -1,0 +1,74 @@
+<script lang="ts">
+import { defineComponent } from "vue";
+import { Estagio } from "~~/src/types/NovoEstagio";
+import parseTipoTermo from "~~/src/utils/parseTipoProcesso";
+
+export default defineComponent({
+  setup() {
+    const route = useRoute();
+
+    const { data: estagios } = useFetch<Estagio>(`/orientador/6/estagio`);
+
+    console.log(estagios);
+
+    return {
+      estagios,
+      parseTipoTermo,
+    };
+  },
+});
+</script>
+
+<template>
+  <div>
+    <div>
+      <h1>Estágios de Orientados</h1>
+    </div>
+    <div>
+      <DataTable :value="estagios" rowHover stripedRows :show-gridlines="true">
+        <Column field="process" header="Processo">
+          <template #body="{ data }"> #{{ data.id }} </template>
+        </Column>
+
+        <Column field="student_name" header="Nome do Aluno">
+          <template #body="{ data }">
+            {{ data?.aluno?.nome }}
+          </template>
+        </Column>
+        <Column field="curse" header="Matrícula">
+          <template #body="{ data }">
+            {{ data.aluno?.matricula }}
+          </template>
+        </Column>
+        <Column field="contratante" header="Contratante">
+          <template #body="{ data }">
+            {{ data?.contratante?.nome }} -
+            {{ data?.contratante?.cnpj }}
+          </template>
+        </Column>
+        <Column field="process_type" header="Tipo Estágio">
+          <template #body="{ data }">
+            {{ parseObrigatoriedadeEstagio(data?.tipoEstagio) }}
+          </template>
+        </Column>
+        <Column field="process_type" header="Estágio UFPR">
+          <template #body="{ data }">
+            {{ data?.estagioUfpr ? "Sim" : "Não" }}
+          </template>
+        </Column>
+        <Column field="status" header="Status" bodyStyle="color:orange;">
+          <template #body="{ data }">
+            <StatusTag :status="data?.statusEstagio" />
+          </template>
+        </Column>
+        <Column field="button">
+          <template #body="{ data }">
+            <NuxtLink :to="`/estagio/${data.id}?perfil=orientador`">
+              <Button label="Ver Estágio"></Button>
+            </NuxtLink>
+          </template>
+        </Column>
+      </DataTable>
+    </div>
+  </div>
+</template>

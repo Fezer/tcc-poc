@@ -9,12 +9,9 @@ export default class NovoEstagioService extends BaseService {
   ALUNO = "GRR20200141";
 
   async criarNovoEstagio(): Promise<{ id: number }> {
-    const response = await $fetch(
-      this.BASE_URL + `/aluno/${this.ALUNO}/estagio`,
-      {
-        method: "POST",
-      }
-    );
+    const response = await $fetch(`/aluno/${this.ALUNO}/estagio`, {
+      method: "POST",
+    });
 
     if (!response?.id) {
       throw new Error("Erro ao criar novo estágio");
@@ -28,7 +25,7 @@ export default class NovoEstagioService extends BaseService {
     if (!id || !tipoEstagio) {
       throw new Error("Id e tipo de estágio são obrigatórios");
     }
-    return await $fetch(this.BASE_URL + `/estagio/tipo/${id}`, {
+    return await $fetch(`/estagio/tipo/${id}`, {
       method: "PUT",
       params: {
         tipoEstagio,
@@ -41,7 +38,7 @@ export default class NovoEstagioService extends BaseService {
     if (!id || (!isEstagioUfpr && isEstagioUfpr !== false)) {
       throw new Error("Id e dados do estágio são obrigatórios");
     }
-    return await $fetch(this.BASE_URL + `/estagio/ufpr/${id}`, {
+    return await $fetch(`/estagio/ufpr/${id}`, {
       method: "PUT",
       params: {
         estagioUfpr: isEstagioUfpr,
@@ -78,26 +75,23 @@ export default class NovoEstagioService extends BaseService {
       valorTransporte: number;
     }
   ) {
-    return await $fetch(this.BASE_URL + `/termo/${id}`, {
+    return await $fetch(`/termo/${id}`, {
       method: "PUT",
       body: dadosEstagio,
     });
   }
 
   public async setAtividadesEstagio(id: string, atividades: PlanoAtividades) {
-    return await $fetch(this.BASE_URL + `/termo/${id}/planoAtividades`, {
+    return await $fetch(`/termo/${id}/planoAtividades`, {
       method: "PUT",
       body: atividades,
     });
   }
 
   public async setOrientador(id: string, orientador: string) {
-    return await $fetch(
-      this.BASE_URL + `/termo/${id}/associarOrientador/${orientador}`,
-      {
-        method: "PUT",
-      }
-    );
+    return await $fetch(`/termo/${id}/associarOrientador/${orientador}`, {
+      method: "PUT",
+    });
   }
 
   public async setSupervisor(id: string, supervisor: Supervisor) {
@@ -109,7 +103,7 @@ export default class NovoEstagioService extends BaseService {
       console.log(res);
       if (!res?.id) throw new Error("Erro ao criar novo supervisor - No ID!");
       return await $fetch(
-        this.BASE_URL + `/termo/${id}/associarSupervisor/${res?.id}`,
+        `/termo/${id}/associarSupervisor/${res?.id}`,
 
         {
           method: "PUT",
@@ -121,52 +115,37 @@ export default class NovoEstagioService extends BaseService {
   public async solicitarAprovacaoTermo(id: string) {
     const grr = "GRR20200141";
 
-    return await $fetch(
-      this.BASE_URL + `/aluno/${grr}/termo/${id}/solicitarAprovacaoTermo`,
-      {
-        method: "PUT",
-      }
-    );
+    return await $fetch(`/aluno/${grr}/termo/${id}/solicitarAprovacaoTermo`, {
+      method: "PUT",
+    });
   }
 
   public async setContratante(id: string, contratanteID: number) {
-    return await $fetch(
-      this.BASE_URL + `/termo/${id}/associarContratante/${contratanteID}`,
-      {
-        method: "PUT",
-      }
-    );
+    return await $fetch(`/termo/${id}/associarContratante/${contratanteID}`, {
+      method: "PUT",
+    });
   }
 
   public async setApolice(id: string, apoliceID: number) {
-    return await $fetch(
-      this.BASE_URL + `/termo/${id}/associarApolice/${apoliceID}`,
-      {
-        method: "PUT",
-      }
-    );
+    return await $fetch(`/termo/${id}/associarApolice/${apoliceID}`, {
+      method: "PUT",
+    });
   }
 
   public async setEstagioSeed(id: string) {
-    return await $fetch(
-      this.BASE_URL + `/estagio/seed/${id}?estagioSeed=true`,
-      {
-        method: "PUT",
-      }
-    );
+    return await $fetch(`/estagio/seed/${id}?estagioSeed=true`, {
+      method: "PUT",
+    });
   }
 
   public async removeEstagioSeed(id: string) {
-    return await $fetch(
-      this.BASE_URL + `/estagio/seed/${id}?estagioSeed=false`,
-      {
-        method: "PUT",
-      }
-    );
+    return await $fetch(`/estagio/seed/${id}?estagioSeed=false`, {
+      method: "PUT",
+    });
   }
 
   public async cancelarTermo(id: string, grr: string) {
-    return await $fetch(this.BASE_URL + `/aluno/${grr}/estagio/${id}`, {
+    return await $fetch(`/aluno/${grr}/estagio/${id}`, {
       method: "PUT",
     });
   }

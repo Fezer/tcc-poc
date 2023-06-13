@@ -91,20 +91,33 @@ export default defineComponent({
 
         router.push("/aluno/termo-rescisao/" + termoID);
       } catch (err) {
-        console.log(err);
+        console.log(err?.response, err?.response?.data?.error);
 
         toast.add({
           severity: "error",
           summary: "Erro ao gerar termo de rescisão",
-          detail: "Tivemos um problema ao gerar o termo de rescisão",
+          detail:
+            err?.response?._data?.error || "Não foi possível gerar o termo",
           life: 3000,
         });
       }
     };
 
-    const handleRemovePeriodo = (dataInicio: string) => {
+    const handleRemovePeriodo = (attr: string, type?: "dataInicio" | "id") => {
+      if (type === "id") {
+        periodosDeRecesso.value = periodosDeRecesso.value.filter(
+          (periodo) => periodo.id !== attr
+        );
+        toast.add({
+          severity: "success",
+          summary: "Período de recesso removido com sucesso",
+          detail: "O período de recesso foi removido com sucesso",
+          life: 3000,
+        });
+        return;
+      }
       periodosDeRecesso.value = periodosDeRecesso.value.filter(
-        (periodo) => periodo.dataInicio !== dataInicio
+        (periodo) => periodo.dataInicio !== attr
       );
 
       toast.add({
@@ -167,7 +180,6 @@ export default defineComponent({
 </script>
 <template>
   <div>
-    <Toast />
     <h3 class="m-0">Termo de Recisão</h3>
     <small>Estágio #{{ estagio }}</small>
 

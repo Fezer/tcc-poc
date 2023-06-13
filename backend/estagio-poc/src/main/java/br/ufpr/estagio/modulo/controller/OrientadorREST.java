@@ -1,5 +1,6 @@
 package br.ufpr.estagio.modulo.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,30 +8,41 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.lowagie.text.DocumentException;
 
 import br.ufpr.estagio.modulo.dto.CertificadoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.EstagioDTO;
 import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
+import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.FichaDeAvaliacao;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.GeradorDeExcelService;
+import br.ufpr.estagio.modulo.service.GeradorDePdfService;
 import br.ufpr.estagio.modulo.service.OrientadorService;
 import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeRescisaoService;
@@ -57,6 +69,12 @@ public class OrientadorREST {
 
 	@Autowired
 	private TermoDeRescisaoService termoDeRescisaoService;
+	
+	@Autowired
+	private GeradorDePdfService geradorService;
+	
+	@Autowired
+	private GeradorDeExcelService geradorExcelService;
 
 	@GetMapping("/{idOrientador}/estagio")
 	public ResponseEntity<?> listarEstagiosDeOrientandos(@PathVariable String idOrientador) {
@@ -386,4 +404,64 @@ public class OrientadorREST {
 		}
 	}
 
+	@GetMapping("/{idOrientador}/certificado/{idCertificado}/imprimir-certificado")
+	public ResponseEntity<Object> gerarCertificadoPdf(@PathVariable String idOrientador, @PathVariable String idCertificado, @RequestHeader("Authorization") String accessToken)
+			throws IOException, DocumentException {
+
+		try {
+
+			long idOrientadorLong = Long.parseLong(idOrientador);
+	    	
+	    	if (idOrientadorLong < 1L)
+        		throw new InvalidFieldException("Id de orientador inválido.");
+	    	
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientadorLong);
+			
+			long idCertificadoLong = Long.parseLong(idCertificado);
+	    	
+	    	if (idCertificadoLong < 1L)
+        		throw new InvalidFieldException("Id de certificado inválido.");
+	    	
+			Optional<CertificadoDeEstagio> certificadoFind = certificadoDeEstagioService.buscarCertificadoDeEstagioPorId(idCertificadoLong);
+			
+			if (orientadorFind == null) {
+				throw new NotFoundException("Orientador não encontrado.");
+			} else {
+				if (certificadoFind == null) {
+					throw new NotFoundException("Certificado não encontrado.");
+				} else {
+					Orientador orientador = orientadorFind.get();
+					CertificadoDeEstagio certificado = certificadoFind.get();
+					
+					if (certificado.getEstagio().getOrientador().getId() != orientador.getId()) {
+						throw new NotFoundException("Este estágio não foi orientado pelo orientador selecionado.");
+					} else {
+						if (String.valueOf(certificado.getEstagio().getTipoEstagio()).equals(EnumTipoEstagio.Obrigatorio)) {
+							throw new InvalidFieldException("O estágio é do tipo 'Obrigatório'");
+						} else {
+							byte[] pdf = geradorService.gerarPdfCertificadoOrientador(orientador, certificado);
+
+							HttpHeaders headers = new HttpHeaders();
+							headers.setContentType(MediaType.APPLICATION_PDF);
+							headers.setContentDisposition(ContentDisposition.builder("inline").filename(orientador.getId() + "-certificado-de-estagio-" + certificado.getId() + ".pdf").build());
+
+							return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+						}
+						
+					}
+					
+				}
+			}
+			
+			
+		} catch (NotFoundException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (PocException e) {
+	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
+	    }
+	}
 }

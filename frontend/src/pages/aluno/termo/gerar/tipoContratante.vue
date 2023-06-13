@@ -42,31 +42,6 @@ export default defineComponent({
 
     const selectedContratante = ref(null);
 
-    // const handleSearchContratante = async (e: any) => {
-    //   console.log(e.target.value);
-    //   const name = e.target.value;
-    //   if (contratanteLoading.value) return;
-    //   if (name.length < 3) {
-    //     toast.add({
-    //       severity: "warn",
-    //       summary: "Atenção",
-    //       detail: "Digite pelo menos 3 caracteres para buscar uma contratante!",
-    //     });
-    //     return;
-    //   }
-    //   contratanteLoading.value = true;
-
-    //   try {
-    //     await contratanteService.getContratantePerNome(name).then((res) => {
-    //       contratantes.value = res;
-    //     });
-    //   } catch (err) {
-    //     console.log(err);
-    //   } finally {
-    //     contratanteLoading.value = false;
-    //   }
-    // };
-
     onMounted(async () => {
       console.log("mounted");
 
@@ -88,12 +63,13 @@ export default defineComponent({
         state.cepContratante = contratante?.endereco?.cep || null;
         state.cidadeContratante = contratante?.endereco?.cidade || null;
         state.estadoContratante = contratante?.endereco?.estado || null;
+        state.representanteEmpresa = contratante?.representanteEmpresa || null;
 
         state.nomeSeguradora = seguradora?.nome || null;
         state.apoliceSeguradora = apolice?.numero || null;
       }
 
-      await fetch(`http://localhost:5000/contratante/`, {
+      await fetch(`/contratante/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -122,12 +98,16 @@ export default defineComponent({
       telefoneContratante: null as string | null,
       cpfContratante: null as string | null,
       cnpjContratante: null as string | null,
+      representanteEmpresa: null as string | null,
       enderecoContratante: null as string | null,
       cepContratante: null as string | null,
       cidadeContratante: null as string | null,
       estadoContratante: null as string | null,
       nomeSeguradora: null as string | null,
       apoliceSeguradora: null as string | null,
+
+      complemento: null as string | null,
+      numero: null as number | null,
     });
 
     const handleToggleRegisterContratante = () => {
@@ -150,6 +130,9 @@ export default defineComponent({
             cepContratante: z.string().nonempty(),
             cidadeContratante: z.string().nonempty(),
             estadoContratante: z.string().nonempty(),
+            representanteEmpresa: z.string().nonempty(),
+
+            numero: z.number().min(1),
           };
 
       const validator = z.object({
@@ -204,6 +187,7 @@ export default defineComponent({
               cpf: state.cpfContratante,
               telefone: state.telefoneContratante,
               tipo: state.tipoContratante,
+              representanteEmpresa: state.representanteEmpresa,
             },
             termo.value.id
           );
@@ -214,8 +198,10 @@ export default defineComponent({
             {
               cep: state.cepContratante,
               cidade: state.cidadeContratante,
-              estado: state.estadoContratante,
-              endereco: state.enderecoContratante,
+              uf: state.estadoContratante,
+              rua: state.enderecoContratante,
+              numero: state.numero,
+              complemento: state.complemento,
             }
           );
 
@@ -260,7 +246,7 @@ export default defineComponent({
         toast.add({
           severity: "error",
           summary: "Erro ao criar contratante",
-          detail: err?.message,
+          detail: err?.response?._data?.error || "Tente novamente",
           life: 3000,
         });
       }
@@ -356,11 +342,11 @@ export default defineComponent({
               }}</small>
             </div>
           </div>
-          <div
-            class="formgrid grid"
-            v-if="state.tipoContratante === 'PessoaFisica'"
-          >
-            <div class="field col-6">
+          <div class="formgrid grid">
+            <div
+              class="field col-6"
+              v-if="state.tipoContratante === 'PessoaFisica'"
+            >
               <label for="cpfContratante">CPF</label>
               <InputMask
                 id="cpfContratante"
@@ -373,9 +359,8 @@ export default defineComponent({
                 errors["documentoContratante"]
               }}</small>
             </div>
-          </div>
-          <div class="formgrid grid" v-else>
-            <div class="field col-6">
+
+            <div class="field col-6" v-else>
               <label for="cnpjContratante">CNPJ</label>
               <InputMask
                 id="cnpjContratante"
@@ -386,6 +371,22 @@ export default defineComponent({
               />
               <small class="text-rose-600">{{
                 errors["documentoContratante"]
+              }}</small>
+            </div>
+
+            <div class="field col-6">
+              <label for="representanteEmpresa"
+                >Representante/Responsável pela empresa</label
+              >
+              <InputText
+                id="representanteEmpresa"
+                type="text"
+                mask="99.999.999/9999-99"
+                v-model="state.representanteEmpresa"
+                :class="{ 'p-invalid': errors['representanteEmpresa'] }"
+              />
+              <small class="text-rose-600">{{
+                errors["representanteEmpresa"]
               }}</small>
             </div>
           </div>
@@ -402,7 +403,7 @@ export default defineComponent({
           <h5>Endereço Contratante</h5>
           <div class="formgrid grid">
             <div class="field col">
-              <label for="enderecoContratante">Endereço</label>
+              <label for="enderecoContratante">Rua</label>
               <InputText
                 id="enderecoContratante"
                 type="text"
@@ -412,6 +413,29 @@ export default defineComponent({
               <small class="text-rose-600">{{
                 errors["enderecoContratante"]
               }}</small>
+            </div>
+            <div class="field col">
+              <label for="numero">Número</label>
+              <InputNumber
+                id="numero"
+                type="text"
+                :min="0"
+                v-model="state.numero"
+                :class="{ 'p-invalid': errors['numero'] }"
+              />
+              <small class="text-rose-600">{{ errors["numero"] }}</small>
+            </div>
+          </div>
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="complemento">Complemento (opcional)</label>
+              <InputText
+                id="complemento"
+                type="text"
+                v-model="state.complemento"
+                :class="{ 'p-invalid': errors['complemento'] }"
+              />
+              <small class="text-rose-600">{{ errors["complemento"] }}</small>
             </div>
             <div class="field col">
               <label for="cepContratante">CEP</label>

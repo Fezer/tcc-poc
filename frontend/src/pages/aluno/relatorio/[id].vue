@@ -12,12 +12,12 @@ export default defineComponent({
     const alunoService = new AlunoService();
     const { id } = route.params;
     const { data: relatorio } = useFetch<RelatorioEstagio>(
-      `http://localhost:5000/relatorioDeEstagio/${id}`
+      `/relatorioDeEstagio/${id}`
     );
     const router = useRouter();
     const toast = useToast();
 
-    console.log(relatorio?.value);
+    const uploadVisible = ref(false);
 
     const handleCancelarRelatorio = async () => {
       const estagio = relatorio?.value?.estagio?.id;
@@ -31,6 +31,17 @@ export default defineComponent({
 
         router.push("/aluno/estagio/" + estagio);
       });
+    };
+
+    const parseTipoRelatorio = (
+      tipo: "RelatorioParcial" | "RelatorioFinal"
+    ) => {
+      const tipos = {
+        RelatorioParcial: "Relatório Parcial",
+        RelatorioFinal: "Relatório Final",
+      };
+
+      return tipos[tipo] || "Relatório";
     };
 
     const handlePedirCienciaOrientador = async () => {
@@ -59,23 +70,75 @@ export default defineComponent({
         });
     };
 
+    const handleDownloadRelatorio = async () => {
+      try {
+        const file = await relatorioService.baixarRelatorioBase(
+          "GRR20200141",
+          id
+        );
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.log(err);
+        toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Não foi possível baixar o relatório",
+          life: 3000,
+        });
+      }
+    };
+
+    const handleUploadRelatorio = async (event: any) => {
+      console.log("upload");
+      const file = event.files[0];
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      await relatorioService
+        .uploadRelatorio("GRR20200141", formData)
+        .then(() => {
+          toast.add({
+            severity: "success",
+            summary: `Relatório de Estágio enviado!`,
+            detail: `O relatório de estágio foi enviado com sucesso!`,
+            life: 3000,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.add({
+            severity: "error",
+            summary: "Ops!",
+            detail: "Tivemos um problema ao enviar o relatório.",
+            life: 3000,
+          });
+        });
+    };
+
     return {
       relatorio,
       handleCancelarRelatorio,
+      parseTipoRelatorio,
       handlePedirCienciaOrientador,
+      handleDownloadRelatorio,
+      uploadVisible,
+      handleUploadRelatorio,
     };
   },
 });
 </script>
 <template>
   <div>
-    <Toast />
     <h2 class="m-0">Relatório de estágio</h2>
     <h4 class="m-0 mt-2 mb-2">Dados do relatório</h4>
     <div class="card grid mt-2">
       <div class="col-6">
         <strong class="text-md mb-2">Tipo do relatório</strong>
-        <p>{{ relatorio?.tipoRelatorio }}</p>
+        <p>{{ parseTipoRelatorio(relatorio?.tipoRelatorio) }}</p>
       </div>
 
       <div class="col-6">
@@ -149,8 +212,16 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="flex gap-2 justify-end" v-if="!relatorio?.cienciaOrientador">
+    <div class="flex gap-2 justify-end">
       <Button
+        label="Ver documento"
+        icon="pi pi-file"
+        class="p-button-secondary"
+        @click="handleDownloadRelatorio"
+      ></Button>
+
+      <Button
+        v-if="relatorio?.etapaFluxo === 'Aluno'"
         label="Cancelar relatório"
         icon="pi pi-times"
         class="p-button-danger"
@@ -158,12 +229,24 @@ export default defineComponent({
       ></Button>
 
       <Button
+        v-if="relatorio?.etapaFluxo === 'Aluno'"
         label="Pedir ciência orientador"
         icon="pi pi-check"
         class="p-button-success"
-        @click="handlePedirCienciaOrientador"
+        @click="uploadVisible = true"
       >
       </Button>
+    </div>
+
+    <div v-if="uploadVisible">
+      <UploadConfirm
+        :onClose="() => (uploadVisible = false)"
+        :onConfirm="handlePedirCienciaOrientador"
+        description="Você precisa enviar esse relatório de estágio assinado pela contratante para pedir ciência."
+        :handleUpload="handleUploadRelatorio"
+        :confirmBlocked="false"
+      >
+      </UploadConfirm>
     </div>
   </div>
 </template>

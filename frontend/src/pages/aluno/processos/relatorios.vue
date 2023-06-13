@@ -1,48 +1,47 @@
-<script setup>
+<script setup lang="ts">
 const grr = "GRR20200141";
+const { data: relatorios } = await useFetch(`/aluno/${grr}/relatorioDeEstagio`);
 
-const { data: relatorios } = await useFetch(
-  `http://localhost:5000/aluno/${grr}/relatorios/`
-);
-
-// const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
+const parseTipoRelatorio = (tipo: "RelatorioParcial" | "RelatorioFinal") => {
+  if (tipo === "RelatorioParcial") return "Relatório Parcial";
+  if (tipo === "RelatorioFinal") return "Relatório Final";
+  return "Relatório";
+};
 </script>
 
 <template>
   <div>
     <h1>Relatórios de Estágio</h1>
 
-    <DataTable :value="relatorios">
+    <DataTable :value="relatorios" rowHover stripedRows :show-gridlines="true">
       <Column field="id" header="Processo">
+        <template #body="{ data }"> #{{ data.id }} </template>
+      </Column>
+      <Column field="tipo" header="Tipo">
         <template #body="{ data }">
-          {{ data.id }}
+          {{ parseTipoRelatorio(data.tipoRelatorio) }}
         </template>
       </Column>
-      <Column field="tipo" header="Tipo" style="min-width: 12rem">
-        <template #body="{ data }">
-          <!-- {{ data.tipoTermoDeEstagio }} -->
-          Termo Aditivo
-        </template>
-      </Column>
-      <Column field="contratante" header="Contratante" style="min-width: 12rem">
-        <template #body="{ data }">
-          {{ data?.contratante?.nome }} -
-          {{ data?.contratante?.cnpj || data?.contratante?.cpf }}
-        </template>
+      <Column field="estagio" header="Estágio">
+        <template #body="{ data }"> #{{ data?.estagio?.id }} </template>
       </Column>
       <Column
         field="etapa"
-        header="Status"
+        header="Etapa"
         style="min-width: 12rem; font-weight: bold"
       >
         <template #body="{ data }">
-          {{ data.statusTermo }}
+          {{ data.etapaFluxo }}
         </template>
       </Column>
-      <Column field="acoes" header="Ações" style="min-width: 12rem">
+      <Column field="acoes" header="Ações">
         <template #body="{ data }">
-          <NuxtLink :to="`/aluno/termo/${data.id}`">
-            <Button type="primary"> Ver </Button>
+          <NuxtLink :to="`/aluno/relatorio/${data.id}`">
+            <Button
+              class="p-button-icon-only p-button-outlined"
+              icon="pi pi-eye"
+              type="primary"
+            ></Button>
           </NuxtLink>
         </template>
       </Column>

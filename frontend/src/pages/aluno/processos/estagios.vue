@@ -1,9 +1,7 @@
 <script setup>
 const grr = "GRR20200141";
 
-const { data: estagios } = await useFetch(
-  `http://localhost:5000/aluno/${grr}/estagio/`
-);
+const { data: estagios } = await useFetch(`/aluno/${grr}/estagio/`);
 
 console.log(estagios);
 
@@ -14,7 +12,7 @@ console.log(estagios);
   <div>
     <h1>Estágios</h1>
 
-    <DataTable :value="estagios">
+    <DataTable :value="estagios" rowHover stripedRows :show-gridlines="true">
       <Column field="id" header="Processo">
         <template #body="{ data }"> #{{ data.id }} </template>
       </Column>

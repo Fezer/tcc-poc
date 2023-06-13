@@ -34,7 +34,7 @@ export default defineComponent({
 </script>
 <template>
   <Tag
-    class="mr-2 p-2 w-6 text-sm"
+    class="mr-2 p-2 w-10 text-sm"
     :severity="tagColor"
     :value="termoParsedString"
   />

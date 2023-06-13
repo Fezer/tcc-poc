@@ -10,6 +10,8 @@ import br.ufpr.estagio.modulo.model.PeriodoRecesso;
 public class TermoDeRescisaoDTO {
 
 	private long id;
+	private String aluno;
+	private String grrAluno;
 	private Estagio estagio;
 	private EnumEtapaFluxo etapaFluxo;
 	private Date dataTermino;
@@ -25,11 +27,13 @@ public class TermoDeRescisaoDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoDeRescisaoDTO(long id, Estagio estagio, EnumEtapaFluxo etapaFluxo, Date dataTermino,
-			int periodoTotalRecesso, ArrayList<PeriodoRecesso> periodoRecesso, boolean cienciaOrientador,
-			boolean cienciaCoordenacao, boolean cienciaCOE, boolean cienciaCOAFE) {
+	public TermoDeRescisaoDTO(long id, String aluno, String grrAluno, Estagio estagio, EnumEtapaFluxo etapaFluxo,
+			Date dataTermino, int periodoTotalRecesso, ArrayList<PeriodoRecesso> periodoRecesso,
+			boolean cienciaOrientador, boolean cienciaCoordenacao, boolean cienciaCOE, boolean cienciaCOAFE) {
 		super();
 		this.id = id;
+		this.aluno = aluno;
+		this.grrAluno = grrAluno;
 		this.estagio = estagio;
 		this.etapaFluxo = etapaFluxo;
 		this.dataTermino = dataTermino;
@@ -47,6 +51,22 @@ public class TermoDeRescisaoDTO {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getAluno() {
+		return aluno;
+	}
+
+	public void setAluno(String aluno) {
+		this.aluno = aluno;
+	}
+
+	public String getGrrAluno() {
+		return grrAluno;
+	}
+
+	public void setGrrAluno(String grrAluno) {
+		this.grrAluno = grrAluno;
 	}
 
 	public Estagio getEstagio() {

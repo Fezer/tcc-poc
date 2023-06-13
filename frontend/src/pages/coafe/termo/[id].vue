@@ -29,13 +29,9 @@ export default defineComponent({
 
     const coafeService = new CoafeService();
 
-    const { data: termo, refresh } = useFetch(
-      `http://localhost:5000/termo/${id}`
-    );
+    const { data: termo, refresh } = useFetch(`/termo/${id}`);
 
-    const { data: agentesIntegracao } = useFetch(
-      `http://localhost:5000/agente-integrador/`
-    );
+    const { data: agentesIntegracao } = useFetch(`/agente-integrador/`);
 
     function refreshData() {
       refresh();
@@ -227,9 +223,18 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <small>Processos > Ver processo</small>
     <h2>{{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}</h2>
+
+    <NuxtLink
+      :to="`/estagio/${termo?.estagio?.id}?perfil=coafe&termo=${termo?.id}`"
+    >
+      <Button
+        label="Ver estágio"
+        class="p-button-secondary absolute right-8 top-36"
+        icon="pi pi-eye"
+      />
+    </NuxtLink>
 
     <Aluno />
 

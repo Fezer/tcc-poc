@@ -22,8 +22,11 @@ export default defineComponent({
     const { data: termo } = useFetch<TermoRescisao>("/termoDeRescisao/" + id);
 
     const cancelVisible = ref(false);
+    const uploadVisible = ref(false);
 
     const handleSolicitarAprovacao = async () => {
+      uploadVisible.value = false;
+
       const estagioID = termo?.value?.estagio?.id;
       await alunoService
         .solicitarCienciaDeTermoDeRecisao("GRR20200141", estagioID, id)
@@ -33,7 +36,6 @@ export default defineComponent({
             summary: "Termo de rescisão enviado para aprovação",
             detail: "O termo de rescisão foi enviado para aprovação",
           });
-
           router.push(`/aluno/estagio/${estagioID}`);
         })
         .catch((err) => {
@@ -71,12 +73,56 @@ export default defineComponent({
       }
     };
 
+    const handleUploadTermoRescisao = async (event: any) => {
+      console.log("upload");
+      const file = event.files[0];
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      await termoService
+        .uploadTermoDeRescisao("GRR20200141", formData)
+        .then(() => {
+          toast.add({
+            severity: "success",
+            summary: `Termo de rescisão enviado!`,
+            detail: `O termo de rescisão foi enviada com sucesso!`,
+            life: 3000,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.add({
+            severity: "error",
+            summary: "Ops!",
+            detail: "Tivemos um problema ao enviar o termo de rescisão",
+            life: 3000,
+          });
+        });
+    };
+
+    const getTodasAsCiencias = () => {
+      return (
+        !!termo?.value &&
+        !!termo?.value?.cienciaCOE &&
+        !!termo?.value?.cienciaCOAFE &&
+        !!termo?.value?.cienciaCoordenacao &&
+        !!termo?.value?.cienciaOrientador
+      );
+    };
+
+    const todasAsCiencias = getTodasAsCiencias();
+
     return {
       termo,
       handleSolicitarAprovacao,
       handleCancelarTermo,
       handleEditarTermo,
       cancelVisible,
+      getTodasAsCiencias,
+      todasAsCiencias,
+      uploadVisible,
+      handleUploadTermoRescisao,
     };
   },
 });
@@ -102,6 +148,30 @@ export default defineComponent({
           <strong>Período total de recesso</strong>
           <p>{{ termo?.periodoTotalRecesso }} dias</p>
         </div>
+
+        <div class="col-4">
+          <strong>Ciência COE</strong>
+          <p>{{ termo?.cienciaCOE ? "Sim" : "Não" }}</p>
+        </div>
+
+        <div class="col-4">
+          <strong>Ciência Coordenação</strong>
+          <p>{{ termo?.cienciaCoordenacao ? "Sim" : "Não" }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Ciência COAFE</strong>
+          <p>{{ termo?.cienciaCOAFE ? "Sim" : "Não" }}</p>
+        </div>
+
+        <div class="col-4">
+          <strong>Ciência Orientador</strong>
+          <p>{{ termo?.cienciaOrientador ? "Sim" : "Não" }}</p>
+        </div>
+
+        <div class="col-4">
+          <strong>Termo Aprovado</strong>
+          <p>{{ todasAsCiencias ? "Sim" : "Não" }}</p>
+        </div>
       </div>
     </div>
 
@@ -112,7 +182,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="w-full flex justify-end gap-2 mt-4">
+    <div class="w-full flex justify-end gap-2 mt-4" v-if="!todasAsCiencias">
       <Button
         label="Cancelar termo"
         class="p-button-danger"
@@ -124,16 +194,16 @@ export default defineComponent({
         class="p-button-secondary"
         icon="pi pi-pencil"
         @click="handleEditarTermo"
+        v-if="termo?.etapaFluxo === 'Aluno' && !todasAsCiencias"
       />
       <Button
         label="Solicitar Aprovação"
         class="p-button-primary"
         icon="pi pi-check"
-        @click="handleSolicitarAprovacao"
+        @click="uploadVisible = true"
+        v-if="termo?.etapaFluxo === 'Aluno'"
       />
     </div>
-
-    <Toast />
 
     <div v-if="cancelVisible">
       <CancelationConfirm
@@ -142,6 +212,17 @@ export default defineComponent({
         description="Você realmente deseja cancelar esse termo? Essa ação não poderá ser desfeita."
       >
       </CancelationConfirm>
+    </div>
+
+    <div v-if="uploadVisible">
+      <UploadConfirm
+        :onClose="() => (uploadVisible = false)"
+        :onConfirm="handleSolicitarAprovacao"
+        description="Você precisa enviar esse termo de rescisão assinado para solicitar aprovação."
+        :handleUpload="handleUploadTermoRescisao"
+        :confirmBlocked="false"
+      >
+      </UploadConfirm>
     </div>
   </div>
 </template>

@@ -53,7 +53,7 @@ public class RelatorioDeEstagio implements Serializable{
 	@Column(name = "aval_efetivacao")
 	private EnumAvaliacao avalEfetivacao;
 	
-	@Column(name = "consideracoes")
+	@Column(name = "consideracoes", length = 2000)
 	private String consideracoes;
 	
 	public RelatorioDeEstagio() {

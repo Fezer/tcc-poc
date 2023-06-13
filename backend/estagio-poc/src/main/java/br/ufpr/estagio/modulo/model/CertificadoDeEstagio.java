@@ -39,7 +39,7 @@ public class CertificadoDeEstagio implements Serializable {
 	@Column(name = "parecer_coe")
 	private EnumParecerAprovadores parecerCOE;
 	
-	@Column(name = "movitvo_reprovacao")
+	@Column(name = "movitvo_reprovacao", length = 1000)
 	private String motivoReprovacao;
 	
 	public CertificadoDeEstagio() {

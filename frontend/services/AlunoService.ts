@@ -2,7 +2,7 @@ import RelatorioEstagio from "~~/src/types/RelatorioEstagio";
 import BaseService from "./BaseService";
 import { BaseTermo } from "~~/src/types/Termos";
 
-export default class AlunoService extends BaseService {
+export default class AlunoService {
   public async getAlunoFromSiga(grr: string) {
     return await $fetch(`/aluno/${grr}`).catch((err) => console.error(err));
   }
@@ -11,6 +11,7 @@ export default class AlunoService extends BaseService {
     return await $fetch(`/curso/${idCurso}`).catch((err) => console.error(err));
   }
 
+  // DO NOT USE
   public async getAlunoFullFromSiga(grr: string) {
     return await $fetch(`/siga/aluno?grr=${grr}`).catch((err) =>
       console.error(err)
@@ -98,7 +99,14 @@ export default class AlunoService extends BaseService {
       body: termoData,
     });
   }
-  // http://localhost:5000/aluno/GRR20175486/estagio/termoCompromisso?statusTermo=EmRevisao
+
+  // http://localhost:5000/aluno/GRR20204481/upload-termo-aditivo
+  public async uploadTermoAditivo(grr: string, termoData: FormData) {
+    return await $fetch(`/aluno/${grr}/upload-termo-aditivo`, {
+      method: "POST",
+      body: termoData,
+    });
+  }
 
   public async getEstagioEmRevisao(grr: string) {
     return await $fetch(
@@ -155,6 +163,31 @@ export default class AlunoService extends BaseService {
       `/aluno/${grr}/estagio/${estagio}/termoDeRescisao/${termo}/solicitarCiencia`,
       {
         method: "PUT",
+      }
+    );
+  }
+
+  // http://localhost:5000/aluno/GRR20204481/upload-ficha/FichaDeAvaliacaoParcial
+
+  public async uploadFichaDeAvaliacao(grr: string, fichaData: FormData) {
+    return await $fetch(`/aluno/${grr}/upload-ficha/FichaDeAvaliacaoParcial`, {
+      method: "POST",
+      body: fichaData,
+    });
+  }
+
+  public async getGRRAluno(email: string) {
+    return await $fetch(
+      `http://siga.ufpr.br:8380/siga/api/graduacao/discente?email=${email}`
+    ).catch((err) => console.error(err));
+  }
+
+  // http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/gerar-termo-aditivo
+  public async downloadTermoAditivo(grr: string, termo: number) {
+    return await $fetch(
+      `/aluno/${grr}/termo-aditivo/${termo}/gerar-termo-aditivo`,
+      {
+        method: "GET",
       }
     );
   }

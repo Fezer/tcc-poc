@@ -140,7 +140,6 @@ export default defineComponent({
 
 <template>
   <div class="grid mt-2">
-    <Toast />
     <h5 class="mb-0 mt-4 ml-2">Tipo do Estágio</h5>
 
     <div class="col-12">

@@ -38,6 +38,11 @@ export default defineComponent({
 
         link: "/coafe/processos/termoAditivo",
       },
+      {
+        label: "Termos de Rescisão",
+
+        link: "/coafe/termo-rescisao",
+      },
     ];
 
     return {
@@ -108,6 +113,29 @@ export default defineComponent({
           {{ item.label }}
         </NuxtLink>
       </div>
+    </div>
+
+    <span>
+      <span
+        :class="`pi pi-briefcase pi-fw  mr-2 text-lg`"
+        style="vertical-align: center"
+      />
+      <strong>ESTÁGIOS</strong>
+    </span>
+
+    <div
+      :class="
+        'mb-4 mt-3 hover:opacity-70 transition-all  '.concat(
+          (getIsTabActive('/coe/estagios') &&
+            'border-l-2 border-l-gray-500 pl-2') ||
+            ' '
+        )
+      "
+    >
+      <i :class="`pi pi-fw  mr-2 text-lg`" style="vertical-align: center" />
+      <NuxtLink to="/coafe/estagios" class="text-lg text-black">
+        Todos os Estágios
+      </NuxtLink>
     </div>
   </div>
 </template>

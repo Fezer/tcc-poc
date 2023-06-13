@@ -36,9 +36,7 @@ export default defineComponent({
 
     const { setTermo } = useTermo();
 
-    const { data: termo, refresh } = useFetch<BaseTermo>(
-      `http://localhost:5000/termo/${id}`
-    );
+    const { data: termo, refresh } = useFetch<BaseTermo>(`/termo/${id}`);
 
     // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 
@@ -72,43 +70,6 @@ export default defineComponent({
           return false;
         }
       }
-    };
-
-    const responderTermo = async (resposta: any) => {
-      state.indeferimentoConfirm = false;
-      const respostaFormated =
-        resposta === "aprovar" ? "aprovado" : "reprovado";
-
-      await fetch(
-        `http://localhost:5000/termo/${resposta}/coafe/${route.params.id}`,
-        {
-          method: "PUT",
-          body: JSON.stringify({
-            justificativa: state.justificativa,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then(() => {
-          console.log("Aprovado com sucesso");
-          toast.add({
-            severity: "success",
-            summary: `${respostaFormated.toUpperCase()}`,
-            detail: `Termo ${respostaFormated} com sucesso`,
-            life: 3000,
-          });
-        })
-        .catch((err) => {
-          console.error(err);
-          toast.add({
-            severity: "error",
-            summary: "Ops!",
-            detail: "Tivemos um problema ao efetivar a análise do termo.",
-            life: 3000,
-          });
-        });
     };
 
     const handleEditarTermo = () => {
@@ -185,12 +146,12 @@ export default defineComponent({
       formData.append("file", file);
 
       await alunoService
-        .uploadTermo("GRR20200141", formData)
+        .uploadTermoAditivo("GRR20200141", formData)
         .then(() => {
           toast.add({
             severity: "success",
             summary: `Termo enviado!`,
-            detail: `O termo de compromisso foi enviado com sucesso!`,
+            detail: `O termo aditivo foi enviado com sucesso!`,
             life: 3000,
           });
         })
@@ -205,15 +166,36 @@ export default defineComponent({
         });
     };
 
+    const handleDownloadTermo = async () => {
+      try {
+        const file = await alunoService.downloadTermoAditivo(
+          "GRR20200141",
+          termo.value.id
+        );
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        return toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail: "Tivemos um problema ao baixar o termo.",
+          life: 3000,
+        });
+      }
+    };
+
     return {
       termo,
       refreshData,
       state,
-      responderTermo,
       handleEditarTermo,
       handleSolicitarAprovacao,
       handleCancelarTermo,
       handleUploadTermo,
+      handleDownloadTermo,
     };
   },
 });
@@ -221,23 +203,31 @@ export default defineComponent({
 
 <template>
   <div class="relative">
-    <Toast />
     <small>Processos > Termos Aditivos</small>
     <h2>Termo Aditivo</h2>
 
-    <NuxtLink :to="`/aluno/estagio/${termo?.estagio?.id}`">
+    <div class="absolute right-0 top-10 gap-2 flex">
       <Button
-        label="Ir para estágio"
-        icon="pi pi-arrow-right"
-        class="absolute right-0 top-10"
+        label="Ver documento"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        @click="handleDownloadTermo"
       />
-    </NuxtLink>
+      <NuxtLink :to="`/aluno/estagio/${termo?.estagio?.id}`">
+        <Button
+          label="Ver estágio"
+          icon="pi pi-eye"
+          class="p-button-secondary"
+        />
+      </NuxtLink>
+    </div>
 
     <StatusTermo
       :etapa="termo?.etapaFluxo"
       :status="termo?.statusTermo"
       :motivo="termo?.motivoIndeferimento"
       :termo="termo"
+      v-if="termo?.statusTermo"
     />
 
     <Estagio :termo="termo" />
@@ -362,39 +352,6 @@ export default defineComponent({
           class="p-button-danger"
           autofocus
           @click="handleCancelarTermo"
-        />
-      </template>
-    </Dialog>
-
-    <Dialog
-      :visible="state.indeferimentoConfirm"
-      header="Justificativa indeferimento"
-      style="min-width: 500px"
-      :modal="true"
-    >
-      <div class="flex align-items-center justify-content-center flex-column">
-        <Textarea
-          id="justificativa"
-          v-model="state.justificativa"
-          style="min-width: 100%"
-          name="justificativa"
-          cols="30"
-          rows="10"
-        />
-      </div>
-      <template #footer>
-        <Button
-          label="Cancelar"
-          icon="pi pi-times"
-          class="p-button-secondary"
-          @click="state.indeferimentoConfirm = false"
-        />
-        <Button
-          label="Indeferir"
-          icon="pi pi-check"
-          class="p-button-danger"
-          autofocus
-          @click="responderTermo('reprovar').then(() => refreshData())"
         />
       </template>
     </Dialog>

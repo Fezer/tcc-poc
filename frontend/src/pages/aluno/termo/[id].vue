@@ -34,9 +34,7 @@ export default defineComponent({
 
     const { setTermo } = useTermo();
 
-    const { data: termo, refresh } = useFetch(
-      `http://localhost:5000/termo/${id}`
-    );
+    const { data: termo, refresh } = useFetch(`/termo/${id}`);
 
     // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 
@@ -70,43 +68,6 @@ export default defineComponent({
           return false;
         }
       }
-    };
-
-    const responderTermo = async (resposta: any) => {
-      state.indeferimentoConfirm = false;
-      const respostaFormated =
-        resposta === "aprovar" ? "aprovado" : "reprovado";
-
-      await fetch(
-        `http://localhost:5000/termo/${resposta}/coafe/${route.params.id}`,
-        {
-          method: "PUT",
-          body: JSON.stringify({
-            justificativa: state.justificativa,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then(() => {
-          console.log("Aprovado com sucesso");
-          toast.add({
-            severity: "success",
-            summary: `${respostaFormated.toUpperCase()}`,
-            detail: `Termo ${respostaFormated} com sucesso`,
-            life: 3000,
-          });
-        })
-        .catch((err) => {
-          console.error(err);
-          toast.add({
-            severity: "error",
-            summary: "Ops!",
-            detail: "Tivemos um problema ao efetivar a análise do termo.",
-            life: 3000,
-          });
-        });
     };
 
     const handleEditarTermo = () => {
@@ -205,7 +166,6 @@ export default defineComponent({
       termo,
       refreshData,
       state,
-      responderTermo,
       handleEditarTermo,
       handleSolicitarAprovacao,
       handleCancelarTermo,
@@ -217,7 +177,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <small>Processos > Ver processo</small>
     <h2>Termo de Compromisso</h2>
 
@@ -226,6 +185,7 @@ export default defineComponent({
       :status="termo?.statusTermo"
       :motivo="termo?.motivoIndeferimento"
       :termo="termo"
+      v-if="termo?.statusTermo"
     />
 
     <Aluno />
@@ -352,39 +312,6 @@ export default defineComponent({
           class="p-button-danger"
           autofocus
           @click="handleCancelarTermo"
-        />
-      </template>
-    </Dialog>
-
-    <Dialog
-      :visible="state.indeferimentoConfirm"
-      header="Justificativa indeferimento"
-      style="min-width: 500px"
-      :modal="true"
-    >
-      <div class="flex align-items-center justify-content-center flex-column">
-        <Textarea
-          id="justificativa"
-          v-model="state.justificativa"
-          style="min-width: 100%"
-          name="justificativa"
-          cols="30"
-          rows="10"
-        />
-      </div>
-      <template #footer>
-        <Button
-          label="Cancelar"
-          icon="pi pi-times"
-          class="p-button-secondary"
-          @click="state.indeferimentoConfirm = false"
-        />
-        <Button
-          label="Indeferir"
-          icon="pi pi-check"
-          class="p-button-danger"
-          autofocus
-          @click="responderTermo('reprovar').then(() => refreshData())"
         />
       </template>
     </Dialog>

@@ -331,4 +331,9 @@ public Aluno atualizarDadosBancarios(Aluno aluno) {
 		return listaRelatorios;
 	}
 
+	public Optional<Aluno> buscarAlunoPorEmail(String emailAluno, String accessToken) {
+    	Optional<Aluno> alunoFind = alunoRepo.findByEmail(emailAluno);
+        return alunoFind;
+	}
+
 }

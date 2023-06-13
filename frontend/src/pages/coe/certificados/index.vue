@@ -5,14 +5,19 @@ import parseDate from "../../../utils/parseDate";
 export default defineComponent({
   setup() {
     const { data: certificados } = useFetch(
-      "http://localhost:5000/coe/certificado/pendenteAprovacaoCoe"
+      "/coe/certificado/pendenteAprovacaoCoe"
     );
 
     const handleDownloadCertificado = (certificadoID: string) => {
       console.log(certificadoID);
     };
 
-    return { certificados, parseDate, handleDownloadCertificado };
+    return {
+      certificados,
+      parseDate,
+      handleDownloadCertificado,
+      parseObrigatoriedadeEstagio,
+    };
   },
 });
 </script>
@@ -44,7 +49,7 @@ export default defineComponent({
         </Column>
         <Column field="student_name" header="Tipo Estágio">
           <template #body="{ data }">
-            {{ data?.estagio?.tipoEstagio }}
+            {{ parseObrigatoriedadeEstagio(data?.estagio?.tipoEstagio) }}
           </template>
         </Column>
 

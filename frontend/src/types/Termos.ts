@@ -57,6 +57,11 @@ interface TermoRescisao {
   periodoRecesso: PeriodoRecesso[];
 
   estagio: BasicEstagio;
+
+  cienciaCOE?: boolean;
+  cienciaCoordenacao?: boolean;
+  cienciaCOAFE?: boolean;
+  cienciaOrientador?: boolean;
 }
 
 type PeriodoRecesso = {

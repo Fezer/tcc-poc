@@ -12,7 +12,7 @@ export default defineComponent({
     const orientadorService = new OrientadorService();
     const { id } = route.params;
     const { data: relatorio } = useFetch<RelatorioEstagio>(
-      `http://localhost:5000/relatorioDeEstagio/${id}`
+      `/relatorioDeEstagio/${id}`
     );
     const router = useRouter();
     const toast = useToast();
@@ -26,7 +26,7 @@ export default defineComponent({
             summary: "Sucesso",
             detail: "Ciência de relatório de estágio realizada com sucesso",
           });
-          router.push("/orientador");
+          router.push("/orientador/relatorio");
         })
         .catch((err) => {
           console.log(err);
@@ -47,7 +47,6 @@ export default defineComponent({
 </script>
 <template>
   <div>
-    <Toast />
     <h1>Relatório de estágio</h1>
     <h4>Dados do relatório</h4>
     <div class="card grid">

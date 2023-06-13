@@ -74,7 +74,7 @@ export default defineComponent({
       console.log(aluno.value);
 
       const response = await $fetch(
-        `http://localhost:5000/curso/${aluno.value?.idPrograma}/orientadores`
+        `/curso/${aluno.value?.idPrograma}/orientadores`
       );
 
       docentes.value = response;
@@ -139,57 +139,41 @@ export default defineComponent({
         telefoneSupervisor,
       } = state;
 
-      await novoEstagioService
-        .setDadosEstagio(id, {
+      try {
+        await novoEstagioService.setDadosEstagio(id, {
           dataInicio: dayjs(state.dataInicio).format("YYYY-MM-DD"),
           dataTermino: dayjs(state.dataFinal).format("YYYY-MM-DD"),
           jornadaDiaria: state.jornadaDiaria,
           jornadaSemanal: state.jornadaSemanal,
           valorBolsa: state.bolsaAuxilio,
           valorTransporte: state.auxilioTransporte,
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.add({
-            severity: "error",
-            summary: "Erro na etapa de atualizar dados de estágio",
-            detail: "Erro ao salvar dados do estágio",
-            life: 3000,
-          });
         });
 
-      await novoEstagioService
-        .setAtividadesEstagio(termo.value.id, {
+        await novoEstagioService.setAtividadesEstagio(termo.value.id, {
           local: "Qualquer",
           descricaoAtividades: state.atividades,
           nomeSupervisor,
           telefoneSupervisor,
           cpfSupervisor,
           formacaoSupervisor,
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.add({
-            severity: "error",
-            summary: "Erro na etapa de atualizar as atividades de estágio",
-            detail: "Erro ao salvar dados do estágio",
-            life: 3000,
-          });
         });
 
-      await novoEstagioService
-        .setOrientador(termo.value.id, state.orientador)
-        .catch((err) => {
-          console.log(err);
-          toast.add({
-            severity: "error",
-            summary: "Erro na etapa de atualizar o orientador",
-            detail: "Erro ao salvar dados do estágio",
-            life: 3000,
-          });
-        });
+        await novoEstagioService.setOrientador(
+          termo.value.id,
+          state.orientador
+        );
 
-      advanceStep();
+        advanceStep();
+      } catch (err) {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: "Erro na etapa de atualizar o orientador",
+          detail:
+            err?.response?._data?.error || "Erro ao salvar dados do estágio",
+          life: 3000,
+        });
+      }
     };
 
     return {
@@ -208,7 +192,6 @@ export default defineComponent({
 
 <template>
   <div class="grid mt-2">
-    <Toast />
     <h5 class="mb-0 p-2 mt-4">Dados do Estágio</h5>
 
     <div class="col-12">

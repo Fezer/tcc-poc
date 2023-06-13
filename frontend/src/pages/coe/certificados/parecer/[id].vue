@@ -17,18 +17,14 @@ export default defineComponent({
     const justificativa = ref("");
 
     const { data: certificado } = useAsyncData("aluno", async () => {
-      const response = await $fetch(
-        `http://localhost:5000/certificadoDeEstagio/${id}`
-      );
+      const response = await $fetch(`/certificadoDeEstagio/${id}`);
 
       await handleGetEstagio(response?.estagio?.id);
       return response;
     });
 
     const handleGetEstagio = async (estagioID: string) => {
-      const response = await $fetch(
-        `http://localhost:5000/estagio/${estagioID}`
-      );
+      const response = await $fetch(`/estagio/${estagioID}`);
 
       estagio.value = response;
       return response;
@@ -92,28 +88,31 @@ export default defineComponent({
 </script>
 <template>
   <div class="m-1">
-    <Toast />
     <h2>Parecer certificado de estágio</h2>
-    <div class="card grid">
-      <div class="col-4">
-        <strong>Processo certificado</strong>
-        <p>#{{ certificado?.id }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Processo Estágio</strong>
-        <p>#{{ estagio?.id }}</p>
-      </div>
+    <div class="card">
+      <div class="grid">
+        <div class="col-4">
+          <strong>Processo certificado</strong>
+          <p>#{{ certificado?.id }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Processo Estágio</strong>
+          <p>#{{ estagio?.id }}</p>
+        </div>
 
-      <div class="col-4">
-        <strong>Etapa fluxo</strong>
-        <p>Parecer COE</p>
+        <div class="col-4">
+          <strong>Etapa fluxo</strong>
+          <p>Parecer COE</p>
+        </div>
       </div>
     </div>
 
     <Estagio :termo="estagio" />
 
     <div class="w-full flex justify-end gap-2">
-      <NuxtLink :to="`/estagio/${estagio?.id}`">
+      <NuxtLink
+        :to="`/estagio/${estagio?.id}?perfil=coe&certificado=${certificado?.id}`"
+      >
         <Button
           label="Ver mais informações do estágio"
           icon="pi pi-arrow-right"

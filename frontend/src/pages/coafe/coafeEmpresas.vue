@@ -5,9 +5,7 @@ export default defineComponent({
   async setup() {
     const contratanteService = new ContratanteService();
 
-    const { data: contratantes } = useFetch(
-      "http://localhost:5000/contratante/"
-    );
+    const { data: contratantes } = useFetch("/contratante/");
 
     console.log(contratantes);
 

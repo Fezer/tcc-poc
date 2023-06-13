@@ -44,7 +44,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <h5 class="mb-0 p-2 mt-4">Nova seguradora</h5>
 
     <div class="col-12">

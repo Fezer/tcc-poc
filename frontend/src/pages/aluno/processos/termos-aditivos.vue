@@ -1,9 +1,7 @@
 <script setup>
 const grr = "GRR20200141";
 
-const { data: termos } = await useFetch(
-  `http://localhost:5000/aluno/${grr}/termoAditivo/`
-);
+const { data: termos } = await useFetch(`/aluno/${grr}/termoAditivo/`);
 
 // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 </script>
@@ -39,7 +37,7 @@ const { data: termos } = await useFetch(
           <NuxtLink :to="`/aluno/termo-aditivo/${data.id}`">
             <Button
               class="p-button-icon-only p-button-outlined"
-              icon="pi pi-arrow-right"
+              icon="pi pi-eye"
               type="primary"
             >
             </Button>

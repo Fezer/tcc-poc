@@ -22,7 +22,7 @@ export default defineComponent({
       state.telefone = agente.value.telefone;
     });
     const { data: agente, refresh } = await useFetch(
-      `http://localhost:5000/agente-integrador/${id}`
+      `/agente-integrador/${id}`
     );
 
     const agenteService = new AgenteService();
@@ -75,7 +75,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <h2 class="mb-0 p-2 mt-4">Editar</h2>
 
     <div class="col-12">
@@ -87,11 +86,21 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label style="font-size: 20px" for="cnpj">CNPJ</label>
-            <InputText id="cnpj" type="text" v-model="state.cnpj" />
+            <InputMask
+              id="cnpj"
+              v-model="state.cnpj"
+              mask="99.999.999/9999-99"
+              placeholder="##.###.###/####-##"
+            />
           </div>
           <div class="field col">
             <label style="font-size: 20px" for="telefone">Telefone</label>
-            <InputText id="telefone" type="text" v-model="state.telefone" />
+            <InputMask
+              id="telefone"
+              v-model="state.telefone"
+              mask="(99)9 9999-9999"
+              placeholder="(99) 9-9999-9999"
+            />
           </div>
           <!-- <div class="field col">
               <label for="orgaoEmissor">Órgão Emissor</label>

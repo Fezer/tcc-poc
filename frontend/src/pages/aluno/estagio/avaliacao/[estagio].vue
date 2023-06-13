@@ -5,15 +5,14 @@ import AlunoService from "~~/services/AlunoService";
 
 export default defineComponent({
   setup() {
+    const config = useRuntimeConfig();
     const route = useRoute();
     const router = useRouter();
-    const { id: estagioID } = route.params;
+    const { estagio: estagioID } = route.params;
     const alunoService = new AlunoService();
     const toast = useToast();
 
-    const { data: estagio, refresh } = useFetch(
-      `http://localhost:5000/estagio/${estagioID}`
-    );
+    const { data: estagio, refresh } = useFetch(`/estagio/${estagioID}`);
 
     const idFichaAvaliacao = ref("");
 
@@ -27,6 +26,9 @@ export default defineComponent({
         .criarFichaDeAvaliacao(grr, estagioID)
         .then((res) => {
           idFichaAvaliacao.value = res.id;
+          const grr = "GRR20200141";
+          const url = `/aluno/${grr}/${estagioID}/gerar-ficha`;
+          window.open(url, "_blank");
         })
         .catch((err) => {
           console.log(err);
@@ -40,8 +42,45 @@ export default defineComponent({
         });
     };
 
-    const handleDownloadBaseDocument = () => {
-      console.log("DownloadBaseDocument");
+    const handleDownloadBaseDocument = async () => {
+      const grr = "GRR20200141";
+      const url = `${config.BACKEND_URL}/aluno/${grr}/${estagioID}/gerar-ficha`;
+
+      const file = await $fetch(url, {
+        method: "GET",
+      });
+
+      const fileURL = URL.createObjectURL(file);
+
+      return window.open(fileURL, "_blank");
+    };
+
+    const handleUploadFicha = async (event) => {
+      console.log("upload");
+      const file = event.files[0];
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      await alunoService
+        .uploadFichaDeAvaliacao("GRR20200141", formData)
+        .then(() => {
+          toast.add({
+            severity: "success",
+            summary: `Ficha de avaliação enviada!`,
+            detail: `A ficha de avaliação foi enviada com sucesso!`,
+            life: 3000,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.add({
+            severity: "error",
+            summary: "Ops!",
+            detail: "Tivemos um problema ao enviar a ficha de avaliação.",
+            life: 3000,
+          });
+        });
     };
 
     onMounted(() => {
@@ -56,6 +95,7 @@ export default defineComponent({
       handleGerarFichaAvaliacao,
       idFichaAvaliacao,
       handleDownloadBaseDocument,
+      handleUploadFicha,
     };
   },
 });
@@ -63,7 +103,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <div v-if="!idFichaAvaliacao">
       <h1>Gerar Ficha de Avaliação</h1>
       <div class="card">
@@ -108,9 +147,11 @@ export default defineComponent({
           <FileUpload
             accept=".pdf"
             :multiple="false"
-            :maxFileSize="1000000"
+            :maxFileSize="10000000"
             chooseLabel="Adicionar ficha assinada"
             mode="basic"
+            customUpload
+            @uploader="handleUploadFicha"
           />
         </div>
       </div>

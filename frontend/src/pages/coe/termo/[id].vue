@@ -20,6 +20,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const config = useRuntimeConfig();
     const route = useRoute();
     const toast = useToast();
 
@@ -27,14 +28,13 @@ export default defineComponent({
 
     const coeService = new CoeService();
 
-    const { data: termo, refresh } = useFetch(
-      `http://localhost:5000/termo/${id}`
-    );
+    const { data: termo, refresh } = useFetch(`/termo/${id}`);
 
     function refreshData() {
       refresh();
     }
 
+    console.log(termo);
     const state = reactive({
       confirmAction: null as null | "APROVAR" | "AJUSTAR" | "INDEFERIR",
 
@@ -154,6 +154,23 @@ export default defineComponent({
       }
     };
 
+    const handleDownloadTermo = async () => {
+      const grrAluno = termo?.value?.grrAluno;
+
+      let url = `${config.BACKEND_URL}/coe/${grrAluno}/download-termo`;
+      // if (termo?.tipoTermoDeEstagio === "TermoAditivo") {
+      //   url = `${config.BACKEND_URL}/aluno/${grrAluno}/termo-aditivo/${termo?.id}/gerar-termo-aditivo`;
+      // }
+
+      const file = await $fetch(url, {
+        method: "GET",
+      });
+
+      const fileURL = URL.createObjectURL(file);
+
+      return window.open(fileURL, "_blank");
+    };
+
     return {
       termo,
       refreshData,
@@ -162,6 +179,7 @@ export default defineComponent({
       getConfirmationHeader,
       getConfirmationButtonClass,
       handleParecerTermo,
+      handleDownloadTermo,
     };
   },
 });
@@ -169,9 +187,27 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <small>Processos > Ver processo</small>
     <h2>{{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}</h2>
+
+    <div class="absolute right-8 top-36 flex gap-2">
+      <Button
+        label="Ver documento"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        @click="handleDownloadTermo"
+      />
+
+      <NuxtLink
+        :to="`/estagio/${termo?.estagio?.id}?perfil=coe&termo=${termo?.id}`"
+      >
+        <Button
+          label="Ver estágio"
+          class="p-button-secondary"
+          icon="pi pi-eye"
+        />
+      </NuxtLink>
+    </div>
 
     <Aluno />
 
@@ -186,9 +222,7 @@ export default defineComponent({
     <SuspensaoEstagio :termo="termo" />
 
     <div
-      v-if="
-        termo?.statusTermo === 'EmAprovacao' && state.tipoUsuario !== 'ALUNO'
-      "
+      v-if="termo?.statusTermo === 'EmAprovacao'"
       class="flex align-items-end justify-content-end gap-2"
     >
       <Button

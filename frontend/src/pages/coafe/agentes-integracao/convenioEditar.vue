@@ -38,9 +38,7 @@ export default defineComponent({
       state.dataInicio = dataInicioFormatada;
       state.dataFim = dataFimFormatada;
     });
-    const { data: convenio, refresh } = await useFetch(
-      `http://localhost:5000/convenio/${id}`
-    );
+    const { data: convenio, refresh } = await useFetch(`/convenio/${id}`);
 
     const convenioService = new ConvenioService();
     const handleUpdateAgentes = async () => {
@@ -70,6 +68,13 @@ export default defineComponent({
           severity: "error",
           summary: "Erro",
           detail: "Os campos não podem ficar vazios",
+          life: 3000,
+        });
+      } else if (state.dataInicio > state.dataFim) {
+        return toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "A data incial precisa ser antes da Data final ",
           life: 3000,
         });
       }
@@ -106,7 +111,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <h2 class="mb-0 p-2 mt-4">Editar Convênio</h2>
 
     <div class="col-12">
@@ -114,7 +118,11 @@ export default defineComponent({
         <div class="flex flex-column gap-1 formgrid grid">
           <div class="field col">
             <label style="font-size: 20px" for="numero">Numero</label>
-            <InputText id="numero" type="text" v-model="state.numero" />
+            <InputNumber
+              v-model="state.numero"
+              inputId="numero"
+              :useGrouping="false"
+            />
           </div>
           <div class="field col">
             <label style="font-size: 20px" for="descricao">Descrição</label>

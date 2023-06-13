@@ -73,7 +73,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      baseURL: process.env.BACKEND_URL,
+      BACKEND_URL: process.env.BACKEND_URL,
     },
   },
 });

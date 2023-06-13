@@ -62,7 +62,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <h2 class="mb-0 p-2 mt-4">Novo Agente de Integração</h2>
 
     <div class="col-12">
@@ -75,24 +74,27 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label style="font-size: 20px" for="cnpj">CNPJ</label>
-            <InputText id="cnpj" type="text" v-model="state.cnpj" />
+            <InputMask
+              id="cnpj"
+              v-model="state.cnpj"
+              mask="99.999.999/9999-99"
+              placeholder="##.###.###/####-##"
+            />
           </div>
           <div class="field col">
             <label style="font-size: 20px" for="telefone">Telefone</label>
-            <InputText id="telefone" type="text" v-model="state.telefone" />
+            <InputMask
+              id="telefone"
+              v-model="state.telefone"
+              mask="(99)9 9999-9999"
+              placeholder="(99) 9-9999-9999"
+            />
           </div>
           <!-- <div class="field col">
               <label for="orgaoEmissor">Órgão Emissor</label>
               <InputText id="orgaoEmissor" type="text" disabled value="Teste" />
             </div> -->
         </div>
-      </div>
-      <div class="w-full flex justify-end mb-3">
-        <Button
-          @click="handleRegisterAgentes"
-          :label="'Adicionar'"
-          class="p-button-success"
-        />
       </div>
       <div class="w-full flex justify-end gap-2">
         <NuxtLink to="/coafe/coafeAgentes">

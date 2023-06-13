@@ -4,7 +4,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
   setup() {
     const route = useRoute();
-    const getIsTabActive = (tab: "coe") => {
+    const getIsTabActive = (tab: "coord") => {
       console.log(route.path);
 
       return route.path === tab;
@@ -13,13 +13,15 @@ export default defineComponent({
     const processos = [
       {
         label: "Termos de Compromisso",
-
         link: "/coord/processos/termo",
       },
       {
         label: "Termos Aditivos",
-
         link: "/coord/processos/termoAditivo",
+      },
+      {
+        label: "Termos de Rescisão",
+        link: "/coord/termo-rescisao",
       },
     ];
 

@@ -26,10 +26,7 @@ public class Coordenador extends Pessoa implements Serializable{
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="curso_id", referencedColumnName="id", nullable=true)
 	private Curso curso;
-	
-	/*@Column(name = "idCurso")
-	private Long idCurso;*/
-	
+		
 	@JsonIgnore
 	@OneToMany(mappedBy="coordenador", cascade=CascadeType.REMOVE)
 	private List<TermoDeEstagio> termoDeEstagio;
@@ -52,15 +49,7 @@ public class Coordenador extends Pessoa implements Serializable{
 		this.curso = curso;
 		this.termoDeEstagio = termoDeEstagio;
 	}
-	
-	/*public Coordenador(long id, String nome, String telefone, String cpf, Long idCurso,
-			List<TermoDeEstagio> termoDeEstagio) {
-		super(id, nome, telefone);
-		this.cpf = cpf;
-		this.idCurso = idCurso;
-		this.termoDeEstagio = termoDeEstagio;
-	}*/
-	
+		
 	public String getNome() {
 		return super.getNome();
 	}

@@ -45,6 +45,13 @@ export default defineComponent({
           detail: "Preencha todos os campos",
           life: 3000,
         });
+      } else if (state.dataInicio > state.dataFim) {
+        return toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "A data incial precisa ser antes da Data final ",
+          life: 3000,
+        });
       }
       try {
         const response = await convenioService
@@ -58,7 +65,7 @@ export default defineComponent({
           .then(() => {
             toast.add({
               severity: "success",
-              summary: "Agente de Integração adicionado com sucesso",
+              summary: "Convênio adicionado com sucesso",
               life: 3000,
             });
           });
@@ -77,7 +84,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
     <h2 class="mb-0 p-2 mt-4">Novo Convenio</h2>
 
     <div class="col-12">
@@ -86,7 +92,11 @@ export default defineComponent({
         <div class="flex flex-column gap-1 formgrid grid">
           <div class="field col">
             <label style="font-size: 20px" for="nome">Numero</label>
-            <InputText id="nome" type="text" v-model="state.numero" />
+            <InputNumber
+              v-model="state.numero"
+              inputId="numero"
+              :useGrouping="false"
+            />
           </div>
           <div class="field col">
             <label style="font-size: 20px" for="cnpj">Descrição</label>

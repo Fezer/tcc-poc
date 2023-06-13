@@ -2,9 +2,8 @@
 import { defineComponent, ref } from "vue";
 import aluno from "../../components/common/aluno.vue";
 import Contratante from "../../components/common/contratante.vue";
+import ObjetosDeEstagio from "../../components/common/objetos-de-estagio.vue";
 import planoAtividades from "../../components/common/plano-atividades.vue";
-import historicoDeMudancasVue from "./historicoDeMudancas.vue";
-import relatoriosVue from "./relatorios.vue";
 import Status from "../../components/common/statusEstagio.vue";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
@@ -15,30 +14,40 @@ export default defineComponent({
     PlanoAtividades: planoAtividades,
     Contratante,
     Status,
-    HistoricoDeMudancas: historicoDeMudancasVue,
-    Relatorios: relatoriosVue,
+    ObjetosDeEstagio,
   },
   async setup() {
     const route = useRoute();
 
     const { id } = route.params;
 
-    const { data: estagio, refresh } = await useFetch(
-      `http://localhost:5000/estagio/${id}`
-    );
+    const { data: estagio, refresh } = await useFetch(`/estagio/${id}`);
 
-    console.log(estagio);
-
-    // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
+    const { perfil, termoDeRescisao, termo, certificado } = route.query;
 
     const tipoUsuario = ref("ALUNO" as TipoUsuario);
 
     const cancelationConfirm = ref(false);
 
+    const getTipoTermo = () => {
+      if (termoDeRescisao) return "termo-rescisao";
+
+      if (certificado) return "certificados/parecer";
+
+      return "termo";
+    };
+
+    const tipoTermo = getTipoTermo();
+
     return {
       tipoUsuario,
       cancelationConfirm,
       estagio,
+      perfil,
+      termoDeRescisao,
+      termo,
+      tipoTermo,
+      certificado,
     };
   },
   methods: {},
@@ -47,7 +56,18 @@ export default defineComponent({
 
 <template>
   <div>
-    <Toast />
+    <NuxtLink
+      :to="`/${perfil}/${tipoTermo}/${termoDeRescisao || termo || certificado}`"
+      v-if="perfil && tipoTermo"
+    >
+      <Button
+        label="Voltar ao Termo"
+        icon="pi pi-arrow-left"
+        class="p-button-primary absolute right-8"
+      >
+      </Button>
+    </NuxtLink>
+
     <small class="m-0">Estágios > Ver estágio</small>
     <h2 class="m-0 mb-4">Estágio</h2>
 
@@ -64,13 +84,9 @@ export default defineComponent({
 
     <Contratante :termo="estagio" />
 
-    <!-- v-for relatorio in estagio?.relatorios -->
-    <!-- <div v-for="relatorio in estagio?.relatorioDeEstagio" :key="relatorio">
-      <h3>Relatório {{ relatorio }}</h3>
-      <NuxtLink :to="`/relatorio/${relatorio}`">
-        <Button label="Ver relatório" class="p-button-secondary"></Button>
-      </NuxtLink>
-    </div> -->
+    <SuspensaoEstagio :termo="estagio" />
+
+    <objetos-de-estagio :estagio="estagio" :perfil="perfil" />
   </div>
 </template>
 

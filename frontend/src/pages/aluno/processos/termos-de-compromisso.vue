@@ -1,9 +1,7 @@
 <script setup>
 const grr = "GRR20200141";
 
-const { data: termos } = await useFetch(
-  `http://localhost:5000/aluno/${grr}/termoDeCompromisso/`
-);
+const { data: termos } = await useFetch(`/aluno/${grr}/termoDeCompromisso/`);
 
 // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 </script>
@@ -42,7 +40,12 @@ const { data: termos } = await useFetch(
       <Column field="acoes" header="Ações" style="min-width: 12rem">
         <template #body="{ data }">
           <NuxtLink :to="`/aluno/termo/${data.id}`">
-            <Button type="primary"> Ver </Button>
+            <Button
+              class="p-button-icon-only p-button-outlined"
+              icon="pi pi-eye"
+              type="primary"
+            >
+            </Button>
           </NuxtLink>
         </template>
       </Column>

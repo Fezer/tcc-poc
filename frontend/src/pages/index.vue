@@ -8,7 +8,9 @@ definePageMeta({
 
 export default defineComponent({
   setup() {
+    const config = useRuntimeConfig();
     const router = useRouter();
+    const { setGRR } = useGRR();
 
     onMounted(async () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -34,18 +36,40 @@ export default defineComponent({
           });
           const tokenData = await response.json();
           const accessToken = tokenData.access_token;
-          console.log(accessToken);
           localStorage.setItem("accessToken", accessToken);
+
+          const decodedToken = parseJWT(accessToken);
+
+          const email = decodedToken["email"];
+
+          console.log(decodedToken);
 
           // redirect to aluno page
 
           globalThis.$fetch = ofetch.create({
-            baseURL: "http://localhost:5000",
+            baseURL: config.BACKEND_URL || "http://localhost:5000",
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
           });
 
+          // // get aluno grr
+          // if (email) {
+          //   const grr = await $fetch(
+          //     `http://siga.ufpr.br:8380/siga/api/graduacao/discente?email=${email}`,
+          //     {
+          //       method: "GET",
+          //       headers: {
+          //         origin: "http://localhost:3000",
+          //         Authorization: `Bearer ${accessToken}`,
+          //       },
+          //     }
+          //   );
+          //   console.log(grr);
+          //   setGRR(grr);
+          // }
+
+          console.log("Token de acesso obtido com sucesso!");
           router.push("/aluno");
         } catch (error) {
           router.replace("/login");

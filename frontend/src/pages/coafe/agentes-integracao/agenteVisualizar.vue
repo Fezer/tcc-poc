@@ -23,6 +23,33 @@
         </div>
       </div>
     </div>
+    <div class="flex flex-row justify-content-between flex-wrap pb-2 gap-2">
+      <NuxtLink to="/coafe/coafeAgentes">
+        <Button
+          label="Voltar"
+          class="p-button-secondary"
+          icon="pi pi-arrow-left"
+        />
+      </NuxtLink>
+      <NuxtLink :to="`agenteEditar?id=${agente.id}`">
+        <Button label="Editar" />
+      </NuxtLink>
+      <Button
+        @click="cancelVisibleAgente = true"
+        :label="'Deletar'"
+        icon="pi pi-times"
+        class="p-button-danger"
+      />
+    </div>
+    <div v-if="cancelVisibleAgente">
+      <CancelationConfirm
+        :onClose="() => (cancelVisibleAgente = false)"
+        :onConfirm="() => handleDeleteAgente(agente.id, agente.convenio.length)"
+        :header="`Remover Agente ${agente.nome}`"
+        :description="`Você realmente deseja remover o Agente ${agente.nome}? Essa ação não poderá ser desfeita.`"
+      >
+      </CancelationConfirm>
+    </div>
     <DataTable class="flex-column" :value="agente.convenio" rowHover>
       <template #header>
         <div class="flex flex-row justify-content-between gap-10">
@@ -55,15 +82,15 @@
       </Column>
       <Column field="dataInicio" header="Data de Inicio">
         <template #body="{ data }">
-          {{ data.dataInicio }}
+          <p>{{ parseDate(data?.dataInicio) }}</p>
         </template>
       </Column>
       <Column field="dataFim" header="Data de Fim">
         <template #body="{ data }">
-          {{ data.dataFim }}
+          {{ parseDate(data?.dataFim) }}
         </template>
       </Column>
-      <Column field="button">
+      <Column field="button" header="Editar">
         <template #body="{ data }">
           <NuxtLink
             :to="`/coafe/agentes-integracao/convenioEditar?id=${data.id}`"
@@ -72,19 +99,26 @@
           </NuxtLink>
         </template>
       </Column>
+      <Column field="button" header="Deletar">
+        <template #body="{ data }">
+          <Button
+            @click="cancelVisibleConvenio = true"
+            :label="'Deletar'"
+            icon="pi pi-times"
+            class="p-button-danger"
+          />
+          <div v-if="cancelVisibleConvenio">
+            <CancelationConfirm
+              :onClose="() => (cancelVisibleConvenio = false)"
+              :onConfirm="() => handleDeleteConvenio(data.id)"
+              :header="`Remover Convênio ${data.numero}`"
+              :description="`Você realmente deseja remover o Convênio ${data.numero}? Essa ação não poderá ser desfeita.`"
+            >
+            </CancelationConfirm>
+          </div>
+        </template>
+      </Column>
     </DataTable>
-    <div class="flex flex-row justify-content-end flex-wrap pb-2 gap-2">
-      <NuxtLink to="/coafe/coafeAgentes">
-        <Button
-          label="Voltar"
-          class="p-button-secondary"
-          icon="pi pi-arrow-left"
-        />
-      </NuxtLink>
-      <NuxtLink :to="`agenteEditar?id=${agente.id}`">
-        <Button label="Editar" />
-      </NuxtLink>
-    </div>
   </div>
 </template>
 <script setup>
@@ -92,9 +126,86 @@ import Button from "primevue/button";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
+import { useToast } from "primevue/usetoast";
+import parseDate from "~/utils/parseDate";
+import CancelationConfirm from "~~/src/components/common/cancelation-confirm.vue";
+import ConvenioService from "~~/services/ConvenioService";
+import AgenteService from "~~/services/AgenteService";
 const route = useRoute();
+const router = useRouter();
+const cancelVisibleAgente = ref(false);
+const cancelVisibleConvenio = ref(false);
 const id = route.query.id;
-const { data: agente } = await useFetch(
-  `http://localhost:5000/agente-integrador/${id}`
-);
+const { data: agente, refresh } = await useFetch(`/agente-integrador/${id}`);
+const convenioService = new ConvenioService();
+const agenteService = new AgenteService();
+const toast = useToast();
+const handleDeleteConvenio = async (id) => {
+  cancelVisibleConvenio.value = false;
+  try {
+    const response = await convenioService.deletaConvenio(id).then(() => {
+      return toast.add({
+        severity: "success",
+        summary: "Convênio deletado com sucesso",
+        life: 3000,
+      });
+    });
+  } catch (e) {
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Erro ao deletar o convênio",
+      life: 3000,
+    });
+    console.log(e);
+  }
+  refresh();
+  return {
+    state,
+    id,
+    response,
+    cancelVisibleConvenio,
+    handleDeleteConvenio,
+  };
+};
+const handleDeleteAgente = async (id, numeroCovenios) => {
+  cancelVisibleAgente.value = false;
+  if (numeroCovenios != 0) {
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "O Agente não pode ser Deletado pois possui convênios",
+      life: 3000,
+    });
+  }
+  try {
+    const response = await agenteService.deletaAgente(id).then(() => {
+      return (
+        toast.add({
+          severity: "success",
+          summary: "Agente de Integração deletado com sucesso",
+          life: 3000,
+        }),
+        router.push(`../coafeAgentes`)
+      );
+    });
+  } catch (e) {
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Erro ao deletar o Agente de Integração",
+      life: 3000,
+    });
+    console.log(e);
+  }
+
+  return {
+    state,
+    id,
+    response,
+    cancelVisibleAgente,
+    handleDeleteConvenio,
+  };
+};
 </script>

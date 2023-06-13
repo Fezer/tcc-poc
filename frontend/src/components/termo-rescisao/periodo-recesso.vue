@@ -35,12 +35,12 @@ export default defineComponent({
 
     const handleRemoveRecessPeriod = async () => {
       // caso não exista termo ou estágio, esse período ainda não foi cadastrado no back
-      if (!periodo?.id) return onRemove(periodo.dataInicio);
+      if (!periodo?.id) return onRemove(periodo.dataInicio, "dataInicio");
 
       await termoService
         .removePeriodoDeRecesso("GRR20200141", termo, estagio, periodo.id)
         .then(() => {
-          onRemove(periodo.dataInicio);
+          onRemove(periodo.id, "id");
         })
         .catch((err) => {
           console.log(err);
@@ -68,7 +68,7 @@ export default defineComponent({
         <p>{{ parseDate(periodo?.dataFim) }}</p>
       </div>
 
-      <div class="flex items-center justify-end col-2" v-if="!!termo">
+      <div class="flex items-center justify-end col-2" v-if="!!estagio">
         <Button
           label="Excluir"
           icon="pi pi-times"
