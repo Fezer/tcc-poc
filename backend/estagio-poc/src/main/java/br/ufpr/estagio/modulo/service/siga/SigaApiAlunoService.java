@@ -24,7 +24,7 @@ public class SigaApiAlunoService {
      
     public Discente buscarAlunoPorGrr(String grr, String accessToken) {
     	// TO-DO: colocar dentro de um try-catch e tratar possíveis erros.
-		URI uri = UriComponentsBuilder.fromUriString("https://siga.ufpr.br:8380/siga/api/graduacao/discentes").queryParam("grr", grr).build().toUri();
+		URI uri = UriComponentsBuilder.fromUriString("https://siga-hml.teste.ufpr.br/siga/api/graduacao/discentes").queryParam("grr", grr).build().toUri();
         RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", accessToken);
