@@ -32,7 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login")
                         .permitAll()
                         .anyRequest()
-                        .authenticated());
+                        .permitAll());
 
         // http.authorizeHttpRequests(requests -> requests
         // .requestMatchers("/siga*")
