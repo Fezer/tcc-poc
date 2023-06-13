@@ -24,7 +24,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        // disable csrf for /auth/login
+        // disable csrf for /auth/login para permitir acesso a rota sem token de
+        // autenticação
         http.csrf()
                 .ignoringRequestMatchers("/auth/login")
                 .and()
