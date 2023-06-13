@@ -54,7 +54,7 @@ export default defineComponent({
         @click="onClose"
       />
       <Button
-        label="Cancelar"
+        label="Confirmar"
         icon="pi pi-check"
         class="p-button-danger"
         autofocus

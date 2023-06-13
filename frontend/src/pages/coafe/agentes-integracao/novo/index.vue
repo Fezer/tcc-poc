@@ -50,8 +50,10 @@ export default defineComponent({
       } catch (e) {
         console.log(e);
       }
+      state.nome = null;
+      state.cnpj = null;
+      state.telefone = null;
     };
-
     return {
       state,
       handleRegisterAgentes,

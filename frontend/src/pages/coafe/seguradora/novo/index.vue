@@ -3,7 +3,6 @@ import { useToast } from "primevue/usetoast";
 import { defineComponent, reactive } from "vue";
 import SeguradoraService from "~~/services/SeguradoraService";
 import InputSwitch from "primevue/inputswitch";
-
 export default defineComponent({
   setup() {
     const toast = useToast();
@@ -24,16 +23,19 @@ export default defineComponent({
           life: 3000,
         });
       }
-
-      await seguradoraService.criarSeguradora({ ...state }).then(() => {
-        toast.add({
-          severity: "success",
-          summary: "Seguradora criada com sucesso",
-          life: 3000,
+      try {
+        await seguradoraService.criarSeguradora({ ...state }).then(() => {
+          toast.add({
+            severity: "success",
+            summary: "Seguradora criada com sucesso",
+            life: 3000,
+          });
         });
-      });
+      } catch (e) {
+        console.log(e);
+      }
+      state.nome = null;
     };
-
     return {
       state,
       handleRegisterSeguradora,

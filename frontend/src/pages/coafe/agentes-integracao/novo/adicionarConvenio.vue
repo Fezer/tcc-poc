@@ -72,6 +72,10 @@ export default defineComponent({
       } catch (e) {
         console.log(e);
       }
+      state.dataFim = null;
+      state.dataInicio = null;
+      state.numero = null;
+      state.descricao = null;
     };
     return {
       state,
