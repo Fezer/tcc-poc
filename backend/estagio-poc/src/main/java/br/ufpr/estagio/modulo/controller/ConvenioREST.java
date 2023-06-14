@@ -38,7 +38,7 @@ public class ConvenioREST {
 	private ModelMapper mapper;
     
     @PostMapping("/novo")
-	public ResponseEntity<ConvenioDTO> novoConvenio(@RequestBody ConvenioDTO convenioDTO){
+	public ResponseEntity<Object> novoConvenio(@RequestBody ConvenioDTO convenioDTO){
 		try {
 			Convenio convenio = mapper.map(convenioDTO, Convenio.class);
 			
@@ -50,9 +50,14 @@ public class ConvenioREST {
 			
 			return new ResponseEntity<>(convenioDTO, HttpStatus.CREATED);	
 			
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
     
@@ -78,28 +83,38 @@ public class ConvenioREST {
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		} catch (NumberFormatException ex) {
-		    ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um número!");
+		    ErrorResponse response = new ErrorResponse("Id do convênio deve ser um número!");
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 		    ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-		} catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/")
-	public ResponseEntity<List<ConvenioDTO>> listarApolices() {
+	public ResponseEntity<Object> listarApolices() {
 	    try {
 	    	List<Convenio> convenios = convenioService.listarConvenios();
 	    	List<ConvenioDTO> conveniosDTO = convenios.stream()
 	    			.map(ap -> mapper.map(ap, ConvenioDTO.class))
 	    			.collect(Collectors.toList());
 	    	return ResponseEntity.ok().body(conveniosDTO);
-	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 	
@@ -140,14 +155,19 @@ public class ConvenioREST {
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		} catch (NumberFormatException ex) {
-		    ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um número!");
+		    ErrorResponse response = new ErrorResponse("Id do convênio deve ser um número!");
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 		    ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-		} catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 	
@@ -172,14 +192,19 @@ public class ConvenioREST {
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		} catch (NumberFormatException ex) {
-		    ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um número!");
+		    ErrorResponse response = new ErrorResponse("Id do convênio deve ser um número!");
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 		    ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-		} catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 }
