@@ -234,7 +234,7 @@ public class ApoliceREST {
 	    	ex.printStackTrace();
 	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    }  catch (RuntimeException ex) {
+	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

@@ -90,6 +90,7 @@ public class ContratanteREST {
 			return new ResponseEntity<>(contratanteDTO, HttpStatus.CREATED);	
 			
 		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
@@ -121,12 +122,15 @@ public class ContratanteREST {
 		    return ResponseEntity.status(HttpStatus.OK).body(contratanteDTO);
 	
     	} catch (NotFoundException ex) {
+    		ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Id do contratante deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
@@ -156,9 +160,11 @@ public class ContratanteREST {
 			    return ResponseEntity.status(HttpStatus.OK).body(contratantesDTO);
 			}
 	    } catch (NotFoundException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
@@ -185,9 +191,11 @@ public class ContratanteREST {
 			    return ResponseEntity.ok().body(contratantesDTO);
 			}
 	    } catch (NotFoundException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
@@ -214,9 +222,11 @@ public class ContratanteREST {
 			    return ResponseEntity.ok().body(contratantesDTO);
 			}
 	    } catch (NotFoundException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
@@ -308,12 +318,15 @@ public class ContratanteREST {
 		    	throw new NotFoundException("Contratante não encontrado!");
 		    }
 	    } catch (NotFoundException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Id do contratante deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
@@ -346,12 +359,15 @@ public class ContratanteREST {
 		    	throw new NotFoundException("Contratante não encontrado!");
 		    }
 	    } catch (NotFoundException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Id do contratante deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
@@ -403,12 +419,15 @@ public class ContratanteREST {
 				return ResponseEntity.ok().body(contratanteDTO);
 			}
 		} catch (NotFoundException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Id do contratante deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {

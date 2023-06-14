@@ -80,13 +80,16 @@ public class ConvenioREST {
 		    return ResponseEntity.status(HttpStatus.OK).body(convenioDTO);
 		    
     	} catch (NotFoundException ex) {
+    		ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
 		    ErrorResponse response = new ErrorResponse("Id do convênio deve ser um número!");
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
-		    ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -152,12 +155,15 @@ public class ConvenioREST {
 				throw new NotFoundException("Convênio não encontrado!");
 			}
 		} catch (NotFoundException ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
 		    ErrorResponse response = new ErrorResponse("Id do convênio deve ser um número!");
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
 		    ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (RuntimeException ex) {
@@ -189,12 +195,15 @@ public class ConvenioREST {
 		    	throw new NotFoundException("Convênio não encontrado!");
 		    }
 	    } catch (NotFoundException ex) {
+	    	ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
 		    ErrorResponse response = new ErrorResponse("Id do convênio deve ser um número!");
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
 		    ErrorResponse response = new ErrorResponse(ex.getMessage());
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (RuntimeException ex) {

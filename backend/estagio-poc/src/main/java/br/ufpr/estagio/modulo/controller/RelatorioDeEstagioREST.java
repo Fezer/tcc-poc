@@ -87,13 +87,16 @@ public class RelatorioDeEstagioREST {
 		    RelatorioDeEstagioDTO relatorioDeEstagioDTO = mapper.map(relatorioDeEstagio.get(), RelatorioDeEstagioDTO.class);
 		    return ResponseEntity.status(HttpStatus.OK).body(relatorioDeEstagioDTO);
     	} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+    		ex.printStackTrace();
+    		ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -153,13 +156,16 @@ public class RelatorioDeEstagioREST {
 		    relatorioDeEstagioDTO = mapper.map(relatorioDeEstagioAtualizado, RelatorioDeEstagioDTO.class);
 	        return ResponseEntity.ok().body(relatorioDeEstagioDTO);
     	} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+    		ex.printStackTrace();
+    		ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -192,16 +198,20 @@ public class RelatorioDeEstagioREST {
 		    RelatorioDeEstagioDTO relatorioDeEstagioDTO = mapper.map(relatorioDeEstagioAtualizado, RelatorioDeEstagioDTO.class);
 	        return ResponseEntity.ok().body(relatorioDeEstagioDTO);
     	} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+    		ex.printStackTrace();
+    		ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (IllegalArgumentException ex) {
-			ErrorResponse response = new ErrorResponse("Valor para definir tipo do relatório de estágio inválido.");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Valor para definir tipo do relatório de estágio inválido.");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -233,13 +243,16 @@ public class RelatorioDeEstagioREST {
 		    
 		    return ResponseEntity.noContent().build();
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();

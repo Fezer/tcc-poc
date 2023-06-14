@@ -95,13 +95,16 @@ public class FichaDeAvaliacaoREST {
 		    FichaDeAvaliacaoDTO fichaDeAvaliacaoDTO = mapper.map(fichaDeAvaliacao.get(), FichaDeAvaliacaoDTO.class);
 		    return ResponseEntity.status(HttpStatus.OK).body(fichaDeAvaliacaoDTO);
     	} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+    		ex.printStackTrace();
+    		ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -193,19 +196,24 @@ public class FichaDeAvaliacaoREST {
 		    fichaDeAvaliacaoDTO = mapper.map(fichaDeAvaliacaoAtualizada, FichaDeAvaliacaoDTO.class);
 	        return ResponseEntity.ok().body(fichaDeAvaliacaoDTO);
     	} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+    		ex.printStackTrace();
+    		ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (HttpMessageNotReadableException ex) {
+	    	ex.printStackTrace();
 	    	ErrorResponse response = new ErrorResponse("Valor de avaliação inválido.");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (IllegalArgumentException ex) {
-			ErrorResponse response = new ErrorResponse("Valor de avaliação inválido.");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Valor de avaliação inválido.");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -237,13 +245,16 @@ public class FichaDeAvaliacaoREST {
 		    
 		    return ResponseEntity.noContent().build();
     	} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+    		ex.printStackTrace();
+    		ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();

@@ -61,7 +61,8 @@ public class SeguradoraREST {
 			seguradoraDTO = mapper.map(seguradora, SeguradoraDTO.class);
 			return new ResponseEntity<>(seguradoraDTO, HttpStatus.CREATED);
 		} catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -118,13 +119,16 @@ public class SeguradoraREST {
 			apolice = mapper.map(apoliceNovo, ApoliceDTO.class);
 			return new ResponseEntity<>(apolice, HttpStatus.CREATED);
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -155,13 +159,16 @@ public class SeguradoraREST {
 		    SeguradoraDTO seguradoraDTO = mapper.map(seguradora, SeguradoraDTO.class);
 		    return ResponseEntity.status(HttpStatus.OK).body(seguradoraDTO);
 	    } catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -230,13 +237,16 @@ public class SeguradoraREST {
     			throw new NotFoundException("Seguradora não encontrada!");
             }
         } catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+        	ex.printStackTrace();
+        	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -279,13 +289,16 @@ public class SeguradoraREST {
             }
             
     	} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+    		ex.printStackTrace();
+    		ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -318,13 +331,16 @@ public class SeguradoraREST {
             }
         	
         } catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+        	ex.printStackTrace();
+        	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();

@@ -108,13 +108,16 @@ public class EstagioREST {
 				return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -153,16 +156,20 @@ public class EstagioREST {
 				return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (IllegalArgumentException ex) {
-			ErrorResponse response = new ErrorResponse("Valor para definir tipo do estágio inválido.");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Valor para definir tipo do estágio inválido.");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -206,16 +213,20 @@ public class EstagioREST {
 				return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (IllegalArgumentException ex) {
-			ErrorResponse response = new ErrorResponse("Valor para definir se o estágio é na UFPR inválido.");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Valor para definir se o estágio é na UFPR inválido.");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -258,16 +269,20 @@ public class EstagioREST {
 				return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (IllegalArgumentException ex) {
-			ErrorResponse response = new ErrorResponse("Valor para definir se o estágio é da SEED inválido.");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Valor para definir se o estágio é da SEED inválido.");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();

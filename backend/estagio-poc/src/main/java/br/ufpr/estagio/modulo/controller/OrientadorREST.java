@@ -99,13 +99,19 @@ public class OrientadorREST {
 				return new ResponseEntity<>(listaDTO, HttpStatus.OK);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
-			ex.printStackTrace();
+	    	ex.printStackTrace();ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch(Exception ex) {
@@ -140,10 +146,16 @@ public class OrientadorREST {
 				return new ResponseEntity<>(listaDTO, HttpStatus.OK);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -180,10 +192,16 @@ public class OrientadorREST {
 				return new ResponseEntity<>(listaDTO, HttpStatus.OK);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -219,10 +237,16 @@ public class OrientadorREST {
 				return ResponseEntity.ok().body(listaRelatoriosDTO);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -258,10 +282,16 @@ public class OrientadorREST {
 				return ResponseEntity.ok().body(listaRelatoriosDTO);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -306,10 +336,16 @@ public class OrientadorREST {
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(relatorio, RelatorioDeEstagioDTO.class));
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -344,10 +380,16 @@ public class OrientadorREST {
 				return ResponseEntity.ok().body(listaCertificadosDTO);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -384,10 +426,16 @@ public class OrientadorREST {
 						.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do orientador deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -433,10 +481,16 @@ public class OrientadorREST {
 				return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id deve ser um número!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -500,10 +554,16 @@ public class OrientadorREST {
 			
 			
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do orientador deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();

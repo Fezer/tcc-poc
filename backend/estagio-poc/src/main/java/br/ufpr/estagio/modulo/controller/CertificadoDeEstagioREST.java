@@ -92,12 +92,15 @@ public class CertificadoDeEstagioREST {
 		    CertificadoDeEstagioDTO certificadoDeEstagioDTO = mapper.map(certificadoDeEstagio.get(), CertificadoDeEstagioDTO.class);
 		    return ResponseEntity.status(HttpStatus.OK).body(certificadoDeEstagioDTO);
     	} catch (NotFoundException ex) {
+    		ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
@@ -131,12 +134,15 @@ public class CertificadoDeEstagioREST {
 		    return ResponseEntity.noContent().build();
 		    
     	} catch (NotFoundException ex) {
+    		ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {

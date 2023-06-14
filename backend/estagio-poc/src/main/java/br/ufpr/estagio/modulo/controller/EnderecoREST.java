@@ -64,6 +64,7 @@ public class EnderecoREST {
 		Endereco newEndereco = enderecoService.criarEndereco(mapper.map(enderecoDTO, Endereco.class));
 		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newEndereco, EnderecoDTO.class));
 		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
@@ -121,13 +122,16 @@ public class EnderecoREST {
 				return new ResponseEntity<>(enderecoDTO, HttpStatus.OK);
 			}
 		} catch (NotFoundException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do endereço deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do endereço deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -176,13 +180,16 @@ public class EnderecoREST {
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(enderecoAtualizado, EnderecoDTO.class));
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do endereço deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do endereço deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -213,13 +220,16 @@ public class EnderecoREST {
 				return ResponseEntity.status(HttpStatus.OK).body(null);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do endereço deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do endereço deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (RuntimeException ex) {
 			ex.printStackTrace();

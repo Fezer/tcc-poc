@@ -53,6 +53,7 @@ public class CursoREST {
 			}
 			
 		} catch (NoSuchElementException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Curso não encontrado!");
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (RuntimeException ex) {
@@ -79,6 +80,7 @@ public class CursoREST {
 				return ResponseEntity.status(HttpStatus.OK).body(listaOrientadores.stream().map(e -> mapper.map(e, OrientadorDTO.class)).collect(Collectors.toList()));
 			}
 		} catch (NoSuchElementException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Curso não encontrado!");
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (RuntimeException ex) {
