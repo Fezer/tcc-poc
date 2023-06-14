@@ -1,6 +1,5 @@
 package br.ufpr.estagio.modulo.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -15,7 +14,6 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -77,9 +75,6 @@ import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeRescisaoService;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 @CrossOrigin
 @RestController
@@ -122,14 +117,10 @@ public class AlunoREST {
 	@Autowired
 	private ModelMapper mapper;
 
-	private final ResourceLoader resourceLoader;
-
-	public AlunoREST(ResourceLoader resourceLoader) {
-		this.resourceLoader = resourceLoader;
-	}
-
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}")
-	public ResponseEntity<Aluno> buscarAlunoPorGrr(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> buscarAlunoPorGrr(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -141,22 +132,37 @@ public class AlunoREST {
 					return ResponseEntity.status(HttpStatus.OK).body(mapper.map(aluno, Aluno.class));
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
+
+	@ResponseBody
 	@GetMapping("/email/{emailAluno}")
-	public ResponseEntity<Aluno> buscarAlunoPorEmail(@PathVariable String emailAluno, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> buscarAlunoPorEmail(@PathVariable String emailAluno,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (emailAluno.isBlank() || emailAluno.isEmpty()) {
-				throw new BadRequestException("email do aluno não informado!");
+				throw new BadRequestException("Email do aluno não informado!");
 			} else {
 				Optional<Aluno> aluno = alunoService.buscarAlunoPorEmail(emailAluno, accessToken);
 				if (aluno.isEmpty()) {
@@ -165,19 +171,35 @@ public class AlunoREST {
 					return ResponseEntity.status(HttpStatus.OK).body(mapper.map(aluno.get(), Aluno.class));
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O email informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@PostMapping("/{grrAlunoURL}/estagio")
-	public ResponseEntity<EstagioDTO> novoEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> novoEstagio(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -191,19 +213,34 @@ public class AlunoREST {
 					return new ResponseEntity<>(estagioDTO, HttpStatus.CREATED);
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@DeleteMapping("/{grrAlunoURL}/estagio/{idEstagio}")
-	public ResponseEntity<Void> deletarEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @PathVariable Long idEstagio) {
+	public ResponseEntity<Object> deletarEstagio(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable Long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -221,20 +258,35 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
-	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}")
 	@ResponseBody
-	public ResponseEntity<Object> cancelarEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @PathVariable Long idEstagio) {
+	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}")
+	public ResponseEntity<Object> cancelarEstagio(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable Long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -248,8 +300,8 @@ public class AlunoREST {
 						throw new NotFoundException("Estágio não encontrado!");
 					} else {
 						if (estagio.getStatusEstagio() == EnumStatusEstagio.Aprovado) {
-							return ResponseEntity.status(HttpStatus.NOT_FOUND)
-									.body(new ErrorResponse("Não é possível cancelar um estágio aprovado."));
+							return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+									.body(new ErrorResponse("Não é possível cancelar um estágio já aprovado!"));
 						} else {
 							alunoService.cancelarEstagio(estagio);
 						}
@@ -257,62 +309,87 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
-	@GetMapping("/{grrAlunoURL}/dadosAuxiliares")
 	@ResponseBody
-	public ResponseEntity<Object> listarDadosAuxiliares(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	@GetMapping("/{grrAlunoURL}/dadosAuxiliares")
+	public ResponseEntity<Object> buscarDadosAuxiliares(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
 				Optional<Aluno> alunoOptional = alunoService.buscarAlunoGrr(grrAlunoURL, accessToken);
-				Aluno aluno = alunoOptional.get();
-
-				if (aluno == null)
+				if (alunoOptional.isEmpty()) {
 					throw new NotFoundException("Aluno não encontrado!");
+				}
+				Aluno aluno = alunoOptional.get();
+				if (aluno.getDadosAuxiliares() == null) {
+					throw new NotFoundException("Aluno não possuí dados auxilares cadastrados!");
+				}
 
-				DadosAuxiliares dados = new DadosAuxiliares();
+				DadosAuxiliares dados = dadosService.buscarDadosAuxiliaresPorId(aluno.getDadosAuxiliares().getId());
 
-				dados.setId(aluno.getDadosAuxiliares().getId());
-
-				dados = dadosService.buscarDadosAuxiliaresPorId(dados.getId());
-
-				if (dados == null)
+				if (dados == null) {
 					throw new NotFoundException("Dados não encontrados!");
-
+				}
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(dados, DadosAuxiliares.class));
 			}
-
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
-	@PutMapping("/{grrAlunoURL}/dadosAuxiliares")
 	@ResponseBody
-	public ResponseEntity<Object> atualizarDadosAuxiliares(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@RequestBody DadosAuxiliaresDTO dadosDTO) {
+	@PutMapping("/{grrAlunoURL}/dadosAuxiliares")
+	public ResponseEntity<Object> atualizarDadosAuxiliares(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @RequestBody DadosAuxiliaresDTO dadosDTO) {
 		try {
 			Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL, accessToken);
-			Aluno alunoAntigo = aluno.get();
-
 			if (aluno.isPresent()) {
+				Aluno alunoAntigo = aluno.get();
 				DadosAuxiliares dadosAtualizado = mapper.map(dadosDTO, DadosAuxiliares.class);
 
 				dadosAtualizado.setId(alunoAntigo.getDadosAuxiliares().getId());
@@ -321,91 +398,133 @@ public class AlunoREST {
 				dadosAtualizado = dadosService.atualizarDados(dadosAtualizado);
 				DadosAuxiliaresDTO dadosDTOAtualizado = mapper.map(dadosAtualizado, DadosAuxiliaresDTO.class);
 
-				return ResponseEntity.ok().body(dadosDTOAtualizado);
+				// return ResponseEntity.ok().body(dadosDTOAtualizado);
+				return ResponseEntity.status(HttpStatus.OK).body(dadosDTOAtualizado);
 			} else {
 				throw new NotFoundException("Os dados não foram encontrados.");
 			}
 
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@PostMapping("/{grrAlunoURL}/dadosBancarios")
-	public ResponseEntity<DadosBancariosDTO> criarDadosBancarios(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@RequestBody DadosBancariosDTO dadosBancariosDTO) {
+	public ResponseEntity<Object> criarDadosBancarios(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @RequestBody DadosBancariosDTO dadosBancariosDTO) {
 		try {
 			Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL, accessToken);
-			Aluno alunoAntigo = aluno.get();
-
 			if (aluno.isPresent()) {
+				Aluno alunoAntigo = aluno.get();
 				DadosBancarios dadosBancarios = mapper.map(dadosBancariosDTO, DadosBancarios.class);
-
 				dadosBancarios = dadosBancariosService.criarDadosBancarios(alunoAntigo, dadosBancarios);
-
 				dadosBancariosDTO = mapper.map(dadosBancarios, DadosBancariosDTO.class);
-
-				return new ResponseEntity<>(dadosBancariosDTO, HttpStatus.CREATED);
+				return ResponseEntity.status(HttpStatus.CREATED).body(dadosBancariosDTO);
+				// return new ResponseEntity<>(dadosBancariosDTO, HttpStatus.CREATED);
 			} else {
-				throw new NotFoundException("Os dados não foram encontrados.");
+				throw new NotFoundException("Aluno não encontrado!");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
-	@GetMapping("/{grrAlunoURL}/dadosBancarios")
 	@ResponseBody
-	public ResponseEntity<Object> listarDadosBancarios(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	@GetMapping("/{grrAlunoURL}/dadosBancarios")
+	public ResponseEntity<Object> buscarDadosBancarios(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
 				Optional<Aluno> alunoOptional = alunoService.buscarAlunoGrr(grrAlunoURL, accessToken);
-				Aluno aluno = alunoOptional.get();
-
-				if (aluno == null)
+				if (alunoOptional.isEmpty()) {
 					throw new NotFoundException("Aluno não encontrado!");
-
+				}
+				Aluno aluno = alunoOptional.get();
+				if (aluno.getDadosBancarios() == null) {
+					throw new NotFoundException("Aluno não possuí dados bancários cadastrados!");
+				}
 				DadosBancarios dados = new DadosBancarios();
-
 				dados.setId(aluno.getDadosBancarios().getId());
-
 				dados = dadosBancariosService.buscarDadosBancariosPorId(dados.getId());
 
-				if (dados == null)
+				if (dados == null) {
 					throw new NotFoundException("Dados não encontrados!");
-
+				}
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(dados, DadosBancarios.class));
 			}
-
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
-	@PutMapping("/{grrAlunoURL}/dadosBancarios")
 	@ResponseBody
-	public ResponseEntity<Object> atualizarDadosBancarios(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@RequestBody DadosBancariosDTO dadosDTO) {
+	@PutMapping("/{grrAlunoURL}/dadosBancarios")
+	public ResponseEntity<Object> atualizarDadosBancarios(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @RequestBody DadosBancariosDTO dadosDTO) {
 		try {
 			Optional<Aluno> aluno = alunoService.buscarAlunoGrr(grrAlunoURL, accessToken);
-			Aluno alunoAntigo = aluno.get();
-
 			if (aluno.isPresent()) {
+				Aluno alunoAntigo = aluno.get();
 				DadosBancarios dadosAtualizado = mapper.map(dadosDTO, DadosBancarios.class);
 
 				dadosAtualizado.setId(alunoAntigo.getDadosBancarios().getId());
@@ -414,25 +533,39 @@ public class AlunoREST {
 				dadosAtualizado = dadosBancariosService.atualizarDados(dadosAtualizado);
 				DadosBancariosDTO dadosDTOAtualizado = mapper.map(dadosAtualizado, DadosBancariosDTO.class);
 
-				return ResponseEntity.ok().body(dadosDTOAtualizado);
+				return ResponseEntity.status(HttpStatus.OK).body(dadosDTOAtualizado);
+				// return ResponseEntity.ok().body(dadosDTOAtualizado);
 			} else {
-				throw new NotFoundException("Os dados não foram encontrados.");
+				throw new NotFoundException("Aluno não encontrado!");
 			}
-
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@PutMapping("/{grrAlunoURL}/termo/{idTermo}/solicitarAprovacaoTermo")
-	public ResponseEntity<TermoDeEstagioDTO> solicitarAprovacaoTermo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@PathVariable Long idTermo) {
+	public ResponseEntity<Object> solicitarAprovacaoTermo(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable Long idTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -452,19 +585,34 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/estagio/emPreenchimento")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmPreenchimento(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> buscarEstagioEmPreenchimento(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -484,22 +632,38 @@ public class AlunoREST {
 							listEstagioDTO.add(estagioDTO);
 						}
 					}
-					return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
+					// return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
+					return ResponseEntity.status(HttpStatus.OK).body(listEstagioDTO);
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/estagio/emAprovacao")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmAprovacao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> buscarEstagioEmAprovacao(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -519,17 +683,31 @@ public class AlunoREST {
 							listEstagioDTO.add(estagioDTO);
 						}
 					}
-					return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
+					// return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
+					return ResponseEntity.status(HttpStatus.OK).body(listEstagioDTO);
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
@@ -538,8 +716,10 @@ public class AlunoREST {
 	 * iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em
 	 * andamento.
 	 **/
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/estagio/emProgresso")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioEmProgresso(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> buscarEstagioEmProgresso(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -559,23 +739,38 @@ public class AlunoREST {
 							listEstagioDTO.add(estagioDTO);
 						}
 					}
-					return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
+					// return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
+					return ResponseEntity.status(HttpStatus.OK).body(listEstagioDTO);
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/estagio")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioPorStatus(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@RequestParam String statusEstagio) {
+	public ResponseEntity<Object> buscarEstagioPorStatus(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @RequestParam String statusEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -598,19 +793,34 @@ public class AlunoREST {
 					return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/estagio/")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioPorAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> buscarEstagioPorAluno(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -633,20 +843,34 @@ public class AlunoREST {
 					return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/estagio/termoCompromisso")
-	public ResponseEntity<List<EstagioDTO>> buscarEstagioPorStatusTermoCompromisso(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@RequestParam String statusTermo) {
+	public ResponseEntity<Object> buscarEstagioPorStatusTermoCompromisso(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @RequestParam String statusTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -669,31 +893,46 @@ public class AlunoREST {
 					return new ResponseEntity<>(listEstagioDTO, HttpStatus.OK);
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	/*
 	 * @GetMapping("/{grrAlunoURL}/gerar-termo") public ResponseEntity<byte[]>
-	 * gerarTermoPdf(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) throws IOException {
+	 * gerarTermoPdf(@PathVariable String
+	 * grrAlunoURL, @RequestHeader("Authorization") String accessToken) throws
+	 * IOException {
 	 * 
 	 * // TO-DO: Jogar dentro de um try-catch
 	 * 
 	 * if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) { throw new
 	 * BadRequestException("GRR do aluno não informado!"); } else { Aluno aluno =
-	 * alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken); if (aluno == null) { throw new
-	 * NotFoundException("Aluno não encontrado!"); } else { List<Estagio> estagio =
-	 * estagioService.buscarEstagioPorAluno(aluno); if (estagio.get(0) == null) {
-	 * throw new NotFoundException("Estágio não encontrado para o aluno " +
-	 * aluno.getNome()); } else { byte[] pdf = geradorService.gerarPdf(aluno,
-	 * estagio.get(0));
+	 * alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken); if (aluno == null)
+	 * { throw new NotFoundException("Aluno não encontrado!"); } else {
+	 * List<Estagio> estagio = estagioService.buscarEstagioPorAluno(aluno); if
+	 * (estagio.get(0) == null) { throw new
+	 * NotFoundException("Estágio não encontrado para o aluno " + aluno.getNome());
+	 * } else { byte[] pdf = geradorService.gerarPdf(aluno, estagio.get(0));
 	 * 
 	 * HttpHeaders headers = new HttpHeaders();
 	 * headers.setContentType(MediaType.APPLICATION_PDF);
@@ -704,109 +943,156 @@ public class AlunoREST {
 	 */
 
 	@GetMapping("/{grrAlunoURL}/gerar-termo")
-	public ResponseEntity<byte[]> gerarTermoPdf(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken)
-			throws IOException, DocumentException {
-
-		// TO-DO: Jogar dentro de um try-catch
-
-		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-			throw new BadRequestException("GRR do aluno não informado!");
-		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-			if (aluno == null) {
-				throw new NotFoundException("Aluno não encontrado!");
+	public ResponseEntity<byte[]> gerarTermoPdf(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				List<Estagio> estagio = estagioService.buscarEstagioPorAluno(aluno);
-				if (estagio.get(0) == null) {
-					throw new NotFoundException("Estágio não encontrado para o aluno " + aluno.getNome());
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
 				} else {
-					byte[] pdf = geradorService.gerarPdf(aluno, estagio.get(0));
+					List<Estagio> estagio = estagioService.buscarEstagioPorAluno(aluno);
+					if (estagio.get(0) == null) {
+						throw new NotFoundException("Estágio não encontrado para o aluno " + aluno.getNome());
+					} else {
+						byte[] pdf = geradorService.gerarPdf(aluno, estagio.get(0));
 
-					HttpHeaders headers = new HttpHeaders();
-					headers.setContentType(MediaType.APPLICATION_PDF);
-					headers.setContentDisposition(ContentDisposition.builder("inline").filename("arquivo.pdf").build());
+						HttpHeaders headers = new HttpHeaders();
+						headers.setContentType(MediaType.APPLICATION_PDF);
+						headers.setContentDisposition(
+								ContentDisposition.builder("inline").filename("arquivo.pdf").build());
 
-					return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
-				}
-			}
-		}
-
-	}
-
-	@PostMapping("/{grrAlunoURL}/upload-termo")
-	public ResponseEntity<String> uploadTermo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@RequestParam("file") MultipartFile file) {
-
-		// TO-DO: Jogar dentro de um try-catch
-
-		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-			throw new BadRequestException("GRR do aluno não informado!");
-		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-			if (aluno == null) {
-				throw new NotFoundException("Aluno não encontrado!");
-			} else {
-				if (file.isEmpty()) {
-					throw new BadRequestException("Arquivo não informado!");
-				} else {
-					try {
-
-						Path diretorioAtual = Paths.get("").toAbsolutePath();
-
-						String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
-
-						String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
-						Path destino = Paths.get(diretorioDestino + nomeArquivo);
-
-						Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
-
-						return ResponseEntity.ok("Termo de compromisso salvo com sucesso!");
-					} catch (Exception e) {
-						e.printStackTrace();
-						throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+						return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 					}
 				}
 			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/{grrAlunoURL}/upload-termo")
+	public ResponseEntity<String> uploadTermo(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					if (file.isEmpty()) {
+						throw new BadRequestException("Arquivo não informado!");
+					} else {
+						try {
+
+							Path diretorioAtual = Paths.get("").toAbsolutePath();
+
+							String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+
+							String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
+							Path destino = Paths.get(diretorioDestino + nomeArquivo);
+
+							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+
+							return ResponseEntity.ok("Termo de compromisso salvo com sucesso!");
+						} catch (Exception e) {
+							e.printStackTrace();
+							throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+						}
+					}
+				}
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@GetMapping("/{grrAlunoURL}/download-termo")
-	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
-		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-			throw new BadRequestException("GRR do aluno não informado!");
-		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-			if (aluno == null) {
-				throw new NotFoundException("Aluno não encontrado!");
+	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Path diretorioAtual = Paths.get("").toAbsolutePath();
-				String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Path diretorioAtual = Paths.get("").toAbsolutePath();
+					String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
 
-				String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
-				Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+					String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
+					Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
 
-				try {
-					Resource resource = new UrlResource(arquivo.toUri());
+					try {
+						Resource resource = new UrlResource(arquivo.toUri());
 
-					if (resource.exists()) {
-						return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
-								.header(HttpHeaders.CONTENT_DISPOSITION,
-										"attachment; filename=\"" + resource.getFilename() + "\"")
-								.body(resource);
-					} else {
-						throw new NotFoundException("Arquivo não encontrado!");
+						if (resource.exists()) {
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
+									.header(HttpHeaders.CONTENT_DISPOSITION,
+											"attachment; filename=\"" + resource.getFilename() + "\"")
+									.body(resource);
+						} else {
+							throw new NotFoundException("Arquivo não encontrado!");
+						}
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+						throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
 					}
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-					throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
 				}
 			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
+	@ResponseBody
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/relatorioDeEstagio")
-	public ResponseEntity<RelatorioDeEstagioDTO> criarRelatorioDeEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@PathVariable long idEstagio) {
+	public ResponseEntity<Object> criarRelatorioDeEstagio(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -821,7 +1107,7 @@ public class AlunoREST {
 					}
 					Estagio estagio = estagioFind.get();
 					if (estagio.getAluno().getId() != aluno.getId()) {
-						throw new NotFoundException("Estágio não pertence ao aluno!");
+						throw new BadRequestException("Estágio não pertence ao aluno!");
 					} else {
 						RelatorioDeEstagio relatorioEstagio = relatorioDeEstagioService
 								.criarRelatorioDeEstagio(estagio);
@@ -830,20 +1116,40 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/relatorioDeEstagio/{idRelatorio}/solicitarCiencia")
-	public ResponseEntity<RelatorioDeEstagioDTO> solicitarCienciaRelatorioDeEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@PathVariable long idEstagio, @PathVariable long idRelatorio) {
+	public ResponseEntity<Object> solicitarCienciaRelatorioDeEstagio(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable long idEstagio,
+			@PathVariable long idRelatorio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -863,11 +1169,11 @@ public class AlunoREST {
 					}
 					Estagio estagio = estagioFind.get();
 					if (estagio.getAluno().getId() != aluno.getId()) {
-						throw new NotFoundException("Estágio não pertence ao aluno!");
+						throw new BadRequestException("Estágio não pertence ao aluno!");
 					} else {
 						RelatorioDeEstagio relatorioEstagio = relatorioFind.get();
 						if (relatorioEstagio.getEstagio().getId() != estagio.getId()) {
-							throw new NotFoundException("Relatório de estágio não pertence ao estágio!");
+							throw new BadRequestException("Relatório de estágio não pertence ao estágio!");
 						} else {
 							relatorioEstagio = relatorioDeEstagioService
 									.solicitarCienciaRelatorioDeEstagioAluno(relatorioEstagio);
@@ -877,76 +1183,127 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-	
-	@GetMapping("/{grrAlunoURL}/relatorioDeEstagio")
-	public ResponseEntity<List<RelatorioDeEstagioDTO>> listarRelatorioDeEstagioPorAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
-		try {
-			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new BadRequestException("GRR do aluno não informado!");
-			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-				if (aluno == null) {
-					throw new NotFoundException("Aluno não encontrado!");
-				} else {
-					List<RelatorioDeEstagio> relatorioDeEstagio = relatorioDeEstagioService.listarRelatorioDeEstagioPorAluno(aluno);
-				    List<RelatorioDeEstagioDTO> listaRelatoriosDTO = relatorioDeEstagio.stream()
-				            .map(ap -> mapper.map(ap, RelatorioDeEstagioDTO.class))
-				            .collect(Collectors.toList());
-				    return ResponseEntity.ok().body(listaRelatoriosDTO);
-				}
-			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-	
-	@GetMapping("/{grrAlunoURL}/relatorioDeEstagio/pendenteCiencia")
-	public ResponseEntity<List<RelatorioDeEstagioDTO>> listarRelatoriosDeEstagioPorAlunoPendenteCiencia(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
-		try {
-			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new BadRequestException("GRR do aluno não informado!");
-			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-				if (aluno == null) {
-					throw new NotFoundException("Aluno não encontrado!");
-				} else {
-					List<RelatorioDeEstagio> relatorioDeEstagio = relatorioDeEstagioService.listarRelatoriosDeEstagioPorAlunoPendenteCiencia(aluno);
-				    List<RelatorioDeEstagioDTO> listaRelatoriosDTO = relatorioDeEstagio.stream()
-				            .map(ap -> mapper.map(ap, RelatorioDeEstagioDTO.class))
-				            .collect(Collectors.toList());
-				    return ResponseEntity.ok().body(listaRelatoriosDTO);
-				}
-			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio ou o ID do relatório não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
+	@GetMapping("/{grrAlunoURL}/relatorioDeEstagio")
+	public ResponseEntity<Object> listarRelatorioDeEstagioPorAluno(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					List<RelatorioDeEstagio> relatorioDeEstagio = relatorioDeEstagioService
+							.listarRelatorioDeEstagioPorAluno(aluno);
+					List<RelatorioDeEstagioDTO> listaRelatoriosDTO = relatorioDeEstagio.stream()
+							.map(ap -> mapper.map(ap, RelatorioDeEstagioDTO.class)).collect(Collectors.toList());
+					return ResponseEntity.ok().body(listaRelatoriosDTO);
+				}
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio ou o ID do relatório não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@ResponseBody
+	@GetMapping("/{grrAlunoURL}/relatorioDeEstagio/pendenteCiencia")
+	public ResponseEntity<Object> listarRelatoriosDeEstagioPorAlunoPendenteCiencia(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					List<RelatorioDeEstagio> relatorioDeEstagio = relatorioDeEstagioService
+							.listarRelatoriosDeEstagioPorAlunoPendenteCiencia(aluno);
+					List<RelatorioDeEstagioDTO> listaRelatoriosDTO = relatorioDeEstagio.stream()
+							.map(ap -> mapper.map(ap, RelatorioDeEstagioDTO.class)).collect(Collectors.toList());
+					return ResponseEntity.ok().body(listaRelatoriosDTO);
+				}
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio ou o ID do relatório não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@ResponseBody
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/fichaDeAvaliacao")
-	public ResponseEntity<FichaDeAvaliacaoDTO> criarFichaDeAvaliacao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@PathVariable long idEstagio) {
+	public ResponseEntity<Object> criarFichaDeAvaliacao(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -973,20 +1330,39 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/certificadoDeEstagio")
-	public ResponseEntity<CertificadoDeEstagioDTO> solicitarCertificadoDeEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@PathVariable long idEstagio) {
+	public ResponseEntity<Object> solicitarCertificadoDeEstagio(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1007,7 +1383,7 @@ public class AlunoREST {
 							throw new BadRequestException("Não existe uma ficha de avaliação criada pra esse estágio!");
 						} else {
 							if (estagio.getCertificadoDeEstagio() != null) {
-								throw new BadRequestException("Já existe um certificado criada pra esse estágio!");
+								throw new BadRequestException("Já existe um certificado criado pra esse estágio!");
 							} else {
 								CertificadoDeEstagio certificadoDeEstagio = certificadoDeEstagioService
 										.criarCertificadoDeEstagio(estagio);
@@ -1018,19 +1394,39 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/certificadoDeEstagio")
-	public ResponseEntity<List<CertificadoDeEstagioDTO>> listarCertificadosDeEstagio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> listarCertificadosDeEstagio(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1050,20 +1446,38 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoAditivo")
-	public ResponseEntity<TermoDeEstagioDTO> novoTermoAditivo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@PathVariable long idEstagio) {
+	public ResponseEntity<Object> novoTermoAditivo(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1086,20 +1500,39 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
-	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoAditivo/{idTermo}/cancelarTermoAditivo")
 	@ResponseBody
-	public ResponseEntity<Object> cancelarTermoAditivo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @PathVariable Long idEstagio,
+	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoAditivo/{idTermo}/cancelarTermoAditivo")
+	public ResponseEntity<Object> cancelarTermoAditivo(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable Long idEstagio,
 			@PathVariable Long idTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
@@ -1118,14 +1551,13 @@ public class AlunoREST {
 							throw new NotFoundException("Termo não encontrado!");
 						} else {
 							if (estagio.getAluno().getId() != aluno.getId()) {
-								throw new NotFoundException("O estágio não pertence ao Aluno!");
+								throw new BadRequestException("O estágio não pertence ao Aluno!");
 							}
 							if (termoAditivo.getEstagio().getAluno().getId() != aluno.getId()) {
-								throw new NotFoundException("O termo não pertence ao Aluno!");
+								throw new BadRequestException("O termo não pertence ao Aluno!");
 							}
 							if (termoAditivo.getStatusTermo() == EnumStatusTermo.Aprovado) {
-								return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-										new ErrorResponse("Não é possível cancelar um termo aditivo já aprovado."));
+								throw new BadRequestException("Não é possível cancelar um termo aditivo já aprovado!");
 							} else {
 								TermoDeEstagio termo = termoDeEstagioService.cancelarTermoAditivo(termoAditivo);
 								return ResponseEntity.status(HttpStatus.OK)
@@ -1135,20 +1567,39 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio ou o ID do termo não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/termoAditivo/emPreenchimento")
-	public ResponseEntity<List<TermoDeEstagioDTO>> buscarTermoAditivoEmPreenchimentoPorAluno(
-			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> buscarTermoAditivoEmPreenchimentoPorAluno(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1163,19 +1614,38 @@ public class AlunoREST {
 							.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/termoAditivo/")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoPorAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> listarTermosAditivoPorAluno(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1189,25 +1659,44 @@ public class AlunoREST {
 							.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
+
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/termo-aditivo/{id}")
-	public ResponseEntity<Object> listarTermoAditivoPorId(@PathVariable String grrAlunoURL, @PathVariable String id, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> listarTermoAditivoPorId(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			long idLong = Long.parseLong(id);
-	    	
-	    	if (idLong < 1L)
-        		throw new InvalidFieldException("Id inválido.");
-	    	
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
@@ -1216,27 +1705,43 @@ public class AlunoREST {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
 					TermoDeEstagio termoAditivo = termoDeEstagioService.listarTermoAditivoPorId(aluno, idLong);
-					
+
 					return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAditivo, TermoDeEstagioDTO.class));
 				}
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-	    } catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do termo não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/termoAditivo/porStatus")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoPorAlunoPorStatusTermo(
-			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @RequestParam String statusTermo) {
+	public ResponseEntity<Object> listarTermosAditivoPorAlunoPorStatusTermo(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @RequestParam String statusTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1251,20 +1756,38 @@ public class AlunoREST {
 							.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/termoDeCompromisso/emPreenchimento")
-	public ResponseEntity<List<TermoDeEstagioDTO>> buscarTermoDeCompromissoEmPreenchimentoPorAluno(
-			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> buscarTermoDeCompromissoEmPreenchimentoPorAluno(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1279,19 +1802,38 @@ public class AlunoREST {
 							.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/termoDeCompromisso/")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosDeCompromissoPorAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> listarTermosDeCompromissoPorAluno(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1306,20 +1848,38 @@ public class AlunoREST {
 							.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/termoDeCompromisso/porStatus")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosDeCompromissoPorAlunoPorStatusTermo(
-			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @RequestParam String statusTermo) {
+	public ResponseEntity<Object> listarTermosDeCompromissoPorAlunoPorStatusTermo(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @RequestParam String statusTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1334,20 +1894,38 @@ public class AlunoREST {
 							.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao")
-	public ResponseEntity<TermoDeRescisaoDTO> novoTermoDeRescisao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@PathVariable long idEstagio) {
+	public ResponseEntity<Object> novoTermoDeRescisao(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable long idEstagio) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1362,7 +1940,7 @@ public class AlunoREST {
 					}
 					Estagio estagio = estagioFind.get();
 					if (estagio.getAluno().getId() != aluno.getId()) {
-						throw new NotFoundException("Estágio não pertence ao aluno!");
+						throw new BadRequestException("Estágio não pertence ao aluno!");
 					} else {
 						TermoDeRescisao termoDeRescisao = termoDeRescisaoService.novoTermoDeRescisao(estagio);
 						return ResponseEntity.status(HttpStatus.CREATED)
@@ -1370,20 +1948,40 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/solicitarCiencia")
-	public ResponseEntity<TermoDeRescisaoDTO> solicitarCienciaTermoDeRescisao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@PathVariable long idEstagio, @PathVariable long idTermo) {
+	public ResponseEntity<Object> solicitarCienciaTermoDeRescisao(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable long idEstagio,
+			@PathVariable long idTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1402,11 +2000,11 @@ public class AlunoREST {
 					}
 					Estagio estagio = estagioFind.get();
 					if (estagio.getAluno().getId() != aluno.getId()) {
-						throw new NotFoundException("Estágio não pertence ao aluno!");
+						throw new BadRequestException("Estágio não pertence ao aluno!");
 					} else {
 						TermoDeRescisao termoDeRescisao = termoDeRescisaoFind.get();
 						if (termoDeRescisao.getEstagio().getId() != estagio.getId()) {
-							throw new NotFoundException("Termo de rescisão não pertence ao estágio!");
+							throw new BadRequestException("Termo de rescisão não pertence ao estágio!");
 						} else {
 							termoDeRescisao = termoDeRescisaoService
 									.solicitarCienciaTermoDeRescisaoAluno(termoDeRescisao);
@@ -1416,177 +2014,39 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio ou o ID do termo não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@PutMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/cancelarTermoDeRescisao")
-	public ResponseEntity<Object> cancelarTermoDeRescisao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@PathVariable Long idEstagio, @PathVariable Long idTermo) {
-		try {
-			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new BadRequestException("GRR do aluno não informado!");
-			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-				if (aluno == null) {
-					throw new NotFoundException("Aluno não encontrado!");
-				} else {
-					Estagio estagio = alunoService.buscarEstagioPorId(idEstagio);
-					if (estagio == null) {
-						throw new NotFoundException("Estágio não encontrado!");
-					} else {
-						Optional<TermoDeRescisao> termoDeRescisao = termoDeRescisaoService.buscarPorId(idTermo);
-						if (termoDeRescisao.isEmpty()) {
-							throw new NotFoundException("Termo de rescisão não encontrado!");
-						} else {
-							if (estagio.getAluno().getId() != aluno.getId()) {
-								throw new NotFoundException("O estágio não pertence ao Aluno!");
-							}
-							if (termoDeRescisao.get().getEstagio().getAluno().getId() != aluno.getId()) {
-								throw new NotFoundException("O termo não pertence ao Aluno!");
-							}
-							if (termoDeRescisao.get().isCienciaCOAFE() == true) {
-								return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-										new ErrorResponse("Não é possível cancelar um termo de rescisão já aprovado."));
-							} else {
-								termoDeRescisaoService.cancelarTermoDeRescisao(termoDeRescisao.get());
-								return ResponseEntity.status(HttpStatus.OK).body("Sucesso!");
-							}
-						}
-					}
-				}
-			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-
-	@GetMapping("/{grrAlunoURL}/termoDeRescisao/etapaAluno")
-	public ResponseEntity<List<TermoDeRescisaoDTO>> buscarTermoDeRescisaoEtapaAlunoPorAluno(
-			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
-		try {
-			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new BadRequestException("GRR do aluno não informado!");
-			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-				if (aluno == null) {
-					throw new NotFoundException("Aluno não encontrado!");
-				} else {
-					List<TermoDeRescisao> listTermoDeRescisao = termoDeRescisaoService
-							.listarTermoDeRescisaoEtapaAlunoPorAluno(aluno);
-					return ResponseEntity.status(HttpStatus.OK).body(listTermoDeRescisao.stream()
-							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
-				}
-			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-
-	@GetMapping("/{grrAlunoURL}/termoDeRescisao/")
-	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAluno(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
-		try {
-			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new BadRequestException("GRR do aluno não informado!");
-			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-				if (aluno == null) {
-					throw new NotFoundException("Aluno não encontrado!");
-				} else {
-					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService
-							.listarTermosDeRescisaoPorAluno(aluno);
-					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream()
-							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
-				}
-			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-
-	@GetMapping("/{grrAlunoURL}/termoDeRescisao/etapaCiencia")
-	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAlunoEtapaCiencia(
-			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
-		try {
-			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new BadRequestException("GRR do aluno não informado!");
-			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-				if (aluno == null) {
-					throw new NotFoundException("Aluno não encontrado!");
-				} else {
-					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService
-							.listarTermosDeRescisaoPorAlunoEtapaCiencia(aluno);
-					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream()
-							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
-				}
-			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-
-	@GetMapping("/{grrAlunoURL}/termoDeRescisao/finalizados")
-	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPorAlunoProcessoFinalizado(
-			@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken) {
-		try {
-			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new BadRequestException("GRR do aluno não informado!");
-			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-				if (aluno == null) {
-					throw new NotFoundException("Aluno não encontrado!");
-				} else {
-					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService
-							.listarTermosDeRescisaoPorAlunoProcessoFinalizado(aluno);
-					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream()
-							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
-				}
-			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-		}
-	}
-
-	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/periodoRecesso")
-	public ResponseEntity<Object> novoPeriodoDeRecesso(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken, @PathVariable long idEstagio,
+	public ResponseEntity<Object> cancelarTermoDeRescisao(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable Long idEstagio,
 			@PathVariable Long idTermo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
@@ -1605,36 +2065,310 @@ public class AlunoREST {
 							throw new NotFoundException("Termo de rescisão não encontrado!");
 						} else {
 							if (estagio.getAluno().getId() != aluno.getId()) {
-								throw new NotFoundException("O estágio não pertence ao Aluno!");
+								throw new BadRequestException("O estágio não pertence ao Aluno!");
 							}
 							if (termoDeRescisao.get().getEstagio().getAluno().getId() != aluno.getId()) {
-								throw new NotFoundException("O termo não pertence ao Aluno!");
+								throw new BadRequestException("O termo não pertence ao Aluno!");
 							}
 							if (termoDeRescisao.get().isCienciaCOAFE() == true) {
-								return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(
-										"Não é possível adicionar um período de recesso a um termo de rescisão já aprovado."));
+								throw new BadRequestException(
+										"Não é possível cancelar um termo de rescisão já aprovado.");
 							} else {
-								PeriodoRecesso newPeriodoRecesso = periodoRecessoService.novoPeriodoRecesso(termoDeRescisao.get());
-								return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(newPeriodoRecesso, PeriodoRecessoDTO.class));
+								termoDeRescisaoService.cancelarTermoDeRescisao(termoDeRescisao.get());
+								return ResponseEntity.status(HttpStatus.OK)
+										.body("Sucesso ao cancelar termo de rescisão!");
 							}
 						}
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do estágio ou o ID do termo não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
+	@GetMapping("/{grrAlunoURL}/termoDeRescisao/etapaAluno")
+	public ResponseEntity<Object> buscarTermoDeRescisaoEtapaAlunoPorAluno(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					List<TermoDeRescisao> listTermoDeRescisao = termoDeRescisaoService
+							.listarTermoDeRescisaoEtapaAlunoPorAluno(aluno);
+					return ResponseEntity.status(HttpStatus.OK).body(listTermoDeRescisao.stream()
+							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+				}
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@ResponseBody
+	@GetMapping("/{grrAlunoURL}/termoDeRescisao/")
+	public ResponseEntity<Object> listarTermosDeRescisaoPorAluno(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService
+							.listarTermosDeRescisaoPorAluno(aluno);
+					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream()
+							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+				}
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@ResponseBody
+	@GetMapping("/{grrAlunoURL}/termoDeRescisao/etapaCiencia")
+	public ResponseEntity<Object> listarTermosDeRescisaoPorAlunoEtapaCiencia(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService
+							.listarTermosDeRescisaoPorAlunoEtapaCiencia(aluno);
+					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream()
+							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+				}
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@ResponseBody
+	@GetMapping("/{grrAlunoURL}/termoDeRescisao/finalizados")
+	public ResponseEntity<Object> listarTermosDeRescisaoPorAlunoProcessoFinalizado(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					List<TermoDeRescisao> listTermosDeRescisao = termoDeRescisaoService
+							.listarTermosDeRescisaoPorAlunoProcessoFinalizado(aluno);
+					return ResponseEntity.status(HttpStatus.OK).body(listTermosDeRescisao.stream()
+							.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
+				}
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O GRR informado para o aluno não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@ResponseBody
+	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/periodoRecesso")
+	public ResponseEntity<Object> novoPeriodoDeRecesso(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable long idEstagio,
+			@PathVariable Long idTermo) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Estagio estagio = alunoService.buscarEstagioPorId(idEstagio);
+					if (estagio == null) {
+						throw new NotFoundException("Estágio não encontrado!");
+					} else {
+						Optional<TermoDeRescisao> termoDeRescisao = termoDeRescisaoService.buscarPorId(idTermo);
+						if (termoDeRescisao.isEmpty()) {
+							throw new NotFoundException("Termo de rescisão não encontrado!");
+						} else {
+							if (estagio.getAluno().getId() != aluno.getId()) {
+								throw new BadRequestException("O estágio não pertence ao Aluno!");
+							}
+							if (termoDeRescisao.get().getEstagio().getAluno().getId() != aluno.getId()) {
+								throw new BadRequestException("O termo não pertence ao Aluno!");
+							}
+							if (termoDeRescisao.get().isCienciaCOAFE() == true) {
+								throw new BadRequestException(
+										"Não é possível adicionar um período de recesso a um termo de rescisão já aprovado.");
+							} else {
+								PeriodoRecesso newPeriodoRecesso = periodoRecessoService
+										.novoPeriodoRecesso(termoDeRescisao.get());
+								return ResponseEntity.status(HttpStatus.CREATED)
+										.body(mapper.map(newPeriodoRecesso, PeriodoRecessoDTO.class));
+							}
+						}
+					}
+				}
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID do estágio ou ID do termo não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@ResponseBody
 	@DeleteMapping("/{grrAlunoURL}/estagio/{idEstagio}/termoDeRescisao/{idTermo}/periodoRecesso/{idPeriodo}")
-	public ResponseEntity<Object> removerPeriodoDeRecesso(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@PathVariable Long idEstagio, @PathVariable Long idTermo, @PathVariable Long idPeriodo) {
+	public ResponseEntity<Object> removerPeriodoDeRecesso(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @PathVariable Long idEstagio,
+			@PathVariable Long idTermo, @PathVariable Long idPeriodo) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -1656,14 +2390,14 @@ public class AlunoREST {
 								throw new NotFoundException("Período de recesso não encontrado!");
 							} else {
 								if (estagio.getAluno().getId() != aluno.getId()) {
-									throw new NotFoundException("O estágio não pertence ao Aluno!");
+									throw new BadRequestException("O estágio não pertence ao Aluno!");
 								}
 								if (termoDeRescisao.get().getEstagio().getAluno().getId() != aluno.getId()) {
-									throw new NotFoundException("O termo não pertence ao Aluno!");
+									throw new BadRequestException("O termo não pertence ao Aluno!");
 								}
 								if (termoDeRescisao.get().isCienciaCOAFE() == true) {
-									return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(
-											"Não é possível deletar um período de recesso associado a um termo de rescisão já aprovado."));
+									throw new BadRequestException(
+											"Não é possível deletar um período de recesso associado a um termo de rescisão já aprovado.");
 								} else {
 									periodoRecessoService.deletarPeriodoRecesso(periodoRecesso.get());
 									return ResponseEntity.status(HttpStatus.OK).body("Sucesso!");
@@ -1673,28 +2407,45 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID do estágio ou ID do termo não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
+	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/{id}/gerar-ficha")
-	public ResponseEntity<Object> gerarFichaPdf(@PathVariable String grrAlunoURL, @PathVariable String id, @RequestHeader("Authorization") String accessToken)
-			throws IOException, DocumentException {
+	public ResponseEntity<Object> gerarFichaPdf(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
 
 		try {
-
 			long idLong = Long.parseLong(id);
-	    	
-	    	if (idLong < 1L)
-        		throw new InvalidFieldException("Id inválido.");
-	    	
+			if (idLong < 1L) {
+				throw new InvalidFieldException("Id inválido.");
+			}
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new InvalidFieldException("GRR do aluno não informado!");
 			} else {
@@ -1707,89 +2458,132 @@ public class AlunoREST {
 						throw new NotFoundException("Ficha não encontrada.");
 					} else {
 						FichaDeAvaliacao ficha = fichaFind.get();
-						
+
 						byte[] pdf = geradorService.gerarPdfFicha(aluno, ficha);
-	
+
 						HttpHeaders headers = new HttpHeaders();
 						headers.setContentType(MediaType.APPLICATION_PDF);
-						headers.setContentDisposition(ContentDisposition.builder("inline").filename(aluno.getMatricula() + "-ficha-de-avaliacao-" + ficha.getId() + ".pdf").build());
-	
+						headers.setContentDisposition(ContentDisposition.builder("inline")
+								.filename(aluno.getMatricula() + "-ficha-de-avaliacao-" + ficha.getId() + ".pdf")
+								.build());
+
 						return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 					}
 				}
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    } catch (PocException e) {
-	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
-	    }
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
 	}
 
 	@PostMapping("/{grrAlunoURL}/upload-ficha/{tipoFicha}")
-	public ResponseEntity<Object> uploadFicha(@PathVariable String grrAlunoURL, @PathVariable String tipoFicha, @RequestHeader("Authorization") String accessToken,
-			@RequestParam("file") MultipartFile file) {
-
-		// TO-DO: Jogar dentro de um try-catch
-
-		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-			throw new BadRequestException("GRR do aluno não informado!");
-		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-			if (aluno == null) {
-				throw new NotFoundException("Aluno não encontrado!");
+	public ResponseEntity<Object> uploadFicha(@PathVariable String grrAlunoURL, @PathVariable String tipoFicha,
+			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				if (file.isEmpty()) {
-					throw new InvalidFieldException("Arquivo não informado!");
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
 				} else {
-					try {
+					if (file.isEmpty()) {
+						throw new InvalidFieldException("Arquivo não informado!");
+					} else {
+						try {
 
-						Path diretorioAtual = Paths.get("").toAbsolutePath();
+							Path diretorioAtual = Paths.get("").toAbsolutePath();
 
-						String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
-						
-						if (tipoFicha.equals(String.valueOf(EnumTipoDocumento.FichaDeAvaliacaoParcial))) {
-							String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoParcial;
-							Path destino = Paths.get(diretorioDestino + nomeArquivo);
-							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
-						} else if (tipoFicha.equals(String.valueOf(EnumTipoDocumento.FichaDeAvaliacaoFinal))) {
-							String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoFinal;
-							Path destino = Paths.get(diretorioDestino + nomeArquivo);
-							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
-						} else {
-							throw new InvalidFieldException("O tipo de documento deve ser 'FichaDeAvaliacaoParcial' ou 'FichaDeAvaliacaoFinal'.");
+							String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+
+							if (tipoFicha.equals(String.valueOf(EnumTipoDocumento.FichaDeAvaliacaoParcial))) {
+								String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoParcial;
+								Path destino = Paths.get(diretorioDestino + nomeArquivo);
+								Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+							} else if (tipoFicha.equals(String.valueOf(EnumTipoDocumento.FichaDeAvaliacaoFinal))) {
+								String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoFinal;
+								Path destino = Paths.get(diretorioDestino + nomeArquivo);
+								Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+							} else {
+								throw new InvalidFieldException(
+										"O tipo de documento deve ser 'FichaDeAvaliacaoParcial' ou 'FichaDeAvaliacaoFinal'.");
+							}
+
+							return ResponseEntity.ok("Ficha de avaliação salva com sucesso!");
+						} catch (NotFoundException ex) {
+							ErrorResponse response = new ErrorResponse(ex.getMessage());
+							return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+						} catch (InvalidFieldException ex) {
+							ErrorResponse response = new ErrorResponse(ex.getMessage());
+							return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+						} catch (Exception e) {
+							e.printStackTrace();
+							throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 						}
-
-						return ResponseEntity.ok("Ficha de avaliação salva com sucesso!");
-					}  catch (NotFoundException ex) {
-				        ErrorResponse response = new ErrorResponse(ex.getMessage());
-				        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-				    } catch (InvalidFieldException ex) {
-				        ErrorResponse response = new ErrorResponse(ex.getMessage());
-				        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-				    } catch (Exception e) {
-						e.printStackTrace();
-						throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 					}
 				}
 			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
+
 	@GetMapping("/{grrAlunoURL}/relatorio/{id}/gerar-relatorio")
-	public ResponseEntity<Object> gerarRelatorioPdf(@PathVariable String grrAlunoURL, @PathVariable String id, @RequestHeader("Authorization") String accessToken)
-			throws IOException, DocumentException {
-
+	public ResponseEntity<Object> gerarRelatorioPdf(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
 		try {
-
 			long idLong = Long.parseLong(id);
-	    	
-	    	if (idLong < 1L)
-        		throw new InvalidFieldException("Id inválido.");
-	    	
+			if (idLong < 1L) {
+				throw new InvalidFieldException("Id inválido.");
+			}
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new InvalidFieldException("GRR do aluno não informado!");
 			} else {
@@ -1802,81 +2596,123 @@ public class AlunoREST {
 						throw new NotFoundException("Ficha não encontrada.");
 					} else {
 						RelatorioDeEstagio relatorio = relatorioFind.get();
-						
+
 						byte[] pdf = geradorService.gerarPdfAlunoRelatorioDeEstagio(relatorio);
-	
+
 						HttpHeaders headers = new HttpHeaders();
 						headers.setContentType(MediaType.APPLICATION_PDF);
-						headers.setContentDisposition(ContentDisposition.builder("inline").filename(aluno.getMatricula() + "-relatorio-de-estagio-" + relatorio.getId() + ".pdf").build());
-	
+						headers.setContentDisposition(ContentDisposition.builder("inline")
+								.filename(aluno.getMatricula() + "-relatorio-de-estagio-" + relatorio.getId() + ".pdf")
+								.build());
+
 						return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 					}
 				}
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    } catch (PocException e) {
-	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
-	    }
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
 	}
 
 	@PostMapping("/{grrAlunoURL}/upload-relatorio")
-	public ResponseEntity<Object> uploadRelatorio(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@RequestParam("file") MultipartFile file) {
-
-		// TO-DO: Jogar dentro de um try-catch
-
-		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-			throw new BadRequestException("GRR do aluno não informado!");
-		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-			if (aluno == null) {
-				throw new NotFoundException("Aluno não encontrado!");
+	public ResponseEntity<Object> uploadRelatorio(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				if (file.isEmpty()) {
-					throw new InvalidFieldException("Arquivo não informado!");
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
 				} else {
-					try {
+					if (file.isEmpty()) {
+						throw new InvalidFieldException("Arquivo não informado!");
+					} else {
+						try {
 
-						Path diretorioAtual = Paths.get("").toAbsolutePath();
+							Path diretorioAtual = Paths.get("").toAbsolutePath();
 
-						String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
-						
-						String nomeArquivo = grrAlunoURL + "-RelatorioDeEstagio";
-						Path destino = Paths.get(diretorioDestino + nomeArquivo);
-						Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+							String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
 
-						return ResponseEntity.ok("Relatório de estágio salvo com sucesso!");
-					}  catch (NotFoundException ex) {
-				        ErrorResponse response = new ErrorResponse(ex.getMessage());
-				        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-				    } catch (InvalidFieldException ex) {
-				        ErrorResponse response = new ErrorResponse(ex.getMessage());
-				        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-				    } catch (Exception e) {
-						e.printStackTrace();
-						throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+							String nomeArquivo = grrAlunoURL + "-RelatorioDeEstagio";
+							Path destino = Paths.get(diretorioDestino + nomeArquivo);
+							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+
+							return ResponseEntity.ok("Relatório de estágio salvo com sucesso!");
+						} catch (NotFoundException ex) {
+							ErrorResponse response = new ErrorResponse(ex.getMessage());
+							return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+						} catch (InvalidFieldException ex) {
+							ErrorResponse response = new ErrorResponse(ex.getMessage());
+							return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+						} catch (Exception e) {
+							e.printStackTrace();
+							throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+						}
 					}
 				}
 			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/{grrAlunoURL}/termo-aditivo/{id}/gerar-termo-aditivo")
-	public ResponseEntity<Object> gerarTermoAditivoPdf(@PathVariable String grrAlunoURL, @PathVariable String id, @RequestHeader("Authorization") String accessToken)
-			throws IOException, DocumentException {
-
+	public ResponseEntity<Object> gerarTermoAditivoPdf(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
 		try {
-
 			long idLong = Long.parseLong(id);
-	    	
-	    	if (idLong < 1L)
-        		throw new InvalidFieldException("Id inválido.");
-	    	
+			if (idLong < 1L) {
+				throw new InvalidFieldException("Id inválido.");
+			}
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new InvalidFieldException("GRR do aluno não informado!");
 			} else {
@@ -1888,93 +2724,134 @@ public class AlunoREST {
 					if (termo == null) {
 						throw new NotFoundException("Ficha não encontrada.");
 					} else {
-												
+
 						byte[] pdf = geradorService.gerarPdfAlunoTermoAditivo(termo);
-	
+
 						HttpHeaders headers = new HttpHeaders();
 						headers.setContentType(MediaType.APPLICATION_PDF);
-						headers.setContentDisposition(ContentDisposition.builder("inline").filename(aluno.getMatricula() + "-termo-aditivo-" + termo.getId() + ".pdf").build());
-	
+						headers.setContentDisposition(ContentDisposition.builder("inline")
+								.filename(aluno.getMatricula() + "-termo-aditivo-" + termo.getId() + ".pdf").build());
+
 						return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 					}
 				}
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    } catch (PocException e) {
-	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
-	    }
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
 	}
 
 	@PostMapping("/{grrAlunoURL}/upload-termo-aditivo")
-	public ResponseEntity<Object> uploadTermoAditivo(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@RequestParam("file") MultipartFile file) {
-
-		// TO-DO: Jogar dentro de um try-catch
-
-		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-			throw new BadRequestException("GRR do aluno não informado!");
-		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-			if (aluno == null) {
-				throw new NotFoundException("Aluno não encontrado!");
+	public ResponseEntity<Object> uploadTermoAditivo(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				if (file.isEmpty()) {
-					throw new InvalidFieldException("Arquivo não informado!");
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
 				} else {
-					try {
+					if (file.isEmpty()) {
+						throw new InvalidFieldException("Arquivo não informado!");
+					} else {
+						try {
 
-						Path diretorioAtual = Paths.get("").toAbsolutePath();
+							Path diretorioAtual = Paths.get("").toAbsolutePath();
 
-						String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
-						
-						String nomeArquivo = grrAlunoURL + "-TermoAditivo";
-						Path destino = Paths.get(diretorioDestino + nomeArquivo);
+							String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
 
-						int contador = 1;
-						Path novoDestino = destino;
-						while (Files.exists(novoDestino)) {
-						    nomeArquivo = destino.getFileName().toString();
-						    String novoNome = nomeArquivo + "(" + contador + ")";
-						    novoDestino = destino.resolveSibling(novoNome);
-						    contador++;
-						}
+							String nomeArquivo = grrAlunoURL + "-TermoAditivo";
+							Path destino = Paths.get(diretorioDestino + nomeArquivo);
 
-						Files.copy(file.getInputStream(), novoDestino);
+							int contador = 1;
+							Path novoDestino = destino;
+							while (Files.exists(novoDestino)) {
+								nomeArquivo = destino.getFileName().toString();
+								String novoNome = nomeArquivo + "(" + contador + ")";
+								novoDestino = destino.resolveSibling(novoNome);
+								contador++;
+							}
+
+							Files.copy(file.getInputStream(), novoDestino);
 
 //						Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
-						return ResponseEntity.ok("Termo aditivo salvo com sucesso!");
-					}  catch (NotFoundException ex) {
-				        ErrorResponse response = new ErrorResponse(ex.getMessage());
-				        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-				    } catch (InvalidFieldException ex) {
-				        ErrorResponse response = new ErrorResponse(ex.getMessage());
-				        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-				    } catch (Exception e) {
-						e.printStackTrace();
-						throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+							return ResponseEntity.ok("Termo aditivo salvo com sucesso!");
+						} catch (NotFoundException ex) {
+							ErrorResponse response = new ErrorResponse(ex.getMessage());
+							return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+						} catch (InvalidFieldException ex) {
+							ErrorResponse response = new ErrorResponse(ex.getMessage());
+							return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+						} catch (Exception e) {
+							e.printStackTrace();
+							throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+						}
 					}
 				}
 			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/{grrAlunoURL}/termo-rescisao/{id}/gerar-termo-rescisao")
-	public ResponseEntity<Object> gerarTermoDeRescisaoPdf(@PathVariable String grrAlunoURL, @PathVariable String id, @RequestHeader("Authorization") String accessToken)
-			throws IOException, DocumentException {
-
+	public ResponseEntity<Object> gerarTermoDeRescisaoPdf(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
 		try {
-
 			long idLong = Long.parseLong(id);
-	    	
-	    	if (idLong < 1L)
-        		throw new InvalidFieldException("Id inválido.");
-	    	
+			if (idLong < 1L) {
+				throw new InvalidFieldException("Id inválido.");
+			}
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new InvalidFieldException("GRR do aluno não informado!");
 			} else {
@@ -1987,67 +2864,113 @@ public class AlunoREST {
 						throw new NotFoundException("Ficha não encontrada.");
 					} else {
 						TermoDeRescisao termo = termoFind.get();
-						
+
 						byte[] pdf = geradorService.gerarPdfAlunoTermoRescisao(termo);
-	
+
 						HttpHeaders headers = new HttpHeaders();
 						headers.setContentType(MediaType.APPLICATION_PDF);
-						headers.setContentDisposition(ContentDisposition.builder("inline").filename(aluno.getMatricula() + "-termo-de-rescisao-" + termo.getId() + ".pdf").build());
-	
+						headers.setContentDisposition(ContentDisposition.builder("inline")
+								.filename(aluno.getMatricula() + "-termo-de-rescisao-" + termo.getId() + ".pdf")
+								.build());
+
 						return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 					}
 				}
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    } catch (PocException e) {
-	    	throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
-	    }
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
 	}
 
 	@PostMapping("/{grrAlunoURL}/upload-termo-de-rescisao")
-	public ResponseEntity<Object> uploadTermoRescisao(@PathVariable String grrAlunoURL, @RequestHeader("Authorization") String accessToken,
-			@RequestParam("file") MultipartFile file) {
-
-		// TO-DO: Jogar dentro de um try-catch
-
-		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-			throw new BadRequestException("GRR do aluno não informado!");
-		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
-			if (aluno == null) {
-				throw new NotFoundException("Aluno não encontrado!");
+	public ResponseEntity<Object> uploadTermoRescisao(@PathVariable String grrAlunoURL,
+			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				if (file.isEmpty()) {
-					throw new InvalidFieldException("Arquivo não informado!");
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
 				} else {
-					try {
+					if (file.isEmpty()) {
+						throw new InvalidFieldException("Arquivo não informado!");
+					} else {
+						try {
 
-						Path diretorioAtual = Paths.get("").toAbsolutePath();
+							Path diretorioAtual = Paths.get("").toAbsolutePath();
 
-						String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
-						
-						String nomeArquivo = grrAlunoURL + "-TermoDeRescisao";
-						Path destino = Paths.get(diretorioDestino + nomeArquivo);
-						Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+							String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
 
-						return ResponseEntity.ok("Termo de rescisão salvo com sucesso!");
-					}  catch (NotFoundException ex) {
-				        ErrorResponse response = new ErrorResponse(ex.getMessage());
-				        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-				    } catch (InvalidFieldException ex) {
-				        ErrorResponse response = new ErrorResponse(ex.getMessage());
-				        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-				    } catch (Exception e) {
-						e.printStackTrace();
-						throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+							String nomeArquivo = grrAlunoURL + "-TermoDeRescisao";
+							Path destino = Paths.get(diretorioDestino + nomeArquivo);
+							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+
+							return ResponseEntity.ok("Termo de rescisão salvo com sucesso!");
+						} catch (NotFoundException ex) {
+							ErrorResponse response = new ErrorResponse(ex.getMessage());
+							return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+						} catch (InvalidFieldException ex) {
+							ErrorResponse response = new ErrorResponse(ex.getMessage());
+							return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+						} catch (Exception e) {
+							e.printStackTrace();
+							throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+						}
 					}
 				}
 			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
+
 }

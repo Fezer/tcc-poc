@@ -20,12 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTO;
 import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTOv2;
-import br.ufpr.estagio.modulo.dto.ApoliceDTO;
 import br.ufpr.estagio.modulo.dto.ConvenioDTO;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
-import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
