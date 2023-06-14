@@ -65,6 +65,8 @@ public class FichaDeAvaliacao implements Serializable{
 	
 	private EnumAvaliacao avalEfetivacao;
 	
+	private boolean upload;
+	
 	public FichaDeAvaliacao() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -97,6 +99,37 @@ public class FichaDeAvaliacao implements Serializable{
 		this.avalDominioTecnico = avalDominioTecnico;
 		this.avalHabilidades = avalHabilidades;
 		this.avalEfetivacao = avalEfetivacao;
+		this.upload = false;
+	}
+
+	public FichaDeAvaliacao(long id, Estagio estagio, int totalHorasEstagioEfetivamenteRealizadas,
+			boolean atividadesForamRealizadas, String atividadesRealizadasConsideracoes,
+			EnumAvaliacaoAcomp acompanhamentoOrientador, String acompanhamentoOrientadorComentario,
+			EnumAvaliacaoAcomp acompanhamentoCoordenador, String acompanhamentoCoordenadorComentario,
+			String contribuicaoEstagio, EnumAvaliacao avalPontualidade, EnumAvaliacao avalCriatividade,
+			EnumAvaliacao avalProtagonismo, EnumAvaliacao avalResponsabilidade, EnumAvaliacao avalConduta,
+			EnumAvaliacao avalDominioTecnico, EnumAvaliacao avalHabilidades, EnumAvaliacao avalEfetivacao,
+			boolean upload) {
+		super();
+		this.id = id;
+		this.estagio = estagio;
+		this.totalHorasEstagioEfetivamenteRealizadas = totalHorasEstagioEfetivamenteRealizadas;
+		this.atividadesForamRealizadas = atividadesForamRealizadas;
+		this.atividadesRealizadasConsideracoes = atividadesRealizadasConsideracoes;
+		this.acompanhamentoOrientador = acompanhamentoOrientador;
+		this.acompanhamentoOrientadorComentario = acompanhamentoOrientadorComentario;
+		this.acompanhamentoCoordenador = acompanhamentoCoordenador;
+		this.acompanhamentoCoordenadorComentario = acompanhamentoCoordenadorComentario;
+		this.contribuicaoEstagio = contribuicaoEstagio;
+		this.avalPontualidade = avalPontualidade;
+		this.avalCriatividade = avalCriatividade;
+		this.avalProtagonismo = avalProtagonismo;
+		this.avalResponsabilidade = avalResponsabilidade;
+		this.avalConduta = avalConduta;
+		this.avalDominioTecnico = avalDominioTecnico;
+		this.avalHabilidades = avalHabilidades;
+		this.avalEfetivacao = avalEfetivacao;
+		this.upload = false;
 	}
 
 	public long getId() {
@@ -241,6 +274,14 @@ public class FichaDeAvaliacao implements Serializable{
 
 	public void setAvalEfetivacao(EnumAvaliacao avalEfetivacao) {
 		this.avalEfetivacao = avalEfetivacao;
+	}
+
+	public boolean isUpload() {
+		return upload;
+	}
+
+	public void setUpload(boolean upload) {
+		this.upload = upload;
 	}
 
 	public static long getSerialversionuid() {

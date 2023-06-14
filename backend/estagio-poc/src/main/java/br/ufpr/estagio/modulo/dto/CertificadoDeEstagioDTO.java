@@ -18,6 +18,7 @@ public class CertificadoDeEstagioDTO implements Serializable{
 	private EnumEtapaFluxo etapaFluxo;
 	private EnumParecerAprovadores parecerCOE;
 	private String motivoReprovacao;
+	private boolean upload;
 	
 	public CertificadoDeEstagioDTO() {
 		super();
@@ -25,13 +26,14 @@ public class CertificadoDeEstagioDTO implements Serializable{
 	}
 
 	public CertificadoDeEstagioDTO(long id, Estagio estagio, EnumEtapaFluxo etapaFluxo,
-			EnumParecerAprovadores parecerCOE, String motivoReprovacao) {
+			EnumParecerAprovadores parecerCOE, String motivoReprovacao, boolean upload) {
 		super();
 		this.id = id;
 		this.estagio = estagio;
 		this.etapaFluxo = etapaFluxo;
 		this.parecerCOE = parecerCOE;
 		this.motivoReprovacao = motivoReprovacao;
+		this.upload = upload;
 	}
 
 	public long getId() {
@@ -72,6 +74,14 @@ public class CertificadoDeEstagioDTO implements Serializable{
 
 	public void setMotivoReprovacao(String motivoReprovacao) {
 		this.motivoReprovacao = motivoReprovacao;
+	}
+
+	public boolean isUpload() {
+		return upload;
+	}
+
+	public void setUpload(boolean upload) {
+		this.upload = upload;
 	}
 
 	public static long getSerialversionuid() {

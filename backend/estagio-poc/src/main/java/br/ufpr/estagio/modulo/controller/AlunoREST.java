@@ -54,6 +54,7 @@ import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.DadosBancarios;
@@ -986,8 +987,8 @@ public class AlunoREST {
 		}
 	}
 
-	@PostMapping("/{grrAlunoURL}/upload-termo")
-	public ResponseEntity<String> uploadTermo(@PathVariable String grrAlunoURL,
+	@PostMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/upload")
+	public ResponseEntity<String> uploadTermo(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
@@ -1000,6 +1001,16 @@ public class AlunoREST {
 					if (file.isEmpty()) {
 						throw new BadRequestException("Arquivo não informado!");
 					} else {
+						long idLong = Long.parseLong(id);
+				    	
+				    	if (idLong < 1L)
+			        		throw new InvalidFieldException("Id inválido.");
+				    	
+				        TermoDeEstagio termo = termoDeEstagioService.buscarPorId(idLong);
+
+				        if (termo == null) {
+				            throw new NotFoundException("O termo de compromisso não foi encontrado.");
+				        }
 						try {
 
 							Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -1010,6 +1021,8 @@ public class AlunoREST {
 							Path destino = Paths.get(diretorioDestino + nomeArquivo);
 
 							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+							
+							termoDeEstagioService.uploadTermoDeEstagio(termo);
 
 							return ResponseEntity.ok("Termo de compromisso salvo com sucesso!");
 						} catch (Exception e) {
@@ -2500,17 +2513,31 @@ public class AlunoREST {
 		}
 	}
 
-	@PostMapping("/{grrAlunoURL}/upload-ficha/{tipoFicha}")
-	public ResponseEntity<Object> uploadFicha(@PathVariable String grrAlunoURL, @PathVariable String tipoFicha,
-			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
+	@PostMapping("/{grrAlunoURL}/ficha-de-avaliacao/{id}/upload/{tipoFicha}")
+	public ResponseEntity<Object> uploadFicha(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@PathVariable String tipoFicha, @RequestHeader("Authorization") String accessToken,
+			@RequestParam("file") MultipartFile file) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
-			} else {
+			} else {		        
 				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
+					long idLong = Long.parseLong(id);
+			    	
+			    	if (idLong < 1L)
+		        		throw new InvalidFieldException("Id inválido.");
+			    	
+			        Optional<FichaDeAvaliacao> fichaFind = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idLong);
+
+			        if (fichaFind.isEmpty() || fichaFind == null) {
+			            throw new NotFoundException("A apólice não foi encontrada.");
+			        }
+			        
+			        FichaDeAvaliacao ficha = fichaFind.get();
+			        
 					if (file.isEmpty()) {
 						throw new InvalidFieldException("Arquivo não informado!");
 					} else {
@@ -2532,7 +2559,8 @@ public class AlunoREST {
 								throw new InvalidFieldException(
 										"O tipo de documento deve ser 'FichaDeAvaliacaoParcial' ou 'FichaDeAvaliacaoFinal'.");
 							}
-
+							fichaDeAvaliacaoService.uploadFichaDeAvaliacao(ficha);
+							
 							return ResponseEntity.ok("Ficha de avaliação salva com sucesso!");
 						} catch (NotFoundException ex) {
 							ErrorResponse response = new ErrorResponse(ex.getMessage());
@@ -2638,8 +2666,8 @@ public class AlunoREST {
 		}
 	}
 
-	@PostMapping("/{grrAlunoURL}/upload-relatorio")
-	public ResponseEntity<Object> uploadRelatorio(@PathVariable String grrAlunoURL,
+	@PostMapping("/{grrAlunoURL}/relatorio-de-estagio/{id}/upload")
+	public ResponseEntity<Object> uploadRelatorio(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
@@ -2649,6 +2677,19 @@ public class AlunoREST {
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
+					long idLong = Long.parseLong(id);
+			    	
+			    	if (idLong < 1L)
+		        		throw new InvalidFieldException("Id inválido.");
+			    	
+			        Optional<RelatorioDeEstagio> relatorioFind = relatorioDeEstagioService.buscarRelatorioPorId(idLong);
+
+			        if (relatorioFind.isEmpty() || relatorioFind == null) {
+			            throw new NotFoundException("O relatório de estágio não foi encontrado.");
+			        }
+			        
+			        RelatorioDeEstagio relatorio = relatorioFind.get();
+			        
 					if (file.isEmpty()) {
 						throw new InvalidFieldException("Arquivo não informado!");
 					} else {
@@ -2662,6 +2703,8 @@ public class AlunoREST {
 							Path destino = Paths.get(diretorioDestino + nomeArquivo);
 							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
+							relatorioDeEstagioService.uploadRelatorioDeEstagio(relatorio);
+							
 							return ResponseEntity.ok("Relatório de estágio salvo com sucesso!");
 						} catch (NotFoundException ex) {
 							ErrorResponse response = new ErrorResponse(ex.getMessage());
@@ -2765,8 +2808,8 @@ public class AlunoREST {
 		}
 	}
 
-	@PostMapping("/{grrAlunoURL}/upload-termo-aditivo")
-	public ResponseEntity<Object> uploadTermoAditivo(@PathVariable String grrAlunoURL,
+	@PostMapping("/{grrAlunoURL}/termo-aditivo/{id}/upload")
+	public ResponseEntity<Object> uploadTermoAditivo(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
@@ -2779,8 +2822,19 @@ public class AlunoREST {
 					if (file.isEmpty()) {
 						throw new InvalidFieldException("Arquivo não informado!");
 					} else {
-						try {
+						long idLong = Long.parseLong(id);
+				    	
+				    	if (idLong < 1L)
+			        		throw new InvalidFieldException("Id inválido.");
+				    	
+				        TermoDeEstagio termo = termoDeEstagioService.buscarPorId(idLong);
 
+				        if (termo == null) {
+				            throw new NotFoundException("O termo aditivo não foi encontrado.");
+				        }
+				        
+						try {
+							
 							Path diretorioAtual = Paths.get("").toAbsolutePath();
 
 							String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
@@ -2801,6 +2855,8 @@ public class AlunoREST {
 
 //						Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
+							termoDeEstagioService.uploadTermoDeEstagio(termo);
+							
 							return ResponseEntity.ok("Termo aditivo salvo com sucesso!");
 						} catch (NotFoundException ex) {
 							ErrorResponse response = new ErrorResponse(ex.getMessage());
@@ -2906,8 +2962,9 @@ public class AlunoREST {
 		}
 	}
 
-	@PostMapping("/{grrAlunoURL}/upload-termo-de-rescisao")
-	public ResponseEntity<Object> uploadTermoRescisao(@PathVariable String grrAlunoURL,
+	
+	@PostMapping("/{grrAlunoURL}/termo-de-rescisao/{id}/upload")
+	public ResponseEntity<Object> uploadTermoRescisao(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
@@ -2920,6 +2977,18 @@ public class AlunoREST {
 					if (file.isEmpty()) {
 						throw new InvalidFieldException("Arquivo não informado!");
 					} else {
+						long idLong = Long.parseLong(id);
+				    	
+				    	if (idLong < 1L)
+			        		throw new InvalidFieldException("Id inválido.");
+				    	
+				        Optional<TermoDeRescisao> termoFind = termoDeRescisaoService.buscarPorId(idLong);
+
+				        if (termoFind.isEmpty() || termoFind == null) {
+				            throw new NotFoundException("O termo de rescisão não foi encontrado.");
+				        }
+				        
+				        TermoDeRescisao termo = termoFind.get();
 						try {
 
 							Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -2930,6 +2999,8 @@ public class AlunoREST {
 							Path destino = Paths.get(diretorioDestino + nomeArquivo);
 							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
+							termoDeRescisaoService.uploadTermoDeRescisao(termo);
+							
 							return ResponseEntity.ok("Termo de rescisão salvo com sucesso!");
 						} catch (NotFoundException ex) {
 							ErrorResponse response = new ErrorResponse(ex.getMessage());

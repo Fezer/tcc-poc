@@ -56,6 +56,12 @@ public class RelatorioDeEstagio implements Serializable{
 	@Column(name = "consideracoes", length = 2000)
 	private String consideracoes;
 	
+	@Column(name = "upload_parcial")
+	private boolean uploadParcial;
+	
+	@Column(name = "upload_final")
+	private boolean uploadFinal;
+	
 	public RelatorioDeEstagio() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -79,6 +85,30 @@ public class RelatorioDeEstagio implements Serializable{
 		this.avalContribuicaoEstagio = avalContribuicaoEstagio;
 		this.avalEfetivacao = avalEfetivacao;
 		this.consideracoes = consideracoes;
+		this.uploadFinal = false;
+		this.uploadParcial = false;
+	}
+
+	public RelatorioDeEstagio(long id, Estagio estagio, boolean cienciaOrientador, EnumEtapaFluxo etapaFluxo,
+			EnumTipoRelatorio tipoRelatorio, EnumAvaliacaoAtividades avalAtividades,
+			EnumAvaliacao avalFormacaoProfissional, EnumAvaliacao avalRelacoesInterpessoais,
+			EnumAvaliacao avalDesenvolvimentoAtividades, EnumAvaliacao avalContribuicaoEstagio,
+			EnumAvaliacao avalEfetivacao, String consideracoes, boolean uploadParcial, boolean uploadFinal) {
+		super();
+		this.id = id;
+		this.estagio = estagio;
+		this.cienciaOrientador = cienciaOrientador;
+		this.etapaFluxo = etapaFluxo;
+		this.tipoRelatorio = tipoRelatorio;
+		this.avalAtividades = avalAtividades;
+		this.avalFormacaoProfissional = avalFormacaoProfissional;
+		this.avalRelacoesInterpessoais = avalRelacoesInterpessoais;
+		this.avalDesenvolvimentoAtividades = avalDesenvolvimentoAtividades;
+		this.avalContribuicaoEstagio = avalContribuicaoEstagio;
+		this.avalEfetivacao = avalEfetivacao;
+		this.consideracoes = consideracoes;
+		this.uploadParcial = uploadParcial;
+		this.uploadFinal = uploadFinal;
 	}
 
 	public long getId() {
@@ -175,6 +205,22 @@ public class RelatorioDeEstagio implements Serializable{
 
 	public void setConsideracoes(String consideracoes) {
 		this.consideracoes = consideracoes;
+	}
+
+	public boolean isUploadParcial() {
+		return uploadParcial;
+	}
+
+	public void setUploadParcial(boolean uploadParcial) {
+		this.uploadParcial = uploadParcial;
+	}
+
+	public boolean isUploadFinal() {
+		return uploadFinal;
+	}
+
+	public void setUploadFinal(boolean uploadFinal) {
+		this.uploadFinal = uploadFinal;
 	}
 
 	public static long getSerialversionuid() {

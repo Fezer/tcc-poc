@@ -15,6 +15,7 @@ import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
+import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
@@ -26,6 +27,7 @@ import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
+import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
@@ -1168,6 +1170,20 @@ public class TermoDeEstagioService {
         query.setParameter("statusTermo", statusTermo);
         query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
         return query.getResultList();
+	}
+	
+	public TermoDeEstagio uploadTermoDeEstagio(TermoDeEstagio termo) {
+		
+		if (termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoAditivo)
+			termo.setUploadAditivo(true);
+		
+		else if (termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso)
+			termo.setUploadCompromisso(true);
+		
+		else
+			System.out.println("Não é aditivo nem de compromisso");
+		
+		return termoRepo.save(termo);
 	}
 	
 }

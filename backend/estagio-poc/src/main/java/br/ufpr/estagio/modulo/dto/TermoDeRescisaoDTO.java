@@ -21,6 +21,7 @@ public class TermoDeRescisaoDTO {
 	private boolean cienciaCoordenacao;
 	private boolean cienciaCOE;
 	private boolean cienciaCOAFE;
+	private boolean upload;
 	
 	public TermoDeRescisaoDTO() {
 		super();
@@ -29,7 +30,7 @@ public class TermoDeRescisaoDTO {
 
 	public TermoDeRescisaoDTO(long id, String aluno, String grrAluno, Estagio estagio, EnumEtapaFluxo etapaFluxo,
 			Date dataTermino, int periodoTotalRecesso, ArrayList<PeriodoRecesso> periodoRecesso,
-			boolean cienciaOrientador, boolean cienciaCoordenacao, boolean cienciaCOE, boolean cienciaCOAFE) {
+			boolean cienciaOrientador, boolean cienciaCoordenacao, boolean cienciaCOE, boolean cienciaCOAFE, boolean upload) {
 		super();
 		this.id = id;
 		this.aluno = aluno;
@@ -43,6 +44,7 @@ public class TermoDeRescisaoDTO {
 		this.cienciaCoordenacao = cienciaCoordenacao;
 		this.cienciaCOE = cienciaCOE;
 		this.cienciaCOAFE = cienciaCOAFE;
+		this.upload = upload;
 	}
 
 	public long getId() {
@@ -139,6 +141,14 @@ public class TermoDeRescisaoDTO {
 
 	public void setCienciaCOAFE(boolean cienciaCOAFE) {
 		this.cienciaCOAFE = cienciaCOAFE;
+	}
+
+	public boolean isUpload() {
+		return upload;
+	}
+
+	public void setUpload(boolean upload) {
+		this.upload = upload;
 	}
 	
 }

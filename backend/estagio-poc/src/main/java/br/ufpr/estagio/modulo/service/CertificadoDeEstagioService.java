@@ -115,5 +115,11 @@ public class CertificadoDeEstagioService {
         
         return query.getResultList();
 	}
+	
+	public CertificadoDeEstagio uploadCertificadoDeEstagio(CertificadoDeEstagio certificado) {
+		certificado.setUpload(true);
+		
+		return certificadoRepo.save(certificado);
+	}
 
 }
