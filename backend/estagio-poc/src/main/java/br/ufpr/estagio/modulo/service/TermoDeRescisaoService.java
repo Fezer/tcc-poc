@@ -11,6 +11,7 @@ import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.PeriodoRecesso;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
@@ -342,6 +343,12 @@ public class TermoDeRescisaoService {
 			termoDeRescisao.getEstagio().setDataTermino(termoDeRescisao.getDataTermino());
 			estagioRepo.save(termoDeRescisao.getEstagio());
 		}
+		return termoDeRescisaoRepo.save(termoDeRescisao);
+	}
+	
+	public TermoDeRescisao uploadTermoDeRescisao(TermoDeRescisao termoDeRescisao) {
+		termoDeRescisao.setUpload(true);
+		
 		return termoDeRescisaoRepo.save(termoDeRescisao);
 	}
 	

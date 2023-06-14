@@ -62,6 +62,9 @@ public class TermoDeRescisao implements Serializable{
 	@Column(name = "ciencia_coafe")
 	private boolean cienciaCOAFE;
 	
+	@Column(name = "upload")
+	private boolean upload;
+	
 	public TermoDeRescisao() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -81,6 +84,24 @@ public class TermoDeRescisao implements Serializable{
 		this.cienciaCoordenacao = cienciaCoordenacao;
 		this.cienciaCOE = cienciaCOE;
 		this.cienciaCOAFE = cienciaCOAFE;
+		this.upload = false;
+	}
+
+	public TermoDeRescisao(long id, EnumEtapaFluxo etapaFluxo, Estagio estagio, Date dataTermino,
+			int periodoTotalRecesso, List<PeriodoRecesso> periodoRecesso, boolean cienciaOrientador,
+			boolean cienciaCoordenacao, boolean cienciaCOE, boolean cienciaCOAFE, boolean upload) {
+		super();
+		this.id = id;
+		this.etapaFluxo = etapaFluxo;
+		this.estagio = estagio;
+		this.dataTermino = dataTermino;
+		this.periodoTotalRecesso = periodoTotalRecesso;
+		this.periodoRecesso = periodoRecesso;
+		this.cienciaOrientador = cienciaOrientador;
+		this.cienciaCoordenacao = cienciaCoordenacao;
+		this.cienciaCOE = cienciaCOE;
+		this.cienciaCOAFE = cienciaCOAFE;
+		this.upload = false;
 	}
 
 	public long getId() {
@@ -161,6 +182,14 @@ public class TermoDeRescisao implements Serializable{
 
 	public void setCienciaCOAFE(boolean cienciaCOAFE) {
 		this.cienciaCOAFE = cienciaCOAFE;
+	}
+
+	public boolean isUpload() {
+		return upload;
+	}
+
+	public void setUpload(boolean upload) {
+		this.upload = upload;
 	}
 
 	public static long getSerialversionuid() {

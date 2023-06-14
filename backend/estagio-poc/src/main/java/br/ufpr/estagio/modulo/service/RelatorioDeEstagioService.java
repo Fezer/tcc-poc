@@ -12,6 +12,7 @@ import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
@@ -194,5 +195,19 @@ public class RelatorioDeEstagioService {
         query.setParameter("cienciaOrientador", false);
         
         return query.getResultList();
+	}
+	
+	public RelatorioDeEstagio uploadRelatorioDeEstagio(RelatorioDeEstagio relatorio) {
+		
+		if (relatorio.getTipoRelatorio().equals(EnumTipoRelatorio.RelatorioParcial))
+			relatorio.setUploadParcial(true);
+		
+		else if (relatorio.getTipoRelatorio().equals(EnumTipoRelatorio.RelatorioFinal))
+			relatorio.setUploadFinal(true);
+		
+		else
+			System.out.println("Não é final nem parcial");
+		
+		return relatorioRepo.save(relatorio);
 	}
 }

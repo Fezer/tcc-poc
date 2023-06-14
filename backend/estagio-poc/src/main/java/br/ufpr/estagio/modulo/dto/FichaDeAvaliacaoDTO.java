@@ -24,6 +24,7 @@ public class FichaDeAvaliacaoDTO {
 	private EnumAvaliacao avalDominioTecnico;
 	private EnumAvaliacao avalHabilidades;
 	private EnumAvaliacao avalEfetivacao;
+	private boolean upload;
 	
 	public FichaDeAvaliacaoDTO() {
 		super();
@@ -37,7 +38,7 @@ public class FichaDeAvaliacaoDTO {
 			String contribuicaoEstagio, EnumAvaliacao avalPontualidade, EnumAvaliacao avalCriatividade,
 			EnumAvaliacao avalProtagonismo, EnumAvaliacao avalResponsabilidade,
 			EnumAvaliacao avalConduta, EnumAvaliacao avalDominioTecnico, EnumAvaliacao avalHabilidades,
-			EnumAvaliacao avalEfetivacao) {
+			EnumAvaliacao avalEfetivacao, boolean upload) {
 		super();
 		this.id = id;
 		this.estagio = estagio;
@@ -57,6 +58,7 @@ public class FichaDeAvaliacaoDTO {
 		this.avalDominioTecnico = avalDominioTecnico;
 		this.avalHabilidades = avalHabilidades;
 		this.avalEfetivacao = avalEfetivacao;
+		this.upload = upload;
 	}
 
 	public long getId() {
@@ -201,6 +203,14 @@ public class FichaDeAvaliacaoDTO {
 
 	public void setAvalEfetivacao(EnumAvaliacao avalEfetivacao) {
 		this.avalEfetivacao = avalEfetivacao;
+	}
+
+	public boolean isUpload() {
+		return upload;
+	}
+
+	public void setUpload(boolean upload) {
+		this.upload = upload;
 	}
 
 }
