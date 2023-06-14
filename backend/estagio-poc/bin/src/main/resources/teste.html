@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Estágios com Seguradora UFPR</title>
+    <style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 30px;
+			padding: 5px;
+		}
+
+		h1 {
+			text-align: center;
+			/*margin-bottom: 40px;*/
+		}
+
+		h2 {
+			margin-top: 40px;
+			margin-bottom: -100px;
+		}
+
+		table {
+			/*width: 80%;*/
+			width: 720px;
+			margin: 0 auto;
+			border-collapse: collapse;
+		}
+
+		tr {
+			width: 720px;
+		}
+
+		/* Só funciona ao visualizar pelo browser */
+		caption {
+			padding: 15px;
+			text-align: center;
+			border-bottom: 1px solid #ddd;
+			background-color: #c2c2c2;
+			font-weight: bold;
+		}
+		
+
+		/*Apagar isso quando for visualizar pelo browser.
+              Espera-se que corrija um bug ao utilizar o Flying Saucer*/
+        /*caption {
+            width: 80%;
+			margin: 0 auto;
+			padding: 15px;
+			text-align: center;
+			border-bottom: 1px solid #ddd;
+			background-color: #c2c2c2;
+			font-weight: bold;
+		}*/
+
+		th, td {
+			padding: 8px;
+			padding-left: 10px;
+			text-align: center;
+			border-bottom: 1px solid #ddd;
+		}
+
+		th {
+			background-color: #f2f2f2;
+			font-weight: bold;
+		}
+
+		tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+
+	</style>
+</head>
+<body>
+    <h1>Relatório de Estágio com Seguradora UFPR</h1>
+
+	<h2>Estágio de {{nome}}</h2>
+    <table>
+        <caption>Dados do Estágio</caption>
+        <tr>
+            <th>Nome Aluno</th>
+            <th>GRR</th>
+			<th>IRA</th>
+			<th>Curso</th>
+        </tr>
+		<tr>
+            <td>{{nome}}</td>
+            <td>{{grr}}</td>
+			<td>{{ira}}</td>
+            <td>{{curso}}</td>
+        </tr>
+        <br></br>
+		<tr>
+            <th colspan="2">Contratante</th>
+            <th>Seguradora</th>
+			<th>Apólice</th>
+        </tr>
+		<tr>
+            <td colspan="2">{{contratante}}</td>
+            <td>{{seguradora}}</td>
+			<td>{{apolice}}</td>
+        </tr>
+        <br></br>
+		<tr>
+            <th>Agente Integrador</th>
+            <th colspan="2">Orientador</th>
+			<th>Supervisor</th>
+        </tr>
+		<tr>
+            <td>{{agente}}</td>
+            <td colspan="2">{{orientador}}</td>
+			<td>{{supervisor}}</td>
+        </tr>
+        <br></br>
+		<tr>
+            <th>Data de Início</th>
+            <th>Data de Término</th>
+			<th>Jornada Diária</th>
+            <th>Jornada Semanal</th>
+        </tr>
+		<tr>
+            <td>{{dataInicio}}</td>
+            <td>{{dataTermino}}</td>
+			<td>{{jornadaDiaria}}</td>
+            <td>{{jornadaSemanal}}</td>
+        </tr>
+        <br></br>
+		<tr>
+            <th>Valor da Bolsa</th>
+            <th>Valor de Transporte</th>
+        </tr>
+		<tr>
+            <td>{{valorBolsa}}</td>
+            <td>{{valorTransporte}}</td>
+        </tr>
+    </table>
+
+    <br></br>
+
+    <table>
+        <caption>Endereço do Estágio</caption>
+        <tr>
+            <th colspan="2">Rua</th>
+            <th>Número</th>
+		</tr>
+		<tr>
+            <td colspan="2">Rua XXXXXXXX YYYYYYY ZZZZZZZZ</td>
+            <td>123</td>
+		</tr>
+
+		<tr>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>CEP</th>
+        </tr>
+        <tr>
+            <td>Curitiba</td>
+            <td>Paraná</td>
+            <td>82721-412</td>
+        </tr>
+    </table>
+
+	<br></br>
+	
+</body>
+
+</html>
