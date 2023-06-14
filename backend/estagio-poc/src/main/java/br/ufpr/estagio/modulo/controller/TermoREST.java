@@ -271,12 +271,12 @@ public class TermoREST {
 	public ResponseEntity<Object> delete(@PathVariable Long id){
 		try {
 			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
-		if(termofind.isEmpty()) {
-			throw new NotFoundException("Termo não encontrado!");
-		} else {
-			termoDeEstagioService.deletar(id);
-			return ResponseEntity.status(HttpStatus.OK).body(null);
-		}
+			if(termofind.isEmpty()) {
+				throw new NotFoundException("Termo não encontrado!");
+			} else {
+				termoDeEstagioService.deletar(id);
+				return ResponseEntity.status(HttpStatus.OK).body(null);
+			}
 		} catch (NotFoundException ex) {
 			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
