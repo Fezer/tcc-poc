@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.CursoSiga;
@@ -40,7 +42,7 @@ public class SigaREST {
 	private ModelMapper mapper;
 	
 	@GetMapping("/aluno")
-	public ResponseEntity<Discente> listarAluno(@RequestParam String grr, @RequestHeader("Authorization") String accessToken){
+	public ResponseEntity<Object> listarAluno(@RequestParam String grr, @RequestHeader("Authorization") String accessToken){
 		try {
 			if(grr.isBlank() || grr.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -48,19 +50,27 @@ public class SigaREST {
 				Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(grr, accessToken);
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(discente, Discente.class));
 			}
-		}catch (NumberFormatException e) {
-			throw new BadRequestException("O GRR informado para o aluno não é do tipo de dado esperado!");
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do aluno deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 		
 	@GetMapping("/docentes")
-	public ResponseEntity<DocentesData> listarDocentes(@RequestParam String idPrograma, @RequestHeader("Authorization") String accessToken){
+	public ResponseEntity<Object> listarDocentes(@RequestParam String idPrograma, @RequestHeader("Authorization") String accessToken){
 		try {
 			if(idPrograma.isBlank() || idPrograma.isEmpty()) {
 				throw new BadRequestException("ID do programa não informado!");
@@ -68,22 +78,30 @@ public class SigaREST {
 				DocentesData docentesData = sigaApiDiscentesService.buscarDiscentesPorIdPrograma(idPrograma, accessToken);
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(docentesData, DocentesData.class));
 			}
-		}catch (NumberFormatException e) {
-			throw new BadRequestException("O ID informado para o programa não é do tipo de dado esperado!");
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do programa deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 	
 	@GetMapping("/cursos")
-	public ResponseEntity<CursoSiga> listarCursos(@RequestParam Long idCurso, @RequestHeader("Authorization") String accessToken){
+	public ResponseEntity<Object> listarCursos(@RequestParam Long idCurso, @RequestHeader("Authorization") String accessToken){
 		try {
 			if(idCurso < 1) {
-				throw new BadRequestException("ID do curso não informado!");
+				throw new BadRequestException("ID do curso inválido!");
 			} else {
 				CursoSiga cursoSiga = sigaApiCursoSigaService.buscarCursoSigaPorIdCurso(idCurso, accessToken);
 				if(cursoSiga == null) {
@@ -91,14 +109,22 @@ public class SigaREST {
 				}
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(cursoSiga, CursoSiga.class));
 			}
-		}catch (NumberFormatException e) {
-			throw new BadRequestException("O ID informado para o curso não é do tipo de dado esperado!");
-		}catch(PocException e) {
-			e.printStackTrace();
-			throw e;
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do curso deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 }
