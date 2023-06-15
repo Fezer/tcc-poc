@@ -19,13 +19,13 @@ export default defineComponent({
     });
 
     const getHomeRouteByPerfil = (
-      perfil: "COE" | "COAFE" | "orientador" | "coordenacao"
+      perfil: "COE" | "COAFE" | "Orientador" | "Coordenacao"
     ) => {
       const rotas = {
         COE: "/coe/processos/termo",
         COAFE: "/coafe/processos/termo",
-        orientador: "/orientador",
-        coordenacao: "/coord",
+        Orientador: "/orientador",
+        Coordenacao: "/coord",
       };
       return rotas[perfil] || "/login";
     };
@@ -49,7 +49,7 @@ export default defineComponent({
           .then((res: { tipoUsuario: string; token: string }) => {
             setAuth(res);
 
-            // console.log(res);
+            console.log(res);
             // localStorage.setItem("accessToken", res?.token);
             localStorage.setItem("profile", res?.tipoUsuario);
 

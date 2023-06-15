@@ -175,7 +175,7 @@ export default defineComponent({
 
     <div
       class="layout-sidebar"
-      v-else-if="getCurrentProfile().includes('coordenacao')"
+      v-else-if="getCurrentProfile().includes('Coordenacao')"
     >
       <CoordMenu @menuitem-click="onMenuItemClick" />
     </div>
@@ -189,7 +189,7 @@ export default defineComponent({
 
     <div
       class="layout-sidebar"
-      v-else-if="getCurrentProfile().includes('orientador')"
+      v-else-if="getCurrentProfile().includes('Orientador')"
     >
       <OrientadorMenu @menuitem-click="onMenuItemClick" />
     </div>
