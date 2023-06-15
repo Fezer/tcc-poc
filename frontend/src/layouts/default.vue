@@ -66,17 +66,24 @@ export default defineComponent({
   },
   mounted() {
     const accessToken = localStorage.getItem("accessToken");
+    const profile = localStorage.getItem("profile");
 
-    if (!accessToken) {
+    if (!accessToken && !profile) {
       return this.$router.replace("/login");
     }
 
-    globalThis.$fetch = ofetch.create({
-      baseURL: this.$config.BACKEND_URL || "http://localhost:5000",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    if (profile) {
+      globalThis.$fetch = ofetch.create({
+        baseURL: this.$config.BACKEND_URL || "http://localhost:5000",
+      });
+    } else {
+      globalThis.$fetch = ofetch.create({
+        baseURL: this.$config.BACKEND_URL || "http://localhost:5000",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
   },
   methods: {
     onWrapperClick() {

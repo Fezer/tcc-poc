@@ -49,16 +49,9 @@ export default defineComponent({
           .then((res: { tipoUsuario: string; token: string }) => {
             setAuth(res);
 
-            console.log(res);
-            localStorage.setItem("accessToken", res?.token);
+            // console.log(res);
+            // localStorage.setItem("accessToken", res?.token);
             localStorage.setItem("profile", res?.tipoUsuario);
-
-            globalThis.$fetch = ofetch.create({
-              baseURL: config.BACKEND_URL || "http://localhost:5000",
-              headers: {
-                Authorization: `Bearer ${res?.token}`,
-              },
-            });
 
             const route = getHomeRouteByPerfil(res?.tipoUsuario);
 
