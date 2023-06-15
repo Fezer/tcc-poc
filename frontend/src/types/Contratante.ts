@@ -1,8 +1,8 @@
 export default interface Contratante {
-  id: number;
-  nome: string;
-  tipoContratante: "PessoaFisica" | "PessoaJuridica";
+  id?: number;
+  nome?: string;
+  tipo?: "PessoaFisica" | "PessoaJuridica";
   cpf?: string;
   cnpj?: string;
-  representanteEmpresa: string;
+  representanteEmpresa?: string;
 }

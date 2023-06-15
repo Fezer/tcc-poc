@@ -53,4 +53,30 @@ export default class ContratanteService extends BaseService {
 
     return response;
   }
+
+  async atualizaContratante(id?: number, nome?: string, tipoContratante?: string, cpf?: string, cnpj?: string, representanteEmpresa?: string){
+    const response = await $fetch(`/contratante/${id}/`, {
+      method: "PUT",
+      body: {
+        id,
+        nome,
+        tipoContratante,
+        cpf,
+        cnpj,
+        representanteEmpresa
+      },
+    });
+
+    if (!response?.id) {
+      throw new Error("Erro ao atualizar contratante");
+    }
+
+    return response;
+  }
+
+  async getContratantePerId(id: number) {
+    const response = await $fetch(`/contratante/${id}`);
+
+    return response;
+  }
 }

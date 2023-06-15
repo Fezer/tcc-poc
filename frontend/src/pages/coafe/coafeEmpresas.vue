@@ -21,9 +21,9 @@ export default defineComponent({
         COAFE
         <h6>Coordenação de Atividades Formativas e Estágios</h6>
       </h1>
-      <NuxtLink to="/contratantes/novo">
+      <!-- <NuxtLink to="/contratantes/novo">
         <Button label="Cadastrar"></Button>
-      </NuxtLink>
+      </NuxtLink> -->
     </div>
     <div>
       <DataTable
@@ -45,9 +45,14 @@ export default defineComponent({
         </template>
         <template #empty> No customers found. </template>
         <template #loading> Loading customers data. Please wait. </template>
-        <Column field="Empresas" header="Nome da Empresa">
+        <Column field="Empresas" header="id">
           <template #body="{ data }">
             {{ data?.id }}
+          </template>
+        </Column>
+        <Column field="Empresas" header="Nome da Empresa">
+          <template #body="{ data }">
+            {{ data?.nome }}
           </template>
         </Column>
         <Column field="cnpj" header="CNPJ">
@@ -55,16 +60,22 @@ export default defineComponent({
             {{ data?.cnpj }}
           </template>
         </Column>
+        <Column field="acoes" header="Ações">
+          <template #body="{ data }">
+            <NuxtLink :to="`/coafe/empresa/${data.id}`">
+              <Button 
+              :label="'Ver'"
+              class="p-button-primary" 
+              icon="pi pi-search"
+              />
+            </NuxtLink>
+          </template>
+        </Column>
         <!-- <Column field="situação" header="Ativo">
           <template #body="{ c }">
             {{ c.situação }}
           </template>
         </Column> -->
-        <Column field="button">
-          <template #body>
-            <Button label="Ver"></Button>
-          </template>
-        </Column>
       </DataTable>
     </div>
   </div>
