@@ -5180,6 +5180,121 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "baixarTermoAditivoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/GRR20204481/termo-aditivo/2/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"GRR20204481",
+										"termo-aditivo",
+										"2",
+										"download"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoDeCompromissoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/GRR20204481/termo-de-compromisso/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"GRR20204481",
+										"termo-de-compromisso",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoDeRescisaoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/GRR20204481/termo-de-rescisao/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"GRR20204481",
+										"termo-de-rescisao",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarFichaDeAvaliacaoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/GRR20204481/ficha-de-avaliacao-parcial/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"GRR20204481",
+										"ficha-de-avaliacao-parcial",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarRelatorioDeEstagioUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/GRR20204481/relatorio-de-estagio/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"GRR20204481",
+										"relatorio-de-estagio",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
