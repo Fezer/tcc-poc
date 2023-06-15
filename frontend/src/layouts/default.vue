@@ -187,11 +187,7 @@ export default defineComponent({
       <OrientadorMenu @menuitem-click="onMenuItemClick" />
     </div>
 
-    <div
-      class="layout-sidebar"
-      @click="onSidebarClick"
-      v-else-if="getCurrentProfile().includes('aluno')"
-    >
+    <div class="layout-sidebar" @click="onSidebarClick" v-else>
       <AlunoMenu @menuitem-click="onMenuItemClick" />
     </div>
 
