@@ -150,6 +150,10 @@ export default defineComponent({
 
       return true;
     },
+
+    getCurrentProfile(): string {
+      return localStorage.getItem("profile") || "";
+    },
   },
 });
 </script>
@@ -158,23 +162,36 @@ export default defineComponent({
   <div :class="containerClass" @click="onWrapperClick">
     <AppTopBar @menu-toggle="onMenuToggle" />
 
-    <div class="layout-sidebar" v-if="$route.path.includes('coe')">
+    <div class="layout-sidebar" v-if="getCurrentProfile().includes('COE')">
       <CoeMenu @menuitem-click="onMenuItemClick" />
     </div>
 
-    <div class="layout-sidebar" v-else-if="$route.path.includes('coord')">
+    <div
+      class="layout-sidebar"
+      v-else-if="getCurrentProfile().includes('coordenacao')"
+    >
       <CoordMenu @menuitem-click="onMenuItemClick" />
     </div>
 
-    <div class="layout-sidebar" v-else-if="$route.path.includes('coafe')">
+    <div
+      class="layout-sidebar"
+      v-else-if="getCurrentProfile().includes('COAFE')"
+    >
       <CoafeMenu @menuitem-click="onMenuItemClick" />
     </div>
 
-    <div class="layout-sidebar" v-else-if="$route.path.includes('orientador')">
+    <div
+      class="layout-sidebar"
+      v-else-if="getCurrentProfile().includes('orientador')"
+    >
       <OrientadorMenu @menuitem-click="onMenuItemClick" />
     </div>
 
-    <div class="layout-sidebar" @click="onSidebarClick" v-else>
+    <div
+      class="layout-sidebar"
+      @click="onSidebarClick"
+      v-else-if="getCurrentProfile().includes('aluno')"
+    >
       <AlunoMenu @menuitem-click="onMenuItemClick" />
     </div>
 

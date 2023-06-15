@@ -1,4 +1,5 @@
 <script lang="ts">
+import { ofetch } from "ofetch";
 import { useToast } from "primevue/usetoast";
 import AuthService from "~~/services/AuthService";
 
@@ -8,6 +9,7 @@ definePageMeta({
 export default defineComponent({
   setup() {
     const authService = new AuthService();
+    const config = useRuntimeConfig();
     const toast = useToast();
     const router = useRouter();
     const { setAuth } = useAuth();
@@ -17,11 +19,11 @@ export default defineComponent({
     });
 
     const getHomeRouteByPerfil = (
-      perfil: "coe" | "coafe" | "orientador" | "coordenacao"
+      perfil: "COE" | "COAFE" | "orientador" | "coordenacao"
     ) => {
       const rotas = {
-        coe: "/coe",
-        coafe: "/coafe",
+        COE: "/coe/processos/termo",
+        COAFE: "/coafe/processos/termo",
         orientador: "/orientador",
         coordenacao: "/coord",
       };
@@ -44,10 +46,23 @@ export default defineComponent({
             email,
             password,
           })
-          .then((res: { perfil: string; token: string }) => {
+          .then((res: { tipoUsuario: string; token: string }) => {
             setAuth(res);
 
-            const route = getHomeRouteByPerfil(res?.perfil);
+            console.log(res);
+            localStorage.setItem("accessToken", res?.token);
+            localStorage.setItem("profile", res?.tipoUsuario);
+
+            globalThis.$fetch = ofetch.create({
+              baseURL: config.BACKEND_URL || "http://localhost:5000",
+              headers: {
+                Authorization: `Bearer ${res?.token}`,
+              },
+            });
+
+            const route = getHomeRouteByPerfil(res?.tipoUsuario);
+
+            console.log(route);
 
             router.push(route);
           });
@@ -56,7 +71,7 @@ export default defineComponent({
         toast.add({
           severity: "error",
           summary: "Erro ao fazer login!",
-          detail: err?.response?._data?.error || "Email ou senha incorretos",
+          detail: err?.response?._data?.error || "Erro inesperado ao logar!",
         });
       }
     };
