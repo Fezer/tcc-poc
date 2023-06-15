@@ -34,4 +34,16 @@ public class SigaApiAlunoService {
         
         return discente;
     }
+
+    public String buscarGrrPorEmail(String accessToken) {
+        URI uri = UriComponentsBuilder.fromUriString("https://siga-hml.teste.ufpr.br/siga/api/graduacao/discente").build().toUri();
+        RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", accessToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> string = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
+        String grr = string.getBody();
+        
+        return grr;
+    }
 }

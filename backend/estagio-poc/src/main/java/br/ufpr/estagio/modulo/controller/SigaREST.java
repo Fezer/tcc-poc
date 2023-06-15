@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,7 +38,7 @@ public class SigaREST {
     	
 	@Autowired
 	private ModelMapper mapper;
-	
+
 	@GetMapping("/aluno")
 	public ResponseEntity<Discente> listarAluno(@RequestParam String grr){
 		try {
@@ -92,6 +93,24 @@ public class SigaREST {
 			}
 		}catch (NumberFormatException e) {
 			throw new BadRequestException("O ID informado para o curso não é do tipo de dado esperado!");
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		}
+	}
+
+	@GetMapping("/grr")
+	public ResponseEntity<String> buscarGrr(@RequestHeader("Authorization") String accessToken){
+		try {
+			if(accessToken==null) {
+				throw new BadRequestException("Não autorizado.");
+			} else {
+				String grr = sigaApiAlunoService.buscarGrrPorEmail(accessToken);
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(grr, String.class));
+			}
 		}catch(PocException e) {
 			e.printStackTrace();
 			throw e;
