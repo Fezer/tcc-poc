@@ -797,4 +797,68 @@ public class CoafeREST {
 	    }
 	}
 
+	/* Métodos para COAFE baixar relatórios upados pelo Aluno */
+
+	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/download")
+	public ResponseEntity<Resource> downloadTermoAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) {
+	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+	        throw new BadRequestException("GRR do aluno não informado!");
+	    } else {
+	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+	        if (aluno == null) {
+	            throw new NotFoundException("Aluno não encontrado!");
+	        } else {
+	        	long idLong = Long.parseLong(id);
+		    	
+		    	if (idLong < 1L)
+	        		throw new InvalidFieldException("Id inválido.");
+		    	
+		        TermoDeEstagio termo = termoDeEstagioService.buscarPorId(idLong);
+
+		        if (termo == null) {
+		            throw new NotFoundException("O termo de compromisso não foi encontrado.");
+		        }
+		        
+		        if (termo.isUploadCompromisso() == false)
+		        	throw new BadRequestException("O aluno ainda não submeteu o termo de compromisso.");
+		        
+	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+            	
+	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
+	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+
+				int contador = 1;
+				Path ultimoArquivo = arquivo;
+				while (Files.exists(ultimoArquivo)) {
+					nomeArquivo = arquivo.getFileName().toString();
+					String ultimoNome = nomeArquivo + "(" + contador + ")";
+					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
+					contador++;
+				}
+				
+	/* Exemplo de arquivo upado pelo aluno:
+			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
+			/src/main/resources/arquivos/GRR20204481-TermoDeCompromisso
+	*/
+
+	            try {
+	                Resource resource = new UrlResource(arquivo.toUri());
+
+	                if (resource.exists()) {
+	                    return ResponseEntity.ok()
+	                    		.contentType(MediaType.APPLICATION_PDF)
+	                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+	                            .body(resource);
+	                } else {
+	                    throw new NotFoundException("Arquivo não encontrado!");
+	                }
+	            } catch (MalformedURLException e) {
+	                e.printStackTrace();
+	                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+	            }
+	        }
+	    }
+	}
 }
