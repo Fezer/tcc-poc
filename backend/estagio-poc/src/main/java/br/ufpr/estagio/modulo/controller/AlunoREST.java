@@ -3048,6 +3048,7 @@ public class AlunoREST {
 
 					/* Métodos para Aluno baixar documentos upados por ele mesmo */
 	
+	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/download")
 	public ResponseEntity<Object> downloadTermoDeCompromissoAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@RequestHeader("Authorization") String accessToken) {
 	    try {
