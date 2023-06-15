@@ -40,26 +40,40 @@ public class FichaDeAvaliacaoREST {
 	private ModelMapper mapper;
     
     @PostMapping("/")
-	public ResponseEntity<FichaDeAvaliacaoDTO> criarFichaDeAvaliacao() {
-	    
-    	FichaDeAvaliacao fichaDeAvaliacao = new FichaDeAvaliacao();
-    	fichaDeAvaliacao = fichaDeAvaliacaoService.novoFichaDeAvaliacao(fichaDeAvaliacao);
-    	
-	    FichaDeAvaliacaoDTO fichaDeAvaliacaoDTO = mapper.map(fichaDeAvaliacao, FichaDeAvaliacaoDTO.class);
-	    return ResponseEntity.status(HttpStatus.OK).body(fichaDeAvaliacaoDTO);
+	public ResponseEntity<Object> criarFichaDeAvaliacao() {
+	    try {
+	    	FichaDeAvaliacao fichaDeAvaliacao = new FichaDeAvaliacao();
+	    	fichaDeAvaliacao = fichaDeAvaliacaoService.novoFichaDeAvaliacao(fichaDeAvaliacao);
+	    	
+		    FichaDeAvaliacaoDTO fichaDeAvaliacaoDTO = mapper.map(fichaDeAvaliacao, FichaDeAvaliacaoDTO.class);
+		    return ResponseEntity.status(HttpStatus.OK).body(fichaDeAvaliacaoDTO);
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
 	}
         
     @GetMapping("/")
-	public ResponseEntity<List<FichaDeAvaliacaoDTO>> listarFichasDeAvaliacao() {
+	public ResponseEntity<Object> listarFichasDeAvaliacao() {
     	try {
 		    List<FichaDeAvaliacao> listaFichasDeAvaliacao = fichaDeAvaliacaoService.listarTodosFichasDeAvaliacao();
 		    List<FichaDeAvaliacaoDTO> listaFichasDeAvaliacaoDTO = listaFichasDeAvaliacao.stream()
 		            .map(ap -> mapper.map(ap, FichaDeAvaliacaoDTO.class))
 		            .collect(Collectors.toList());
 		    return ResponseEntity.ok().body(listaFichasDeAvaliacaoDTO);
-	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
     
@@ -81,17 +95,25 @@ public class FichaDeAvaliacaoREST {
 		    FichaDeAvaliacaoDTO fichaDeAvaliacaoDTO = mapper.map(fichaDeAvaliacao.get(), FichaDeAvaliacaoDTO.class);
 		    return ResponseEntity.status(HttpStatus.OK).body(fichaDeAvaliacaoDTO);
     	} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+    		ex.printStackTrace();
+    		ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
@@ -174,23 +196,33 @@ public class FichaDeAvaliacaoREST {
 		    fichaDeAvaliacaoDTO = mapper.map(fichaDeAvaliacaoAtualizada, FichaDeAvaliacaoDTO.class);
 	        return ResponseEntity.ok().body(fichaDeAvaliacaoDTO);
     	} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+    		ex.printStackTrace();
+    		ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (HttpMessageNotReadableException ex) {
+	    	ex.printStackTrace();
 	    	ErrorResponse response = new ErrorResponse("Valor de avaliação inválido.");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (IllegalArgumentException ex) {
-			ErrorResponse response = new ErrorResponse("Valor de avaliação inválido.");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Valor de avaliação inválido.");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
     }
 
@@ -213,17 +245,25 @@ public class FichaDeAvaliacaoREST {
 		    
 		    return ResponseEntity.noContent().build();
     	} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+    		ex.printStackTrace();
+    		ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id da ficha de avaliação deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
     }
 }

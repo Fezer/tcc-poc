@@ -24,14 +24,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        // http.oauth2Login(withDefaults());
+        http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+
         // disable csrf for /auth/login para permitir acesso a rota sem token de
         // autenticação
-        http.csrf()
-                .ignoringRequestMatchers("/auth/login")
+        http.csrf().disable()
+                .cors()
                 .and()
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/auth/login")
                         .permitAll()
+                        .requestMatchers("/aluno/**")
+                        .authenticated()
                         .anyRequest()
                         .permitAll());
 
@@ -41,8 +46,12 @@ public class SecurityConfig {
         // .anyRequest()
         // .permitAll());
 
-        http.oauth2Login(withDefaults());
-        http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+        // http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+
+        // http.authorizeRequests(requests -> requests
+        // .antMatchers("/aluno/**").authenticated()
+        // .anyRequest().permitAll());
+
         return http.build();
     }
 }

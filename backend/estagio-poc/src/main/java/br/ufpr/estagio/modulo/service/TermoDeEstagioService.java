@@ -15,6 +15,7 @@ import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
+import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
@@ -26,6 +27,7 @@ import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
+import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
@@ -364,6 +366,13 @@ public class TermoDeEstagioService {
     	termo.setParecerCOE(parecerCoe);
     	termo.setMotivoIndeferimento(justificativa.getJustificativa());
     	
+    	//Após ter um termo indeferido, o Aluno terá que enviar um novo, então o atributo upload volta a ser false
+    	if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoDeCompromisso)) {
+    		termo.setUploadCompromisso(false);
+    	} else if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoAditivo)) {
+    		termo.setUploadAditivo(false);
+    	}
+    	
     	//Uma vez que a COE reprove o termo de compromisso, deve ser encaminhado para ciencia da coordenação
     	termo.setEtapaFluxo(etapaFluxo);
     	
@@ -465,6 +474,13 @@ public class TermoDeEstagioService {
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCoordenacao(parecerCoordenacao);
     	termo.setMotivoIndeferimento(justificativa.getJustificativa());
+    	
+    	//Após ter um termo indeferido, o Aluno terá que enviar um novo, então o atributo upload volta a ser false
+    	if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoDeCompromisso)) {
+    		termo.setUploadCompromisso(false);
+    	} else if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoAditivo)) {
+    		termo.setUploadAditivo(false);
+    	}
     	
     	/**Uma vez que a Coordenação reprove o termo de compromisso, o fluxo se encerra, 
     	 * esse encerramento do fluxo é representado com o Termo de Compromisso
@@ -694,6 +710,13 @@ public class TermoDeEstagioService {
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCOAFE(parecerCoafe);
     	termo.setMotivoIndeferimento(justificativa.getJustificativa());
+    	
+    	//Após ter um termo indeferido, o Aluno terá que enviar um novo, então o atributo upload volta a ser false
+    	if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoDeCompromisso)) {
+    		termo.setUploadCompromisso(false);
+    	} else if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoAditivo)) {
+    		termo.setUploadAditivo(false);
+    	}
     	
     	//Uma vez que a COAFE reprove o termo de compromisso, deve ser encaminhado para ciencia da coordenação
     	termo.setEtapaFluxo(etapaFluxo);
@@ -1168,6 +1191,28 @@ public class TermoDeEstagioService {
         query.setParameter("statusTermo", statusTermo);
         query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
         return query.getResultList();
+	}
+	
+	public TermoDeEstagio uploadTermoDeEstagio(TermoDeEstagio termo, String nomeArquivo) {
+		
+		if (termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoAditivo)
+			termo.setUploadAditivo(true);
+		
+		else if (termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso)
+			termo.setUploadCompromisso(true);
+		
+		List<String> listaAux = new ArrayList<>();
+		listaAux.add(nomeArquivo);
+		
+		if (termo.getArquivos() == null) {
+			termo.setArquivos(listaAux);
+		} else {
+			List<String> arquivos = termo.getArquivos();
+			arquivos.add(nomeArquivo);
+			termo.setArquivos(arquivos);
+		}
+		
+		return termoRepo.save(termo);
 	}
 	
 }

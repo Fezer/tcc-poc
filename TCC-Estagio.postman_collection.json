@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "385de8d4-21d5-4358-9cda-d34d57cab3ca",
+		"_postman_id": "a416c79d-1384-4ca3-b000-63bc73a861c5",
 		"name": "TCC-Estagio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18567474"
+		"_exporter_id": "17301767"
 	},
 	"item": [
 		{
@@ -1037,7 +1037,7 @@
 									]
 								},
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20204481/upload-termo-aditivo",
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/upload",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1046,7 +1046,9 @@
 									"path": [
 										"aluno",
 										"GRR20204481",
-										"upload-termo-aditivo"
+										"termo-aditivo",
+										"2",
+										"upload"
 									]
 								}
 							},
@@ -1069,6 +1071,29 @@
 										"GRR20204481",
 										"termo-aditivo",
 										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "downloadTermoAditivo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"termo-aditivo",
+										"2",
+										"download"
 									]
 								}
 							},
@@ -1416,7 +1441,7 @@
 									]
 								},
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20204481/upload-termo-de-rescisao",
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-de-rescisao/1/upload",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1425,7 +1450,32 @@
 									"path": [
 										"aluno",
 										"GRR20204481",
-										"upload-termo-de-rescisao"
+										"termo-de-rescisao",
+										"1",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "downloadTermoDeRescisao",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-de-rescisao/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"termo-de-rescisao",
+										"1",
+										"download"
 									]
 								}
 							},
@@ -1491,12 +1541,12 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": "/home/gabriel/Downloads/arquivo-mm.pdf"
+											"src": "/home/gabriel/Documentos/ufpr/tcc/relatorios/arquivo.pdf"
 										}
 									]
 								},
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20204481/upload-termo",
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-de-compromisso/1/upload",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1505,7 +1555,9 @@
 									"path": [
 										"aluno",
 										"GRR20204481",
-										"upload-termo"
+										"termo-de-compromisso",
+										"1",
+										"upload"
 									]
 								}
 							},
@@ -1673,7 +1725,7 @@
 									]
 								},
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20204481/upload-relatorio",
+									"raw": "http://localhost:5000/aluno/GRR20204481/relatorio-de-estagio/1/upload",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1682,7 +1734,32 @@
 									"path": [
 										"aluno",
 										"GRR20204481",
-										"upload-relatorio"
+										"relatorio-de-estagio",
+										"1",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "downloadRelatorioDeEstagio",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/relatorio-de-estagio/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"relatorio-de-estagio",
+										"1",
+										"download"
 									]
 								}
 							},
@@ -1854,7 +1931,7 @@
 									]
 								},
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20204481/upload-ficha/FichaDeAvaliacaoParcial",
+									"raw": "http://localhost:5000/aluno/GRR20204481/ficha-de-avaliacao/1/upload/FichaDeAvaliacaoParcial",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1863,8 +1940,33 @@
 									"path": [
 										"aluno",
 										"GRR20204481",
-										"upload-ficha",
+										"ficha-de-avaliacao",
+										"1",
+										"upload",
 										"FichaDeAvaliacaoParcial"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "downloadFichaDeAvaliacao",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/ficha-de-avaliacao/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"ficha-de-avaliacao",
+										"1",
+										"download"
 									]
 								}
 							},
@@ -3656,6 +3758,29 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "baixarTermoDeCompromissoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/GRR20204481/termo-de-compromisso/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"GRR20204481",
+										"termo-de-compromisso",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -3699,6 +3824,29 @@
 										"coe",
 										"termoAditivo",
 										"indeferido"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoAditivoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/GRR20204481/termo-aditivo/2/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"GRR20204481",
+										"termo-aditivo",
+										"2",
+										"download"
 									]
 								}
 							},
@@ -3747,6 +3895,29 @@
 										"termoDeRescisao",
 										"2",
 										"darCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoDeRescisaoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/GRR20204481/termo-de-rescisao/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"GRR20204481",
+										"termo-de-rescisao",
+										"1",
+										"download"
 									]
 								}
 							},
@@ -4049,6 +4220,29 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "baixarTermoDeCompromissoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/GRR20204481/termo-de-compromisso/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"GRR20204481",
+										"termo-de-compromisso",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -4140,6 +4334,29 @@
 										"coordenacao",
 										"termoAditivo",
 										"indeferido"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoAditivoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/GRR20204481/termo-aditivo/2/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"GRR20204481",
+										"termo-aditivo",
+										"2",
+										"download"
 									]
 								}
 							},
@@ -4431,6 +4648,29 @@
 										"termoDeRescisao",
 										"2",
 										"darCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoDeRescisaoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/GRR20204481/termo-de-rescisao/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"GRR20204481",
+										"termo-de-rescisao",
+										"1",
+										"download"
 									]
 								}
 							},
@@ -5166,6 +5406,121 @@
 									"path": [
 										"coafe",
 										"gerar-relatorios-relatorioDeEstagio-excel"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoAditivoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/GRR20204481/termo-aditivo/2/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"GRR20204481",
+										"termo-aditivo",
+										"2",
+										"download"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoDeCompromissoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/GRR20204481/termo-de-compromisso/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"GRR20204481",
+										"termo-de-compromisso",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoDeRescisaoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/GRR20204481/termo-de-rescisao/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"GRR20204481",
+										"termo-de-rescisao",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarFichaDeAvaliacaoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/GRR20204481/ficha-de-avaliacao-parcial/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"GRR20204481",
+										"ficha-de-avaliacao-parcial",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarRelatorioDeEstagioUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coafe/GRR20204481/relatorio-de-estagio/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coafe",
+										"GRR20204481",
+										"relatorio-de-estagio",
+										"1",
+										"download"
 									]
 								}
 							},

@@ -36,26 +36,40 @@ public class CertificadoDeEstagioREST {
 	private ModelMapper mapper;
     
     @PostMapping("/")
-	public ResponseEntity<CertificadoDeEstagioDTO> criarCertificadoDeEstagio() {
-	    
-    	CertificadoDeEstagio certificadoDeEstagio = new CertificadoDeEstagio();
-    	certificadoDeEstagio = certificadoDeEstagioService.novoCertificadoDeEstagio(certificadoDeEstagio);
-    	
-	    CertificadoDeEstagioDTO certificadoDeEstagioDTO = mapper.map(certificadoDeEstagio, CertificadoDeEstagioDTO.class);
-	    return ResponseEntity.status(HttpStatus.OK).body(certificadoDeEstagioDTO);
+	public ResponseEntity<Object> criarCertificadoDeEstagio() {
+	    try {
+	    	CertificadoDeEstagio certificadoDeEstagio = new CertificadoDeEstagio();
+	    	certificadoDeEstagio = certificadoDeEstagioService.novoCertificadoDeEstagio(certificadoDeEstagio);
+	    	
+		    CertificadoDeEstagioDTO certificadoDeEstagioDTO = mapper.map(certificadoDeEstagio, CertificadoDeEstagioDTO.class);
+		    return ResponseEntity.status(HttpStatus.OK).body(certificadoDeEstagioDTO);
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
 	}
         
     @GetMapping("/")
-	public ResponseEntity<List<CertificadoDeEstagioDTO>> listarCertificadosDeEstagio() {
+	public ResponseEntity<Object> listarCertificadosDeEstagio() {
 	    try {
 		    List<CertificadoDeEstagio> listaCertificadosDeEstagio = certificadoDeEstagioService.listarTodosCertificadosDeEstagio();
 		    List<CertificadoDeEstagioDTO> listaCertificadosDeEstagioDTO = listaCertificadosDeEstagio.stream()
 		            .map(ap -> mapper.map(ap, CertificadoDeEstagioDTO.class))
 		            .collect(Collectors.toList());
 		    return ResponseEntity.ok().body(listaCertificadosDeEstagioDTO);
-	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
     
@@ -78,17 +92,25 @@ public class CertificadoDeEstagioREST {
 		    CertificadoDeEstagioDTO certificadoDeEstagioDTO = mapper.map(certificadoDeEstagio.get(), CertificadoDeEstagioDTO.class);
 		    return ResponseEntity.status(HttpStatus.OK).body(certificadoDeEstagioDTO);
     	} catch (NotFoundException ex) {
+    		ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
@@ -112,17 +134,25 @@ public class CertificadoDeEstagioREST {
 		    return ResponseEntity.noContent().build();
 		    
     	} catch (NotFoundException ex) {
+    		ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Id do estágio deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    } catch(Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
     }
 }

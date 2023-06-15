@@ -2,6 +2,7 @@ package br.ufpr.estagio.modulo.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.model.Estagio;
@@ -21,6 +22,8 @@ public class TermoDeRescisaoDTO {
 	private boolean cienciaCoordenacao;
 	private boolean cienciaCOE;
 	private boolean cienciaCOAFE;
+	private boolean upload;
+	private List<String> arquivos;
 	
 	public TermoDeRescisaoDTO() {
 		super();
@@ -29,7 +32,7 @@ public class TermoDeRescisaoDTO {
 
 	public TermoDeRescisaoDTO(long id, String aluno, String grrAluno, Estagio estagio, EnumEtapaFluxo etapaFluxo,
 			Date dataTermino, int periodoTotalRecesso, ArrayList<PeriodoRecesso> periodoRecesso,
-			boolean cienciaOrientador, boolean cienciaCoordenacao, boolean cienciaCOE, boolean cienciaCOAFE) {
+			boolean cienciaOrientador, boolean cienciaCoordenacao, boolean cienciaCOE, boolean cienciaCOAFE, boolean upload) {
 		super();
 		this.id = id;
 		this.aluno = aluno;
@@ -43,6 +46,28 @@ public class TermoDeRescisaoDTO {
 		this.cienciaCoordenacao = cienciaCoordenacao;
 		this.cienciaCOE = cienciaCOE;
 		this.cienciaCOAFE = cienciaCOAFE;
+		this.upload = upload;
+	}
+
+	public TermoDeRescisaoDTO(long id, String aluno, String grrAluno, Estagio estagio, EnumEtapaFluxo etapaFluxo,
+			Date dataTermino, int periodoTotalRecesso, ArrayList<PeriodoRecesso> periodoRecesso,
+			boolean cienciaOrientador, boolean cienciaCoordenacao, boolean cienciaCOE, boolean cienciaCOAFE,
+			boolean upload, List<String> arquivos) {
+		super();
+		this.id = id;
+		this.aluno = aluno;
+		this.grrAluno = grrAluno;
+		this.estagio = estagio;
+		this.etapaFluxo = etapaFluxo;
+		this.dataTermino = dataTermino;
+		this.periodoTotalRecesso = periodoTotalRecesso;
+		this.periodoRecesso = periodoRecesso;
+		this.cienciaOrientador = cienciaOrientador;
+		this.cienciaCoordenacao = cienciaCoordenacao;
+		this.cienciaCOE = cienciaCOE;
+		this.cienciaCOAFE = cienciaCOAFE;
+		this.upload = upload;
+		this.arquivos = arquivos;
 	}
 
 	public long getId() {
@@ -139,6 +164,22 @@ public class TermoDeRescisaoDTO {
 
 	public void setCienciaCOAFE(boolean cienciaCOAFE) {
 		this.cienciaCOAFE = cienciaCOAFE;
+	}
+
+	public boolean isUpload() {
+		return upload;
+	}
+
+	public void setUpload(boolean upload) {
+		this.upload = upload;
+	}
+
+	public List<String> getArquivos() {
+		return arquivos;
+	}
+
+	public void setArquivos(List<String> arquivos) {
+		this.arquivos = arquivos;
 	}
 	
 }

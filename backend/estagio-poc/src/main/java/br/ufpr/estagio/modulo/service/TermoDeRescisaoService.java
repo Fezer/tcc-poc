@@ -1,5 +1,6 @@
 package br.ufpr.estagio.modulo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.PeriodoRecesso;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
@@ -342,6 +344,23 @@ public class TermoDeRescisaoService {
 			termoDeRescisao.getEstagio().setDataTermino(termoDeRescisao.getDataTermino());
 			estagioRepo.save(termoDeRescisao.getEstagio());
 		}
+		return termoDeRescisaoRepo.save(termoDeRescisao);
+	}
+	
+	public TermoDeRescisao uploadTermoDeRescisao(TermoDeRescisao termoDeRescisao, String nomeArquivo) {
+		termoDeRescisao.setUpload(true);
+		
+		List<String> listaAux = new ArrayList<>();
+		listaAux.add(nomeArquivo);
+		
+		if (termoDeRescisao.getArquivos() == null) {
+			termoDeRescisao.setArquivos(listaAux);
+		} else {
+			List<String> arquivos = termoDeRescisao.getArquivos();
+			arquivos.add(nomeArquivo);
+			termoDeRescisao.setArquivos(arquivos);
+		}
+		
 		return termoDeRescisaoRepo.save(termoDeRescisao);
 	}
 	

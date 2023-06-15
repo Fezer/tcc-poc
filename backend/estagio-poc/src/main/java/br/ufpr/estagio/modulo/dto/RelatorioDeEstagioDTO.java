@@ -1,12 +1,14 @@
 package br.ufpr.estagio.modulo.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import br.ufpr.estagio.modulo.enums.EnumAvaliacao;
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAtividades;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
 import br.ufpr.estagio.modulo.model.Estagio;
+import jakarta.persistence.Column;
 
 public class RelatorioDeEstagioDTO implements Serializable{
 	
@@ -26,6 +28,9 @@ public class RelatorioDeEstagioDTO implements Serializable{
 	private EnumAvaliacao avalContribuicaoEstagio;
 	private EnumAvaliacao avalEfetivacao;
 	private String consideracoes;
+	private boolean uploadParcial;
+	private boolean uploadFinal;
+	private List<String> arquivos;
 	
 	public RelatorioDeEstagioDTO() {
 		super();
@@ -36,7 +41,7 @@ public class RelatorioDeEstagioDTO implements Serializable{
 			EnumTipoRelatorio tipoRelatorio, EnumAvaliacaoAtividades avalAtividades,
 			EnumAvaliacao avalFormacaoProfissional, EnumAvaliacao avalRelacoesInterpessoais,
 			EnumAvaliacao avalDesenvolvimentoAtividades, EnumAvaliacao avalContribuicaoEstagio,
-			EnumAvaliacao avalEfetivacao, String consideracoes) {
+			EnumAvaliacao avalEfetivacao, String consideracoes, boolean uploadParcial, boolean uploadFinal) {
 		super();
 		this.id = id;
 		this.estagio = estagio;
@@ -50,6 +55,32 @@ public class RelatorioDeEstagioDTO implements Serializable{
 		this.avalContribuicaoEstagio = avalContribuicaoEstagio;
 		this.avalEfetivacao = avalEfetivacao;
 		this.consideracoes = consideracoes;
+		this.uploadParcial = uploadParcial;
+		this.uploadFinal = uploadFinal;
+	}
+
+	public RelatorioDeEstagioDTO(long id, Estagio estagio, boolean cienciaOrientador, EnumEtapaFluxo etapaFluxo,
+			EnumTipoRelatorio tipoRelatorio, EnumAvaliacaoAtividades avalAtividades,
+			EnumAvaliacao avalFormacaoProfissional, EnumAvaliacao avalRelacoesInterpessoais,
+			EnumAvaliacao avalDesenvolvimentoAtividades, EnumAvaliacao avalContribuicaoEstagio,
+			EnumAvaliacao avalEfetivacao, String consideracoes, boolean uploadParcial, boolean uploadFinal,
+			List<String> arquivos) {
+		super();
+		this.id = id;
+		this.estagio = estagio;
+		this.cienciaOrientador = cienciaOrientador;
+		this.etapaFluxo = etapaFluxo;
+		this.tipoRelatorio = tipoRelatorio;
+		this.avalAtividades = avalAtividades;
+		this.avalFormacaoProfissional = avalFormacaoProfissional;
+		this.avalRelacoesInterpessoais = avalRelacoesInterpessoais;
+		this.avalDesenvolvimentoAtividades = avalDesenvolvimentoAtividades;
+		this.avalContribuicaoEstagio = avalContribuicaoEstagio;
+		this.avalEfetivacao = avalEfetivacao;
+		this.consideracoes = consideracoes;
+		this.uploadParcial = uploadParcial;
+		this.uploadFinal = uploadFinal;
+		this.arquivos = arquivos;
 	}
 
 	public long getId() {
@@ -146,6 +177,30 @@ public class RelatorioDeEstagioDTO implements Serializable{
 
 	public void setConsideracoes(String consideracoes) {
 		this.consideracoes = consideracoes;
+	}
+
+	public boolean isUploadParcial() {
+		return uploadParcial;
+	}
+
+	public void setUploadParcial(boolean uploadParcial) {
+		this.uploadParcial = uploadParcial;
+	}
+
+	public boolean isUploadFinal() {
+		return uploadFinal;
+	}
+
+	public void setUploadFinal(boolean uploadFinal) {
+		this.uploadFinal = uploadFinal;
+	}
+
+	public List<String> getArquivos() {
+		return arquivos;
+	}
+
+	public void setArquivos(List<String> arquivos) {
+		this.arquivos = arquivos;
 	}
 	
 }

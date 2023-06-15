@@ -62,6 +62,7 @@ public class PeriodoRecessoREST {
 				return ResponseEntity.status(HttpStatus.OK).body(lista.stream().map(e -> mapper.map(e, PeriodoRecessoDTO.class)).collect(Collectors.toList()));
 			}
 		} catch (NotFoundException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch(Exception e) {
@@ -88,12 +89,15 @@ public class PeriodoRecessoREST {
 			return new ResponseEntity<>(periodoRecessoDTO, HttpStatus.OK);
 		}
 		} catch (NotFoundException ex) {
+			ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse("Id do termo de rescisão deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
+	    	ex.printStackTrace();
 	        ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch(Exception e) {
@@ -131,13 +135,16 @@ public class PeriodoRecessoREST {
 				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(periodoRecessoAtualizado, PeriodoRecessoDTO.class));
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do termo de rescisão deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do termo de rescisão deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch(Exception e) {
 			e.printStackTrace();
@@ -162,13 +169,16 @@ public class PeriodoRecessoREST {
 				return ResponseEntity.status(HttpStatus.OK).body(null);
 			}
 		} catch (NotFoundException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    } catch (NumberFormatException ex) {
-	        ErrorResponse response = new ErrorResponse("Id do termo de rescisão deve ser um número!");
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Id do termo de rescisão deve ser um número!");
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch (InvalidFieldException ex) {
-	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    } catch(Exception e) {
 			e.printStackTrace();

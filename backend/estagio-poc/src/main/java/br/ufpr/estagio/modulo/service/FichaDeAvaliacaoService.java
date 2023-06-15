@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.service;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.ufpr.estagio.modulo.dto.FichaDeAvaliacaoDTO;
+import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
+import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
+import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.FichaDeAvaliacao;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
@@ -123,6 +127,23 @@ public class FichaDeAvaliacaoService {
 		fichaRepo.delete(fichaDeAvaliacao);
 		
 		return;
+	}
+	
+	public FichaDeAvaliacao uploadFichaDeAvaliacao(FichaDeAvaliacao fichaDeAvaliacao, String nomeArquivo) {
+		fichaDeAvaliacao.setUpload(true);
+		
+		List<String> listaAux = new ArrayList<>();
+		listaAux.add(nomeArquivo);
+		
+		if (fichaDeAvaliacao.getArquivos() == null) {
+			fichaDeAvaliacao.setArquivos(listaAux);
+		} else {
+			List<String> arquivos = fichaDeAvaliacao.getArquivos();
+			arquivos.add(nomeArquivo);
+			fichaDeAvaliacao.setArquivos(arquivos);
+		}
+		
+		return fichaRepo.save(fichaDeAvaliacao);
 	}
 
 }

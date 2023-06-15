@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
@@ -15,6 +16,7 @@ import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.Seguradora;
+import jakarta.persistence.Column;
 
 public class TermoDeEstagioDTO {
 	private long id;
@@ -50,26 +52,30 @@ public class TermoDeEstagioDTO {
 	private EnumParecerAprovadores parecerCoordenacao;
 	private String motivoIndeferimento;
 	private String descricaoAjustes;
+	private boolean uploadCompromisso;
+	private boolean uploadAditivo;
+	private List<String> arquivos;
 	
 	public TermoDeEstagioDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public TermoDeEstagioDTO(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, String aluno,
-			String grrAluno, Seguradora seguradora, Apolice apolice, Contratante contratante,
+	public TermoDeEstagioDTO(long id, String aluno, String grrAluno, EnumTipoTermoDeEstagio tipoTermoDeEstagio,
+			Estagio estagio, Seguradora seguradora, Apolice apolice, Contratante contratante,
 			AgenteIntegrador agenteIntegrador, Orientador orientador, Coordenador coordenador,
 			PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria, int jornadaSemanal,
 			float valorBolsa, float valorTransporte, Date dataFimSuspensao, Date dataInicioRetomada, Date dataCriacao,
 			EnumStatusTermo statusTermo, EnumEtapaFluxo etapaFluxo, CienciaCoordenacao cienciaCoordenacao,
 			EnumParecerAprovadores parecerCOE, EnumParecerAprovadores parecerCOAFE,
-			EnumParecerAprovadores parecerCoordenacao, String motivoIndeferimento, String descricaoAjustes) {
+			EnumParecerAprovadores parecerCoordenacao, String motivoIndeferimento, String descricaoAjustes,
+			boolean uploadCompromisso, boolean uploadAditivo) {
 		super();
 		this.id = id;
-		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
-		this.estagio = estagio;
 		this.aluno = aluno;
 		this.grrAluno = grrAluno;
+		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
+		this.estagio = estagio;
 		this.seguradora = seguradora;
 		this.apolice = apolice;
 		this.contratante = contratante;
@@ -94,6 +100,52 @@ public class TermoDeEstagioDTO {
 		this.parecerCoordenacao = parecerCoordenacao;
 		this.motivoIndeferimento = motivoIndeferimento;
 		this.descricaoAjustes = descricaoAjustes;
+		this.uploadCompromisso = uploadCompromisso;
+		this.uploadAditivo = uploadAditivo;
+	}
+
+	public TermoDeEstagioDTO(long id, String aluno, String grrAluno, EnumTipoTermoDeEstagio tipoTermoDeEstagio,
+			Estagio estagio, Seguradora seguradora, Apolice apolice, Contratante contratante,
+			AgenteIntegrador agenteIntegrador, Orientador orientador, Coordenador coordenador,
+			PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino, int jornadaDiaria, int jornadaSemanal,
+			float valorBolsa, float valorTransporte, Date dataFimSuspensao, Date dataInicioRetomada, Date dataCriacao,
+			EnumStatusTermo statusTermo, EnumEtapaFluxo etapaFluxo, CienciaCoordenacao cienciaCoordenacao,
+			EnumParecerAprovadores parecerCOE, EnumParecerAprovadores parecerCOAFE,
+			EnumParecerAprovadores parecerCoordenacao, String motivoIndeferimento, String descricaoAjustes,
+			boolean uploadCompromisso, boolean uploadAditivo, List<String> arquivos) {
+		super();
+		this.id = id;
+		this.aluno = aluno;
+		this.grrAluno = grrAluno;
+		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
+		this.estagio = estagio;
+		this.seguradora = seguradora;
+		this.apolice = apolice;
+		this.contratante = contratante;
+		this.agenteIntegrador = agenteIntegrador;
+		this.orientador = orientador;
+		this.coordenador = coordenador;
+		this.planoAtividades = planoAtividades;
+		this.dataInicio = dataInicio;
+		this.dataTermino = dataTermino;
+		this.jornadaDiaria = jornadaDiaria;
+		this.jornadaSemanal = jornadaSemanal;
+		this.valorBolsa = valorBolsa;
+		this.valorTransporte = valorTransporte;
+		this.dataFimSuspensao = dataFimSuspensao;
+		this.dataInicioRetomada = dataInicioRetomada;
+		this.dataCriacao = dataCriacao;
+		this.statusTermo = statusTermo;
+		this.etapaFluxo = etapaFluxo;
+		this.cienciaCoordenacao = cienciaCoordenacao;
+		this.parecerCOE = parecerCOE;
+		this.parecerCOAFE = parecerCOAFE;
+		this.parecerCoordenacao = parecerCoordenacao;
+		this.motivoIndeferimento = motivoIndeferimento;
+		this.descricaoAjustes = descricaoAjustes;
+		this.uploadCompromisso = uploadCompromisso;
+		this.uploadAditivo = uploadAditivo;
+		this.arquivos = arquivos;
 	}
 
 	public long getId() {
@@ -326,6 +378,30 @@ public class TermoDeEstagioDTO {
 
 	public void setDescricaoAjustes(String descricaoAjustes) {
 		this.descricaoAjustes = descricaoAjustes;
+	}
+
+	public boolean isUploadCompromisso() {
+		return uploadCompromisso;
+	}
+
+	public void setUploadCompromisso(boolean uploadCompromisso) {
+		this.uploadCompromisso = uploadCompromisso;
+	}
+
+	public boolean isUploadAditivo() {
+		return uploadAditivo;
+	}
+
+	public void setUploadAditivo(boolean uploadAditivo) {
+		this.uploadAditivo = uploadAditivo;
+	}
+
+	public List<String> getArquivos() {
+		return arquivos;
+	}
+
+	public void setArquivos(List<String> arquivos) {
+		this.arquivos = arquivos;
 	}
 
 }

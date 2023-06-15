@@ -276,7 +276,7 @@ public class GeradorDePdfService {
 		// Informacoes do concedente
 		
 		// Informacoes da ficha
-		html = html.replace("{{comentarioCoordenador}}", ficha.getAcompanhamentoCoordenadorComentario());
+		/*html = html.replace("{{comentarioCoordenador}}", ficha.getAcompanhamentoCoordenadorComentario());
 		html = html.replace("{{comentarioOrientador}}", ficha.getAcompanhamentoOrientadorComentario());
 		html = html.replace("{{atividadesRealizadas}}", ficha.getAtividadesRealizadasConsideracoes());
 		html = html.replace("{{contribuicao}}", ficha.getContribuicaoEstagio());
@@ -289,7 +289,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{habilidades}}", String.valueOf(ficha.getAvalHabilidades()));
 		html = html.replace("{{pontualidade}}", String.valueOf(ficha.getAvalPontualidade()));
 		html = html.replace("{{protagonismo}}", String.valueOf(ficha.getAvalProtagonismo()));
-		html = html.replace("{{responsabilidade}}", String.valueOf(ficha.getAvalResponsabilidade()));
+		html = html.replace("{{responsabilidade}}", String.valueOf(ficha.getAvalResponsabilidade()));*/
 		
 		
 		// Informacoes do aluno
