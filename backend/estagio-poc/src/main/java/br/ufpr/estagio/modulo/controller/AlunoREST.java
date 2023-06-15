@@ -3046,4 +3046,414 @@ public class AlunoREST {
 		}
 	}
 
+					/* Métodos para Aluno baixar documentos upados por ele mesmo */
+	
+	public ResponseEntity<Object> downloadTermoDeCompromissoAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) {
+	    try {
+	    	if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+		        throw new BadRequestException("GRR do aluno não informado!");
+		    } else {
+		        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+		        if (aluno == null) {
+		            throw new NotFoundException("Aluno não encontrado!");
+		        } else {
+		        	long idLong = Long.parseLong(id);
+			    	
+			    	if (idLong < 1L)
+		        		throw new InvalidFieldException("Id inválido.");
+			    	
+			        TermoDeEstagio termo = termoDeEstagioService.buscarPorId(idLong);
+	
+			        if (termo == null) {
+			            throw new NotFoundException("O termo de compromisso não foi encontrado.");
+			        }
+			        
+			        if (termo.isUploadCompromisso() == false)
+			        	throw new BadRequestException("O termo de compromisso ainda não foi submetido.");
+			        
+		        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+	            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+	
+		            int tamanho = termo.getArquivos().size();
+	            	
+		            String nomeArquivo = termo.getArquivos().get(tamanho-1);
+		            
+		            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+	
+		            try {
+		                Resource resource = new UrlResource(arquivo.toUri());
+	
+		                if (resource.exists()) {
+		                    return ResponseEntity.ok()
+		                    		.contentType(MediaType.APPLICATION_PDF)
+		                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+		                            .body(resource);
+		                } else {
+		                    throw new NotFoundException("Arquivo não encontrado!");
+		                }
+		            } catch (MalformedURLException e) {
+		                e.printStackTrace();
+		                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+		            }
+		        }
+		    }
+	    } catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do termo de compromisso não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@GetMapping("/{grrAlunoURL}/termo-aditivo/{id}/download")
+	public ResponseEntity<Object> downloadTermoAditivoAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) {
+		try {
+		    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+		        throw new BadRequestException("GRR do aluno não informado!");
+		    } else {
+		        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+		        if (aluno == null) {
+		            throw new NotFoundException("Aluno não encontrado!");
+		        } else {
+		        	long idLong = Long.parseLong(id);
+			    	
+			    	if (idLong < 1L)
+		        		throw new InvalidFieldException("Id inválido.");
+			    	
+			        TermoDeEstagio termo = termoDeEstagioService.buscarPorId(idLong);
+	
+			        if (termo == null) {
+			            throw new NotFoundException("O termo aditivo não foi encontrado.");
+			        }
+			        
+			        if (termo.isUploadAditivo() == false)
+			        	throw new BadRequestException("O termo aditivo ainda não foi submetido.");
+			        
+		        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+	            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+	            	
+	            	int tamanho = termo.getArquivos().size();
+	            	
+		            String nomeArquivo = termo.getArquivos().get(tamanho-1);
+		            
+		            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+	
+		            try {
+		                Resource resource = new UrlResource(arquivo.toUri());
+	
+		                if (resource.exists()) {
+		                    return ResponseEntity.ok()
+		                    		.contentType(MediaType.APPLICATION_PDF)
+		                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+		                            .body(resource);
+		                } else {
+		                    throw new NotFoundException("Arquivo não encontrado!");
+		                }
+		            } catch (MalformedURLException e) {
+		                e.printStackTrace();
+		                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+		            }
+		        }
+		    }
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do termo aditivo não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@GetMapping("/{grrAlunoURL}/termo-de-rescisao/{id}/download")
+	public ResponseEntity<Object> downloadTermoDeRescisaoAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) {
+		try {
+		    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+		        throw new BadRequestException("GRR do aluno não informado!");
+		    } else {
+		        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+		        if (aluno == null) {
+		            throw new NotFoundException("Aluno não encontrado!");
+		        } else {
+		        	long idLong = Long.parseLong(id);
+			    	
+			    	if (idLong < 1L)
+		        		throw new InvalidFieldException("Id inválido.");
+			    	
+			        Optional<TermoDeRescisao> termoFind = termoDeRescisaoService.buscarPorId(idLong);
+	
+			        if (termoFind.isEmpty()) {
+			            throw new NotFoundException("O termo de rescisão não foi encontrado.");
+			        }
+			        
+			        TermoDeRescisao termo = termoFind.get();
+			        
+			        if (termo.isUpload() == false)
+			        	throw new BadRequestException("O termo de rescisão ainda não foi submetido.");
+			        
+		        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+	            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+	            	
+		            //String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeRescisao;
+		            //Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+	
+	            	int tamanho = termo.getArquivos().size();
+	            	
+		            String nomeArquivo = termo.getArquivos().get(tamanho-1);
+		            
+		            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+	
+		            try {
+		                Resource resource = new UrlResource(arquivo.toUri());
+	
+		                if (resource.exists()) {
+		                    return ResponseEntity.ok()
+		                    		.contentType(MediaType.APPLICATION_PDF)
+		                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+		                            .body(resource);
+		                } else {
+		                    throw new NotFoundException("Arquivo não encontrado!");
+		                }
+		            } catch (MalformedURLException e) {
+		                e.printStackTrace();
+		                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+		            }
+		        }
+		    }
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do termo de rescisão não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@GetMapping("/{grrAlunoURL}/ficha-de-avaliacao/{id}/download")
+	public ResponseEntity<Object> downloadFichaDeAvaliacaoAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) {
+		try {
+		    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+		        throw new BadRequestException("GRR do aluno não informado!");
+		    } else {
+		        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+		        if (aluno == null) {
+		            throw new NotFoundException("Aluno não encontrado!");
+		        } else {
+		        	long idLong = Long.parseLong(id);
+			    	
+			    	if (idLong < 1L)
+		        		throw new InvalidFieldException("Id inválido.");
+			    	
+			        Optional<FichaDeAvaliacao> fichaFind = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idLong);
+	
+			        if (fichaFind.isEmpty()) {
+			            throw new NotFoundException("A ficha de avaliação não foi encontrada.");
+			        }
+			        
+			        FichaDeAvaliacao ficha = fichaFind.get();
+			        
+			        if (ficha.isUpload() == false)
+			        	throw new BadRequestException("A ficha de avaliação ainda não foi submetida.");
+			        
+		        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+	            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+	            	
+	            	int tamanho = ficha.getArquivos().size();
+	            	
+		            String nomeArquivo = ficha.getArquivos().get(tamanho-1);
+		            
+		            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+	
+		            try {
+		                Resource resource = new UrlResource(arquivo.toUri());
+	
+		                if (resource.exists()) {
+		                    return ResponseEntity.ok()
+		                    		.contentType(MediaType.APPLICATION_PDF)
+		                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+		                            .body(resource);
+		                } else {
+		                    throw new NotFoundException("Arquivo não encontrado!");
+		                }
+		            } catch (MalformedURLException e) {
+		                e.printStackTrace();
+		                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+		            }
+		        }
+		    }
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID da ficha de avaliação não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@GetMapping("/{grrAlunoURL}/relatorio-de-estagio/{id}/download")
+	public ResponseEntity<Object> downloadRelatorioDeEstagioAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) {
+	    try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+		        throw new BadRequestException("GRR do aluno não informado!");
+		    } else {
+		        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+		        if (aluno == null) {
+		            throw new NotFoundException("Aluno não encontrado!");
+		        } else {
+		        	long idLong = Long.parseLong(id);
+			    	
+			    	if (idLong < 1L)
+		        		throw new InvalidFieldException("Id inválido.");
+			    	
+			        Optional<RelatorioDeEstagio> relatorioFind = relatorioDeEstagioService.buscarRelatorioPorId(idLong);
+	
+			        if (relatorioFind.isEmpty()) {
+			            throw new NotFoundException("O relatório de estágio não foi encontrado.");
+			        }
+			        
+			        RelatorioDeEstagio relatorio = relatorioFind.get();
+			        
+			        if (relatorio.isUploadFinal() == false && relatorio.isUploadParcial() == false)
+			        	throw new BadRequestException("O relatório de estágio ainda não foi submetido.");
+			        
+		        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+	            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+	            	
+	            	int tamanho = relatorio.getArquivos().size();
+	            	
+		            String nomeArquivo = relatorio.getArquivos().get(tamanho-1);
+		            
+		            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+	
+		            try {
+		                Resource resource = new UrlResource(arquivo.toUri());
+	
+		                if (resource.exists()) {
+		                    return ResponseEntity.ok()
+		                    		.contentType(MediaType.APPLICATION_PDF)
+		                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+		                            .body(resource);
+		                } else {
+		                    throw new NotFoundException("Arquivo não encontrado!");
+		                }
+		            } catch (MalformedURLException e) {
+		                e.printStackTrace();
+		                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+		            }
+		        }
+		    }
+	    } catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do relatório de estágio não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+	
 }
