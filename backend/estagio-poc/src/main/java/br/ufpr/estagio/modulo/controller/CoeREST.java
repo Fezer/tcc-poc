@@ -342,7 +342,7 @@ public class CoeREST {
 	    }
 	}
 	
-					/* Métodos para Aluno baixar documentos upados por ele mesmo */
+					/* Métodos para Coe baixar documentos upados pelo Aluno */
 	
 	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/download")
 	public ResponseEntity<Object> downloadTermoDeCompromissoAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
