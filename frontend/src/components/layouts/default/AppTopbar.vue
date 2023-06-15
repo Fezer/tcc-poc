@@ -12,7 +12,8 @@ export default {
       this.$emit("topbar-menu-toggle", event);
     },
     handleLogout() {
-      // localStorage.removeItem("accessToken");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("profile");
       window.location.href = "/login";
     },
   },

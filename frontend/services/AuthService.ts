@@ -3,8 +3,8 @@ export default class AuthService {
     return await $fetch(`/auth/login`, {
       method: "POST",
       body: {
-        email,
-        password,
+        login: email,
+        senha: password,
       },
     });
   }
