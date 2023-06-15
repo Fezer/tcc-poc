@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
@@ -19,6 +20,7 @@ public class CertificadoDeEstagioDTO implements Serializable{
 	private EnumParecerAprovadores parecerCOE;
 	private String motivoReprovacao;
 	private boolean upload;
+	private List<String> arquivos;
 	
 	public CertificadoDeEstagioDTO() {
 		super();
@@ -34,6 +36,18 @@ public class CertificadoDeEstagioDTO implements Serializable{
 		this.parecerCOE = parecerCOE;
 		this.motivoReprovacao = motivoReprovacao;
 		this.upload = upload;
+	}
+
+	public CertificadoDeEstagioDTO(long id, Estagio estagio, EnumEtapaFluxo etapaFluxo,
+			EnumParecerAprovadores parecerCOE, String motivoReprovacao, boolean upload, List<String> arquivos) {
+		super();
+		this.id = id;
+		this.estagio = estagio;
+		this.etapaFluxo = etapaFluxo;
+		this.parecerCOE = parecerCOE;
+		this.motivoReprovacao = motivoReprovacao;
+		this.upload = upload;
+		this.arquivos = arquivos;
 	}
 
 	public long getId() {
@@ -82,6 +96,14 @@ public class CertificadoDeEstagioDTO implements Serializable{
 
 	public void setUpload(boolean upload) {
 		this.upload = upload;
+	}
+
+	public List<String> getArquivos() {
+		return arquivos;
+	}
+
+	public void setArquivos(List<String> arquivos) {
+		this.arquivos = arquivos;
 	}
 
 	public static long getSerialversionuid() {

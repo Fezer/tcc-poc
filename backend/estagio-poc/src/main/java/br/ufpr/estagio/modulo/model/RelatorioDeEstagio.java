@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -62,6 +63,8 @@ public class RelatorioDeEstagio implements Serializable{
 	@Column(name = "upload_final")
 	private boolean uploadFinal;
 	
+	private List<String> arquivos;
+	
 	public RelatorioDeEstagio() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -109,6 +112,30 @@ public class RelatorioDeEstagio implements Serializable{
 		this.consideracoes = consideracoes;
 		this.uploadParcial = uploadParcial;
 		this.uploadFinal = uploadFinal;
+	}
+
+	public RelatorioDeEstagio(long id, Estagio estagio, boolean cienciaOrientador, EnumEtapaFluxo etapaFluxo,
+			EnumTipoRelatorio tipoRelatorio, EnumAvaliacaoAtividades avalAtividades,
+			EnumAvaliacao avalFormacaoProfissional, EnumAvaliacao avalRelacoesInterpessoais,
+			EnumAvaliacao avalDesenvolvimentoAtividades, EnumAvaliacao avalContribuicaoEstagio,
+			EnumAvaliacao avalEfetivacao, String consideracoes, boolean uploadParcial, boolean uploadFinal,
+			List<String> arquivos) {
+		super();
+		this.id = id;
+		this.estagio = estagio;
+		this.cienciaOrientador = cienciaOrientador;
+		this.etapaFluxo = etapaFluxo;
+		this.tipoRelatorio = tipoRelatorio;
+		this.avalAtividades = avalAtividades;
+		this.avalFormacaoProfissional = avalFormacaoProfissional;
+		this.avalRelacoesInterpessoais = avalRelacoesInterpessoais;
+		this.avalDesenvolvimentoAtividades = avalDesenvolvimentoAtividades;
+		this.avalContribuicaoEstagio = avalContribuicaoEstagio;
+		this.avalEfetivacao = avalEfetivacao;
+		this.consideracoes = consideracoes;
+		this.uploadParcial = uploadParcial;
+		this.uploadFinal = uploadFinal;
+		this.arquivos = arquivos;
 	}
 
 	public long getId() {
@@ -221,6 +248,14 @@ public class RelatorioDeEstagio implements Serializable{
 
 	public void setUploadFinal(boolean uploadFinal) {
 		this.uploadFinal = uploadFinal;
+	}
+
+	public List<String> getArquivos() {
+		return arquivos;
+	}
+
+	public void setArquivos(List<String> arquivos) {
+		this.arquivos = arquivos;
 	}
 
 	public static long getSerialversionuid() {

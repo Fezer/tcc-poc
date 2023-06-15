@@ -1022,7 +1022,7 @@ public class AlunoREST {
 
 							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 							
-							termoDeEstagioService.uploadTermoDeEstagio(termo);
+							termoDeEstagioService.uploadTermoDeEstagio(termo, nomeArquivo);
 
 							return ResponseEntity.ok("Termo de compromisso salvo com sucesso!");
 						} catch (Exception e) {
@@ -2547,19 +2547,21 @@ public class AlunoREST {
 
 							String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
 
+							String nomeArquivo;
+							
 							if (tipoFicha.equals(String.valueOf(EnumTipoDocumento.FichaDeAvaliacaoParcial))) {
-								String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoParcial;
+								nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoParcial;
 								Path destino = Paths.get(diretorioDestino + nomeArquivo);
 								Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 							} else if (tipoFicha.equals(String.valueOf(EnumTipoDocumento.FichaDeAvaliacaoFinal))) {
-								String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoFinal;
+								nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoFinal;
 								Path destino = Paths.get(diretorioDestino + nomeArquivo);
 								Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 							} else {
 								throw new InvalidFieldException(
 										"O tipo de documento deve ser 'FichaDeAvaliacaoParcial' ou 'FichaDeAvaliacaoFinal'.");
 							}
-							fichaDeAvaliacaoService.uploadFichaDeAvaliacao(ficha);
+							fichaDeAvaliacaoService.uploadFichaDeAvaliacao(ficha, nomeArquivo);
 							
 							return ResponseEntity.ok("Ficha de avaliação salva com sucesso!");
 						} catch (NotFoundException ex) {
@@ -2703,7 +2705,7 @@ public class AlunoREST {
 							Path destino = Paths.get(diretorioDestino + nomeArquivo);
 							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
-							relatorioDeEstagioService.uploadRelatorioDeEstagio(relatorio);
+							relatorioDeEstagioService.uploadRelatorioDeEstagio(relatorio, nomeArquivo);
 							
 							return ResponseEntity.ok("Relatório de estágio salvo com sucesso!");
 						} catch (NotFoundException ex) {
@@ -2844,9 +2846,10 @@ public class AlunoREST {
 
 							int contador = 1;
 							Path novoDestino = destino;
+							String novoNome = "";
 							while (Files.exists(novoDestino)) {
 								nomeArquivo = destino.getFileName().toString();
-								String novoNome = nomeArquivo + "(" + contador + ")";
+								novoNome = nomeArquivo + "(" + contador + ")";
 								novoDestino = destino.resolveSibling(novoNome);
 								contador++;
 							}
@@ -2855,7 +2858,7 @@ public class AlunoREST {
 
 //						Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
-							termoDeEstagioService.uploadTermoDeEstagio(termo);
+							termoDeEstagioService.uploadTermoDeEstagio(termo, novoNome);
 							
 							return ResponseEntity.ok("Termo aditivo salvo com sucesso!");
 						} catch (NotFoundException ex) {
@@ -2961,7 +2964,6 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-
 	
 	@PostMapping("/{grrAlunoURL}/termo-de-rescisao/{id}/upload")
 	public ResponseEntity<Object> uploadTermoRescisao(@PathVariable String grrAlunoURL, @PathVariable String id,
@@ -2999,7 +3001,7 @@ public class AlunoREST {
 							Path destino = Paths.get(diretorioDestino + nomeArquivo);
 							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
-							termoDeRescisaoService.uploadTermoDeRescisao(termo);
+							termoDeRescisaoService.uploadTermoDeRescisao(termo, nomeArquivo);
 							
 							return ResponseEntity.ok("Termo de rescisão salvo com sucesso!");
 						} catch (NotFoundException ex) {

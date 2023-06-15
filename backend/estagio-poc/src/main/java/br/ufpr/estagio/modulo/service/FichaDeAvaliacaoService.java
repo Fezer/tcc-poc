@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.service;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,9 +129,20 @@ public class FichaDeAvaliacaoService {
 		return;
 	}
 	
-	public FichaDeAvaliacao uploadFichaDeAvaliacao(FichaDeAvaliacao fichaDeAvaliacao) {
+	public FichaDeAvaliacao uploadFichaDeAvaliacao(FichaDeAvaliacao fichaDeAvaliacao, String nomeArquivo) {
 		fichaDeAvaliacao.setUpload(true);
-
+		
+		List<String> listaAux = new ArrayList<>();
+		listaAux.add(nomeArquivo);
+		
+		if (fichaDeAvaliacao.getArquivos() == null) {
+			fichaDeAvaliacao.setArquivos(listaAux);
+		} else {
+			List<String> arquivos = fichaDeAvaliacao.getArquivos();
+			arquivos.add(nomeArquivo);
+			fichaDeAvaliacao.setArquivos(arquivos);
+		}
+		
 		return fichaRepo.save(fichaDeAvaliacao);
 	}
 

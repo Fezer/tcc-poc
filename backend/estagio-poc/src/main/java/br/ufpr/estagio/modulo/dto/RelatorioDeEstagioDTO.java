@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import br.ufpr.estagio.modulo.enums.EnumAvaliacao;
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAtividades;
@@ -29,6 +30,7 @@ public class RelatorioDeEstagioDTO implements Serializable{
 	private String consideracoes;
 	private boolean uploadParcial;
 	private boolean uploadFinal;
+	private List<String> arquivos;
 	
 	public RelatorioDeEstagioDTO() {
 		super();
@@ -55,6 +57,30 @@ public class RelatorioDeEstagioDTO implements Serializable{
 		this.consideracoes = consideracoes;
 		this.uploadParcial = uploadParcial;
 		this.uploadFinal = uploadFinal;
+	}
+
+	public RelatorioDeEstagioDTO(long id, Estagio estagio, boolean cienciaOrientador, EnumEtapaFluxo etapaFluxo,
+			EnumTipoRelatorio tipoRelatorio, EnumAvaliacaoAtividades avalAtividades,
+			EnumAvaliacao avalFormacaoProfissional, EnumAvaliacao avalRelacoesInterpessoais,
+			EnumAvaliacao avalDesenvolvimentoAtividades, EnumAvaliacao avalContribuicaoEstagio,
+			EnumAvaliacao avalEfetivacao, String consideracoes, boolean uploadParcial, boolean uploadFinal,
+			List<String> arquivos) {
+		super();
+		this.id = id;
+		this.estagio = estagio;
+		this.cienciaOrientador = cienciaOrientador;
+		this.etapaFluxo = etapaFluxo;
+		this.tipoRelatorio = tipoRelatorio;
+		this.avalAtividades = avalAtividades;
+		this.avalFormacaoProfissional = avalFormacaoProfissional;
+		this.avalRelacoesInterpessoais = avalRelacoesInterpessoais;
+		this.avalDesenvolvimentoAtividades = avalDesenvolvimentoAtividades;
+		this.avalContribuicaoEstagio = avalContribuicaoEstagio;
+		this.avalEfetivacao = avalEfetivacao;
+		this.consideracoes = consideracoes;
+		this.uploadParcial = uploadParcial;
+		this.uploadFinal = uploadFinal;
+		this.arquivos = arquivos;
 	}
 
 	public long getId() {
@@ -167,6 +193,14 @@ public class RelatorioDeEstagioDTO implements Serializable{
 
 	public void setUploadFinal(boolean uploadFinal) {
 		this.uploadFinal = uploadFinal;
+	}
+
+	public List<String> getArquivos() {
+		return arquivos;
+	}
+
+	public void setArquivos(List<String> arquivos) {
+		this.arquivos = arquivos;
 	}
 	
 }

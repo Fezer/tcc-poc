@@ -197,7 +197,7 @@ public class RelatorioDeEstagioService {
         return query.getResultList();
 	}
 	
-	public RelatorioDeEstagio uploadRelatorioDeEstagio(RelatorioDeEstagio relatorio) {
+	public RelatorioDeEstagio uploadRelatorioDeEstagio(RelatorioDeEstagio relatorio, String nomeArquivo) {
 		
 		if (relatorio.getTipoRelatorio().equals(EnumTipoRelatorio.RelatorioParcial))
 			relatorio.setUploadParcial(true);
@@ -205,8 +205,16 @@ public class RelatorioDeEstagioService {
 		else if (relatorio.getTipoRelatorio().equals(EnumTipoRelatorio.RelatorioFinal))
 			relatorio.setUploadFinal(true);
 		
-		else
-			System.out.println("Não é final nem parcial");
+		List<String> listaAux = new ArrayList<>();
+		listaAux.add(nomeArquivo);
+		
+		if (relatorio.getArquivos() == null) {
+			relatorio.setArquivos(listaAux);
+		} else {
+			List<String> arquivos = relatorio.getArquivos();
+			arquivos.add(nomeArquivo);
+			relatorio.setArquivos(arquivos);
+		}
 		
 		return relatorioRepo.save(relatorio);
 	}
