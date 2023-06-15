@@ -49,7 +49,7 @@
           />
         </NuxtLink>
         <Button v-if="edicao.ativa"
-            @click="edicao.ativa = false"
+            @click="desativarEdicao"
             :label="'Cancelar'"
             class="p-button-warning"
             icon="pi pi-undo"
@@ -100,7 +100,15 @@
         cnpj: contratante.value?.cnpj,
       });
       const contratanteService = new ContratanteService();
-  
+      const desativarEdicao = () => {
+        edicao.ativa = false;
+        state.id = contratante.value?.id
+        state.nome = contratante.value?.nome
+        state.tipo = contratante.value?.tipo
+        state.cpf = contratante.value?.cpf
+        state.cnpj = contratante.value?.cnpj
+        state.representanteEmpresa = contratante.value?.representanteEmpresa
+      }
       const editar = () => {
         edicao.ativa = true; // Atualiza a variável reativa para habilitar a edição
       };
@@ -144,6 +152,7 @@
         handleUpdateContratante,
         tiposContratante,
         editar,
+        desativarEdicao,
         edicao,
         state
       };
