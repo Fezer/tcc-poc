@@ -697,6 +697,13 @@ public class TermoDeEstagioService {
     	termo.setParecerCOAFE(parecerCoafe);
     	termo.setMotivoIndeferimento(justificativa.getJustificativa());
     	
+    	//Após ter um termo indeferido, o Aluno terá que enviar um novo, então o atributo upload volta a ser false
+    	if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoDeCompromisso)) {
+    		termo.setUploadCompromisso(false);
+    	} else if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoAditivo)) {
+    		termo.setUploadAditivo(false);
+    	}
+    	
     	//Uma vez que a COAFE reprove o termo de compromisso, deve ser encaminhado para ciencia da coordenação
     	termo.setEtapaFluxo(etapaFluxo);
     	

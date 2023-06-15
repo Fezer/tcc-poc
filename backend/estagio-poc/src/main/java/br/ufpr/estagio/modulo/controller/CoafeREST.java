@@ -426,6 +426,8 @@ public class CoafeREST {
 	    }
 	}
 	
+							/* Métodos para COAFE gerar relatórios */
+	
 	@GetMapping("/gerar-relatorio-seguradora-ufpr")
 	public ResponseEntity<byte[]> gerarRelatorioSeguradoraUfprPdf() throws IOException, DocumentException {
 		
@@ -802,7 +804,7 @@ public class CoafeREST {
 	    }
 	}
 
-	/* Métodos para COAFE baixar relatórios upados pelo Aluno */
+							/* Métodos para COAFE baixar relatórios upados pelo Aluno */
 
 	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/download")
 	public ResponseEntity<Resource> downloadTermoDeCompromissoAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
