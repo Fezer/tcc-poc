@@ -11,128 +11,168 @@
         <h3><b>Relatórios</b></h3>
       </span>
     </div>
-    <div>
-      <span class="p-input-icon-left">
-        <h5>Relatório de Estágios Ativos</h5>
-    </span>
-    <div class="card flex-column">
-      <div class="flex flex-row gap-10">
-        <div class="flex align-items-left pb-4">
-            <Checkbox
-                v-model="checked"
-                inputId="opção1"
-                name="tipoEstagio"
-                value="estagioUfpr"
-                :binary="true"
-              />
-            <label for="opção1" class="ml-2"> Estágios UFPR </label>
-        </div>
-        <div class="flex align-items-left pb-6">
-            <Checkbox
-              v-model="checked"
-              inputId="opção2"
-              name="tipoEstagio"
-              value="estagioExterno"
-              :binary="true"
+    <div class="card">
+      <h4 class="flex justify-content-center">Gerar Relatórios</h4>
+      <div class="w-full flex justify-content-around p-3">
+        <div class="card p-fluid col-4 m-1">
+          <label for="agente" class="flex justify-content-center"
+            ><h5>Seguradoras</h5></label
+          >
+          <div class="w-full flex justify-content-end mt-3">
+            <Button
+              @click=""
+              :label="'Excel'"
+              icon="pi pi-file-excel"
+              class="p-button-success m-3"
             />
-            <label for="opção2" class="ml-2"> Estágios Externos </label>
-        </div>
-      </div>
-      <div>
-        <div class="flex align-items-center pb-6 gap-6">
-          <span class="p-float-label ml-2">
-            <Calendar
-              v-model="date"
-              dateFormat="dd/mm/yy"
-              inputId="dataInicio"
-              showIcon
-              showButtonBar
+            <Button
+              @click=""
+              :label="'PDF'"
+              icon="pi pi-file-pdf"
+              class="p-button-danger m-3"
             />
-            <label for="dataInicio">De </label>
-          </span>
-          <span class="p-float-label ml-2">
-            <Calendar
-              v-model="date"
-              dateFormat="dd/mm/yy"
-              inputId="DatadeFim"
-              showIcon
-              showButtonBar
-            />
-            <label for="DatadeFim">Até</label>
-          </span>
+          </div>
         </div>
-      </div>
-      <div class="flex flex-column gap-1">
-          <label for="curso">Curso</label>
-          <InputText id="curso" v-model="value" />
+        <div class="card p-fluid col-4 m-1">
+          <label for="contratante" class="flex justify-content-center"
+            ><h5>Certificados</h5></label
+          >
+          <div class="w-full flex justify-content-end mt-3">
+            <Button
+              @click=""
+              :label="'Excel'"
+              icon="pi pi-file-excel"
+              class="p-button-success m-3"
+            />
+            <Button
+              @click=""
+              :label="'PDF'"
+              icon="pi pi-file-pdf"
+              class="p-button-danger m-3"
+            />
+          </div>
+        </div>
+        <div class="card p-fluid col-4 m-1">
+          <label for="estagio" class="flex justify-content-center"
+            ><h5>Estágios</h5></label
+          >
+          <div class="w-full flex justify-content-end mt-3">
+            <Button
+              @click=""
+              :label="'Excel'"
+              icon="pi pi-file-excel"
+              class="p-button-success m-3"
+            />
+            <Button
+              @click=""
+              :label="'PDF'"
+              icon="pi pi-file-pdf"
+              class="p-button-danger m-3"
+            />
+          </div>
+        </div>
       </div>
     </div>
-    <div class="flex justify-content-end">
-        <Button label="Cadastrar" class="botao-principal"></Button>
+    <div class="card">
+      <h4 class="flex justify-content-center">Gerar Relatórios Especificos</h4>
+      <div class="w-full flex justify-content-around p-3">
+        <div class="card p-fluid col-4 m-1">
+          <label for="agente" class="flex justify-content-center"
+            ><h5>Nome do Agente de Integração</h5></label
+          >
+          <Dropdown
+            v-model="agenteSelecionado"
+            :options="agentes"
+            optionLabel="nome"
+            placeholder="Selecione um Agente de Integração"
+            filter
+          />
+          <div class="w-full flex justify-content-end mt-3">
+            <Button
+              @click=""
+              :label="'Excel'"
+              icon="pi pi-file-excel"
+              class="p-button-success m-3"
+            />
+            <Button
+              @click=""
+              :label="'PDF'"
+              icon="pi pi-file-pdf"
+              class="p-button-danger m-3"
+            />
+          </div>
+        </div>
+        <div class="card p-fluid col-4 m-1">
+          <label for="contratante" class="flex justify-content-center"
+            ><h5>Nome do Contratante</h5></label
+          >
+          <Dropdown
+            v-model="contratanteSelecionado"
+            :options="contratantes"
+            optionLabel="nome"
+            placeholder="Selecione um Contratante"
+            filter
+          />
+          <div class="w-full flex justify-content-end mt-3">
+            <Button
+              @click=""
+              :label="'Excel'"
+              icon="pi pi-file-excel"
+              class="p-button-success m-3"
+            />
+            <Button
+              @click=""
+              :label="'PDF'"
+              icon="pi pi-file-pdf"
+              class="p-button-danger m-3"
+            />
+          </div>
+        </div>
+        <div class="card p-fluid col-4 m-1">
+          <label for="estagio" class="flex justify-content-center"
+            ><h5>Nome do Estágio</h5></label
+          >
+          <Dropdown
+            v-model="estagioSelecionado"
+            :options="estagios"
+            optionLabel="aluno.nome"
+            placeholder="Selecione um Estágio"
+            filter
+          />
+          <div class="w-full flex justify-content-end mt-3">
+            <Button
+              @click=""
+              :label="'Excel'"
+              icon="pi pi-file-excel"
+              class="p-button-success m-3"
+            />
+            <Button
+              @click=""
+              :label="'PDF'"
+              icon="pi pi-file-pdf"
+              class="p-button-danger m-3"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div>
-    <span class="p-input-icon-left">
-        <h5>Relatório de Indeferimentos</h5>
-    </span>
-    <div class="card flex-column">
-      <div class="flex flex-row gap-10">
-        <div class="flex align-items-left pb-4">
-            <Checkbox  v-model="checked" inputId="opção1" name="tipoEstagio" value="estagioUfpr" :binary="true" />
-            <label for="opção1" class="ml-2"> Estágios UFPR </label>
-        </div>
-        <div class="flex align-items-left pb-6">
-            <Checkbox v-model="checked" inputId="opção2" name="tipoEstagio" value="estagioExterno" :binary="true" />
-            <label for="opção2" class="ml-2"> Estágios Externos </label>
-        </div>
-      </div>
-      <div>
-        <div class="flex align-items-center pb-6 gap-6">
-          <span class="p-float-label ml-2">
-            <Calendar v-model="date" dateFormat="dd/mm/yy" inputId="dataInicio" showIcon showButtonBar />
-            <label for="dataInicio">De </label>
-          </span>
-          <span class="p-float-label ml-2">
-            <Calendar v-model="date" dateFormat="dd/mm/yy" inputId="DatadeFim" showIcon  showButtonBar />
-            <label for="DatadeFim">Até</label>
-          </span>
-        </div>
-      </div>
-      <div class="flex flex-column gap-1">
-          <label for="curso">Curso</label>
-          <InputText id="curso" v-model="value" />
-      </div>
-    </div>
-    <div class="flex justify-content-end">
-        <Button label="Cadastrar" class="botao-principal"></Button>
-    </div>
-  </div>
-</div>
 </template>
 <script>
-  import InputText from "primevue/inputtext";
-  import Button from "primevue/button";
-  import Checkbox from 'primevue/checkbox';
- export default {
-    data() {
-      return {
-        Relatorios:[{
-        empresa:'Empresa de Estágio 1',
-        cnpj:'124412142',
-        situação:'ATIVO',
-        },
-        {
-          empresa: "Empresa de Estágio 2",
-          cnpj: "89024908",
-          situação: "INATIVO",
-        },
-      ],
-    };
-  },
-};
+import Button from "primevue/button";
+import Dropdown from "primevue/dropdown";
+import { ref } from "vue";
 </script>
 <script setup>
-import { ref } from "vue";
-const value = ref(null);
-const date = ref();
+const agenteSelecionado = ref();
+const contratanteSelecionado = ref();
+const estagioSelecionado = ref();
+
+const { data: agentes } = await useFetch(
+  `http://localhost:5000/agente-integrador/`
+);
+const { data: contratantes } = await useFetch(
+  `http://localhost:5000/contratante/`
+);
+const { data: estagios } = await useFetch(`http://localhost:5000/estagio/`);
 </script>
