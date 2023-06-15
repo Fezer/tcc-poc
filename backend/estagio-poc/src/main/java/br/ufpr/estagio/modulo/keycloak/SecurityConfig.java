@@ -30,6 +30,8 @@ public class SecurityConfig {
         // disable csrf for /auth/login para permitir acesso a rota sem token de
         // autenticação
         http.csrf().disable()
+                .cors()
+                .and()
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/auth/login")
                         .permitAll()
