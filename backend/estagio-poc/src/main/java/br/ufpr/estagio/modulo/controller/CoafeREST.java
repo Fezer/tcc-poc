@@ -830,33 +830,12 @@ public class CoafeREST {
 		        
 	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
             	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+
+	            int tamanho = termo.getArquivos().size();
             	
-	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
+	            String nomeArquivo = termo.getArquivos().get(tamanho-1);
+	            
 	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
-
-				int contador = 0;
-				Path ultimoArquivo = arquivo;
-				while (Files.exists(ultimoArquivo)) {
-					nomeArquivo = arquivo.getFileName().toString();
-					String ultimoNome = nomeArquivo + "(" + contador + ")";
-					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
-					contador++;
-				}
-				
-				/*
-				 * Path ultimoArquivo = arquivo;
-
-					nomeArquivo = arquivo.getFileName().toString();
-					String ultimoNome = nomeArquivo;
-					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
-					
-					System.out.println(ultimoArquivo);
-					*/
-				
-	/* Exemplo de arquivo upado pelo aluno:
-			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
-			/src/main/resources/arquivos/GRR20204481-TermoDeCompromisso
-	*/
 
 	            try {
 	                Resource resource = new UrlResource(arquivo.toUri());
@@ -910,13 +889,6 @@ public class CoafeREST {
 	            
 	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
 
-				nomeArquivo = arquivo.getFileName().toString();
-				
-	/* Exemplo de arquivo upado pelo aluno:
-			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
-			/src/main/resources/arquivos/GRR20204481-TermoAditivo(4)
-	*/
-
 	            try {
 	                Resource resource = new UrlResource(arquivo.toUri());
 
@@ -965,24 +937,14 @@ public class CoafeREST {
 	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
             	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
             	
-	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeRescisao;
-	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+	            //String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeRescisao;
+	            //Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
 
-				int contador = 1;
-				Path ultimoArquivo = arquivo;
-				while (Files.exists(ultimoArquivo)) {
-					nomeArquivo = arquivo.getFileName().toString();
-					String ultimoNome = nomeArquivo + "(" + contador + ")";
-					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
-					contador++;
-				}
-				
-				System.out.println(ultimoArquivo);
-				
-	/* Exemplo de arquivo upado pelo aluno:
-			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
-			/src/main/resources/arquivos/GRR20204481-TermoAditivo(4)
-	*/
+            	int tamanho = termo.getArquivos().size();
+            	
+	            String nomeArquivo = termo.getArquivos().get(tamanho-1);
+	            
+	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
 
 	            try {
 	                Resource resource = new UrlResource(arquivo.toUri());
@@ -1032,24 +994,11 @@ public class CoafeREST {
 	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
             	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
             	
-	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoFinal;
+            	int tamanho = ficha.getArquivos().size();
+            	
+	            String nomeArquivo = ficha.getArquivos().get(tamanho-1);
+	            
 	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
-
-				int contador = 1;
-				Path ultimoArquivo = arquivo;
-				while (Files.exists(ultimoArquivo)) {
-					nomeArquivo = arquivo.getFileName().toString();
-					String ultimoNome = nomeArquivo + "(" + contador + ")";
-					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
-					contador++;
-				}
-				
-				System.out.println(ultimoArquivo);
-				
-	/* Exemplo de arquivo upado pelo aluno:
-			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
-			/src/main/resources/arquivos/GRR20204481-TermoAditivo(4)
-	*/
 
 	            try {
 	                Resource resource = new UrlResource(arquivo.toUri());
@@ -1099,24 +1048,11 @@ public class CoafeREST {
 	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
             	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
             	
-	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoParcial;
+            	int tamanho = ficha.getArquivos().size();
+            	
+	            String nomeArquivo = ficha.getArquivos().get(tamanho-1);
+	            
 	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
-
-				int contador = 1;
-				Path ultimoArquivo = arquivo;
-				while (Files.exists(ultimoArquivo)) {
-					nomeArquivo = arquivo.getFileName().toString();
-					String ultimoNome = nomeArquivo + "(" + contador + ")";
-					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
-					contador++;
-				}
-				
-				System.out.println(ultimoArquivo);
-				
-	/* Exemplo de arquivo upado pelo aluno:
-			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
-			/src/main/resources/arquivos/GRR20204481-TermoAditivo(4)
-	*/
 
 	            try {
 	                Resource resource = new UrlResource(arquivo.toUri());
@@ -1166,24 +1102,11 @@ public class CoafeREST {
 	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
             	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
             	
-	            String nomeArquivo = grrAlunoURL + "-RelatorioDeEstagio";
+            	int tamanho = relatorio.getArquivos().size();
+            	
+	            String nomeArquivo = relatorio.getArquivos().get(tamanho-1);
+	            
 	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
-
-				int contador = 1;
-				Path ultimoArquivo = arquivo;
-				while (Files.exists(ultimoArquivo)) {
-					nomeArquivo = arquivo.getFileName().toString();
-					String ultimoNome = nomeArquivo + "(" + contador + ")";
-					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
-					contador++;
-				}
-				
-				System.out.println(ultimoArquivo);
-				
-	/* Exemplo de arquivo upado pelo aluno:
-			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
-			/src/main/resources/arquivos/GRR20204481-RelatorioDeEstagio
-	*/
 
 	            try {
 	                Resource resource = new UrlResource(arquivo.toUri());
@@ -1203,4 +1126,5 @@ public class CoafeREST {
 	        }
 	    }
 	}
+	
 }
