@@ -1,5 +1,6 @@
 package br.ufpr.estagio.modulo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -346,8 +347,19 @@ public class TermoDeRescisaoService {
 		return termoDeRescisaoRepo.save(termoDeRescisao);
 	}
 	
-	public TermoDeRescisao uploadTermoDeRescisao(TermoDeRescisao termoDeRescisao) {
+	public TermoDeRescisao uploadTermoDeRescisao(TermoDeRescisao termoDeRescisao, String nomeArquivo) {
 		termoDeRescisao.setUpload(true);
+		
+		List<String> listaAux = new ArrayList<>();
+		listaAux.add(nomeArquivo);
+		
+		if (termoDeRescisao.getArquivos() == null) {
+			termoDeRescisao.setArquivos(listaAux);
+		} else {
+			List<String> arquivos = termoDeRescisao.getArquivos();
+			arquivos.add(nomeArquivo);
+			termoDeRescisao.setArquivos(arquivos);
+		}
 		
 		return termoDeRescisaoRepo.save(termoDeRescisao);
 	}

@@ -834,7 +834,7 @@ public class CoafeREST {
 	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
 	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
 
-				int contador = 1;
+				int contador = 0;
 				Path ultimoArquivo = arquivo;
 				while (Files.exists(ultimoArquivo)) {
 					nomeArquivo = arquivo.getFileName().toString();
@@ -842,6 +842,16 @@ public class CoafeREST {
 					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
 					contador++;
 				}
+				
+				/*
+				 * Path ultimoArquivo = arquivo;
+
+					nomeArquivo = arquivo.getFileName().toString();
+					String ultimoNome = nomeArquivo;
+					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
+					
+					System.out.println(ultimoArquivo);
+					*/
 				
 	/* Exemplo de arquivo upado pelo aluno:
 			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
@@ -894,19 +904,13 @@ public class CoafeREST {
 	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
             	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
             	
-	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoAditivo;
+            	int tamanho = termo.getArquivos().size();
+            	
+	            String nomeArquivo = termo.getArquivos().get(tamanho-1);
+	            
 	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
 
-				int contador = 1;
-				Path ultimoArquivo = arquivo;
-				while (Files.exists(ultimoArquivo)) {
-					nomeArquivo = arquivo.getFileName().toString();
-					String ultimoNome = nomeArquivo + "(" + contador + ")";
-					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
-					contador++;
-				}
-				
-				System.out.println(ultimoArquivo);
+				nomeArquivo = arquivo.getFileName().toString();
 				
 	/* Exemplo de arquivo upado pelo aluno:
 			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc

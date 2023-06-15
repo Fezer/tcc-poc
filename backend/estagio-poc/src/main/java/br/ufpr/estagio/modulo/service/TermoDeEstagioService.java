@@ -1172,7 +1172,7 @@ public class TermoDeEstagioService {
         return query.getResultList();
 	}
 	
-	public TermoDeEstagio uploadTermoDeEstagio(TermoDeEstagio termo) {
+	public TermoDeEstagio uploadTermoDeEstagio(TermoDeEstagio termo, String nomeArquivo) {
 		
 		if (termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoAditivo)
 			termo.setUploadAditivo(true);
@@ -1180,8 +1180,16 @@ public class TermoDeEstagioService {
 		else if (termo.getTipoTermoDeEstagio() == EnumTipoTermoDeEstagio.TermoDeCompromisso)
 			termo.setUploadCompromisso(true);
 		
-		else
-			System.out.println("Não é aditivo nem de compromisso");
+		List<String> listaAux = new ArrayList<>();
+		listaAux.add(nomeArquivo);
+		
+		if (termo.getArquivos() == null) {
+			termo.setArquivos(listaAux);
+		} else {
+			List<String> arquivos = termo.getArquivos();
+			arquivos.add(nomeArquivo);
+			termo.setArquivos(arquivos);
+		}
 		
 		return termoRepo.save(termo);
 	}

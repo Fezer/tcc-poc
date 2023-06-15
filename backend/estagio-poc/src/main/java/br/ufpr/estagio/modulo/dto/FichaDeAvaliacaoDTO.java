@@ -1,5 +1,7 @@
 package br.ufpr.estagio.modulo.dto;
 
+import java.util.List;
+
 import br.ufpr.estagio.modulo.enums.EnumAvaliacao;
 import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAcomp;
 import br.ufpr.estagio.modulo.model.Estagio;
@@ -25,6 +27,7 @@ public class FichaDeAvaliacaoDTO {
 	private EnumAvaliacao avalHabilidades;
 	private EnumAvaliacao avalEfetivacao;
 	private boolean upload;
+	private List<String> arquivos;
 	
 	public FichaDeAvaliacaoDTO() {
 		super();
@@ -59,6 +62,37 @@ public class FichaDeAvaliacaoDTO {
 		this.avalHabilidades = avalHabilidades;
 		this.avalEfetivacao = avalEfetivacao;
 		this.upload = upload;
+	}
+
+	public FichaDeAvaliacaoDTO(long id, Estagio estagio, int totalHorasEstagioEfetivamenteRealizadas,
+			boolean atividadesForamRealizadas, String atividadesRealizadasConsideracoes,
+			EnumAvaliacaoAcomp acompanhamentoOrientador, String acompanhamentoOrientadorComentario,
+			EnumAvaliacaoAcomp acompanhamentoCoordenador, String acompanhamentoCoordenadorComentario,
+			String contribuicaoEstagio, EnumAvaliacao avalPontualidade, EnumAvaliacao avalCriatividade,
+			EnumAvaliacao avalProtagonismo, EnumAvaliacao avalResponsabilidade, EnumAvaliacao avalConduta,
+			EnumAvaliacao avalDominioTecnico, EnumAvaliacao avalHabilidades, EnumAvaliacao avalEfetivacao,
+			boolean upload, List<String> arquivos) {
+		super();
+		this.id = id;
+		this.estagio = estagio;
+		this.totalHorasEstagioEfetivamenteRealizadas = totalHorasEstagioEfetivamenteRealizadas;
+		this.atividadesForamRealizadas = atividadesForamRealizadas;
+		this.atividadesRealizadasConsideracoes = atividadesRealizadasConsideracoes;
+		this.acompanhamentoOrientador = acompanhamentoOrientador;
+		this.acompanhamentoOrientadorComentario = acompanhamentoOrientadorComentario;
+		this.acompanhamentoCoordenador = acompanhamentoCoordenador;
+		this.acompanhamentoCoordenadorComentario = acompanhamentoCoordenadorComentario;
+		this.contribuicaoEstagio = contribuicaoEstagio;
+		this.avalPontualidade = avalPontualidade;
+		this.avalCriatividade = avalCriatividade;
+		this.avalProtagonismo = avalProtagonismo;
+		this.avalResponsabilidade = avalResponsabilidade;
+		this.avalConduta = avalConduta;
+		this.avalDominioTecnico = avalDominioTecnico;
+		this.avalHabilidades = avalHabilidades;
+		this.avalEfetivacao = avalEfetivacao;
+		this.upload = upload;
+		this.arquivos = arquivos;
 	}
 
 	public long getId() {
@@ -211,6 +245,14 @@ public class FichaDeAvaliacaoDTO {
 
 	public void setUpload(boolean upload) {
 		this.upload = upload;
+	}
+
+	public List<String> getArquivos() {
+		return arquivos;
+	}
+
+	public void setArquivos(List<String> arquivos) {
+		this.arquivos = arquivos;
 	}
 
 }

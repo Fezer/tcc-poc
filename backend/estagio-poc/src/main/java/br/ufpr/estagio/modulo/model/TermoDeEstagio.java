@@ -2,6 +2,7 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -128,6 +129,8 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	
 	@Column(name = "upload_aditivo")
 	private boolean uploadAditivo;
+	
+	private List<String> arquivos;
 	
 	public TermoDeEstagio() {
 		super();
@@ -258,6 +261,47 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 		this.descricaoAjustes = descricaoAjustes;
 		this.uploadCompromisso = false;
 		this.uploadAditivo = false;
+	}
+
+	public TermoDeEstagio(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
+			Apolice apolice, Contratante contratante, AgenteIntegrador agenteIntegrador, Orientador orientador,
+			Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio, Date dataTermino,
+			int jornadaDiaria, int jornadaSemanal, float valorBolsa, float valorTransporte, Date dataFimSuspensao,
+			Date dataInicioRetomada, Date dataCriacao, EnumStatusTermo statusTermo, EnumEtapaFluxo etapaFluxo,
+			CienciaCoordenacao cienciaCoordenacao, EnumParecerAprovadores parecerCOE,
+			EnumParecerAprovadores parecerCOAFE, EnumParecerAprovadores parecerCoordenacao, String motivoIndeferimento,
+			String descricaoAjustes, boolean uploadCompromisso, boolean uploadAditivo, List<String> arquivos) {
+		super();
+		this.id = id;
+		this.tipoTermoDeEstagio = tipoTermoDeEstagio;
+		this.estagio = estagio;
+		this.seguradora = seguradora;
+		this.apolice = apolice;
+		this.contratante = contratante;
+		this.agenteIntegrador = agenteIntegrador;
+		this.orientador = orientador;
+		this.coordenador = coordenador;
+		this.planoAtividades = planoAtividades;
+		this.dataInicio = dataInicio;
+		this.dataTermino = dataTermino;
+		this.jornadaDiaria = jornadaDiaria;
+		this.jornadaSemanal = jornadaSemanal;
+		this.valorBolsa = valorBolsa;
+		this.valorTransporte = valorTransporte;
+		this.dataFimSuspensao = dataFimSuspensao;
+		this.dataInicioRetomada = dataInicioRetomada;
+		this.dataCriacao = dataCriacao;
+		this.statusTermo = statusTermo;
+		this.etapaFluxo = etapaFluxo;
+		this.cienciaCoordenacao = cienciaCoordenacao;
+		this.parecerCOE = parecerCOE;
+		this.parecerCOAFE = parecerCOAFE;
+		this.parecerCoordenacao = parecerCoordenacao;
+		this.motivoIndeferimento = motivoIndeferimento;
+		this.descricaoAjustes = descricaoAjustes;
+		this.uploadCompromisso = uploadCompromisso;
+		this.uploadAditivo = uploadAditivo;
+		this.arquivos = arquivos;
 	}
 
 	public long getId() {
@@ -492,6 +536,14 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 
 	public void setUploadAditivo(boolean uploadAditivo) {
 		this.uploadAditivo = uploadAditivo;
+	}
+
+	public List<String> getArquivos() {
+		return arquivos;
+	}
+
+	public void setArquivos(List<String> arquivos) {
+		this.arquivos = arquivos;
 	}
 
 }
