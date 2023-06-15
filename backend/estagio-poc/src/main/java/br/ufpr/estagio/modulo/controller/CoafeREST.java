@@ -59,6 +59,7 @@ import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Estagio;
+import br.ufpr.estagio.modulo.model.FichaDeAvaliacao;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
@@ -68,6 +69,7 @@ import br.ufpr.estagio.modulo.service.AlunoService;
 import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.ContratanteService;
 import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.FichaDeAvaliacaoService;
 import br.ufpr.estagio.modulo.service.GeradorDeExcelService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
 import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
@@ -93,6 +95,9 @@ public class CoafeREST {
 	
 	@Autowired
 	private CertificadoDeEstagioService certificadoDeEstagioService;
+	
+	@Autowired
+	private FichaDeAvaliacaoService fichaDeAvaliacaoService;
 	
 	@Autowired
 	private RelatorioDeEstagioService relatorioDeEstagioService;
@@ -927,4 +932,271 @@ public class CoafeREST {
 	    }
 	}
 
+	@GetMapping("/{grrAlunoURL}/termo-de-rescisao/{id}/download")
+	public ResponseEntity<Resource> downloadTermoDeRescisaoAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) {
+	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+	        throw new BadRequestException("GRR do aluno não informado!");
+	    } else {
+	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+	        if (aluno == null) {
+	            throw new NotFoundException("Aluno não encontrado!");
+	        } else {
+	        	long idLong = Long.parseLong(id);
+		    	
+		    	if (idLong < 1L)
+	        		throw new InvalidFieldException("Id inválido.");
+		    	
+		        Optional<TermoDeRescisao> termoFind = termoDeRescisaoService.buscarPorId(idLong);
+
+		        if (termoFind.isEmpty()) {
+		            throw new NotFoundException("O termo de rescisão não foi encontrado.");
+		        }
+		        
+		        TermoDeRescisao termo = termoFind.get();
+		        
+		        if (termo.isUpload() == false)
+		        	throw new BadRequestException("O aluno ainda não submeteu o termo de rescisão.");
+		        
+	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+            	
+	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeRescisao;
+	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+
+				int contador = 1;
+				Path ultimoArquivo = arquivo;
+				while (Files.exists(ultimoArquivo)) {
+					nomeArquivo = arquivo.getFileName().toString();
+					String ultimoNome = nomeArquivo + "(" + contador + ")";
+					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
+					contador++;
+				}
+				
+				System.out.println(ultimoArquivo);
+				
+	/* Exemplo de arquivo upado pelo aluno:
+			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
+			/src/main/resources/arquivos/GRR20204481-TermoAditivo(4)
+	*/
+
+	            try {
+	                Resource resource = new UrlResource(arquivo.toUri());
+
+	                if (resource.exists()) {
+	                    return ResponseEntity.ok()
+	                    		.contentType(MediaType.APPLICATION_PDF)
+	                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+	                            .body(resource);
+	                } else {
+	                    throw new NotFoundException("Arquivo não encontrado!");
+	                }
+	            } catch (MalformedURLException e) {
+	                e.printStackTrace();
+	                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+	            }
+	        }
+	    }
+	}
+
+	@GetMapping("/{grrAlunoURL}/ficha-de-avaliacao-final/{id}/download")
+	public ResponseEntity<Resource> downloadFichaDeAvaliacaoFinalAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) {
+	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+	        throw new BadRequestException("GRR do aluno não informado!");
+	    } else {
+	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+	        if (aluno == null) {
+	            throw new NotFoundException("Aluno não encontrado!");
+	        } else {
+	        	long idLong = Long.parseLong(id);
+		    	
+		    	if (idLong < 1L)
+	        		throw new InvalidFieldException("Id inválido.");
+		    	
+		        Optional<FichaDeAvaliacao> fichaFind = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idLong);
+
+		        if (fichaFind.isEmpty()) {
+		            throw new NotFoundException("A ficha de avaliação final não foi encontrada.");
+		        }
+		        
+		        FichaDeAvaliacao ficha = fichaFind.get();
+		        
+		        if (ficha.isUpload() == false)
+		        	throw new BadRequestException("O aluno ainda não submeteu a ficha de avaliação final.");
+		        
+	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+            	
+	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoFinal;
+	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+
+				int contador = 1;
+				Path ultimoArquivo = arquivo;
+				while (Files.exists(ultimoArquivo)) {
+					nomeArquivo = arquivo.getFileName().toString();
+					String ultimoNome = nomeArquivo + "(" + contador + ")";
+					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
+					contador++;
+				}
+				
+				System.out.println(ultimoArquivo);
+				
+	/* Exemplo de arquivo upado pelo aluno:
+			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
+			/src/main/resources/arquivos/GRR20204481-TermoAditivo(4)
+	*/
+
+	            try {
+	                Resource resource = new UrlResource(arquivo.toUri());
+
+	                if (resource.exists()) {
+	                    return ResponseEntity.ok()
+	                    		.contentType(MediaType.APPLICATION_PDF)
+	                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+	                            .body(resource);
+	                } else {
+	                    throw new NotFoundException("Arquivo não encontrado!");
+	                }
+	            } catch (MalformedURLException e) {
+	                e.printStackTrace();
+	                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+	            }
+	        }
+	    }
+	}
+
+	@GetMapping("/{grrAlunoURL}/ficha-de-avaliacao-parcial/{id}/download")
+	public ResponseEntity<Resource> downloadFichaDeAvaliacaoParcialAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) {
+	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+	        throw new BadRequestException("GRR do aluno não informado!");
+	    } else {
+	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+	        if (aluno == null) {
+	            throw new NotFoundException("Aluno não encontrado!");
+	        } else {
+	        	long idLong = Long.parseLong(id);
+		    	
+		    	if (idLong < 1L)
+	        		throw new InvalidFieldException("Id inválido.");
+		    	
+		        Optional<FichaDeAvaliacao> fichaFind = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idLong);
+
+		        if (fichaFind.isEmpty()) {
+		            throw new NotFoundException("A ficha de avaliação parcial não foi encontrada.");
+		        }
+		        
+		        FichaDeAvaliacao ficha = fichaFind.get();
+		        
+		        if (ficha.isUpload() == false)
+		        	throw new BadRequestException("O aluno ainda não submeteu a ficha de avaliação parcial.");
+		        
+	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+            	
+	            String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoParcial;
+	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+
+				int contador = 1;
+				Path ultimoArquivo = arquivo;
+				while (Files.exists(ultimoArquivo)) {
+					nomeArquivo = arquivo.getFileName().toString();
+					String ultimoNome = nomeArquivo + "(" + contador + ")";
+					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
+					contador++;
+				}
+				
+				System.out.println(ultimoArquivo);
+				
+	/* Exemplo de arquivo upado pelo aluno:
+			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
+			/src/main/resources/arquivos/GRR20204481-TermoAditivo(4)
+	*/
+
+	            try {
+	                Resource resource = new UrlResource(arquivo.toUri());
+
+	                if (resource.exists()) {
+	                    return ResponseEntity.ok()
+	                    		.contentType(MediaType.APPLICATION_PDF)
+	                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+	                            .body(resource);
+	                } else {
+	                    throw new NotFoundException("Arquivo não encontrado!");
+	                }
+	            } catch (MalformedURLException e) {
+	                e.printStackTrace();
+	                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+	            }
+	        }
+	    }
+	}
+
+	@GetMapping("/{grrAlunoURL}/relatorio-de-estagio/{id}/download")
+	public ResponseEntity<Resource> downloadRelatorioDeEstagioAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) {
+	    if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+	        throw new BadRequestException("GRR do aluno não informado!");
+	    } else {
+	        Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+	        if (aluno == null) {
+	            throw new NotFoundException("Aluno não encontrado!");
+	        } else {
+	        	long idLong = Long.parseLong(id);
+		    	
+		    	if (idLong < 1L)
+	        		throw new InvalidFieldException("Id inválido.");
+		    	
+		        Optional<RelatorioDeEstagio> relatorioFind = relatorioDeEstagioService.buscarRelatorioPorId(idLong);
+
+		        if (relatorioFind.isEmpty()) {
+		            throw new NotFoundException("O relatório de estágio não foi encontrado.");
+		        }
+		        
+		        RelatorioDeEstagio relatorio = relatorioFind.get();
+		        
+		        if (relatorio.isUploadFinal() == false && relatorio.isUploadParcial() == false)
+		        	throw new BadRequestException("O aluno ainda não submeteu o relatório de estágio.");
+		        
+	        	Path diretorioAtual = Paths.get("").toAbsolutePath();
+            	String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+            	
+	            String nomeArquivo = grrAlunoURL + "-RelatorioDeEstagio";
+	            Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+
+				int contador = 1;
+				Path ultimoArquivo = arquivo;
+				while (Files.exists(ultimoArquivo)) {
+					nomeArquivo = arquivo.getFileName().toString();
+					String ultimoNome = nomeArquivo + "(" + contador + ")";
+					ultimoArquivo = arquivo.resolveSibling(ultimoNome);
+					contador++;
+				}
+				
+				System.out.println(ultimoArquivo);
+				
+	/* Exemplo de arquivo upado pelo aluno:
+			/home/gabriel/Documents/workspace-spring-tool-suite-4-4.18.0.RELEASE/tcc-poc/backend/estagio-poc
+			/src/main/resources/arquivos/GRR20204481-RelatorioDeEstagio
+	*/
+
+	            try {
+	                Resource resource = new UrlResource(arquivo.toUri());
+
+	                if (resource.exists()) {
+	                    return ResponseEntity.ok()
+	                    		.contentType(MediaType.APPLICATION_PDF)
+	                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+	                            .body(resource);
+	                } else {
+	                    throw new NotFoundException("Arquivo não encontrado!");
+	                }
+	            } catch (MalformedURLException e) {
+	                e.printStackTrace();
+	                throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+	            }
+	        }
+	    }
+	}
 }
