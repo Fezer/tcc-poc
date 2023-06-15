@@ -40,7 +40,7 @@ public class SigaREST {
     	
 	@Autowired
 	private ModelMapper mapper;
-	
+
 	@GetMapping("/aluno")
 	public ResponseEntity<Object> listarAluno(@RequestParam String grr, @RequestHeader("Authorization") String accessToken){
 		try {
@@ -125,6 +125,24 @@ public class SigaREST {
 	    	ex.printStackTrace();
 	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@GetMapping("/grr")
+	public ResponseEntity<String> buscarGrr(@RequestHeader("Authorization") String accessToken){
+		try {
+			if(accessToken==null) {
+				throw new BadRequestException("Não autorizado.");
+			} else {
+				String grr = sigaApiAlunoService.buscarGrrPorEmail(accessToken);
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(grr, String.class));
+			}
+		}catch(PocException e) {
+			e.printStackTrace();
+			throw e;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
 		}
 	}
 }
