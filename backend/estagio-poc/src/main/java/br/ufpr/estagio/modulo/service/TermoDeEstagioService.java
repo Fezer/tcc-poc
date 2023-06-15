@@ -366,6 +366,13 @@ public class TermoDeEstagioService {
     	termo.setParecerCOE(parecerCoe);
     	termo.setMotivoIndeferimento(justificativa.getJustificativa());
     	
+    	//Após ter um termo indeferido, o Aluno terá que enviar um novo, então o atributo upload volta a ser false
+    	if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoDeCompromisso)) {
+    		termo.setUploadCompromisso(false);
+    	} else if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoAditivo)) {
+    		termo.setUploadAditivo(false);
+    	}
+    	
     	//Uma vez que a COE reprove o termo de compromisso, deve ser encaminhado para ciencia da coordenação
     	termo.setEtapaFluxo(etapaFluxo);
     	
@@ -467,6 +474,13 @@ public class TermoDeEstagioService {
     	termo.setStatusTermo(statusTermo);
     	termo.setParecerCoordenacao(parecerCoordenacao);
     	termo.setMotivoIndeferimento(justificativa.getJustificativa());
+    	
+    	//Após ter um termo indeferido, o Aluno terá que enviar um novo, então o atributo upload volta a ser false
+    	if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoDeCompromisso)) {
+    		termo.setUploadCompromisso(false);
+    	} else if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoAditivo)) {
+    		termo.setUploadAditivo(false);
+    	}
     	
     	/**Uma vez que a Coordenação reprove o termo de compromisso, o fluxo se encerra, 
     	 * esse encerramento do fluxo é representado com o Termo de Compromisso
