@@ -44,4 +44,14 @@ export default class CoafeService extends BaseService {
       method: "PUT",
     });
   }
+  async baixarRelatorioCertificadoPdf() {
+    return $fetch(`/coafe/gerar-relatorio-certificados`, {
+      method: "GET",
+    });
+  }
+  async baixarRelatorioCertificadoExcel() {
+    return $fetch(`/coafe/gerar-relatorio-certificados-excel`, {
+      method: "GET",
+    });
+  }
 }
