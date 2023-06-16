@@ -54,15 +54,25 @@ export default class ContratanteService extends BaseService {
     return response;
   }
 
-  async atualizaContratante(id?: number, nome?: string, tipoContratante?: string, cpf?: string, cnpj?: string, representanteEmpresa?: string, telefone?: string, endereco?: Endereco){
+  async atualizaContratante(
+    id?: number,
+    nome?: string,
+    tipo?: string,
+    cpf?: string,
+    cnpj?: string,
+    representanteEmpresa?: string,
+    telefone?: string
+  ) {
+    console.log(nome, tipo, cpf, cnpj, representanteEmpresa, telefone);
     const response = await $fetch(`/contratante/${id}`, {
       method: "PUT",
       body: {
-        tipoContratante,
+        nome,
+        tipo,
         cpf,
         cnpj,
         representanteEmpresa,
-        telefone
+        telefone,
       },
     });
 

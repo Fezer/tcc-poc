@@ -48,7 +48,7 @@ export default defineComponent({
     <div class="col-12">
       <div class="p-fluid col-12">
         <h3>Dados de Registro</h3>
-        <div class="flex flex-column gap-1 formgrid grid">
+        <div class="flex-column gap-1 formgrid grid">
           <div class="field col">
             <label style="font-size: 20px" for="nome">Nome</label>
             <InputText id="nome" type="text" v-model="state.nome" />

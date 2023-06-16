@@ -50,8 +50,6 @@ export default defineComponent({
         const seguradora = termo?.value?.seguradora;
         const apolice = termo?.value?.apolice;
 
-        console.log(contratante, seguradora, apolice);
-
         state.id = contratante?.id || null;
         state.tipoContratante = contratante?.tipo || null;
         state.nomeContratante = contratante?.nome || null;
@@ -66,7 +64,7 @@ export default defineComponent({
         state.representanteEmpresa = contratante?.representanteEmpresa || null;
 
         state.nomeSeguradora = seguradora?.nome || null;
-        state.apoliceSeguradora = apolice?.numero || null;
+        state.apoliceSeguradora = apolice?.numero?.toString() || null;
       }
 
       await fetch(`/contratante/`, {
@@ -138,7 +136,7 @@ export default defineComponent({
       const validator = z.object({
         tipoContratante: z.string().nonempty(),
         nomeSeguradora: z.string().nonempty(),
-        apoliceSeguradora: z.number(),
+        apoliceSeguradora: z.string().nonempty(),
         ...contratanteFields,
       });
 
@@ -227,7 +225,7 @@ export default defineComponent({
           {
             dataInicio: new Date(),
             dataFim: new Date(),
-            numero: parseInt(state.apoliceSeguradora),
+            numero: state.apoliceSeguradora,
           },
           seguradora
         );
@@ -498,10 +496,9 @@ export default defineComponent({
             </div>
             <div class="field col">
               <label for="apoliceSeguradora">Número da Apólice</label>
-              <InputNumber
+              <InputText
                 v-model="state.apoliceSeguradora"
                 :class="{ 'p-invalid': errors['apoliceSeguradora'] }"
-                max="9999999999"
               />
               <small class="text-rose-600">{{
                 errors["apoliceSeguradora"]

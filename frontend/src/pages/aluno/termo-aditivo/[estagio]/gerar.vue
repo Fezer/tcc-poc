@@ -492,17 +492,7 @@ export default defineComponent({
         </div>
         <div class="card p-fluid col-12">
           <h5>Plano de Atividades</h5>
-          <!-- <div class="formgrid grid">
-          <div class="field col">
-            <label for="coordenador">Coordenador do curso</label>
-            <InputText
-            id="coordenador"
-            type="text"
-            disabled
-            :value="aluno?.coordenador"
-            />
-          </div>
-        </div> -->
+
           <div class="formgrid grid">
             <div class="field col">
               <label for="orientador">Professor Orientador na UFPR</label>

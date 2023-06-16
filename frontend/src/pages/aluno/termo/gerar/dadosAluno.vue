@@ -86,7 +86,7 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label for="email2">CPF</label>
-            <InputText disabled type="text" :value="aluno?.documento" />
+            <InputText disabled type="text" :value="aluno?.cpf" />
           </div>
         </div>
         <div class="formgrid grid">
