@@ -124,7 +124,7 @@ export default defineComponent({
                 :excel="() => relatorioExcel(data.id)"
                 :pdf="() => relatorioPDF(data.id)"
                 :cancelar="() => (escolhaDeRelatorio = 0)"
-                :description="`Gerar relatório da empresa ${data.nome} em que formato?`"
+                :description="`Gerar relatório da Empresa ${data.nome} em que formato?`"
               >
               </EscolhaRelatorio>
             </div>
