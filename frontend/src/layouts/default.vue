@@ -65,6 +65,7 @@ export default defineComponent({
     }
   },
   mounted() {
+    if (!localStorage) return;
     const accessToken = localStorage.getItem("accessToken");
     const profile = localStorage.getItem("profile");
 

@@ -164,6 +164,14 @@ export default defineComponent({
 
       const file = await $fetch(url, {
         method: "GET",
+      }).catch((err) => {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: err?.response?._data?.error || "Erro inesperado",
+          detail: "Erro ao baixar o termo!",
+          life: 3000,
+        });
       });
 
       const fileURL = URL.createObjectURL(file);

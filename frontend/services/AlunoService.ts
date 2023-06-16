@@ -93,8 +93,8 @@ export default class AlunoService {
     });
   }
 
-  public async uploadTermo(grr: string, termoData: FormData) {
-    return await $fetch(`/aluno/${grr}/upload-termo`, {
+  public async uploadTermo(grr: string, id: string, termoData: FormData) {
+    return await $fetch(`/aluno/${grr}/termo-de-compromisso/${id}/upload`, {
       method: "POST",
       body: termoData,
     });
