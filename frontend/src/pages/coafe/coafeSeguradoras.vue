@@ -5,9 +5,15 @@
         COAFE
         <h6>Coordenação de Atividades Formativas e Estágios</h6>
       </h1>
-      <NuxtLink to="/coafe/seguradora/novo">
-        <Button label="Cadastrar"></Button>
-      </NuxtLink>
+      <span class="p-input-icon-left">
+        <NuxtLink to="/coafe/seguradora/novo">
+          <Button
+            label="Cadastrar"
+            class="p-button-success"
+            icon="pi pi-plus"
+          ></Button>
+        </NuxtLink>
+      </span>
     </div>
     <div>
       <DataTable
@@ -16,6 +22,7 @@
         rowHover
         stripedRows
         paginator
+        :show-gridlines="true"
         :rows="5"
         :globalFilterFields="['nome']"
         :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
@@ -69,12 +76,12 @@
             />
           </template>
         </Column>
-        <Column field="button">
+        <Column field="button" header="Ações">
           <template #body="{ data }">
             <NuxtLink
               :to="`/coafe/seguradora/seguradoraVisualizar?id=${data.id}`"
             >
-              <Button label="Ver" />
+              <Button label="Ver" icon="pi pi-search" />
             </NuxtLink>
           </template>
         </Column>
