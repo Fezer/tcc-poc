@@ -33,12 +33,11 @@
               <label for="representanteEmpresa">Representante da Empresa</label>
               <InputText :disabled="!edicao.ativa" id="representanteEmpresa" type="text" v-model="state.representanteEmpresa" />
             </div>
-
-        </div>
-
-            
-
-
+            <div class="field col">
+              <label for="telefone">Telefone</label>
+              <InputText :disabled="!edicao.ativa" id="telefone" type="text" v-model="state.telefone" />
+            </div>
+          </div>
         </div>
         <div class="w-full flex justify-end gap-2 p">
         <NuxtLink :to="`/coafe/coafeEmpresas`">
@@ -98,6 +97,7 @@
         representanteEmpresa: contratante.value?.representanteEmpresa,
         cpf: contratante.value?.cpf,
         cnpj: contratante.value?.cnpj,
+        telefone: contratante.value?.telefone
       });
       const contratanteService = new ContratanteService();
       const desativarEdicao = () => {
@@ -108,6 +108,7 @@
         state.cpf = contratante.value?.cpf
         state.cnpj = contratante.value?.cnpj
         state.representanteEmpresa = contratante.value?.representanteEmpresa
+        state.telefone = contratante.value?.telefone
       }
       const editar = () => {
         edicao.ativa = true; // Atualiza a variável reativa para habilitar a edição
@@ -129,7 +130,8 @@
             state?.tipo,
             state?.cpf,
             state?.cnpj,
-            state?.representanteEmpresa
+            state?.representanteEmpresa,
+            state?.telefone
           );
           toast.add({
             severity: "success",
@@ -144,6 +146,7 @@
             life: 3000,
           });
           console.log(e);
+          edicao.ativa = false;
         }
       };
   
