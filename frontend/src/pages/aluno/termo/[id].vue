@@ -30,7 +30,7 @@ export default defineComponent({
 
     const { auth } = useAuth();
 
-    const grr: string = auth?.id || "";
+    const grr: string = auth?.value?.id || "";
 
     const alunoService = new AlunoService();
 

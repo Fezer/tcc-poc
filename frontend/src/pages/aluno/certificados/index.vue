@@ -6,7 +6,7 @@ export default defineComponent({
   setup() {
     const { auth } = useAuth();
 
-    const grr = auth?.id || "";
+    const grr = auth?.value?.id || "";
     const { data: certificados } = useFetch(
       `/aluno/${grr}/certificadoDeEstagio`
     );

@@ -16,7 +16,7 @@ export default defineComponent({
     const { estagioID } = route.params;
     const { auth } = useAuth();
 
-    const grr = auth?.id || "";
+    const grr = auth?.value?.id || "";
     const toast = useToast();
     const relatorioService = new RelatorioEstagioService();
     const alunoService = new AlunoService();

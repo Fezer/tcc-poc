@@ -18,7 +18,7 @@ export default defineComponent({
     const toast = useToast();
     const { auth } = useAuth();
 
-    const grr = auth?.id || "";
+    const grr = auth?.value?.id || "";
 
     const uploadVisible = ref(false);
 

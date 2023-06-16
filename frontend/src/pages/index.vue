@@ -38,12 +38,6 @@ export default defineComponent({
           const accessToken = tokenData.access_token;
           localStorage.setItem("accessToken", accessToken);
 
-          const decodedToken = parseJWT(accessToken);
-
-          const email = decodedToken["email"];
-
-          // redirect to aluno page
-
           globalThis.$fetch = ofetch.create({
             baseURL: config.BACKEND_URL || "http://localhost:5000",
             headers: {
@@ -52,24 +46,33 @@ export default defineComponent({
           });
 
           // get aluno grr
-          if (email) {
-            const response = await $fetch(`/siga/grr`, {
-              method: "GET",
-              headers: {
-                origin: "http://localhost:3000",
-                Authorization: `Bearer ${accessToken}`,
-              },
-            });
-            setAuth({
-              token: accessToken,
-              perfil: "aluno",
-              id: response?.data?.grr,
-            });
+          const grrData = await $fetch(`/siga/grr`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+
+          if (typeof grrData !== "string") {
+            throw new Error(
+              "Erro ao obter o GRR do aluno. Tente novamente mais tarde."
+            );
           }
+
+          setAuth({
+            token: accessToken,
+            perfil: "aluno",
+            id: JSON.parse(grrData)?.data?.grr,
+          });
+
+          console.log(JSON.parse(grrData)?.data?.grr);
 
           console.log("Token de acesso obtido com sucesso!");
           router.push("/aluno");
         } catch (error) {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("perfil");
+
           router.replace("/login");
           console.error("Erro ao obter o token de acesso:", error);
         }

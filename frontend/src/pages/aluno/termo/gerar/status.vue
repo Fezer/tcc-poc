@@ -31,7 +31,7 @@ export default defineComponent({
   }) {
     const { auth } = useAuth();
 
-    const grr = auth?.id || "";
+    const grr = auth?.value?.id || "";
 
     const getPercentageByEtapa = () => {
       if (status === "EmAprovacao") {

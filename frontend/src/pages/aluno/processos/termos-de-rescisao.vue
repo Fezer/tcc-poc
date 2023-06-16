@@ -1,7 +1,7 @@
 <script setup>
 const { auth } = useAuth();
 
-const grr = auth?.id || "";
+const grr = auth?.value?.id || "";
 
 const { data: termos } = await useFetch(`/aluno/${grr}/termoDeRescisao/`);
 </script>
