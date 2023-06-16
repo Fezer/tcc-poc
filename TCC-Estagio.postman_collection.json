@@ -5887,6 +5887,41 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "buscarAlunoPorEmail",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						}, 
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/siga/grr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"siga",
+								"grr"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
