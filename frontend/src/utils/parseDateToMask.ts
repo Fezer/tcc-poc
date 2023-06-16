@@ -1,7 +1,11 @@
+import dayjs from "dayjs";
+
 const parseDateToMask = (date?: string) => {
-  if (!date) return "";
-  const [year, month, day] = date.split("-");
-  return `${day}/${month}/${year}`;
+  if (!date) return;
+
+  const dayJSDate = dayjs(date);
+
+  return dayJSDate.format("DD/MM/YYYY");
 };
 
 export default parseDateToMask;

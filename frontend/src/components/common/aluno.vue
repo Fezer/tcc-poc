@@ -32,12 +32,24 @@ export default defineComponent({
       await handleFetchCurso(response?.idPrograma);
       return response;
     });
-    console.log(aluno);
+
+    // parse da data para o formato dd/mm/yyyy e adiciona 3 horas devido ao fuso
+    const parseDataNascimento = (data: string) => {
+      if (!data) return "--/--/----";
+      return dayjs(data).add(3, "hour").format("DD/MM/YYYY");
+    };
+
+    const getAge = (data: string) => {
+      if (!data) return "--";
+      return dayjs(new Date()).diff(new Date(data), "year");
+    };
 
     return {
       aluno: dadosAluno,
       curso,
       dayjs,
+      parseDataNascimento,
+      getAge,
     };
   },
 });
@@ -60,8 +72,8 @@ export default defineComponent({
         <strong>Data de Nascimento</strong>
         <!-- get age -->
         <p>
-          {{ dayjs(new Date(aluno?.dataNascimento || 0)).format("DD/MM/YYYY") }}
-          ({{ dayjs(new Date()).diff(new Date(aluno?.dataNascimento), "year") }}
+          {{ parseDataNascimento(aluno?.dataNascimento) }}
+          ({{ getAge(aluno?.dataNascimento) }}
           anos)
         </p>
       </div>

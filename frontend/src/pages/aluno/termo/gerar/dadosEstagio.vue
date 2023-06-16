@@ -39,8 +39,7 @@ export default defineComponent({
 
     const parseDateToMask = (date?: string) => {
       if (!date) return "";
-      const [year, month, day] = date.split("-");
-      return `${day}/${month}/${year}`;
+      return dayjs(date).toDate();
     };
 
     onMounted(() => {
@@ -80,8 +79,8 @@ export default defineComponent({
     };
 
     const state = reactive({
-      dataInicio: undefined as undefined | string,
-      dataFinal: undefined as undefined | string,
+      dataInicio: undefined as undefined | Date | string,
+      dataFinal: undefined as undefined | Date | string,
       jornadaDiaria: undefined as number | undefined,
       jornadaSemanal: undefined as number | undefined,
       bolsaAuxilio: undefined as number | undefined,
@@ -217,6 +216,7 @@ export default defineComponent({
           <div class="field col">
             <label for="dataInicio">Data de Início</label>
             <Calendar
+              dateFormat="dd/mm/yy"
               showIcon
               v-tooltip.top="
                 'Inserir o período de início e término do estágio. Este termo de compromisso deve ser colocado na plataforma, contendo todas as assinaturas, com pelo menos 10 dias ANTES do início das atividades de estágio.'
@@ -229,6 +229,7 @@ export default defineComponent({
           <div class="field col">
             <label for="dataFinal">Data de Termino</label>
             <Calendar
+              dateFormat="dd/mm/yy"
               showIcon
               v-model="state.dataFinal"
               :class="errors['dataFinal'] && 'p-invalid'"

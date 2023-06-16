@@ -244,7 +244,7 @@ export default defineComponent({
         :onConfirm="handleCancelarTermo"
         description="Tem certeza que deseja cancelar esse termo de compromisso? Para começar
         em um estágio, será necessário iniciar todo o processo novamente."
-        :onClose="(state.cancelationConfirm = false)"
+        :onClose="() => (state.cancelationConfirm = false)"
       />
     </div>
   </div>
