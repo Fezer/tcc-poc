@@ -22,6 +22,8 @@ export default defineComponent({
 
     const uploadVisible = ref(false);
 
+    const cancelVisible = ref(false);
+
     const handleCancelarRelatorio = async () => {
       const estagio = relatorio?.value?.estagio?.id;
       await relatorioService.cancelarRelatorioDeEstagio(id).then(() => {
@@ -127,6 +129,7 @@ export default defineComponent({
       handleDownloadRelatorio,
       uploadVisible,
       handleUploadRelatorio,
+      cancelVisible,
     };
   },
 });
@@ -225,7 +228,7 @@ export default defineComponent({
         label="Cancelar relatório"
         icon="pi pi-times"
         class="p-button-danger"
-        @click="handleCancelarRelatorio"
+        @click="cancelVisible = true"
       ></Button>
 
       <Button
@@ -236,6 +239,15 @@ export default defineComponent({
         @click="uploadVisible = true"
       >
       </Button>
+    </div>
+
+    <div v-if="!!cancelVisible">
+      <CancelationConfirm
+        :onClose="() => (cancelVisible = false)"
+        :onConfirm="handleCancelarRelatorio"
+        description="Você realmente deseja cancelar esse relatório de estágio? Essa ação não poderá ser desfeita."
+      >
+      </CancelationConfirm>
     </div>
 
     <div v-if="uploadVisible">
