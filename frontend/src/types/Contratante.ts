@@ -5,4 +5,5 @@ export default interface Contratante {
   cpf?: string;
   cnpj?: string;
   representanteEmpresa?: string;
+  telefone?: string;
 }
