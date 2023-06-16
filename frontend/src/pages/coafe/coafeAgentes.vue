@@ -59,7 +59,7 @@
             {{ data.cnpj }}
           </template>
         </Column>
-        <Column field="button" header="Ações">
+        <Column field="button" header="Ver">
           <template #body="{ data }">
             <NuxtLink
               :to="`/coafe/agentes-integracao/agenteVisualizar?id=${data.id}`"
@@ -68,12 +68,39 @@
             </NuxtLink>
           </template>
         </Column>
+        <Column field="relatorio" header="Relatório">
+          <template #body="{ data }">
+            <Button
+              @click="escolhaDeRelatorio = data.id"
+              :label="'Relatório'"
+              icon="pi pi-file"
+              class="p-button-success"
+            />
+            <div v-if="escolhaDeRelatorio == data.id">
+              <EscolhaRelatorio
+                :excel="() => relatorioExcel(data.id)"
+                :pdf="() => relatorioPDF(data.id)"
+                :cancelar="() => (escolhaDeRelatorio = 0)"
+                :description="`Gerar relatório do Agente ${data.nome} em que formato?`"
+              >
+              </EscolhaRelatorio>
+            </div>
+          </template>
+        </Column>
       </DataTable>
     </div>
   </div>
 </template>
-<script setup>
+<script lang="ts">
+export default defineComponent({
+  components: { EscolhaRelatorio },
+});
+</script>
+<script setup lang="ts">
 import Column from "primevue/column";
+import EscolhaRelatorio from "~~/src/components/common/escolha-relatorios.vue";
+import { defineComponent } from "vue";
+import { useToast } from "primevue/usetoast";
 import DataTable from "primevue/datatable";
 import Button from "primevue/button";
 import { FilterMatchMode } from "primevue/api";
@@ -82,4 +109,22 @@ const { data: agentes } = useFetch(`http://localhost:5000/agente-integrador/`);
 const filtros = ref({
   nome: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
+let escolhaDeRelatorio = ref(0);
+const toast = useToast();
+const relatorioExcel = (id: number) => {
+  escolhaDeRelatorio.value = 0;
+  return toast.add({
+    severity: "success",
+    summary: "Excel escolhido com id: " + id,
+    life: 3000,
+  });
+};
+const relatorioPDF = (id: number) => {
+  escolhaDeRelatorio.value = 0;
+  return toast.add({
+    severity: "error",
+    summary: "PDF escolhido com id: " + id,
+    life: 3000,
+  });
+};
 </script>

@@ -76,7 +76,7 @@
             />
           </template>
         </Column>
-        <Column field="button" header="Ações">
+        <Column field="button" header="Ver">
           <template #body="{ data }">
             <NuxtLink
               :to="`/coafe/seguradora/seguradoraVisualizar?id=${data.id}`"

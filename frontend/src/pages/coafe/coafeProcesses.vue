@@ -45,7 +45,7 @@
           {{ data.last_update }}
         </template>
       </Column>
-      <Column field="button">
+      <Column field="button" header="Ver">
         <template #body>
           <Button label="Ver contato"></Button>
         </template>
