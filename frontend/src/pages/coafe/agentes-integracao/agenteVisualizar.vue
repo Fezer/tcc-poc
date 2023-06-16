@@ -32,7 +32,7 @@
         />
       </NuxtLink>
       <NuxtLink :to="`agenteEditar?id=${agente.id}`">
-        <Button label="Editar" />
+        <Button label="Editar" icon="pi pi-file-edit" />
       </NuxtLink>
       <Button
         @click="cancelVisibleAgente = true"
@@ -50,7 +50,12 @@
       >
       </CancelationConfirm>
     </div>
-    <DataTable class="flex-column" :value="agente.convenio" rowHover>
+    <DataTable
+      class="flex-column"
+      :value="agente.convenio"
+      rowHover
+      :show-gridlines="true"
+    >
       <template #header>
         <div class="flex flex-row justify-content-between gap-10">
           <span class="flex align-items-left flex-column pb-4">
@@ -95,19 +100,19 @@
           <NuxtLink
             :to="`/coafe/agentes-integracao/convenioEditar?id=${data.id}`"
           >
-            <Button label="Editar" />
+            <Button label="Editar" icon="pi pi-file-edit" />
           </NuxtLink>
         </template>
       </Column>
       <Column field="button" header="Deletar">
         <template #body="{ data }">
           <Button
-            @click="cancelVisibleConvenio = true"
+            @click="cancelVisibleConvenio = data.id"
             :label="'Deletar'"
             icon="pi pi-times"
             class="p-button-danger"
           />
-          <div v-if="cancelVisibleConvenio">
+          <div v-if="cancelVisibleConvenio == data.id">
             <CancelationConfirm
               :onClose="() => (cancelVisibleConvenio = false)"
               :onConfirm="() => handleDeleteConvenio(data.id)"
@@ -135,14 +140,14 @@ import AgenteService from "~~/services/AgenteService";
 const route = useRoute();
 const router = useRouter();
 const cancelVisibleAgente = ref(false);
-const cancelVisibleConvenio = ref(false);
+const cancelVisibleConvenio = ref(0);
 const id = route.query.id;
 const { data: agente, refresh } = await useFetch(`/agente-integrador/${id}`);
 const convenioService = new ConvenioService();
 const agenteService = new AgenteService();
 const toast = useToast();
 const handleDeleteConvenio = async (id) => {
-  cancelVisibleConvenio.value = false;
+  cancelVisibleConvenio.value = 0;
   try {
     const response = await convenioService.deletaConvenio(id).then(() => {
       return toast.add({

@@ -64,7 +64,7 @@ export default defineComponent({
         <Column field="button">
           <template #body="{ data }">
             <NuxtLink :to="`/estagio/${data.id}?perfil=coafe`">
-              <Button label="Ver Estágio"></Button>
+              <Button label="Ver Estágio" icon="pi pi-search"></Button>
             </NuxtLink>
           </template>
         </Column>

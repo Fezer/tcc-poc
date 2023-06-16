@@ -1,13 +1,17 @@
 <template>
   <div>
-    <div class="flex justify-content-between">
+    <div class="flex justify-content-between items-center">
       <h1>
         COAFE
         <h6>Coordenação de Atividades Formativas e Estágios</h6>
       </h1>
       <span class="p-input-icon-left">
         <NuxtLink to="/coafe/agentes-integracao/novo">
-          <Button label="Cadastrar"></Button>
+          <Button
+            label="Cadastrar"
+            class="p-button-success"
+            icon="pi pi-plus"
+          ></Button>
         </NuxtLink>
       </span>
     </div>
@@ -22,6 +26,7 @@
         paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
         rowHover
         stripedRows
+        :show-gridlines="true"
       >
         <template #header>
           <div class="flex justify-content-between">
@@ -54,12 +59,12 @@
             {{ data.cnpj }}
           </template>
         </Column>
-        <Column field="button">
+        <Column field="button" header="Ações">
           <template #body="{ data }">
             <NuxtLink
               :to="`/coafe/agentes-integracao/agenteVisualizar?id=${data.id}`"
             >
-              <Button label="Ver" />
+              <Button label="Ver" icon="pi pi-search" />
             </NuxtLink>
           </template>
         </Column>
