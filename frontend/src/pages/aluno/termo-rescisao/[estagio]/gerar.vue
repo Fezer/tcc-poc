@@ -14,6 +14,10 @@ export default defineComponent({
     const router = useRouter();
     const toast = useToast();
 
+    const { auth } = useAuth();
+
+    const grr = auth?.id || "";
+
     const { termoRescisao } = useTermoRescisao();
 
     const { estagio } = route.params;
@@ -57,7 +61,7 @@ export default defineComponent({
 
         if (!termoID) {
           const { id: novoID } = await alunoService.criarTermoDeRecisao(
-            "GRR20200141",
+            grr,
             estagio
           );
 
@@ -67,7 +71,7 @@ export default defineComponent({
         for (let periodo of periodosDeRecesso.value) {
           if (!periodo.id) {
             await termoService
-              .criaPeriodoDeRecesso(termoID, estagio, "GRR20200141")
+              .criaPeriodoDeRecesso(termoID, estagio, grr)
               .then(async ({ id }) => {
                 await termoService.atualizaPeriodoDeRecesso(id, {
                   dataInicio: dayjs(periodo.dataInicio).format("YYYY-MM-DD"),

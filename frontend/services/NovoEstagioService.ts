@@ -6,10 +6,8 @@ import {
 import BaseService from "./BaseService";
 
 export default class NovoEstagioService extends BaseService {
-  ALUNO = "GRR20200141";
-
-  async criarNovoEstagio(): Promise<{ id: number }> {
-    const response = await $fetch(`/aluno/${this.ALUNO}/estagio`, {
+  async criarNovoEstagio(grr: string): Promise<{ id: number }> {
+    const response = await $fetch(`/aluno/${grr}/estagio`, {
       method: "POST",
     });
 
@@ -47,19 +45,15 @@ export default class NovoEstagioService extends BaseService {
   }
 
   public async getTermoEmPreenchimento(grr: string) {
-    return await $fetch(
-      `http://localhost:5000/aluno/${grr}/estagio/emPreenchimento`
-    ).catch((err) => {
-      console.error(err);
-    });
+    return await $fetch(`/aluno/${grr}/estagio/emPreenchimento`).catch(
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 
   public async getTermoEmAprovacao(grr: string) {
-    // http://localhost:5000/aluno/GRR20200141/estagio/emAprovacao
-
-    return await $fetch(
-      `http://localhost:5000/aluno/${grr}/estagio/emAprovacao`
-    ).catch((err) => {
+    return await $fetch(`/aluno/${grr}/estagio/emAprovacao`).catch((err) => {
       console.error(err);
     });
   }
@@ -95,7 +89,7 @@ export default class NovoEstagioService extends BaseService {
   }
 
   public async setSupervisor(id: string, supervisor: Supervisor) {
-    return await $fetch("http://localhost:5000/supervisor/", {
+    return await $fetch("/supervisor/", {
       method: "POST",
 
       body: supervisor,
@@ -112,9 +106,7 @@ export default class NovoEstagioService extends BaseService {
     });
   }
 
-  public async solicitarAprovacaoTermo(id: string) {
-    const grr = "GRR20200141";
-
+  public async solicitarAprovacaoTermo(grr: string, id: string) {
     return await $fetch(`/aluno/${grr}/termo/${id}/solicitarAprovacaoTermo`, {
       method: "PUT",
     });

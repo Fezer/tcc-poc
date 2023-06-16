@@ -29,7 +29,9 @@ export default defineComponent({
     motivo: string;
     termo: NovoEstagio;
   }) {
-    const grr = "GRR20200141";
+    const { auth } = useAuth();
+
+    const grr = auth?.id || "";
     const getPercentageByEtapa = () => {
       if (status === "EmAprovacao") {
         if (etapa === "COE") return 40;

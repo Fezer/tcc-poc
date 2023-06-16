@@ -4,8 +4,11 @@ import parseDate from "../../../utils/parseDate";
 
 export default defineComponent({
   setup() {
+    const { auth } = useAuth();
+
+    const grr = auth?.id || "";
     const { data: certificados } = useFetch(
-      "/aluno/GRR20200141/certificadoDeEstagio"
+      `/aluno/${grr}/certificadoDeEstagio`
     );
 
     const reprovacaoModalInfo = ref(null);

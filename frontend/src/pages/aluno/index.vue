@@ -9,7 +9,9 @@ import { ofetch } from "ofetch";
 export default defineComponent({
   components: { DataTable, Column },
   setup() {
-    const grr = "GRR20200141";
+    const { auth } = useAuth();
+
+    const grr = auth?.id || "";
     const config = useRuntimeConfig();
     const alunoService = new AlunoService();
     const novoEstagioService = new NovoEstagioService();

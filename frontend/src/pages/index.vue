@@ -10,7 +10,7 @@ export default defineComponent({
   setup() {
     const config = useRuntimeConfig();
     const router = useRouter();
-    const { setGRR } = useGRR();
+    const { auth, setAuth } = useAuth();
 
     onMounted(async () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -42,8 +42,6 @@ export default defineComponent({
 
           const email = decodedToken["email"];
 
-          console.log(decodedToken);
-
           // redirect to aluno page
 
           globalThis.$fetch = ofetch.create({
@@ -53,21 +51,21 @@ export default defineComponent({
             },
           });
 
-          // // get aluno grr
-          // if (email) {
-          //   const grr = await $fetch(
-          //     `http://siga.ufpr.br:8380/siga/api/graduacao/discente?email=${email}`,
-          //     {
-          //       method: "GET",
-          //       headers: {
-          //         origin: "http://localhost:3000",
-          //         Authorization: `Bearer ${accessToken}`,
-          //       },
-          //     }
-          //   );
-          //   console.log(grr);
-          //   setGRR(grr);
-          // }
+          // get aluno grr
+          if (email) {
+            const response = await $fetch(`/siga/grr`, {
+              method: "GET",
+              headers: {
+                origin: "http://localhost:3000",
+                Authorization: `Bearer ${accessToken}`,
+              },
+            });
+            setAuth({
+              token: accessToken,
+              perfil: "aluno",
+              id: response?.data?.grr,
+            });
+          }
 
           console.log("Token de acesso obtido com sucesso!");
           router.push("/aluno");

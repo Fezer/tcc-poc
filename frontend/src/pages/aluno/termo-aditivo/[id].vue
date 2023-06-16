@@ -27,8 +27,9 @@ export default defineComponent({
     const toast = useToast();
 
     const { id } = route.params;
+    const { auth } = useAuth();
 
-    const grr = "GRR20200141";
+    const grr = auth?.id || "";
 
     const alunoService = new AlunoService();
 
@@ -37,8 +38,6 @@ export default defineComponent({
     const { setTermo } = useTermo();
 
     const { data: termo, refresh } = useFetch<BaseTermo>(`/termo/${id}`);
-
-    // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 
     function refreshData() {
       refresh();
@@ -114,17 +113,9 @@ export default defineComponent({
 
     const handleSolicitarAprovacao = async () => {
       state.uploadModalVisible = false;
-      // if (!checkIfTermoCompleto()) {
-      //   return toast.add({
-      //     severity: "error",
-      //     summary: "Ops!",
-      //     detail:
-      //       "Termo incompleto. Por favor, visite a edição de termo, e termine o fluxo!",
-      //     life: 3000,
-      //   });
-      // }
+
       await novoEstagioService
-        .solicitarAprovacaoTermo(termo.value.id)
+        .solicitarAprovacaoTermo(grr, termo.value.id)
         .then(() => {
           refreshData();
         })
@@ -146,7 +137,7 @@ export default defineComponent({
       formData.append("file", file);
 
       await alunoService
-        .uploadTermoAditivo("GRR20200141", formData)
+        .uploadTermoAditivo(grr, formData)
         .then(() => {
           toast.add({
             severity: "success",
@@ -169,7 +160,7 @@ export default defineComponent({
     const handleDownloadTermo = async () => {
       try {
         const file = await alunoService.downloadTermoAditivo(
-          "GRR20200141",
+          grr,
           termo.value.id
         );
 

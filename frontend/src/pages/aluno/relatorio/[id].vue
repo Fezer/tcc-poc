@@ -16,6 +16,9 @@ export default defineComponent({
     );
     const router = useRouter();
     const toast = useToast();
+    const { auth } = useAuth();
+
+    const grr = auth?.id || "";
 
     const uploadVisible = ref(false);
 
@@ -47,7 +50,7 @@ export default defineComponent({
     const handlePedirCienciaOrientador = async () => {
       const estagio = relatorio?.value?.estagio?.id;
       await alunoService
-        .solicitarCienciaDeRelatorioDeEstagio("GRR20200141", estagio, id)
+        .solicitarCienciaDeRelatorioDeEstagio(grr, estagio, id)
         .then(() => {
           toast.add({
             severity: "success",
@@ -72,10 +75,7 @@ export default defineComponent({
 
     const handleDownloadRelatorio = async () => {
       try {
-        const file = await relatorioService.baixarRelatorioBase(
-          "GRR20200141",
-          id
-        );
+        const file = await relatorioService.baixarRelatorioBase(grr, id);
 
         const fileURL = URL.createObjectURL(file);
 
@@ -99,7 +99,7 @@ export default defineComponent({
       formData.append("file", file);
 
       await relatorioService
-        .uploadRelatorio("GRR20200141", formData)
+        .uploadRelatorio(grr, formData)
         .then(() => {
           toast.add({
             severity: "success",

@@ -38,6 +38,10 @@ export default defineComponent({
 
     const errors = ref({} as Record<string, string>);
 
+    const { auth } = useAuth();
+
+    const grr = auth?.id || "";
+
     const tiposDeVaga = ref([
       {
         name: "Ampla Concorrência",
@@ -192,7 +196,6 @@ export default defineComponent({
 
         return;
       }
-      const grr = "GRR20200141";
 
       try {
         await alunoService

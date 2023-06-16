@@ -25,7 +25,9 @@ export default defineComponent({
 
     const curso = reactive({});
 
-    const grr = "GRR20200141";
+    const { auth } = useAuth();
+
+    const grr = auth?.id || "";
 
     const handleFetchCurso = async (cursoID: string) => {
       // if (aluno?.curso) return;

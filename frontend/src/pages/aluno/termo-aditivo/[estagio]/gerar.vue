@@ -17,6 +17,10 @@ export default defineComponent({
     const toast = useToast();
     const errors = ref({} as Record<string, string>);
 
+    const { auth } = useAuth();
+
+    const grr = auth?.id || "";
+
     const { termo } = useTermo();
 
     const parseDateToMask = (date?: string) => {
@@ -129,8 +133,6 @@ export default defineComponent({
       }
 
       try {
-        const grr = "GRR20200141";
-
         let termoAditivoID = termo?.value?.id;
         if (!termoAditivoID) {
           const { id: novoID } = await alunoSerivce.criarTermoAditivo(

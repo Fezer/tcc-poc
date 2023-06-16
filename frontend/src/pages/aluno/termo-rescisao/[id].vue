@@ -17,6 +17,10 @@ export default defineComponent({
     const termoService = new TermoDeRescisaoService();
     const alunoService = new AlunoService();
 
+    const { auth } = useAuth();
+
+    const grr = auth?.id || "";
+
     const { id } = route.params;
 
     const { data: termo } = useFetch<TermoRescisao>("/termoDeRescisao/" + id);
@@ -29,7 +33,7 @@ export default defineComponent({
 
       const estagioID = termo?.value?.estagio?.id;
       await alunoService
-        .solicitarCienciaDeTermoDeRecisao("GRR20200141", estagioID, id)
+        .solicitarCienciaDeTermoDeRecisao(grr, estagioID, id)
         .then(() => {
           toast.add({
             severity: "success",
@@ -51,7 +55,7 @@ export default defineComponent({
     const handleCancelarTermo = async () => {
       const estagioID = termo?.value?.estagio?.id;
       await termoService
-        .cancelaTermoRecisao("GRR20200141", estagioID, id)
+        .cancelaTermoRecisao(grr, estagioID, id)
         .then(() => {
           router.push(`/aluno/estagio/${estagioID}`);
         })
@@ -81,7 +85,7 @@ export default defineComponent({
       formData.append("file", file);
 
       await termoService
-        .uploadTermoDeRescisao("GRR20200141", formData)
+        .uploadTermoDeRescisao(grr, formData)
         .then(() => {
           toast.add({
             severity: "success",

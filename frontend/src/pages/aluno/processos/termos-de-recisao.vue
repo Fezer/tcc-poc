@@ -1,9 +1,9 @@
 <script setup>
-const grr = "GRR20200141";
+const { auth } = useAuth();
+
+const grr = auth?.id || "";
 
 const { data: termos } = await useFetch(`/aluno/${grr}/termosAditivos/`);
-
-// const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 </script>
 
 <template>

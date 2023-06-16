@@ -36,7 +36,9 @@ export default defineComponent({
 
     const { data: termo, refresh } = useFetch(`/termo/${id}`);
 
-    // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
+    const { auth } = useAuth();
+
+    const grr = auth?.id || "";
 
     function refreshData() {
       refresh();
@@ -118,7 +120,7 @@ export default defineComponent({
 
     const handleCancelarTermo = async () => {
       try {
-        await novoEstagioService.cancelarTermo(termo.value.id);
+        await novoEstagioService.cancelarTermo(termo.value.id, grr);
         toast.add({
           severity: "success",
           summary: `Termo cancelado!`,
@@ -144,17 +146,9 @@ export default defineComponent({
 
     const handleSolicitarAprovacao = async () => {
       state.uploadModalVisible = false;
-      // if (!checkIfTermoCompleto()) {
-      //   return toast.add({
-      //     severity: "error",
-      //     summary: "Ops!",
-      //     detail:
-      //       "Termo incompleto. Por favor, visite a edição de termo, e termine o fluxo!",
-      //     life: 3000,
-      //   });
-      // }
+
       await novoEstagioService
-        .solicitarAprovacaoTermo(termo.value.id)
+        .solicitarAprovacaoTermo(grr, termo.value.id)
         .then(() => {
           refreshData();
         })
@@ -176,7 +170,7 @@ export default defineComponent({
       formData.append("file", file);
 
       await alunoService
-        .uploadTermo("GRR20200141", formData)
+        .uploadTermo(grr, formData)
         .then(() => {
           toast.add({
             severity: "success",

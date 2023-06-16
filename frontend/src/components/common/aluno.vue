@@ -12,7 +12,9 @@ export default defineComponent({
 
     const { id } = route.params;
 
-    const grr = "GRR20200141";
+    const { auth } = useAuth();
+
+    const grr = auth?.id || "";
 
     const curso = reactive({});
 
