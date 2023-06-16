@@ -7,6 +7,10 @@ export default defineComponent({
       type: Function,
       required: true,
     },
+    cancelar: {
+      type: Function,
+      required: true,
+    },
     excel: {
       type: Function,
       required: true,
@@ -18,16 +22,19 @@ export default defineComponent({
   },
   setup({
     pdf,
+    cancelar,
     excel,
     description,
   }: {
     visible: boolean;
+    cancelar: () => void;
     pdf: () => void;
     excel: () => void;
     description: string;
   }) {
     return {
       pdf,
+      cancelar,
       description,
       excel,
     };
@@ -38,15 +45,21 @@ export default defineComponent({
 <template>
   <Dialog
     :visible="true"
-    header="Tipo de arquivo"
+    header="Gerar Relatório"
     :closable="false"
-    style="width: 300px"
+    style="width: 500px"
     :modal="true"
   >
     <p>
       {{ description }}
     </p>
     <template #footer>
+      <Button
+        label="Voltar"
+        icon="pi pi-times"
+        class="p-button-secondary"
+        @click="cancelar"
+      />
       <Button
         label="Excel"
         icon="pi pi-file-excel"
