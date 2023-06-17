@@ -120,8 +120,16 @@ const relatorioExcel = async (id: number) => {
     console.log(file);
     const fileURL = URL.createObjectURL(file);
     return window.open(fileURL, "_blank");
-  } catch (err) {
-    toast.add({
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
       severity: "error",
       summary: "Erro",
       detail: "Não foi possível baixar o Relatório",
@@ -135,8 +143,16 @@ const relatorioPDF = async (id: number) => {
     const file = await agenteService.baixarRelatorioEstagioPdfEspecifico(id);
     const fileURL = URL.createObjectURL(file);
     return window.open(fileURL, "_blank");
-  } catch (err) {
-    toast.add({
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
       severity: "error",
       summary: "Erro",
       detail: "Não foi possível baixar o Relatório",

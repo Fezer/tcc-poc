@@ -13,6 +13,7 @@ export default defineComponent({
     const relatorioService = new RelatorioEstagioService();
     let escolhaDeRelatorio = ref(0);
     const relatorioExcel = async (id: number) => {
+      let response = "Não foi possível baixar o Relatório";
       escolhaDeRelatorio.value = 0;
       try {
         const file =
@@ -20,7 +21,15 @@ export default defineComponent({
         const fileURL = URL.createObjectURL(file);
         return window.open(fileURL, "_blank");
       } catch (Error) {
-        toast.add({
+        if (Error?.response?._data?.error) {
+          return toast.add({
+            severity: "error",
+            summary: "Erro",
+            detail: "" + Error?.response?._data?.error,
+            life: 3000,
+          });
+        }
+        return toast.add({
           severity: "error",
           summary: "Erro",
           detail: "Não foi possível baixar o Relatório",
@@ -36,8 +45,16 @@ export default defineComponent({
         );
         const fileURL = URL.createObjectURL(file);
         return window.open(fileURL, "_blank");
-      } catch (err) {
-        toast.add({
+      } catch (Error) {
+        if (Error?.response?._data?.error) {
+          return toast.add({
+            severity: "error",
+            summary: "Erro",
+            detail: "" + Error?.response?._data?.error,
+            life: 3000,
+          });
+        }
+        return toast.add({
           severity: "error",
           summary: "Erro",
           detail: "Não foi possível baixar o Relatório",

@@ -94,9 +94,16 @@ const relatorioExcelSeguradora = async () => {
     console.log(file);
     const fileURL = URL.createObjectURL(file);
     return window.open(fileURL, "_blank");
-  } catch (err) {
-    console.log(err);
-    toast.add({
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
       severity: "error",
       summary: "Erro",
       detail: "Não foi possível baixar o Relatório",
@@ -110,8 +117,16 @@ const relatorioPDFSeguradora = async () => {
     const file = await seguradoraService.baixarRelatorioPdf();
     const fileURL = URL.createObjectURL(file);
     return window.open(fileURL, "_blank");
-  } catch (err) {
-    toast.add({
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
       severity: "error",
       summary: "Erro",
       detail: "Não foi possível baixar o Relatório",
@@ -125,8 +140,16 @@ const relatorioExcelCertificados = async () => {
     const file = await coafeService.baixarRelatorioCertificadoExcel();
     const fileURL = URL.createObjectURL(file);
     return window.open(fileURL, "_blank");
-  } catch (err) {
-    toast.add({
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
       severity: "error",
       summary: "Erro",
       detail: "Não foi possível baixar o Relatório",
@@ -140,8 +163,16 @@ const relatorioPDFCertificados = async () => {
     const file = await coafeService.baixarRelatorioCertificadoPdf();
     const fileURL = URL.createObjectURL(file);
     return window.open(fileURL, "_blank");
-  } catch (err) {
-    toast.add({
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
       severity: "error",
       summary: "Erro",
       detail: "Não foi possível baixar o Relatório",
@@ -184,15 +215,22 @@ const relatorioExcelEstagios = async () => {
 
     // Abrir o arquivo em uma nova janela do navegador
     window.open(fileURL, "_blank");
-  } catch (err) {
-    console.log(err);
-    toast.add({
-      severity: "error",
-      summary: "Erro",
-      detail: "Não foi possível baixar o Relatório",
-      life: 3000,
-    });
-  }
+  }  catch (Error) {
+        if (Error?.response?._data?.error) {
+          return toast.add({
+            severity: "error",
+            summary: "Erro",
+            detail: "" + Error?.response?._data?.error,
+            life: 3000,
+          });
+        }
+        return toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Não foi possível baixar o Relatório",
+          life: 3000,
+        });
+      }
 };
 */
 const relatorioPDFEstagios = async () => {
@@ -201,8 +239,16 @@ const relatorioPDFEstagios = async () => {
     const file = await relatorioService.baixarRelatorioEstagioPdf();
     const fileURL = URL.createObjectURL(file);
     return window.open(fileURL, "_blank");
-  } catch (err) {
-    toast.add({
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
       severity: "error",
       summary: "Erro",
       detail: "Não foi possível baixar o Relatório",
