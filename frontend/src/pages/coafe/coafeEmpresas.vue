@@ -9,24 +9,43 @@ export default defineComponent({
   components: { EscolhaRelatorio },
   async setup() {
     let escolhaDeRelatorio = ref(0);
-    const relatorioExcel = (id: number) => {
-      escolhaDeRelatorio.value = 0;
-      return toast.add({
-        severity: "success",
-        summary: "Excel escolhido com id: " + id,
-        life: 3000,
-      });
-    };
-    const relatorioPDF = (id: number) => {
-      escolhaDeRelatorio.value = 0;
-      return toast.add({
-        severity: "error",
-        summary: "PDF escolhido com id: " + id,
-        life: 3000,
-      });
-    };
     const toast = useToast();
     const contratanteService = new ContratanteService();
+
+    const relatorioExcel = async (id: number) => {
+      escolhaDeRelatorio.value = 0;
+      try {
+        const file =
+          await contratanteService.baixarRelatorioEstagioExcelEspecifico(id);
+        console.log(file);
+        const fileURL = URL.createObjectURL(file);
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Não foi possível baixar o Relatório",
+          life: 3000,
+        });
+      }
+    };
+    const relatorioPDF = async (id: number) => {
+      escolhaDeRelatorio.value = 0;
+      try {
+        const file =
+          await contratanteService.baixarRelatorioEstagioPdfEspecifico(id);
+        const fileURL = URL.createObjectURL(file);
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Não foi possível baixar o Relatório",
+          life: 3000,
+        });
+      }
+    };
+
     const filtros = ref({
       nome: { value: null, matchMode: FilterMatchMode.CONTAINS },
     });
