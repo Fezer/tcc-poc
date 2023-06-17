@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -8,22 +8,21 @@ export default defineComponent({
 
     const { processo } = route.params;
 
-    const { data: processes } = useAsyncData(
-      "coafeProcesses",
-      () => {
-        if (!config.BACKEND_URL) return [];
+    const page = ref(0);
 
-        return $fetch(
-          `${config.BACKEND_URL}/coafe/${processo}/pendenteAprovacaoCoafe`
-        );
-      },
+    const { data: processes } = useFetch<PaginatedTermo>(
+      `${config.BACKEND_URL}/coafe/${processo}/pendenteAprovacaoCoafe`,
       {
-        watch: [config.BACKEND_URL, processo],
+        params: {
+          page,
+          size: 10,
+        },
       }
     );
 
     return {
       processes,
+      page,
     };
   },
 });
@@ -38,7 +37,12 @@ export default defineComponent({
       </h1>
     </div>
     <div>
-      <DataTable :value="processes" rowHover stripedRows :show-gridlines="true">
+      <DataTable
+        :value="processes?.content"
+        rowHover
+        stripedRows
+        :show-gridlines="true"
+      >
         <template #header>
           <div class="flex items-center justify-content-between">
             <span class="p-input-icon-left">
@@ -88,6 +92,11 @@ export default defineComponent({
           </template>
         </Column>
       </DataTable>
+      <Paginator
+        :rows="10"
+        :totalRecords="processes?.totalElements"
+        @page="page = $event.page"
+      ></Paginator>
     </div>
   </div>
 </template>

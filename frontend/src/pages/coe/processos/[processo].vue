@@ -2,6 +2,7 @@
 import { defineComponent } from "vue";
 import { BaseTermo } from "~~/src/types/Termos";
 import parseTipoTermo from "~~/src/utils/parseTipoProcesso";
+import { PaginatedTermo } from "../../../types/Termos";
 
 export default defineComponent({
   setup() {
@@ -12,16 +13,15 @@ export default defineComponent({
 
     const page = ref(0);
 
-    const { data: processes } = useFetch<{
-      content: BaseTermo[];
-      totalElements: number;
-      totalPages: number;
-    }>(`${config.BACKEND_URL}/coe/${processo}/pendenteAprovacaoCoe`, {
-      params: {
-        page,
-        size: 10,
-      },
-    });
+    const { data: processes } = useFetch<PaginatedTermo>(
+      `${config.BACKEND_URL}/coe/${processo}/pendenteAprovacaoCoe`,
+      {
+        params: {
+          page,
+          size: 10,
+        },
+      }
+    );
 
     return {
       processes,

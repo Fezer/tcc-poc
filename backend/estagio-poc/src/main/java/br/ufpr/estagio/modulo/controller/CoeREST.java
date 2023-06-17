@@ -33,7 +33,11 @@ import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
+import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
+import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
+import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
+import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
@@ -82,7 +86,11 @@ public class CoeREST {
 			@RequestParam(defaultValue = "0") int page) {
 		try {
 			Page<TermoDeEstagio> paginaTermos = termoDeEstagioService
-					.listarTermosDeCompromissoPendenteAprovacaoCoe(page);
+					.listarTermoCompromissoPaginated(page,
+							Optional.of(EnumStatusTermo.EmAprovacao),
+							Optional.of(EnumEtapaFluxo.COE),
+							Optional.of(EnumTipoEstagio.NaoObrigatorio),
+							Optional.of(EnumTipoTermoDeEstagio.TermoDeCompromisso));
 
 			if (paginaTermos.isEmpty()) {
 				return ResponseEntity.noContent().build();
@@ -104,14 +112,19 @@ public class CoeREST {
 	}
 
 	@GetMapping("/termo/indeferido")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosDeCompromissoIndeferidos() {
+	public ResponseEntity<Page<TermoDeEstagioDTO>> listarTermosDeCompromissoIndeferidos(
+			@RequestParam(defaultValue = "0") int page) {
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidos();
-			if (listaTermos == null || listaTermos.isEmpty()) {
+			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidos(page);
+			if (listaTermos.isEmpty()) {
 				return null;
 			} else {
-				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream()
-						.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+				List<TermoDeEstagioDTO> listaTermosDTO = listaTermos.getContent().stream()
+						.map(e -> mapper.map(e, TermoDeEstagioDTO.class))
+						.collect(Collectors.toList());
+
+				return ResponseEntity.status(HttpStatus.OK).body(
+						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(), listaTermos.getTotalElements()));
 			}
 		} catch (PocException e) {
 			e.printStackTrace();
@@ -123,14 +136,22 @@ public class CoeREST {
 	}
 
 	@GetMapping("/termoAditivo/pendenteAprovacaoCoe")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoPendenteAprovacaoCoe() {
+	public ResponseEntity<Page<TermoDeEstagioDTO>> listarTermosAditivoPendenteAprovacaoCoe(
+			@RequestParam(defaultValue = "0") int page) {
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivoPendenteAprovacaoCoe();
-			if (listaTermos == null || listaTermos.isEmpty()) {
-				return null;
+			Page<TermoDeEstagio> listaTermosPaginated = termoDeEstagioService
+					.listarTermosAditivoPendenteAprovacaoCoe(page);
+
+			if (listaTermosPaginated.isEmpty()) {
+				return ResponseEntity.noContent().build();
 			} else {
-				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream()
-						.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+				List<TermoDeEstagioDTO> listaTermosDTO = listaTermosPaginated.getContent().stream()
+						.map(e -> mapper.map(e, TermoDeEstagioDTO.class))
+						.collect(Collectors.toList());
+
+				return ResponseEntity.status(HttpStatus.OK).body(
+						new PageImpl<>(listaTermosDTO, listaTermosPaginated.getPageable(),
+								listaTermosPaginated.getTotalElements()));
 			}
 		} catch (PocException e) {
 			e.printStackTrace();
@@ -142,14 +163,21 @@ public class CoeREST {
 	}
 
 	@GetMapping("/termoAditivo/indeferido")
-	public ResponseEntity<List<TermoDeEstagioDTO>> listarTermosAditivoIndeferidos() {
+	public ResponseEntity<Page<TermoDeEstagioDTO>> listarTermosAditivoIndeferidos(
+			@RequestParam(defaultValue = "0") int page) {
 		try {
-			List<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosIndeferidos();
+			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosIndeferidos(
+					page);
 			if (listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
-				return ResponseEntity.status(HttpStatus.OK).body(listaTermos.stream()
-						.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList()));
+				List<TermoDeEstagioDTO> listaTermosDTO = listaTermos.getContent().stream()
+						.map(e -> mapper.map(e, TermoDeEstagioDTO.class))
+						.collect(Collectors.toList());
+
+				return ResponseEntity.status(HttpStatus.OK).body(
+						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(),
+								listaTermos.getTotalElements()));
 			}
 		} catch (PocException e) {
 			e.printStackTrace();

@@ -25,7 +25,7 @@ export default defineComponent({
         COE: "/coe/processos/termo",
         COAFE: "/coafe/processos/termo",
         Orientador: "/orientador",
-        Coordenacao: "/coord",
+        Coordenacao: "/coord/processos/termo",
       };
       return rotas[perfil] || "/login";
     };

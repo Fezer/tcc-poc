@@ -74,6 +74,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       BACKEND_URL: process.env.BACKEND_URL,
+      SIGA_TOKEN_URL: process.env.SIGA_TOKEN_URL,
+      SIGA_CLIENT_ID: process.env.SIGA_CLIENT_ID,
+      SIGA_CLIENT_SECRET: process.env.SIGA_CLIENT_SECRET,
+      SIGA_REDIRECT_URI: process.env.SIGA_REDIRECT_URI,
     },
   },
 });

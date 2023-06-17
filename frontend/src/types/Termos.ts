@@ -70,4 +70,16 @@ type PeriodoRecesso = {
   dataFim: string;
 };
 
-export { StatusTermo, BaseTermo, TermoRescisao, PeriodoRecesso };
+type PaginatedTermo = {
+  content: BaseTermo[];
+  totalElements: number;
+  totalPages: number;
+};
+
+export {
+  StatusTermo,
+  BaseTermo,
+  TermoRescisao,
+  PeriodoRecesso,
+  PaginatedTermo,
+};

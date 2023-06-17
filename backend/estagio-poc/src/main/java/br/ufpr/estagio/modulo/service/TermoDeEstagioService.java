@@ -66,6 +66,8 @@ public class TermoDeEstagioService {
 			+ "AND t.statusTermo = :statusTermo "
 			+ "AND t.tipoTermoDeEstagio = :tipoTermoDeEstagio";
 
+	private static final String selectTermoWithOptionalFields = "SELECT t FROM TermoDeEstagio t INNER JOIN t.estagio e WHERE 1=1 ";
+
 	private static final String selectTermosDeEstagioTipoTermoPorAluno = "SELECT t FROM TermoDeEstagio t "
 			+ "INNER JOIN t.estagio e "
 			+ "INNER JOIN e.aluno a "
@@ -359,6 +361,59 @@ public class TermoDeEstagioService {
 		return termoDeEstagio;
 	}
 
+	public Page<TermoDeEstagio> listarTermoCompromissoPaginated(int pagina,
+			Optional<EnumStatusTermo> statusTermoOptional, Optional<EnumEtapaFluxo> etapaFluxoOptional,
+			Optional<EnumTipoEstagio> tipoEstagioOptional,
+			Optional<EnumTipoTermoDeEstagio> tipoTermoDeEstagioOptional) {
+
+		StringBuilder jpql = new StringBuilder(selectTermoWithOptionalFields);
+
+		// Configurar os parâmetros da consultas
+		if (statusTermoOptional.isPresent()) {
+			jpql.append(" AND t.statusTermo = :statusTermo");
+		}
+		if (etapaFluxoOptional.isPresent()) {
+			jpql.append(" AND t.etapaFluxo = :etapaFluxo");
+		}
+		if (tipoEstagioOptional.isPresent()) {
+			jpql.append(" AND e.tipoEstagio = :tipoEstagio");
+		}
+		if (tipoTermoDeEstagioOptional.isPresent()) {
+			jpql.append(" AND t.tipoTermoDeEstagio = :tipoTermoDeEstagio");
+		}
+
+		TypedQuery<TermoDeEstagio> query = em.createQuery(jpql.toString(), TermoDeEstagio.class);
+
+		if (statusTermoOptional.isPresent()) {
+			EnumStatusTermo statusTermo = statusTermoOptional.get();
+			query.setParameter("statusTermo", statusTermo);
+		}
+		if (etapaFluxoOptional.isPresent()) {
+			EnumEtapaFluxo etapaFluxo = etapaFluxoOptional.get();
+			query.setParameter("etapaFluxo", etapaFluxo);
+		}
+		if (tipoEstagioOptional.isPresent()) {
+			EnumTipoEstagio tipoEstagio = tipoEstagioOptional.get();
+			query.setParameter("tipoEstagio", tipoEstagio);
+		}
+		if (tipoTermoDeEstagioOptional.isPresent()) {
+			EnumTipoTermoDeEstagio tipoTermoDeEstagio = tipoTermoDeEstagioOptional.get();
+			query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+		}
+
+		// Configurar a paginação
+		int totalRegistros = query.getResultList().size();
+		PageRequest pageRequest = PageRequest.of(pagina, 10);
+
+		// Executar a consulta paginada
+		List<TermoDeEstagio> termosPaginados = query
+				.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize())
+				.setMaxResults(pageRequest.getPageSize())
+				.getResultList();
+
+		return new PageImpl<>(termosPaginados, pageRequest, totalRegistros);
+	}
+
 	public Page<TermoDeEstagio> listarTermosDeCompromissoPendenteAprovacaoCoe(int pagina) {
 		EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
 		EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COE;
@@ -494,7 +549,7 @@ public class TermoDeEstagioService {
 		return termoRepo.save(termo);
 	}
 
-	public List<TermoDeEstagio> listarTermosDeCompromissoIndeferidos() {
+	public Page<TermoDeEstagio> listarTermosDeCompromissoIndeferidos(int pagina) {
 
 		EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
 		EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoDeCompromisso;
@@ -503,7 +558,17 @@ public class TermoDeEstagioService {
 				TermoDeEstagio.class);
 		query.setParameter("statusTermo", statusTermo);
 		query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
-		return query.getResultList();
+
+		int totalRegistros = query.getResultList().size();
+		PageRequest pageRequest = PageRequest.of(pagina, 10);
+
+		// Executar a consulta paginada
+		List<TermoDeEstagio> termosPaginados = query
+				.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize())
+				.setMaxResults(pageRequest.getPageSize())
+				.getResultList();
+
+		return new PageImpl<>(termosPaginados, pageRequest, totalRegistros);
 
 	}
 
@@ -633,6 +698,7 @@ public class TermoDeEstagioService {
 		query.setParameter("etapaFluxo", etapaFluxo);
 		query.setParameter("statusTermo", statusTermo);
 		query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+
 		return query.getResultList();
 	}
 
@@ -1171,7 +1237,7 @@ public class TermoDeEstagioService {
 		return query.getResultList();
 	}
 
-	public List<TermoDeEstagio> listarTermosAditivosIndeferidos() {
+	public Page<TermoDeEstagio> listarTermosAditivosIndeferidos(int pagina) {
 
 		EnumStatusTermo statusTermo = EnumStatusTermo.Reprovado;
 		EnumTipoTermoDeEstagio tipoTermoDeEstagio = EnumTipoTermoDeEstagio.TermoAditivo;
@@ -1180,7 +1246,19 @@ public class TermoDeEstagioService {
 				TermoDeEstagio.class);
 		query.setParameter("statusTermo", statusTermo);
 		query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
-		return query.getResultList();
+
+		// Configurar a paginação
+		int totalRegistros = query.getResultList().size();
+		PageRequest pageRequest = PageRequest.of(pagina, 10);
+
+		// Executar a consulta paginada
+		List<TermoDeEstagio> termosPaginados = query
+				.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize())
+				.setMaxResults(pageRequest.getPageSize())
+				.getResultList();
+
+		return new PageImpl<>(termosPaginados, pageRequest, totalRegistros);
+
 	}
 
 	public List<TermoDeEstagio> listarTermosAditivosIndeferidosPendentesCienciaCoordenacao() {
@@ -1244,7 +1322,8 @@ public class TermoDeEstagioService {
 		return query.getResultList();
 	}
 
-	public List<TermoDeEstagio> listarTermosAditivoPendenteAprovacaoCoe() {
+	public Page<TermoDeEstagio> listarTermosAditivoPendenteAprovacaoCoe(
+			int pagina) {
 
 		EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
 		EnumEtapaFluxo etapaFluxo = EnumEtapaFluxo.COE;
@@ -1257,7 +1336,18 @@ public class TermoDeEstagioService {
 		query.setParameter("etapaFluxo", etapaFluxo);
 		query.setParameter("statusTermo", statusTermo);
 		query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
-		return query.getResultList();
+
+		// Configurar a paginação
+		int totalRegistros = query.getResultList().size();
+		PageRequest pageRequest = PageRequest.of(pagina, 10);
+
+		// Executar a consulta paginada
+		List<TermoDeEstagio> termosPaginados = query
+				.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize())
+				.setMaxResults(pageRequest.getPageSize())
+				.getResultList();
+
+		return new PageImpl<>(termosPaginados, pageRequest, totalRegistros);
 	}
 
 	public List<TermoDeEstagio> listarTermosAditivosPendenteAprovacaoCoafe() {
