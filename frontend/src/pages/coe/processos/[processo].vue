@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import { BaseTermo } from "~~/src/types/Termos";
 import parseTipoTermo from "~~/src/utils/parseTipoProcesso";
 
 export default defineComponent({
@@ -9,25 +10,23 @@ export default defineComponent({
 
     const { processo } = route.params;
 
-    const { data: processes } = useAsyncData(
-      "coeProcesses",
-      () => {
-        if (!config.BACKEND_URL) return [];
+    const page = ref(0);
 
-        return $fetch(
-          `${config.BACKEND_URL}/coe/${processo}/pendenteAprovacaoCoe`
-        );
+    const { data: processes } = useFetch<{
+      content: BaseTermo[];
+      totalElements: number;
+      totalPages: number;
+    }>(`${config.BACKEND_URL}/coe/${processo}/pendenteAprovacaoCoe`, {
+      params: {
+        page,
+        size: 10,
       },
-      {
-        watch: [config.BACKEND_URL, processo],
-      }
-    );
-
-    console.log(processes);
+    });
 
     return {
       processes,
       parseTipoTermo,
+      page,
     };
   },
 });
@@ -42,7 +41,12 @@ export default defineComponent({
       </h1>
     </div>
     <div>
-      <DataTable :value="processes" rowHover stripedRows :show-gridlines="true">
+      <DataTable
+        :value="processes?.content"
+        rowHover
+        stripedRows
+        :show-gridlines="true"
+      >
         <template #header>
           <div class="flex items-center justify-content-between">
             <span class="p-input-icon-left">
@@ -94,11 +98,20 @@ export default defineComponent({
         <Column field="button">
           <template #body="{ data }">
             <NuxtLink :to="`/coe/termo/${data.id}`">
-              <Button label="Ver contato"></Button>
+              <Button
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
+              ></Button>
             </NuxtLink>
           </template>
         </Column>
       </DataTable>
+      <Paginator
+        :rows="10"
+        :totalRecords="processes?.totalElements"
+        @page="page = $event.page"
+      ></Paginator>
     </div>
   </div>
 </template>
