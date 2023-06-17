@@ -5,27 +5,45 @@ import parseTipoTermo from "~~/src/utils/parseTipoProcesso";
 import { ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import EscolhaRelatorio from "~~/src/components/common/escolha-relatorios.vue";
+import RelatorioEstagioService from "~~/services/RelatorioEstagioService";
 export default defineComponent({
   components: { EscolhaRelatorio },
   setup() {
     const route = useRoute();
-
+    const relatorioService = new RelatorioEstagioService();
     let escolhaDeRelatorio = ref(0);
-    const relatorioExcel = (id: number) => {
+    const relatorioExcel = async (id: number) => {
       escolhaDeRelatorio.value = 0;
-      return toast.add({
-        severity: "success",
-        summary: "Excel escolhido com id: " + id,
-        life: 3000,
-      });
+      try {
+        const file =
+          await relatorioService.baixarRelatorioEstagioExcelEspecifico(id);
+        const fileURL = URL.createObjectURL(file);
+        return window.open(fileURL, "_blank");
+      } catch (Error) {
+        toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Não foi possível baixar o Relatório",
+          life: 3000,
+        });
+      }
     };
-    const relatorioPDF = (id: number) => {
+    const relatorioPDF = async (id: number) => {
       escolhaDeRelatorio.value = 0;
-      return toast.add({
-        severity: "success",
-        summary: "PDF escolhido com id: " + id,
-        life: 3000,
-      });
+      try {
+        const file = await relatorioService.baixarRelatorioEstagioPdfEspecifico(
+          id
+        );
+        const fileURL = URL.createObjectURL(file);
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Não foi possível baixar o Relatório",
+          life: 3000,
+        });
+      }
     };
     const toast = useToast();
 

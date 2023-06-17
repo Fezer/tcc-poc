@@ -88,4 +88,14 @@ export default class ContratanteService extends BaseService {
 
     return response;
   }
+  async baixarRelatorioEstagioPdfEspecifico(id:number) {
+    return $fetch(`/coafe/gerar-relatorio-empresa/${id}`, {
+      method: "GET",
+    });
+  }
+  async baixarRelatorioEstagioExcelEspecifico(id:number) {
+    return $fetch(`/coafe/gerar-relatorio-empresa-excel/${id}`, {
+      method: "GET",
+    });
+  }
 }

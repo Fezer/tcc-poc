@@ -105,26 +105,43 @@ import DataTable from "primevue/datatable";
 import Button from "primevue/button";
 import { FilterMatchMode } from "primevue/api";
 import { ref } from "vue";
+import AgenteService from "~~/services/AgenteService";
 const { data: agentes } = useFetch(`http://localhost:5000/agente-integrador/`);
 const filtros = ref({
   nome: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 let escolhaDeRelatorio = ref(0);
 const toast = useToast();
-const relatorioExcel = (id: number) => {
+const agenteService = new AgenteService();
+const relatorioExcel = async (id: number) => {
   escolhaDeRelatorio.value = 0;
-  return toast.add({
-    severity: "success",
-    summary: "Excel escolhido com id: " + id,
-    life: 3000,
-  });
+  try {
+    const file = await agenteService.baixarRelatorioEstagioExcelEspecifico(id);
+    console.log(file);
+    const fileURL = URL.createObjectURL(file);
+    return window.open(fileURL, "_blank");
+  } catch (err) {
+    toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Não foi possível baixar o Relatório",
+      life: 3000,
+    });
+  }
 };
-const relatorioPDF = (id: number) => {
+const relatorioPDF = async (id: number) => {
   escolhaDeRelatorio.value = 0;
-  return toast.add({
-    severity: "error",
-    summary: "PDF escolhido com id: " + id,
-    life: 3000,
-  });
+  try {
+    const file = await agenteService.baixarRelatorioEstagioPdfEspecifico(id);
+    const fileURL = URL.createObjectURL(file);
+    return window.open(fileURL, "_blank");
+  } catch (err) {
+    toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Não foi possível baixar o Relatório",
+      life: 3000,
+    });
+  }
 };
 </script>
