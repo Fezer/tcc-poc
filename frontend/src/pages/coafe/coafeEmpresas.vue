@@ -20,8 +20,16 @@ export default defineComponent({
         console.log(file);
         const fileURL = URL.createObjectURL(file);
         return window.open(fileURL, "_blank");
-      } catch (err) {
-        toast.add({
+      } catch (Error) {
+        if (Error?.response?._data?.error) {
+          return toast.add({
+            severity: "error",
+            summary: "Erro",
+            detail: "" + Error?.response?._data?.error,
+            life: 3000,
+          });
+        }
+        return toast.add({
           severity: "error",
           summary: "Erro",
           detail: "Não foi possível baixar o Relatório",
@@ -36,8 +44,16 @@ export default defineComponent({
           await contratanteService.baixarRelatorioEstagioPdfEspecifico(id);
         const fileURL = URL.createObjectURL(file);
         return window.open(fileURL, "_blank");
-      } catch (err) {
-        toast.add({
+      } catch (Error) {
+        if (Error?.response?._data?.error) {
+          return toast.add({
+            severity: "error",
+            summary: "Erro",
+            detail: "" + Error?.response?._data?.error,
+            life: 3000,
+          });
+        }
+        return toast.add({
           severity: "error",
           summary: "Erro",
           detail: "Não foi possível baixar o Relatório",

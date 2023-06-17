@@ -3,6 +3,7 @@ package br.ufpr.estagio.modulo.dto;
 import java.io.Serializable;
 import java.util.List;
 
+
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;

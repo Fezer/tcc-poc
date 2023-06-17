@@ -7,6 +7,7 @@ import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 
+
 public class AgenteIntegradorDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
