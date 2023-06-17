@@ -303,9 +303,7 @@ export default defineComponent({
     <SuspensaoEstagio :termo="termo" />
 
     <div
-      v-if="
-        termo?.statusTermo === 'EmAprovacao' && state.tipoUsuario !== 'ALUNO'
-      "
+      v-if="termo?.etapaFluxo === 'Coordenacao'"
       class="flex align-items-end justify-content-end gap-2"
     >
       <Button

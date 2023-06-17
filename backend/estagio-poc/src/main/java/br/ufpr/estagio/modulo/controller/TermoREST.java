@@ -87,21 +87,22 @@ public class TermoREST {
 			@RequestParam(required = false) Optional<EnumStatusTermo> status,
 			@RequestParam(required = false) Optional<EnumEtapaFluxo> etapa,
 			@RequestParam(required = false) Optional<EnumTipoEstagio> tipoEstagio,
-			@RequestParam(required = false) Optional<EnumTipoTermoDeEstagio> tipoTermo
-
-	) {
+			@RequestParam(required = false) Optional<EnumTipoTermoDeEstagio> tipoTermo,
+			@RequestParam(required = false) Optional<String> grr) {
 		try {
 			Optional<EnumStatusTermo> statusTermo = status == null ? Optional.empty() : status;
 			Optional<EnumEtapaFluxo> etapaTermo = etapa == null ? Optional.empty() : etapa;
 			Optional<EnumTipoEstagio> tipoEstagioTermo = tipoEstagio == null ? Optional.empty() : tipoEstagio;
 			Optional<EnumTipoTermoDeEstagio> tipoTermoEstagio = tipoTermo == null ? Optional.empty() : tipoTermo;
+			Optional<String> grrTermo = grr == null ? Optional.empty() : grr;
 
 			Page<TermoDeEstagio> paginaTermos = termoDeEstagioService
 					.listarTermoCompromissoPaginated(page,
 							statusTermo,
 							etapaTermo,
 							tipoEstagioTermo,
-							tipoTermoEstagio);
+							tipoTermoEstagio,
+							grrTermo);
 
 			if (paginaTermos.isEmpty()) {
 				return ResponseEntity.noContent().build();

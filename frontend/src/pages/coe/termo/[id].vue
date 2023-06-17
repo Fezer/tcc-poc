@@ -230,7 +230,7 @@ export default defineComponent({
     <SuspensaoEstagio :termo="termo" />
 
     <div
-      v-if="termo?.statusTermo === 'EmAprovacao'"
+      v-if="termo?.etapaFluxo === 'COE'"
       class="flex align-items-end justify-content-end gap-2"
     >
       <Button

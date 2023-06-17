@@ -90,7 +90,8 @@ public class CoeREST {
 							Optional.of(EnumStatusTermo.EmAprovacao),
 							Optional.of(EnumEtapaFluxo.COE),
 							Optional.of(EnumTipoEstagio.NaoObrigatorio),
-							Optional.of(EnumTipoTermoDeEstagio.TermoDeCompromisso));
+							Optional.of(EnumTipoTermoDeEstagio.TermoDeCompromisso),
+							Optional.empty());
 
 			if (paginaTermos.isEmpty()) {
 				return ResponseEntity.noContent().build();

@@ -131,7 +131,8 @@ public class CoafeREST {
 					Optional.of(EnumStatusTermo.EmAprovacao),
 					Optional.of(EnumEtapaFluxo.COAFE),
 					Optional.empty(),
-					Optional.of(EnumTipoTermoDeEstagio.TermoDeCompromisso));
+					Optional.of(EnumTipoTermoDeEstagio.TermoDeCompromisso),
+					Optional.empty());
 			if (listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {

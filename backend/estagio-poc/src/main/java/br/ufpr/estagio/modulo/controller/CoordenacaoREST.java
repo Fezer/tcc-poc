@@ -84,7 +84,8 @@ public class CoordenacaoREST {
 					Optional.of(EnumStatusTermo.EmAprovacao),
 					Optional.of(EnumEtapaFluxo.Coordenacao),
 					Optional.empty(), // Envolve the null value in an Optional
-					Optional.of(EnumTipoTermoDeEstagio.TermoDeCompromisso));
+					Optional.of(EnumTipoTermoDeEstagio.TermoDeCompromisso),
+					Optional.empty());
 
 			if (listaTermos == null || listaTermos.isEmpty()) {
 				return null;

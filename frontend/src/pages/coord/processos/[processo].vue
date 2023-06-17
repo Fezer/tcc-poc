@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { BaseTermo } from "~~/src/types/Termos";
-import parseTipoTermo from "~~/src/utils/parseTipoProcesso";
+import parseObrigatoriedadeEstagio from "~~/src/utils/parseObrigatoriedadeEstagio";
 import { PaginatedTermo } from "../../../types/Termos";
 
 export default defineComponent({
@@ -14,25 +14,23 @@ export default defineComponent({
 
     const filters = reactive({
       status: "EmAprovacao",
-      tipoTermo: "",
       etapa: "Coordenacao",
+      grr: "",
     });
 
     const page = ref(0);
 
-    const {
-      data: processes,
-      refresh,
-      execute,
-    } = useAsyncData(
+    const { data: processes } = useAsyncData(
       "termosCOAFE",
       () =>
         $fetch("/termo", {
           params: {
             page: page.value,
             status: filters.status,
-            tipoTermo: filters.tipoTermo,
+            tipoTermo:
+              processo === "termo" ? "TermoDeCompromisso" : "TermoAditivo",
             etapa: filters.etapa,
+            grr: filters.grr || undefined,
           },
         }),
       {
@@ -47,7 +45,7 @@ export default defineComponent({
     return {
       processo,
       processes,
-      parseTipoTermo,
+      parseObrigatoriedadeEstagio,
       page,
       statusOptions,
       etapaOptions,
@@ -106,7 +104,10 @@ export default defineComponent({
               </Dropdown>
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
-                <InputText placeholder="Keyword Search" />
+                <InputText
+                  placeholder="Matrícula (GRRXXXXXXXX)"
+                  v-model="filters.grr"
+                />
               </span>
             </div>
           </div>
@@ -115,14 +116,14 @@ export default defineComponent({
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
 
-        <Column field="student_name" header="Nome do Aluno">
+        <Column field="tipo" header="Tipo Estágio">
           <template #body="{ data }">
-            {{ data?.aluno }}
+            {{ parseObrigatoriedadeEstagio(data?.estagio?.tipoEstagio) }}
           </template>
         </Column>
-        <Column field="grr" header="GRR">
+        <Column field="ufpr" header="Estágio UFPR">
           <template #body="{ data }">
-            {{ data.grrAluno }}
+            {{ data.estagio?.estagioUfpr ? "Sim" : "Não" }}
           </template>
         </Column>
         <Column field="contratante" header="Contratante">
