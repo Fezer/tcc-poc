@@ -8,25 +8,52 @@ export default defineComponent({
   setup() {
     const config = useRuntimeConfig();
     const route = useRoute();
+    const { statusOptions, etapaOptions, tipoOptions } = useTermoFilters();
 
     const { processo } = route.params;
 
+    const filters = reactive({
+      status: "EmAprovacao",
+      tipoTermo: "",
+      etapa: "COE",
+    });
+
     const page = ref(0);
 
-    const { data: processes } = useFetch<PaginatedTermo>(
-      `${config.BACKEND_URL}/coe/${processo}/pendenteAprovacaoCoe`,
+    const {
+      data: processes,
+      refresh,
+      execute,
+    } = useAsyncData(
+      "termosCOE",
+      () =>
+        $fetch("/termo", {
+          params: {
+            page: page.value,
+            status: filters.status,
+            tipoTermo: filters.tipoTermo,
+            etapa: filters.etapa,
+          },
+        }),
       {
-        params: {
-          page,
-          size: 10,
-        },
+        watch: [filters, page],
       }
     );
 
+    const handleSearch = () => {
+      page.value = 0;
+    };
+
     return {
+      processo,
       processes,
       parseTipoTermo,
       page,
+      statusOptions,
+      etapaOptions,
+      tipoOptions,
+      filters,
+      handleSearch,
     };
   },
 });
@@ -49,23 +76,45 @@ export default defineComponent({
       >
         <template #header>
           <div class="flex items-center justify-content-between">
-            <span class="p-input-icon-left">
-              <h4 class="font-bold">Processos pendentes de parecer</h4>
+            <span class="">
+              <h4 class="font-bold">
+                {{
+                  processo === "termo"
+                    ? "Termo de Compromisso"
+                    : "Termo Aditivo"
+                }}
+              </h4>
             </span>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search" />
-              <InputText placeholder="Keyword Search" />
-            </span>
+            <div class="flex gap-2">
+              <Dropdown
+                :options="statusOptions"
+                v-model="filters.status"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Status"
+                @change="() => handleSearch()"
+              >
+              </Dropdown>
+              <Dropdown
+                :options="etapaOptions"
+                v-model="filters.etapa"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Etapa do termo"
+                @change="() => handleSearch()"
+              >
+              </Dropdown>
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText placeholder="Keyword Search" />
+              </span>
+            </div>
           </div>
         </template>
         <Column field="process" header="Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
-        <Column field="process_type" header="Tipo de Processo">
-          <template #body="{ data }">
-            {{ parseTipoTermo(data.tipoTermoDeEstagio) }}
-          </template>
-        </Column>
+
         <Column field="student_name" header="Nome do Aluno">
           <template #body="{ data }">
             {{ data?.aluno }}

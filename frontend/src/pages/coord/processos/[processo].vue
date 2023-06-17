@@ -1,28 +1,59 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import { PaginatedTermo } from "~~/src/types/Termos";
+import { BaseTermo } from "~~/src/types/Termos";
+import parseTipoTermo from "~~/src/utils/parseTipoProcesso";
+import { PaginatedTermo } from "../../../types/Termos";
 
 export default defineComponent({
   setup() {
     const config = useRuntimeConfig();
     const route = useRoute();
+    const { statusOptions, etapaOptions, tipoOptions } = useTermoFilters();
 
     const { processo } = route.params;
 
+    const filters = reactive({
+      status: "EmAprovacao",
+      tipoTermo: "",
+      etapa: "Coordenacao",
+    });
+
     const page = ref(0);
 
-    const { data: processes } = useFetch<PaginatedTermo>(
-      `${config.BACKEND_URL}/coordenacao/${processo}/pendenteAprovacaoCoordenacao`,
+    const {
+      data: processes,
+      refresh,
+      execute,
+    } = useAsyncData(
+      "termosCOAFE",
+      () =>
+        $fetch("/termo", {
+          params: {
+            page: page.value,
+            status: filters.status,
+            tipoTermo: filters.tipoTermo,
+            etapa: filters.etapa,
+          },
+        }),
       {
-        params: {
-          page,
-        },
+        watch: [filters, page],
       }
     );
 
+    const handleSearch = () => {
+      page.value = 0;
+    };
+
     return {
+      processo,
       processes,
+      parseTipoTermo,
       page,
+      statusOptions,
+      etapaOptions,
+      tipoOptions,
+      filters,
+      handleSearch,
     };
   },
 });
@@ -33,7 +64,7 @@ export default defineComponent({
     <div>
       <h1>
         Coordenação
-        <h6>Análise e Desenvolvimento de Sistemas</h6>
+        <h6>Análise e desenvolvimento de sistemas</h6>
       </h1>
     </div>
     <div>
@@ -45,29 +76,53 @@ export default defineComponent({
       >
         <template #header>
           <div class="flex items-center justify-content-between">
-            <span class="p-input-icon-left">
-              <h4 class="font-bold">Processos pendentes parecer</h4>
+            <span class="">
+              <h4 class="font-bold">
+                {{
+                  processo === "termo"
+                    ? "Termo de Compromisso"
+                    : "Termo Aditivo"
+                }}
+              </h4>
             </span>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search" />
-              <InputText placeholder="Keyword Search" />
-            </span>
+            <div class="flex gap-2">
+              <Dropdown
+                :options="statusOptions"
+                v-model="filters.status"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Status"
+                @change="() => handleSearch()"
+              >
+              </Dropdown>
+              <Dropdown
+                :options="etapaOptions"
+                v-model="filters.etapa"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Etapa do termo"
+                @change="() => handleSearch()"
+              >
+              </Dropdown>
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText placeholder="Keyword Search" />
+              </span>
+            </div>
           </div>
         </template>
         <Column field="process" header="Processo">
-          <template #body="{ data }">
-            {{ data.id }}
-          </template>
+          <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
 
         <Column field="student_name" header="Nome do Aluno">
           <template #body="{ data }">
-            {{ data?.aluno?.nome }}
+            {{ data?.aluno }}
           </template>
         </Column>
-        <Column field="curse" header="Curso">
+        <Column field="grr" header="GRR">
           <template #body="{ data }">
-            {{ data.curse }}
+            {{ data.grrAluno }}
           </template>
         </Column>
         <Column field="contratante" header="Contratante">
@@ -80,19 +135,24 @@ export default defineComponent({
             {{ parseDate(data?.dataCriacao) }}
           </template>
         </Column>
-        <Column
-          field="action"
-          header="Ação necessária"
-          bodyStyle="color:orange;"
-        >
+        <Column field="action" header="Status" bodyStyle="color:orange;">
           <template #body="{ data }">
-            <Tag value="Parecer" severity="warning" class="font-sm p-2" />
+            <StatusTag :status="data?.statusTermo" />
+          </template>
+        </Column>
+        <Column field="action" header="Etapa" bodyStyle="color:orange;">
+          <template #body="{ data }">
+            {{ data?.etapaFluxo }}
           </template>
         </Column>
         <Column field="button">
           <template #body="{ data }">
             <NuxtLink :to="`/coord/termo/${data.id}`">
-              <Button label="Ver contato"></Button>
+              <Button
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
+              ></Button>
             </NuxtLink>
           </template>
         </Column>
