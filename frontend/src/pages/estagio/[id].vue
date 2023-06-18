@@ -76,7 +76,7 @@ export default defineComponent({
 
     <Status :estagio="estagio" tipoUsuario="OUTRO" />
 
-    <Aluno :grrAluno="estagio?.aluno?.matricula" />
+    <Aluno :grrAluno="estagio?.aluno?.matricula" v-if="estagio?.aluno" />
 
     <Estagio :termo="estagio" />
 

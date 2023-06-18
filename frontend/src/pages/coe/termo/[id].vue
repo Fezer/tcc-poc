@@ -218,7 +218,7 @@ export default defineComponent({
       </NuxtLink>
     </div>
 
-    <Aluno :grrAluno="termo?.grrAluno" />
+    <Aluno :grrAluno="termo?.grrAluno" v-if="termo?.grrAluno" />
 
     <Estagio :termo="termo" />
 
