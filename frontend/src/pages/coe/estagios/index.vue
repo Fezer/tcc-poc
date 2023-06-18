@@ -124,7 +124,7 @@ export default defineComponent({
         <Column field="contratante" header="Contratante">
           <template #body="{ data }">
             {{ data?.contratante?.nome }} -
-            {{ data?.contratante?.cnpj }}
+            {{ data?.contratante?.cnpj || data?.contratante?.cpf }}
           </template>
         </Column>
         <Column field="process_type" header="Tipo Estágio">
