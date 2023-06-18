@@ -6,6 +6,18 @@ export default {
       required: true,
     },
   },
+  methods: {
+    parseTipoContratante(tipo) {
+      switch (tipo) {
+        case "PessoaFisica":
+          return "Pessoa Física";
+        case "PessoaJuridica":
+          return "Pessoa Jurídica";
+        default:
+          return tipo;
+      }
+    },
+  },
 };
 </script>
 
@@ -20,7 +32,7 @@ export default {
       </div>
       <div class="col-4">
         <strong>Tipo do Contratante</strong>
-        <p>{{ termo?.contratante?.tipo }}</p>
+        <p>{{ parseTipoContratante(termo?.contratante?.tipo) }}</p>
       </div>
       <div class="col-4" v-if="termo?.contratante?.tipo === 'PessoaJuridica'">
         <strong>CNPJ</strong>
@@ -42,18 +54,10 @@ export default {
         <strong>Número da Apólice</strong>
         <p>{{ termo?.apolice?.numero }}</p>
       </div>
-      <!-- <div class="col-4">
-        <strong>Endereço</strong>
-        <p>{{ termo?.enderecoContratente }}</p>
+      <div class="col-4" v-if="termo?.agenteIntegrador">
+        <strong>Agente Integrador</strong>
+        <p>{{ termo?.agenteIntegrador?.nome }}</p>
       </div>
-      <div class="col-4">
-        <strong>Cidade</strong>
-        <p>{{ termo?.cidadeContratante }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Estado</strong>
-        <p>{{ termo?.estadoContratante }}</p>
-      </div> -->
     </div>
   </div>
 </template>

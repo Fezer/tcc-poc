@@ -362,9 +362,11 @@ public class TermoDeEstagioService {
 	}
 
 	public Page<TermoDeEstagio> listarTermoCompromissoPaginated(int pagina,
-			Optional<EnumStatusTermo> statusTermoOptional, Optional<EnumEtapaFluxo> etapaFluxoOptional,
+			Optional<EnumStatusTermo> statusTermoOptional,
+			Optional<EnumEtapaFluxo> etapaFluxoOptional,
 			Optional<EnumTipoEstagio> tipoEstagioOptional,
-			Optional<EnumTipoTermoDeEstagio> tipoTermoDeEstagioOptional) {
+			Optional<EnumTipoTermoDeEstagio> tipoTermoDeEstagioOptional,
+			Optional<String> grrAluno) {
 
 		StringBuilder jpql = new StringBuilder(selectTermoWithOptionalFields);
 
@@ -380,6 +382,11 @@ public class TermoDeEstagioService {
 		}
 		if (tipoTermoDeEstagioOptional.isPresent()) {
 			jpql.append(" AND t.tipoTermoDeEstagio = :tipoTermoDeEstagio");
+		}
+		if (grrAluno.isPresent()) {
+			// add % to the beginning and end of the string
+			grrAluno = Optional.of("%" + grrAluno.get() + "%");
+			jpql.append(" AND e.aluno.matricula LIKE :grrAluno");
 		}
 
 		TypedQuery<TermoDeEstagio> query = em.createQuery(jpql.toString(), TermoDeEstagio.class);
@@ -399,6 +406,10 @@ public class TermoDeEstagioService {
 		if (tipoTermoDeEstagioOptional.isPresent()) {
 			EnumTipoTermoDeEstagio tipoTermoDeEstagio = tipoTermoDeEstagioOptional.get();
 			query.setParameter("tipoTermoDeEstagio", tipoTermoDeEstagio);
+		}
+		if (grrAluno.isPresent()) {
+			String grr = grrAluno.get();
+			query.setParameter("grrAluno", grr);
 		}
 
 		// Configurar a paginação

@@ -7,6 +7,7 @@ import Contratante from "../../../components/common/contratante.vue";
 import dadosAuxiliaresVue from "../../../components/common/dadosAuxiliares.vue";
 import estagio from "../../../components/common/estagio.vue";
 import planoAtividades from "../../../components/common/plano-atividades.vue";
+import { BaseTermo } from "../../../types/Termos";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
 
@@ -28,7 +29,7 @@ export default defineComponent({
 
     const coeService = new CoeService();
 
-    const { data: termo, refresh } = useFetch(`/termo/${id}`);
+    const { data: termo, refresh } = useFetch<BaseTermo>(`/termo/${id}`);
 
     function refreshData() {
       refresh();
@@ -217,7 +218,7 @@ export default defineComponent({
       </NuxtLink>
     </div>
 
-    <Aluno />
+    <Aluno :grrAluno="termo?.grrAluno" />
 
     <Estagio :termo="termo" />
 
@@ -230,7 +231,7 @@ export default defineComponent({
     <SuspensaoEstagio :termo="termo" />
 
     <div
-      v-if="termo?.statusTermo === 'EmAprovacao'"
+      v-if="termo?.etapaFluxo === 'COE'"
       class="flex align-items-end justify-content-end gap-2"
     >
       <Button

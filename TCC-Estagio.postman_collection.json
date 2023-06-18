@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "a416c79d-1384-4ca3-b000-63bc73a861c5",
+		"_postman_id": "c0a403b5-66a1-44cd-bb27-4ea9b61c0faf",
 		"name": "TCC-Estagio",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17301767"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -141,7 +140,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo",
+							"raw": "http://localhost:5000/termo?page=0&status=EmAprovacao&tipoEstagio=NaoObrigatorio&tipoTermo=TermoDeCompromisso&etapa=COAFE&grr=GRR2020014",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -149,6 +148,32 @@
 							"port": "5000",
 							"path": [
 								"termo"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "status",
+									"value": "EmAprovacao"
+								},
+								{
+									"key": "tipoEstagio",
+									"value": "NaoObrigatorio"
+								},
+								{
+									"key": "tipoTermo",
+									"value": "TermoDeCompromisso"
+								},
+								{
+									"key": "etapa",
+									"value": "COAFE"
+								},
+								{
+									"key": "grr",
+									"value": "GRR2020014"
+								}
 							]
 						}
 					},
@@ -2075,6 +2100,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Buscar Aluno - Atores Institucionais",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/siga/aluno/GRR20200141",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"siga",
+								"aluno",
+								"GRR20200141"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2132,7 +2178,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/",
+							"raw": "http://localhost:5000/estagio/?page=0&grr=GRR20200141&nomeEmpresa=Empre&tipoEstagio=Obrigatorio&statusEstagio=Cancelado",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2141,6 +2187,28 @@
 							"path": [
 								"estagio",
 								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "grr",
+									"value": "GRR20200141"
+								},
+								{
+									"key": "nomeEmpresa",
+									"value": "Empre"
+								},
+								{
+									"key": "tipoEstagio",
+									"value": "Obrigatorio"
+								},
+								{
+									"key": "statusEstagio",
+									"value": "Cancelado"
+								}
 							]
 						}
 					},
@@ -5887,41 +5955,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "buscarAlunoPorEmail",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "headerPrefix",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						}, 
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/siga/grr",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"siga",
-								"grr"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -6077,6 +6110,53 @@
 							"response": []
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "Filtros",
+			"item": [
+				{
+					"name": "Filtrar termos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/termo?page=0&status=EmAprovacao&tipoEstagio=NaoObrigatorio&tipoTermo=TermoDeCompromisso",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"termo"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "status",
+									"value": "EmAprovacao"
+								},
+								{
+									"key": "tipoEstagio",
+									"value": "NaoObrigatorio"
+								},
+								{
+									"key": "tipoTermo",
+									"value": "TermoDeCompromisso"
+								},
+								{
+									"key": "etapa",
+									"value": "COAFE",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

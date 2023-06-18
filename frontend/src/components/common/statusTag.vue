@@ -15,7 +15,7 @@ export default defineComponent({
     const colors: {
       [key in StatusTermo]: string;
     } = {
-      EmPreenchimento: "info",
+      EmPreenchimento: "",
       EmAprovacao: "info",
       Aprovado: "success",
       EmRevisao: "warning",
