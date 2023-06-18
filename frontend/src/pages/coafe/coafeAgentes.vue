@@ -117,9 +117,14 @@ const relatorioExcel = async (id: number) => {
   escolhaDeRelatorio.value = 0;
   try {
     const file = await agenteService.baixarRelatorioEstagioExcelEspecifico(id);
-    console.log(file);
-    const fileURL = URL.createObjectURL(file);
-    return window.open(fileURL, "_blank");
+    var blob = new Blob([file], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = `relatorio-de-Agente-de-Integracao-excel.xlsx`;
+    link.click();
   } catch (Error) {
     if (Error?.response?._data?.error) {
       return toast.add({

@@ -71,6 +71,7 @@ export default class AgenteService extends BaseService {
   async baixarRelatorioEstagioExcelEspecifico(id:number) {
     return $fetch(`/coafe/gerar-relatorio-agenteIntegrador-excel/${id}`, {
       method: "GET",
+      responseType: "blob",
     });
   }
 }

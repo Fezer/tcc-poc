@@ -84,6 +84,7 @@ export default class SeguradoraService {
   async baixarRelatorioExcel() {
     return $fetch(`/coafe/gerar-relatorio-seguradora-ufpr-excel`, {
       method: "GET",
+      responseType: "blob",
     });
   }
 }

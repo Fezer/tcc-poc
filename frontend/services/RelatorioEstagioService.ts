@@ -59,11 +59,13 @@ export default class RelatorioEstagioService extends BaseService {
   async baixarRelatorioEstagioExcelEspecifico(id:number) {
     return $fetch(`/coafe/gerar-relatorio-relatorioDeEstagio-excel/${id}`, {
       method: "GET",
+      responseType: "blob",
     });
   }
   async baixarRelatorioEstagioExcel() {
     return $fetch(`/coafe/gerar-relatorios-relatorioDeEstagio-excel`, {
       method: "GET",
+      responseType: "blob",
     });
   }
 }

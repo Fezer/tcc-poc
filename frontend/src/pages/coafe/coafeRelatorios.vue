@@ -72,8 +72,6 @@ export default defineComponent({
 import Button from "primevue/button";
 import { ref } from "vue";
 import { defineComponent } from "vue";
-//import XLSX from 'xlsx';
-//import ExcelJS from 'exceljs';
 import { useToast } from "primevue/usetoast";
 import SeguradoraService from "~~/services/SeguradoraService";
 import EscolhaRelatorio from "~~/src/components/common/escolha-relatorios.vue";
@@ -86,14 +84,18 @@ const toast = useToast();
 const seguradoraService = new SeguradoraService();
 const coafeService = new CoafeService();
 const relatorioService = new RelatorioEstagioService();
-
 const relatorioExcelSeguradora = async () => {
   relatorioSeguradora.value = false;
   try {
     const file = await seguradoraService.baixarRelatorioExcel();
-    console.log(file);
-    const fileURL = URL.createObjectURL(file);
-    return window.open(fileURL, "_blank");
+    var blob = new Blob([file], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = `relatorio-de-seguradoras-excel.xlsx`;
+    link.click();
   } catch (Error) {
     if (Error?.response?._data?.error) {
       return toast.add({
@@ -138,8 +140,14 @@ const relatorioExcelCertificados = async () => {
   relatorioCertificado.value = false;
   try {
     const file = await coafeService.baixarRelatorioCertificadoExcel();
-    const fileURL = URL.createObjectURL(file);
-    return window.open(fileURL, "_blank");
+    var blob = new Blob([file], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = `relatorio-de-certificados-excel.xlsx`;
+    link.click();
   } catch (Error) {
     if (Error?.response?._data?.error) {
       return toast.add({
@@ -180,59 +188,37 @@ const relatorioPDFCertificados = async () => {
     });
   }
 };
-/*
+
 const relatorioExcelEstagios = async () => {
   relatorioEstagio.value = false;
   try {
     const file = await relatorioService.baixarRelatorioEstagioExcel();
-
-    // Processar o arquivo Excel usando a biblioteca 'xlsx'
-    const workbook = XLSX.read(await file.arrayBuffer(), { type: "array" });
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-    // Criar um novo arquivo Excel usando a biblioteca 'exceljs'
-    const workbookNew = new ExcelJS.Workbook();
-    const worksheetNew = workbookNew.addWorksheet("Relatório Estágio");
-
-    // Preencher o novo arquivo Excel com os dados do arquivo original
-    for (let i = 0; i < jsonData.length; i++) {
-      const row = jsonData[i];
-      for (let j = 0; j < row.length; j++) {
-        worksheetNew.getCell(
-          `${XLSX.utils.encode_cell({ r: i + 1, c: j + 1 })}`
-        ).value = row[j];
-      }
-    }
-
-    // Salvar o novo arquivo Excel em formato blob
-    const buffer = await workbookNew.xlsx.writeBuffer();
-    const blob = new Blob([buffer], {
+    var blob = new Blob([file], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    const fileURL = URL.createObjectURL(blob);
 
-    // Abrir o arquivo em uma nova janela do navegador
-    window.open(fileURL, "_blank");
-  }  catch (Error) {
-        if (Error?.response?._data?.error) {
-          return toast.add({
-            severity: "error",
-            summary: "Erro",
-            detail: "" + Error?.response?._data?.error,
-            life: 3000,
-          });
-        }
-        return toast.add({
-          severity: "error",
-          summary: "Erro",
-          detail: "Não foi possível baixar o Relatório",
-          life: 3000,
-        });
-      }
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = `relatorio-de-estagios-excel.xlsx`;
+    link.click();
+  } catch (error) {
+    if (error?.response?._data?.error) {
+      toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + error?.response?._data?.error,
+        life: 3000,
+      });
+    } else {
+      toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "Não foi possível baixar o Relatório",
+        life: 3000,
+      });
+    }
+  }
 };
-*/
 const relatorioPDFEstagios = async () => {
   relatorioEstagio.value = false;
   try {
