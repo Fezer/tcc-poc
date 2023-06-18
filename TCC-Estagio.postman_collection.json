@@ -2100,6 +2100,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Buscar Aluno - Atores Institucionais",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/siga/aluno/GRR20200141",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"siga",
+								"aluno",
+								"GRR20200141"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
