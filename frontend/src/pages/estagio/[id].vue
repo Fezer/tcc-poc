@@ -58,7 +58,7 @@ export default defineComponent({
   <div>
     <NuxtLink
       :to="`/${perfil}/${tipoTermo}/${termoDeRescisao || termo || certificado}`"
-      v-if="perfil && tipoTermo"
+      v-if="perfil && tipoTermo && (termo || certificado)"
     >
       <Button
         label="Voltar ao Termo"

@@ -1,7 +1,7 @@
 import Agente from "./Agente";
 import Apolice from "./Apolice";
 import Contratante from "./Contratante";
-import { BasicEstagio, PlanoAtividades } from "./NovoEstagio";
+import { BasicEstagio, Estagio, PlanoAtividades } from "./NovoEstagio";
 import Orientador from "./Orientador";
 import Seguradora from "./Seguradora";
 
@@ -76,10 +76,17 @@ type PaginatedTermo = {
   totalPages: number;
 };
 
+type PaginatedEstagio = {
+  content: Estagio[];
+  totalElements: number;
+  totalPages: number;
+};
+
 export {
   StatusTermo,
   BaseTermo,
   TermoRescisao,
   PeriodoRecesso,
   PaginatedTermo,
+  PaginatedEstagio,
 };

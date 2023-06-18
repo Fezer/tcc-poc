@@ -25,7 +25,7 @@ export default function useTermoFilters() {
       value: "EmRevisao",
     },
     {
-      label: "Qualquer",
+      label: "Todos",
       value: "",
     },
   ];
@@ -52,7 +52,7 @@ export default function useTermoFilters() {
       value: "Orientador",
     },
     {
-      label: "Qualquer",
+      label: "Todos",
       value: "",
     },
   ];
@@ -67,7 +67,7 @@ export default function useTermoFilters() {
       value: "NaoObrigatorio",
     },
     {
-      label: "Qualquer",
+      label: "Todos",
       value: "",
     },
   ];
