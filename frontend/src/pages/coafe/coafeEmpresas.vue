@@ -5,6 +5,7 @@ import { FilterMatchMode } from "primevue/api";
 import ContratanteService from "~~/services/ContratanteService";
 import { useToast } from "primevue/usetoast";
 import EscolhaRelatorio from "~~/src/components/common/escolha-relatorios.vue";
+import Contratante from "../../types/Contratante";
 export default defineComponent({
   components: { EscolhaRelatorio },
   async setup() {
@@ -67,10 +68,29 @@ export default defineComponent({
       }
     };
 
-    const filtros = ref({
-      nome: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    const page = ref(0);
+
+    const filtros = reactive({
+      nome: "",
+      cnpj: "",
     });
-    const { data: contratantes } = useFetch("/contratante/");
+    const { data: contratantes } = useAsyncData<{
+      totalElements: number;
+      content: Contratante[];
+    }>(
+      "listaContratantes",
+      () =>
+        $fetch("/contratante/", {
+          params: {
+            page: page.value,
+            nome: filtros?.nome || undefined,
+            cnpj: filtros?.cnpj || undefined,
+          },
+        }),
+      {
+        watch: [filtros, page],
+      }
+    );
 
     return {
       contratantes,
@@ -80,6 +100,7 @@ export default defineComponent({
       relatorioExcel,
       relatorioPDF,
       escolhaDeRelatorio,
+      page,
     };
   },
 });
@@ -99,14 +120,14 @@ export default defineComponent({
     <div>
       <DataTable
         v-model:filters="filtros"
-        :value="contratantes"
+        :value="contratantes?.content"
         paginator
-        :rows="5"
         :globalFilterFields="['Empresas']"
-        :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
-        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
         rowHover
         stripedRows
+        :rows="10"
+        :totalRecords="contratantes?.totalElements"
+        @page="page = $event.page"
         :show-gridlines="true"
       >
         <template #header>
@@ -114,21 +135,30 @@ export default defineComponent({
             <span class="p-input-icon-left">
               <h4><b>Empresas</b></h4>
             </span>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search" />
-              <InputText
-                v-model="filtros['nome'].value"
-                placeholder="Pesquisar Empresas"
-              />
-            </span>
+
+            <div class="flex gap-2">
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText
+                  v-model="filtros.nome"
+                  placeholder="Pesquisar por nome"
+                />
+              </span>
+
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText
+                  v-model="filtros.cnpj"
+                  placeholder="Pesquisar por CNPJ"
+                />
+              </span>
+            </div>
           </div>
         </template>
         <template #empty> Nenhuma Empresa encontrada. </template>
         <template #loading> Carregando dados. Por favor espere. </template>
-        <Column field="Id" header="id">
-          <template #body="{ data }">
-            {{ data?.id }}
-          </template>
+        <Column field="Id" header="Identificador">
+          <template #body="{ data }"> #{{ data?.id }} </template>
         </Column>
         <Column field="Empresas" header="Nome da Empresa">
           <template #body="{ data }">
@@ -138,6 +168,11 @@ export default defineComponent({
         <Column field="cnpj" header="CNPJ">
           <template #body="{ data }">
             {{ data?.cnpj }}
+          </template>
+        </Column>
+        <Column field="representante" header="Representante">
+          <template #body="{ data }">
+            {{ data?.representanteEmpresa }}
           </template>
         </Column>
         <Column field="ver" header="Ver">
@@ -170,11 +205,6 @@ export default defineComponent({
             </div>
           </template>
         </Column>
-        <!-- <Column field="situação" header="Ativo">
-          <template #body="{ c }">
-            {{ c.situação }}
-          </template>
-        </Column> -->
       </DataTable>
     </div>
   </div>

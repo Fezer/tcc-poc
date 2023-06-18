@@ -8,7 +8,7 @@ export default defineComponent({
 
     const { processo } = route.params;
 
-    const orientador = 6;
+    const orientador = 22;
 
     const { data: processes } = useFetch(
       `/orientador/${orientador}/termoDeRescisao/pendenteCiencia`

@@ -1,11 +1,11 @@
 <script>
 export default {
   setup() {
-    const { data: processes } = useFetch(
-      "/orientador/6/relatorioDeEstagio/pendenteCiencia"
-    );
+    const { auth } = useAuth();
 
-    console.log(processes);
+    const { data: processes } = useFetch(
+      `/orientador/${auth?.id}/relatorioDeEstagio/pendenteCiencia`
+    );
 
     return {
       processes,
