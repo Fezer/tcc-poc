@@ -32,6 +32,10 @@ interface BaseTermo {
   motivoIndeferimento: string | null;
   descricaoAjustes: string | null;
 
+  // nome do aluno e grr do aluno
+  aluno?: string;
+  grrAluno?: string;
+
   orientador?: Orientador;
   agenteIntegrador?: Agente;
   planoAtividades?: PlanoAtividades;

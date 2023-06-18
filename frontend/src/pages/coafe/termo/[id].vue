@@ -236,7 +236,7 @@ export default defineComponent({
       />
     </NuxtLink>
 
-    <Aluno />
+    <Aluno :grrAluno="termo?.grrAluno" />
 
     <Estagio :termo="termo" />
 

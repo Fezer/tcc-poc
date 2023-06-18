@@ -3,8 +3,13 @@ import BaseService from "./BaseService";
 import { BaseTermo } from "~~/src/types/Termos";
 
 export default class AlunoService {
+  // a rota /siga/aluno/grr formata o aluno para o padrão do backend
+  // a rota /aluno/grr precisa de autenticação do siga -> logo só funciona para o aluno logado
+  // estamos utilizando essa rota para não precisar de autenticação para atores institucionais
   public async getAlunoFromSiga(grr: string) {
-    return await $fetch(`/aluno/${grr}`).catch((err) => console.error(err));
+    return await $fetch(`/siga/aluno/${grr}`).catch((err) =>
+      console.error(err)
+    );
   }
 
   public async getCursoAlunoFromSiga(idCurso: string) {
