@@ -17,13 +17,11 @@
     </div>
     <div>
       <DataTable
-        v-model:filters="filtros"
-        :value="agentes"
+        :value="agentes?.content"
         paginator
-        :rows="5"
-        :globalFilterFields="['nome']"
-        :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
-        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+        :rows="10"
+        @page="page = $event.page"
+        :totalRecords="agentes?.totalElements"
         rowHover
         stripedRows
         :show-gridlines="true"
@@ -33,13 +31,22 @@
             <span class="p-input-icon-left">
               <h4><b>Agentes de Integração</b></h4>
             </span>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search" />
-              <InputText
-                v-model="filtros['nome'].value"
-                placeholder="Pesquisar Agentes"
-              />
-            </span>
+            <div class="flex gap-2">
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText
+                  v-model="filtros.cnpj"
+                  placeholder="Pesquisar por CNPJ"
+                />
+              </span>
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText
+                  v-model="filtros.nome"
+                  placeholder="Pesquisar por nome"
+                />
+              </span>
+            </div>
           </div>
         </template>
         <template #empty> Nenhum Agente Integrador encontrado. </template>
@@ -99,17 +106,36 @@ export default defineComponent({
 <script setup lang="ts">
 import Column from "primevue/column";
 import EscolhaRelatorio from "~~/src/components/common/escolha-relatorios.vue";
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
 import { useToast } from "primevue/usetoast";
 import DataTable from "primevue/datatable";
 import Button from "primevue/button";
 import { FilterMatchMode } from "primevue/api";
 import { ref } from "vue";
 import AgenteService from "~~/services/AgenteService";
-const { data: agentes } = useFetch(`http://localhost:5000/agente-integrador/`);
-const filtros = ref({
-  nome: { value: null, matchMode: FilterMatchMode.CONTAINS },
+
+const filtros = reactive({
+  nome: "",
+  cnpj: "",
 });
+
+const page = ref(0);
+
+const { data: agentes } = useAsyncData(
+  "listaAgentes",
+  () =>
+    $fetch("/agente-integrador/", {
+      params: {
+        page: page.value,
+        nome: filtros.nome || undefined,
+        cnpj: filtros.cnpj || undefined,
+      },
+    }),
+  {
+    watch: [page, filtros],
+  }
+);
+
 let escolhaDeRelatorio = ref(0);
 const toast = useToast();
 const agenteService = new AgenteService();
