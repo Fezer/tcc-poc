@@ -31,7 +31,7 @@ export default defineComponent({
 
     const { data: termo, refresh } = useFetch(`/termo/${id}`);
 
-    const { data: agentesIntegracao } = useFetch(`/agente-integrador/`);
+    const { data: agentesIntegracao } = useFetch(`/agente-integrador/todos`);
 
     function refreshData() {
       refresh();
