@@ -29,7 +29,7 @@ export default defineComponent({
     const { id } = route.params;
     const { auth } = useAuth();
 
-    const grr = auth?.value?.id || "";
+    const grr = auth?.value?.identifier || "";
 
     const alunoService = new AlunoService();
 

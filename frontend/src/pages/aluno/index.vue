@@ -11,7 +11,7 @@ export default defineComponent({
   setup() {
     const { auth } = useAuth();
 
-    const grr = auth?.value?.id || "";
+    const grr = auth?.value?.identifier || "";
     const config = useRuntimeConfig();
     const alunoService = new AlunoService();
     const novoEstagioService = new NovoEstagioService();

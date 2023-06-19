@@ -38,7 +38,7 @@ export default defineComponent({
 
     const { auth } = useAuth();
 
-    const grr = auth?.value?.id || "";
+    const grr = auth?.value?.identifier || "";
 
     function refreshData() {
       refresh();

@@ -60,8 +60,8 @@ export default defineComponent({
 
           setAuth({
             token: accessToken,
-            perfil: "aluno",
-            id: JSON.parse(grrData)?.data?.grr,
+            tipoUsuario: "aluno",
+            identifier: JSON.parse(grrData)?.data?.grr,
           });
 
           console.log(JSON.parse(grrData)?.data?.grr);

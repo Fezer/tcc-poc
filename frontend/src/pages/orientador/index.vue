@@ -4,7 +4,7 @@ export default {
     const { auth } = useAuth();
 
     const { data: processes } = useFetch(
-      `/orientador/${auth?.id}/relatorioDeEstagio/pendenteCiencia`
+      `/orientador/${auth?.value?.identifier}/relatorioDeEstagio/pendenteCiencia`
     );
 
     return {

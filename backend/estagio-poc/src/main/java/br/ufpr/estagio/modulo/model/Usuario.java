@@ -20,23 +20,28 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "login", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
-public class Usuario implements Serializable{
-	
+public class Usuario implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "id")
 	private long id;
-	
+
 	@Column(name = "login")
 	private String login;
-	
+
 	@Column(name = "senha")
 	private String senha;
-	
+
 	@Column(name = "tipoUsuario")
 	private EnumTipoUsuario tipoUsuario;
+
+	// leva informação sobre o usuário
+	// exemplo: id do orientador para consultas do frontend
+	@Column(name = "identifier")
+	private String identifier;
 
 	public Usuario() {
 		super();
@@ -86,5 +91,13 @@ public class Usuario implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-		
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
 }

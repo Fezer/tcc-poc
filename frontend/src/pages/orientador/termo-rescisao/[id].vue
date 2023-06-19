@@ -15,6 +15,8 @@ export default defineComponent({
 
     const orientadorService = new OrientadorService();
 
+    const { auth } = useAuth();
+
     const { id } = route.params;
 
     const { data: termo } = useFetch<TermoRescisao>("/termoDeRescisao/" + id);
@@ -23,7 +25,7 @@ export default defineComponent({
 
     const handleDarCiencia = async () => {
       await orientadorService
-        .cienciaTermoRescisao(6, id)
+        .cienciaTermoRescisao(auth?.value?.identifier, id)
         .then(() => {
           toast.add({
             severity: "success",

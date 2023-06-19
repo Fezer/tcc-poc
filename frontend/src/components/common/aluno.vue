@@ -20,7 +20,7 @@ export default defineComponent({
 
     const { auth } = useAuth();
 
-    const grr = grrAluno || auth?.value?.id || "";
+    const grr = grrAluno || auth?.value?.identifier || "";
 
     const curso = reactive({});
 

@@ -24,7 +24,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"coe2@ufpr.br\",\r\n    \"senha\":\"coe123\",\r\n    \"tipoUsuario\":\"COE\"\r\n}"
+							"raw": "{\r\n    \"login\":\"orientador@orientador.com\",\r\n    \"senha\":\"orientador@orientador.com\",\r\n    \"tipoUsuario\":\"COE\",\r\n    \"identifier\": \"5\"\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/auth/criarUsuario",
@@ -54,7 +54,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"coafe@ufpr.br\",\r\n    \"senha\":\"coafe123\"\r\n}"
+							"raw": "{\r\n    \"login\":\"coe@coe.com\",\r\n    \"senha\":\"coe@coe.com\"\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/auth/login",
@@ -718,7 +718,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20175486/estagio",
+									"raw": "http://localhost:5000/aluno/20204481/estagio",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -726,7 +726,7 @@
 									"port": "5000",
 									"path": [
 										"aluno",
-										"GRR20175486",
+										"20204481",
 										"estagio"
 									]
 								}
@@ -2943,7 +2943,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/seguradora/",
+							"raw": "http://localhost:5000/seguradora/?page=0&nome=Tes&ativo=false&seguradoraUFPR=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2952,6 +2952,24 @@
 							"path": [
 								"seguradora",
 								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "nome",
+									"value": "Tes"
+								},
+								{
+									"key": "ativo",
+									"value": "false"
+								},
+								{
+									"key": "seguradoraUFPR",
+									"value": "false"
+								}
 							]
 						}
 					},
@@ -3249,7 +3267,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/",
+							"raw": "http://localhost:5000/agente-integrador/?page=0&nome=Tes124",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3258,6 +3276,21 @@
 							"path": [
 								"agente-integrador",
 								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "cnpj",
+									"value": "2124124124",
+									"disabled": true
+								},
+								{
+									"key": "nome",
+									"value": "Tes124"
+								}
 							]
 						}
 					},
@@ -3495,7 +3528,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/contratante/",
+							"raw": "http://localhost:5000/contratante/?page=0&nome=Tes&cnpj=41",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3504,6 +3537,20 @@
 							"path": [
 								"contratante",
 								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "nome",
+									"value": "Tes"
+								},
+								{
+									"key": "cnpj",
+									"value": "41"
+								}
 							]
 						}
 					},

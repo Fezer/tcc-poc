@@ -6,12 +6,10 @@ export default defineComponent({
   setup() {
     const route = useRoute();
 
-    const { processo } = route.params;
-
-    const orientador = 22;
+    const { auth } = useAuth();
 
     const { data: processes } = useFetch(
-      `/orientador/${orientador}/termoDeRescisao/pendenteCiencia`
+      `/orientador/${auth?.value?.identifier}/termoDeRescisao/pendenteCiencia`
     );
 
     console.log(processes);

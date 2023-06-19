@@ -29,8 +29,6 @@ import jakarta.persistence.TypedQuery;
 @Transactional
 public class EstagioService {
 
-	private static final String selectEstagiosPorIdOrientador = "SELECT e FROM Estagio e INNER JOIN e.orientador o "
-			+ "WHERE o.id = :idOrientador";
 	private static final String selectPorIdOrientadorFiltroStatusEstagio = "SELECT e FROM Estagio e INNER JOIN e.orientador o "
 			+ "WHERE o.id = :idOrientador "
 			+ "and e.statusEstagio = :statusEstagio";
@@ -305,13 +303,36 @@ public class EstagioService {
 		return null;
 	}
 
-	public List<Estagio> listarEstagiosPorIdOrientador(long idOrientador) {
+	public Page<Estagio> listarEstagiosPorIdOrientador(long idOrientador,
+			int page,
+			Optional<String> grrAluno,
+			Optional<EnumStatusEstagio> statusEstagio) {
 
-		TypedQuery<Estagio> query = em.createQuery(selectEstagiosPorIdOrientador, Estagio.class);
+		StringBuilder queryString = new StringBuilder(selectEstagioWithCustomFilters);
+
+		queryString.append(" AND e.orientador.id = :idOrientador");
+
+		if (grrAluno.isPresent()) {
+			queryString.append(" AND e.aluno.matricula LIKE :grrAluno");
+		}
+
+		if (statusEstagio.isPresent()) {
+			queryString.append(" AND e.statusEstagio = :statusEstagio");
+		}
+
+		TypedQuery<Estagio> query = em.createQuery(queryString.toString(), Estagio.class);
 
 		query.setParameter("idOrientador", idOrientador);
 
-		return query.getResultList();
+		if (grrAluno.isPresent()) {
+			query.setParameter("grrAluno", "%" + grrAluno.get() + "%");
+		}
+
+		if (statusEstagio.isPresent()) {
+			query.setParameter("statusEstagio", statusEstagio.get());
+		}
+
+		return new PageImpl<>(query.getResultList(), PageRequest.of(page, 10), query.getResultList().size());
 	}
 
 	public List<Estagio> listarEstagiosPendenteAprovacaoPorIdOrientador(long idOrientador) {

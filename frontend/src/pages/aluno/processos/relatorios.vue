@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { auth } = useAuth();
 
-const grr = auth?.value?.id || "";
+const grr = auth?.value?.identifier || "";
 const { data: relatorios } = useFetch(`/aluno/${grr}/relatorioDeEstagio`);
 
 const parseTipoRelatorio = (tipo: "RelatorioParcial" | "RelatorioFinal") => {
