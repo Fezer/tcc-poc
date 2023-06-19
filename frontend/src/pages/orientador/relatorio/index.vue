@@ -40,10 +40,6 @@ export default {
             <span class="p-input-icon-left">
               <h4 class="font-bold">Relatórios de Estágio pendentes ciência</h4>
             </span>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search" />
-              <InputText placeholder="Keyword Search" />
-            </span>
           </div>
         </template>
         <Column field="process" header="Processo">
