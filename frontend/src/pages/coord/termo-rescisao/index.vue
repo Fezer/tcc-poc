@@ -32,24 +32,13 @@ export default defineComponent({
         <Column field="process" header="Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
+        <Column field="estagio" header="Estágio">
+          <template #body="{ data }"> #{{ data.estagio?.id }} </template>
+        </Column>
         <Column field="process_type" header="Tipo de Processo">
           <template #body="{ data }"> Termo de Rescisão </template>
         </Column>
-        <Column field="student_name" header="Nome do Aluno">
-          <template #body="{ data }">
-            {{ data?.aluno?.nome }}
-          </template>
-        </Column>
-        <Column field="curse" header="Curso">
-          <template #body="{ data }">
-            {{ data.curse }}
-          </template>
-        </Column>
-        <Column field="contratante" header="Contratante">
-          <template #body="{ data }">
-            {{ data?.contratante?.nome }}
-          </template>
-        </Column>
+
         <Column field="process_type" header="Data Término Estágio">
           <template #body="{ data }">
             {{ parseDate(data?.dataTermino) }}
