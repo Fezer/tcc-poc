@@ -7,16 +7,33 @@ export default defineComponent({
     const route = useRoute();
 
     const { processo } = route.params;
+    const page = ref(0);
+    const filters = reactive({
+      grrAluno: "",
+      // default => pendentes de parecer
+      cienciaCoordenacao: false,
+    });
 
-    const { data: processes } = useFetch(
-      `/coordenacao/termoDeRescisao/pendenteCiencia`
+    const { data: processes } = useAsyncData(
+      "rescisaoCoord",
+      () =>
+        $fetch(`/termoDeRescisao`, {
+          params: {
+            page: page.value,
+            grrAluno: filters.grrAluno || undefined,
+            cienciaCoordenacao: filters.cienciaCoordenacao,
+          },
+        }),
+      {
+        watch: [page, filters],
+      }
     );
-
-    console.log(processes);
 
     return {
       processes,
       parseTipoTermo,
+      page,
+      filters,
     };
   },
 });
@@ -25,20 +42,56 @@ export default defineComponent({
 <template>
   <div>
     <div>
-      <h1>Termos de Rescisão</h1>
+      <h1>
+        Coordenação
+        <h6>Análise e Desenvolvimento de Sistemas</h6>
+      </h1>
     </div>
     <div>
-      <DataTable :value="processes" rowHover stripedRows :show-gridlines="true">
+      <DataTable
+        :value="processes?.content"
+        :paginator="true"
+        :rows="10"
+        @page="page = $event.page"
+        :totalRecords="processes?.totalElements"
+        rowHover
+        stripedRows
+        :show-gridlines="true"
+      >
+        <template #header>
+          <div class="flex items-center justify-content-between">
+            <span class="p-input-icon-left">
+              <h4 class="font-bold">Termos de Rescisão</h4>
+            </span>
+            <div class="flex gap-2">
+              <Button
+                label="Pendentes de parecer"
+                :class="`${
+                  !filters.cienciaCoordenacao
+                    ? 'p-button-primary'
+                    : 'p-button-secondary opacity-50'
+                }`"
+                @click="
+                  filters.cienciaCoordenacao = !filters.cienciaCoordenacao
+                "
+              />
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText
+                  placeholder="Buscar por matrícula (GRRXXXXXXXX)"
+                  v-model="filters.grrAluno"
+                />
+              </span>
+            </div>
+          </div>
+        </template>
         <Column field="process" header="Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
-        <Column field="estagio" header="Estágio">
-          <template #body="{ data }"> #{{ data.estagio?.id }} </template>
-        </Column>
-        <Column field="process_type" header="Tipo de Processo">
-          <template #body="{ data }"> Termo de Rescisão </template>
-        </Column>
 
+        <Column field="estagio" header="Estágio">
+          <template #body="{ data }"> #{{ data?.estagio?.id }} </template>
+        </Column>
         <Column field="process_type" header="Data Término Estágio">
           <template #body="{ data }">
             {{ parseDate(data?.dataTermino) }}

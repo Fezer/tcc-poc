@@ -12,8 +12,6 @@ export default defineComponent({
       `/orientador/${auth?.value?.identifier}/termoDeRescisao/pendenteCiencia`
     );
 
-    console.log(processes);
-
     return {
       processes,
       parseTipoTermo,

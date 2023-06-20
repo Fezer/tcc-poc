@@ -460,7 +460,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termoDeRescisao",
+							"raw": "http://localhost:5000/termoDeRescisao?page=0&grrAluno=GRR&cienciaCOE=true&ciencieOrientador=true&cienciaCOAFE=false&cienciaCoordenacao=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -468,6 +468,37 @@
 							"port": "5000",
 							"path": [
 								"termoDeRescisao"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "grrAluno",
+									"value": "GRR"
+								},
+								{
+									"key": "etapaFluxo",
+									"value": "Ciencia",
+									"disabled": true
+								},
+								{
+									"key": "cienciaCOE",
+									"value": "true"
+								},
+								{
+									"key": "ciencieOrientador",
+									"value": "true"
+								},
+								{
+									"key": "cienciaCOAFE",
+									"value": "false"
+								},
+								{
+									"key": "cienciaCoordenacao",
+									"value": "false"
+								}
 							]
 						}
 					},
@@ -6191,53 +6222,6 @@
 							"response": []
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "Filtros",
-			"item": [
-				{
-					"name": "Filtrar termos",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/termo?page=0&status=EmAprovacao&tipoEstagio=NaoObrigatorio&tipoTermo=TermoDeCompromisso",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"termo"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "status",
-									"value": "EmAprovacao"
-								},
-								{
-									"key": "tipoEstagio",
-									"value": "NaoObrigatorio"
-								},
-								{
-									"key": "tipoTermo",
-									"value": "TermoDeCompromisso"
-								},
-								{
-									"key": "etapa",
-									"value": "COAFE",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		}
