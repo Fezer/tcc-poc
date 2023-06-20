@@ -460,7 +460,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termoDeRescisao?page=0&grrAluno=GRR&cienciaCOE=true&ciencieOrientador=true&cienciaCOAFE=false&cienciaCoordenacao=false",
+							"raw": "http://localhost:5000/termoDeRescisao?page=0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -476,7 +476,8 @@
 								},
 								{
 									"key": "grrAluno",
-									"value": "GRR"
+									"value": "GRR",
+									"disabled": true
 								},
 								{
 									"key": "etapaFluxo",
@@ -485,19 +486,23 @@
 								},
 								{
 									"key": "cienciaCOE",
-									"value": "true"
+									"value": "false",
+									"disabled": true
 								},
 								{
-									"key": "ciencieOrientador",
-									"value": "true"
+									"key": "cienciaOrientador",
+									"value": "false",
+									"disabled": true
 								},
 								{
 									"key": "cienciaCOAFE",
-									"value": "false"
+									"value": "true",
+									"disabled": true
 								},
 								{
 									"key": "cienciaCoordenacao",
-									"value": "false"
+									"value": "true",
+									"disabled": true
 								}
 							]
 						}
@@ -2662,7 +2667,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/certificadoDeEstagio/",
+							"raw": "http://localhost:5000/certificadoDeEstagio/?page=0&grrAluno=2020014&etapaFluxo=COE",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2671,6 +2676,20 @@
 							"path": [
 								"certificadoDeEstagio",
 								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "grrAluno",
+									"value": "2020014"
+								},
+								{
+									"key": "etapaFluxo",
+									"value": "COE"
+								}
 							]
 						}
 					},
