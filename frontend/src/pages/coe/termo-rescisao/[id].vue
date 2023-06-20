@@ -84,7 +84,7 @@ export default defineComponent({
 
     <div class="w-full flex justify-end gap-2 mt-4">
       <NuxtLink
-        :to="`/estagio/${termo?.estagio?.id}?perfil=orientador&termoDeRescisao=5`"
+        :to="`/estagio/${termo?.estagio?.id}?perfil=coe&termoDeRescisao=5`"
       >
         <Button
           label="Ver estágio"
@@ -97,6 +97,7 @@ export default defineComponent({
         class="p-button-primary"
         icon="pi pi-check"
         @click="handleDarCiencia"
+        v-if="termo?.cienciaCOE === false"
       />
     </div>
   </div>

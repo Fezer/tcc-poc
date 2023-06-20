@@ -4,8 +4,32 @@ import parseDate from "../../../utils/parseDate";
 
 export default defineComponent({
   setup() {
-    const { data: certificados } = useFetch(
-      "/coe/certificado/pendenteAprovacaoCoe"
+    const page = ref(0);
+
+    const filters = reactive<{
+      grrAluno: string;
+      etapaFluxo?: string;
+    }>({
+      grrAluno: "",
+      // default => pendente parecer
+      etapaFluxo: "COE",
+    });
+
+    const { data: certificados } = useAsyncData<{
+      content: any[];
+      totalElements: number;
+    }>(
+      () =>
+        $fetch("/certificadoDeEstagio/", {
+          params: {
+            page: page.value,
+            grrAluno: filters.grrAluno || undefined,
+            etapaFluxo: filters.etapaFluxo || undefined,
+          },
+        }),
+      {
+        watch: [page, filters],
+      }
     );
 
     const handleDownloadCertificado = (certificadoID: string) => {
@@ -17,6 +41,8 @@ export default defineComponent({
       parseDate,
       handleDownloadCertificado,
       parseObrigatoriedadeEstagio,
+      page,
+      filters,
     };
   },
 });
@@ -24,13 +50,44 @@ export default defineComponent({
 <template>
   <div>
     <div>
-      <h2>Certificados de estágio pendentes de aprovação</h2>
+      <h2>COE</h2>
       <DataTable
-        :value="certificados"
+        :value="certificados?.content"
         rowHover
         stripedRows
         :show-gridlines="true"
+        :paginator="true"
+        :rows="10"
+        :totalRecords="certificados?.totalElements"
       >
+        <template #header>
+          <div class="flex items-center justify-content-between">
+            <span class="p-input-icon-left">
+              <h4 class="font-bold">Termos de Rescisão</h4>
+            </span>
+            <div class="flex gap-2">
+              <Button
+                label="Pendentes de parecer"
+                :class="`${
+                  filters.etapaFluxo === 'COE'
+                    ? 'p-button-primary'
+                    : 'p-button-secondary opacity-50'
+                }`"
+                @click="
+                  filters.etapaFluxo =
+                    filters.etapaFluxo === 'COE' ? undefined : 'COE'
+                "
+              />
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText
+                  placeholder="Buscar por matrícula (GRRXXXXXXXX)"
+                  v-model="filters.grrAluno"
+                />
+              </span>
+            </div>
+          </div>
+        </template>
         <Column field="process" header="Processo Certificado">
           <template #body="{ data }"> #{{ data?.id }} </template>
         </Column>

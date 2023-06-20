@@ -97,6 +97,7 @@ export default defineComponent({
         class="p-button-primary"
         icon="pi pi-check"
         @click="handleDarCiencia"
+        v-if="termo?.cienciaOrientador === false"
       />
     </div>
   </div>
