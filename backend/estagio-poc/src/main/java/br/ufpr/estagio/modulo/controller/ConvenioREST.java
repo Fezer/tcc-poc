@@ -18,13 +18,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTO;
 import br.ufpr.estagio.modulo.dto.ConvenioDTO;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.service.ConvenioService;
+import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
 @RestController
@@ -33,6 +37,12 @@ public class ConvenioREST {
     
     @Autowired
     private ConvenioService convenioService;
+    
+    @Autowired
+	private EstagioService estagioService;
+	
+	@Autowired
+	private TermoDeEstagioService termoDeEstagioService;
     
     @Autowired
 	private ModelMapper mapper;
@@ -177,6 +187,59 @@ public class ConvenioREST {
 		}
 	}
 	
+	@PutMapping("/{id}/alterar-status")
+	public ResponseEntity<Object> alterarStatusConvenio(@PathVariable String id) {
+		try {
+			Long idLong = Long.parseLong(id);
+
+			if (idLong < 1) {
+				throw new InvalidFieldException("Id do convênio inválido!");
+			}
+
+			Optional<Convenio> convenioFind = convenioService.buscarPorId(idLong);
+			
+			if (convenioFind.isPresent()) {
+				Convenio convenio = convenioFind.get();
+				
+				if (convenio.isAtivo())
+					convenio.setAtivo(false);
+				
+				else if (!convenio.isAtivo())
+					convenio.setAtivo(true);
+
+				convenio.setId(idLong);
+				convenio = convenioService
+						.atualizarConvenio(convenio);
+				
+				ConvenioDTO convenioDTOAtualizado = mapper.map(convenio,
+						ConvenioDTO.class);
+				return ResponseEntity.ok().body(convenioDTOAtualizado);
+			} else {
+				throw new NotFoundException("Convênio não encontrado!");
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse("O id deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> excluirConvenio(@PathVariable String id){
 	    try {
@@ -186,10 +249,16 @@ public class ConvenioREST {
 				throw new InvalidFieldException("Id do convênio inválido!");
 			}
 	    
-			Optional<Convenio> convenio = convenioService.buscarPorId(idLong);
+			Optional<Convenio> convenioFind = convenioService.buscarPorId(idLong);
 			
-		    if(convenio.isPresent()) {
-		    	convenioService.excluirConvenio(convenio.get());
+		    if(convenioFind.isPresent()) {
+		    	Convenio convenio = convenioFind.get();
+		    	//boolean presenteEmDocumento = convenioService.verificarTermoConvenio(convenio);
+				
+		    	//if (presenteEmDocumento)
+					//throw new InvalidFieldException("Não é possível excluir um convênio presente em termo de estágio ou estágio.");
+				
+		    	convenioService.excluirConvenio(convenio);
 		        return ResponseEntity.noContent().build();
 		    } else {
 		    	throw new NotFoundException("Convênio não encontrado!");

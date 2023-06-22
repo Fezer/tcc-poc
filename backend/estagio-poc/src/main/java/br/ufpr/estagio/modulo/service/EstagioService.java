@@ -16,6 +16,7 @@ import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Apolice;
+import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
