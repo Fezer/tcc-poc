@@ -27,10 +27,12 @@ import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
 import br.ufpr.estagio.modulo.model.Contratante;
+import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
+import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
@@ -1425,5 +1427,55 @@ public class TermoDeEstagioService {
 
 		return termoRepo.save(termo);
 	}
+	
+	public boolean listarTermosDeEstagioPorAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
 
+		List<TermoDeEstagio> termos = termoRepo.findByAgenteIntegrador(agenteIntegrador);
+		
+        if (termos.size() == 0)
+        	return false;
+
+        return true;
+	}
+	
+	public boolean listarTermosDeEstagioPorApolice(Apolice apolice) {
+
+		List<TermoDeEstagio> termos = termoRepo.findByApolice(apolice);
+		
+        if (termos.size() == 0)
+        	return false;
+
+        return true;
+	}
+	
+	/*public boolean listarTermosDeEstagioPorConvenio(Convenio convenio) {
+
+		List<TermoDeEstagio> termos = termoRepo.findByConvenio(convenio);
+		
+        if (termos.size() == 0)
+        	return false;
+
+        return true;
+	}*/
+	
+	public boolean listarTermosDeEstagioPorContratante(Contratante contratante) {
+
+		List<TermoDeEstagio> termos = termoRepo.findByContratante(contratante);
+		
+        if (termos.size() == 0)
+        	return false;
+
+        return true;
+	}
+	
+	public boolean listarTermosDeEstagioPorSeguradora(Seguradora seguradora) {
+
+		List<TermoDeEstagio> termos = termoRepo.findBySeguradora(seguradora);
+		
+        if (termos.size() == 0)
+        	return false;
+
+        return true;
+	}
+  
 }

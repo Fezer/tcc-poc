@@ -21,7 +21,12 @@ public class ContratanteDTO implements Serializable {
 	private String cpf;
 	private String representanteEmpresa;
 	private Endereco endereco;
-
+	private List<Estagio> estagio;
+	private boolean ativo;
+	
+	// adicionado para concluir a task de associar contratante ao termo
+	private List<TermoDeEstagio> termoDeEstagio;
+	
 	public ContratanteDTO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -62,6 +67,23 @@ public class ContratanteDTO implements Serializable {
 		this.cpf = cpf;
 		this.representanteEmpresa = representanteEmpresa;
 		this.endereco = endereco;
+	}
+
+	public ContratanteDTO(long id, EnumTipoContratante tipo, String nome, String telefone, String cnpj, String cpf,
+			String representanteEmpresa, Endereco endereco, List<Estagio> estagio, boolean ativo,
+			List<TermoDeEstagio> termoDeEstagio) {
+		super();
+		this.id = id;
+		this.tipo = tipo;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.cnpj = cnpj;
+		this.cpf = cpf;
+		this.representanteEmpresa = representanteEmpresa;
+		this.endereco = endereco;
+		this.estagio = estagio;
+		this.ativo = ativo;
+		this.termoDeEstagio = termoDeEstagio;
 	}
 
 	public long getId() {
@@ -126,6 +148,14 @@ public class ContratanteDTO implements Serializable {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	public static long getSerialversionuid() {

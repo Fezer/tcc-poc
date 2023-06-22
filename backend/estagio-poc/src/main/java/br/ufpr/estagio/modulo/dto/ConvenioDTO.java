@@ -19,6 +19,8 @@ public class ConvenioDTO implements Serializable{
 	private Date dataFim;
 	
 	private AgenteIntegrador agenteIntegrador;
+	
+	private boolean ativo;
 
 	public ConvenioDTO() {
 		super();
@@ -34,6 +36,18 @@ public class ConvenioDTO implements Serializable{
 		this.dataInicio = dataInicio;
 		this.dataFim = dataFim;
 		this.agenteIntegrador = agenteIntegrador;
+	}
+
+	public ConvenioDTO(long id, int numero, String descricao, Date dataInicio, Date dataFim,
+			AgenteIntegrador agenteIntegrador, boolean ativo) {
+		super();
+		this.id = id;
+		this.numero = numero;
+		this.descricao = descricao;
+		this.dataInicio = dataInicio;
+		this.dataFim = dataFim;
+		this.agenteIntegrador = agenteIntegrador;
+		this.ativo = ativo;
 	}
 
 	public long getId() {
@@ -82,5 +96,13 @@ public class ConvenioDTO implements Serializable{
 
 	public void setAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
 		this.agenteIntegrador = agenteIntegrador;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 }

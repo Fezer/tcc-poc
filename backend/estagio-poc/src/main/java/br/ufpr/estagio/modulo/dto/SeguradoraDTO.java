@@ -36,7 +36,7 @@ public class SeguradoraDTO implements Serializable {
 		this.termoDeEstagio = termoDeEstagio;
 		this.estagio = estagio;
 	}
-	
+
 	public SeguradoraDTO(String error) {
 		super();
 		this.error = error;

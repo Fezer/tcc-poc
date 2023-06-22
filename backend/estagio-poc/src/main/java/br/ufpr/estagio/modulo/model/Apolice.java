@@ -54,6 +54,8 @@ public class Apolice extends RepresentationModel<Apolice> implements Serializabl
 	@JoinColumn(name="estagio_id", referencedColumnName="id", nullable=true)
 	private Estagio estagio;
 	
+	private boolean ativo;
+	
 	public Apolice() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -69,6 +71,19 @@ public class Apolice extends RepresentationModel<Apolice> implements Serializabl
 		this.seguradora = seguradora;
 		this.termoDeEstagio = termoDeEstagio;
 		this.estagio = estagio;
+	}
+
+	public Apolice(long id, int numero, Date dataInicio, Date dataFim, Seguradora seguradora,
+			TermoDeEstagio termoDeEstagio, Estagio estagio, boolean ativo) {
+		super();
+		this.id = id;
+		this.numero = numero;
+		this.dataInicio = dataInicio;
+		this.dataFim = dataFim;
+		this.seguradora = seguradora;
+		this.termoDeEstagio = termoDeEstagio;
+		this.estagio = estagio;
+		this.ativo = ativo;
 	}
 
 	public long getId() {
@@ -125,6 +140,14 @@ public class Apolice extends RepresentationModel<Apolice> implements Serializabl
 
 	public void setEstagio(Estagio estagio) {
 		this.estagio = estagio;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}	
 	
 }

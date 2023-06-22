@@ -16,9 +16,14 @@ import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
+import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.Apolice;
+import br.ufpr.estagio.modulo.model.Contratante;
+import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
+import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import jakarta.persistence.EntityManager;
@@ -367,6 +372,46 @@ public class EstagioService {
 	public List<Estagio> buscarEstagioPorSeguradoraUfpr() {
 		List<Estagio> estagio = estagioRepo.findBySeguradoraSeguradoraUfprIsTrue();
 		return estagio;
+	}
+
+	public boolean listarEstagiosPorAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
+
+		List<Estagio> estagios = estagioRepo.findByAgenteIntegrador(agenteIntegrador);
+		
+        if (estagios.size() == 0)
+        	return false;
+
+        return true;
+	}
+	
+	public boolean listarEstagiosPorApolice(Apolice apolice) {
+
+		List<Estagio> estagios = estagioRepo.findByApolice(apolice);
+		
+        if (estagios.size() == 0)
+        	return false;
+
+        return true;
+	}
+	
+	public boolean listarEstagiosPorContratante(Contratante contratante) {
+
+		List<Estagio> estagios = estagioRepo.findByContratante(contratante);
+		
+        if (estagios.size() == 0)
+        	return false;
+
+        return true;
+	}
+	
+	public boolean listarEstagiosPorSeguradora(Seguradora seguradora) {
+
+		List<Estagio> estagios = estagioRepo.findBySeguradora(seguradora);
+		
+        if (estagios.size() == 0)
+        	return false;
+
+        return true;
 	}
 
 }

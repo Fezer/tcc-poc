@@ -31,6 +31,8 @@ import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
 import br.ufpr.estagio.modulo.service.ConvenioService;
+import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
 @RestController
@@ -39,6 +41,12 @@ public class AgenteIntegradorREST {
 
 	@Autowired
 	private AgenteIntegradorService agenteIntegradorService;
+	
+	@Autowired
+	private EstagioService estagioService;
+	
+	@Autowired
+	private TermoDeEstagioService termoDeEstagioService;
 
 	@Autowired
 	private ConvenioService convenioService;
@@ -331,6 +339,60 @@ public class AgenteIntegradorREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
+	
+	@PutMapping("/{id}/alterar-status")
+	public ResponseEntity<Object> alterarStatusAgenteIntegrador(@PathVariable String id) {
+		try {
+			int idInt = Integer.parseInt(id);
+
+			if (idInt < 1) {
+				throw new InvalidFieldException("Id da seguradora inválido!");
+			}
+
+			Optional<AgenteIntegrador> agenteIntegradorFind = agenteIntegradorService.buscarPorId(idInt);
+			
+			if (agenteIntegradorFind.isPresent()) {
+				AgenteIntegrador agenteIntegrador = agenteIntegradorFind.get();
+				
+				if (agenteIntegrador.isAtivo())
+					agenteIntegrador.setAtivo(false);
+				
+				else if (!agenteIntegrador.isAtivo())
+					agenteIntegrador.setAtivo(true);
+
+				//AgenteIntegrador agenteIntegradorAtualizado = mapper.map(agenteIntegrador, AgenteIntegrador.class);
+				agenteIntegrador.setId(idInt);
+				agenteIntegrador = agenteIntegradorService
+						.atualizarAgenteIntegrador(agenteIntegrador);
+				
+				AgenteIntegradorDTO agenteIntegradorDTOAtualizado = mapper.map(agenteIntegrador,
+						AgenteIntegradorDTO.class);
+				return ResponseEntity.ok().body(agenteIntegradorDTOAtualizado);
+			} else {
+				throw new NotFoundException("Agente integrador não encontrado!");
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse("O id deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> excluirAgenteIntegrador(@PathVariable String id) {
@@ -341,9 +403,20 @@ public class AgenteIntegradorREST {
 				throw new InvalidFieldException("Id da seguradora inválido!");
 			}
 
-			Optional<AgenteIntegrador> agenteIntegrador = agenteIntegradorService.buscarPorId(idInt);
-			if (agenteIntegrador.isPresent()) {
-				agenteIntegradorService.excluirAgenteIntegrador(agenteIntegrador.get());
+			Optional<AgenteIntegrador> agenteIntegradorFind = agenteIntegradorService.buscarPorId(idInt);
+			if (agenteIntegradorFind.isPresent()) {
+				AgenteIntegrador agenteIntegrador = agenteIntegradorFind.get();
+				
+				boolean presenteEmTermosDeEstagio = termoDeEstagioService.listarTermosDeEstagioPorAgenteIntegrador(agenteIntegrador);
+				boolean presenteEmEstagios = estagioService.listarEstagiosPorAgenteIntegrador(agenteIntegrador);
+				
+				if (presenteEmTermosDeEstagio)
+					throw new InvalidFieldException("Não é possível excluir um agente integrador presente em termo de estágio.");
+				
+				if (presenteEmEstagios)
+					throw new InvalidFieldException("Não é possível excluir um agente integrador presente em estágio.");
+				
+				agenteIntegradorService.excluirAgenteIntegrador(agenteIntegrador);
 				return ResponseEntity.noContent().build();
 			} else {
 				throw new NotFoundException("Agente integrador não encontrado!");

@@ -18,6 +18,7 @@ public class ApoliceDTO implements Serializable {
 	private Seguradora seguradora;
 	private TermoDeEstagio termoDeEstagio;
 	private Estagio estagio;
+	private boolean ativo;
 	
 	public ApoliceDTO() {
 		super();
@@ -42,6 +43,19 @@ public class ApoliceDTO implements Serializable {
 		this.seguradora = seguradora;
 		this.termoDeEstagio = termoDeEstagio;
 		this.estagio = estagio;
+	}
+
+	public ApoliceDTO(long id, int numero, Date dataInicio, Date dataFim, Seguradora seguradora,
+			TermoDeEstagio termoDeEstagio, Estagio estagio, boolean ativo) {
+		super();
+		this.id = id;
+		this.numero = numero;
+		this.dataInicio = dataInicio;
+		this.dataFim = dataFim;
+		this.seguradora = seguradora;
+		this.termoDeEstagio = termoDeEstagio;
+		this.estagio = estagio;
+		this.ativo = ativo;
 	}
 
 	public long getId() {
@@ -98,6 +112,14 @@ public class ApoliceDTO implements Serializable {
 
 	public void setEstagio(Estagio estagio) {
 		this.estagio = estagio;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	public static long getSerialversionuid() {
