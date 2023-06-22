@@ -2869,22 +2869,9 @@ public class AlunoREST {
 
 							String nomeArquivo = grrAlunoURL + "-TermoAditivo";
 							Path destino = Paths.get(diretorioDestino + nomeArquivo);
+							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
-							int contador = 1;
-							Path novoDestino = destino;
-							String novoNome = "";
-							while (Files.exists(novoDestino)) {
-								nomeArquivo = destino.getFileName().toString();
-								novoNome = nomeArquivo + "(" + contador + ")";
-								novoDestino = destino.resolveSibling(novoNome);
-								contador++;
-							}
-
-							Files.copy(file.getInputStream(), novoDestino);
-
-//						Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
-
-							termoDeEstagioService.uploadTermoDeEstagio(termo, novoNome);
+							termoDeEstagioService.uploadTermoDeEstagio(termo, nomeArquivo);
 							
 							return ResponseEntity.ok("Termo aditivo salvo com sucesso!");
 						} catch (NotFoundException ex) {
