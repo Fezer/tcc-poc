@@ -1,9 +1,7 @@
 <script lang="ts">
 import { useToast } from "primevue/usetoast";
 import { defineComponent } from "vue";
-import AlunoService from "~~/services/AlunoService";
 import OrientadorService from "~~/services/OrientadorService";
-import RelatorioEstagioService from "~~/services/RelatorioEstagioService";
 import RelatorioEstagio from "~~/src/types/RelatorioEstagio";
 
 export default defineComponent({
@@ -17,9 +15,11 @@ export default defineComponent({
     const router = useRouter();
     const toast = useToast();
 
+    const { auth } = useAuth();
+
     const handleCienciaRelatorio = async () => {
       await orientadorService
-        .cienciaRelatorioEstagio(6, id)
+        .cienciaRelatorioEstagio(auth?.value?.identifier, id)
         .then(() => {
           toast.add({
             severity: "success",
@@ -49,6 +49,17 @@ export default defineComponent({
   <div>
     <h1>Relatório de estágio</h1>
     <h4>Dados do relatório</h4>
+
+    <div class="absolute right-8 top-32">
+      <NuxtLink :to="`/estagio/${relatorio?.estagio?.id}?perfil=orientador`">
+        <Button
+          label="Visualizar estágio"
+          class="p-button-info"
+          icon="pi pi-eye"
+        />
+      </NuxtLink>
+    </div>
+
     <div class="card grid">
       <div class="col-6">
         <strong class="text-md mb-2">Tipo do relatório</strong>

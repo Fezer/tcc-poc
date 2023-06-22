@@ -28,6 +28,17 @@ public class PocServiceApplication {
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
+	
+	@PostConstruct
+	public void init() {
+	    String diretorioAtual = new File("").getAbsolutePath();
+	    String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos";
+
+	    File diretorio = new File(diretorioDestino);
+	    if (!diretorio.exists()) {
+	        diretorio.mkdirs();
+	    }
+	}
 
 	/*@PostConstruct
 	public void init() {

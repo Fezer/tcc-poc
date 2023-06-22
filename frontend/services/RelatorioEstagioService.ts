@@ -46,4 +46,26 @@ export default class RelatorioEstagioService extends BaseService {
       body: dados,
     });
   }
+  async baixarRelatorioEstagioPdf() {
+    return $fetch(`/coafe/gerar-relatorios-relatorioDeEstagio`, {
+      method: "GET",
+    });
+  }
+  async baixarRelatorioEstagioPdfEspecifico(id:number) {
+    return $fetch(`/coafe/gerar-relatorio-relatorioDeEstagio/${id}`, {
+      method: "GET",
+    });
+  }
+  async baixarRelatorioEstagioExcelEspecifico(id:number) {
+    return $fetch(`/coafe/gerar-relatorio-relatorioDeEstagio-excel/${id}`, {
+      method: "GET",
+      responseType: "blob",
+    });
+  }
+  async baixarRelatorioEstagioExcel() {
+    return $fetch(`/coafe/gerar-relatorios-relatorioDeEstagio-excel`, {
+      method: "GET",
+      responseType: "blob",
+    });
+  }
 }

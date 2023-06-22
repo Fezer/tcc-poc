@@ -14,8 +14,9 @@ export default defineComponent({
     const evaluateOptions = ["Pessimo", "Ruim", "Razoavel", "Bom", "Excelente"];
 
     const { estagioID } = route.params;
-    const grr = "GRR20200141";
+    const { auth } = useAuth();
 
+    const grr = auth?.value?.identifier || "";
     const toast = useToast();
     const relatorioService = new RelatorioEstagioService();
     const alunoService = new AlunoService();

@@ -1,7 +1,7 @@
 import Agente from "./Agente";
 import Apolice from "./Apolice";
 import Contratante from "./Contratante";
-import { BasicEstagio, PlanoAtividades } from "./NovoEstagio";
+import { BasicEstagio, Estagio, PlanoAtividades } from "./NovoEstagio";
 import Orientador from "./Orientador";
 import Seguradora from "./Seguradora";
 
@@ -31,6 +31,10 @@ interface BaseTermo {
   parecerCOAFE: string | null;
   motivoIndeferimento: string | null;
   descricaoAjustes: string | null;
+
+  // nome do aluno e grr do aluno
+  aluno?: string;
+  grrAluno?: string;
 
   orientador?: Orientador;
   agenteIntegrador?: Agente;
@@ -70,4 +74,23 @@ type PeriodoRecesso = {
   dataFim: string;
 };
 
-export { StatusTermo, BaseTermo, TermoRescisao, PeriodoRecesso };
+type PaginatedTermo = {
+  content: BaseTermo[];
+  totalElements: number;
+  totalPages: number;
+};
+
+type PaginatedEstagio = {
+  content: Estagio[];
+  totalElements: number;
+  totalPages: number;
+};
+
+export {
+  StatusTermo,
+  BaseTermo,
+  TermoRescisao,
+  PeriodoRecesso,
+  PaginatedTermo,
+  PaginatedEstagio,
+};

@@ -53,7 +53,7 @@
         class="p-button-info"
       />
       <NuxtLink :to="`seguradoraEditar?id=${seguradora.id}`">
-        <Button label="Editar" />
+        <Button label="Editar" icon="pi pi-file-edit" />
       </NuxtLink>
       <Button
         @click="cancelVisibleSeguradora = true"
@@ -73,7 +73,12 @@
       >
       </CancelationConfirm>
     </div>
-    <DataTable class="flex-column" :value="seguradora.apolice" rowHover>
+    <DataTable
+      class="flex-column"
+      :value="seguradora.apolice"
+      rowHover
+      :show-gridlines="true"
+    >
       <template #header>
         <div>
           <span>
@@ -108,29 +113,24 @@
           <p>{{ parseDate(data?.dataFim) }}</p>
         </template>
       </Column>
-      <Column field="links" header="Links">
-        <template #body="{ data }">
-          {{ data.links }}
-        </template>
-      </Column>
       <Column field="button" header="Editar">
         <template #body="{ data }">
           <NuxtLink :to="`/coafe/seguradora/apoliceEditar?id=${data.id}`">
-            <Button label="Editar" />
+            <Button label="Editar" icon="pi pi-file-edit" />
           </NuxtLink>
         </template>
       </Column>
       <Column field="button" header="Deletar">
         <template #body="{ data }">
           <Button
-            @click="cancelVisibleApolice = true"
+            @click="cancelVisibleApolice = data.id"
             :label="'Deletar'"
             icon="pi pi-times"
             class="p-button-danger"
           />
-          <div v-if="cancelVisibleApolice">
+          <div v-if="cancelVisibleApolice == data.id">
             <CancelationConfirm
-              :onClose="() => (cancelVisibleApolice = false)"
+              :onClose="() => (cancelVisibleApolice = 0)"
               :onConfirm="() => handleDeleteApolice(data.id)"
               :header="`Remover Apólice ${data.numero}`"
               :description="`Você realmente deseja remover a Apólice ${data.numero}? Essa ação não poderá ser desfeita.`"
@@ -148,6 +148,7 @@ export default defineComponent({
 });
 </script>
 <script setup>
+import { ref } from "vue";
 import Button from "primevue/button";
 import Column from "primevue/column";
 import CancelationConfirm from "~~/src/components/common/cancelation-confirm.vue";
@@ -165,7 +166,7 @@ const router = useRouter();
 const id = route.query.id;
 const seguradoraService = new SeguradoraService();
 const apoliceService = new ApoliceService();
-const cancelVisibleApolice = ref(false);
+const cancelVisibleApolice = ref(0);
 const cancelVisibleSeguradora = ref(false);
 const { data: seguradora, refresh } = await useFetch(`/seguradora/${id}`);
 const handleInativateSeguradora = async () => {
@@ -234,7 +235,7 @@ const handleDeleteSeguradora = async (id, numeroapolices) => {
   };
 };
 const handleDeleteApolice = async (id) => {
-  cancelVisibleApolice.value = false;
+  cancelVisibleApolice.value = 0;
   try {
     const response = await apoliceService.deletaApolice(id).then(() => {
       return toast.add({

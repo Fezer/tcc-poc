@@ -65,18 +65,26 @@ export default defineComponent({
     }
   },
   mounted() {
+    if (!localStorage) return;
     const accessToken = localStorage.getItem("accessToken");
+    const profile = localStorage.getItem("profile");
 
-    if (!accessToken) {
+    if (!accessToken && !profile) {
       return this.$router.replace("/login");
     }
 
-    globalThis.$fetch = ofetch.create({
-      baseURL: this.$config.BACKEND_URL || "http://localhost:5000",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    if (profile) {
+      globalThis.$fetch = ofetch.create({
+        baseURL: this.$config.BACKEND_URL || "http://localhost:5000",
+      });
+    } else {
+      globalThis.$fetch = ofetch.create({
+        baseURL: this.$config.BACKEND_URL || "http://localhost:5000",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
   },
   methods: {
     onWrapperClick() {
@@ -150,6 +158,10 @@ export default defineComponent({
 
       return true;
     },
+
+    getCurrentProfile(): string {
+      return localStorage.getItem("profile") || "";
+    },
   },
 });
 </script>
@@ -158,19 +170,28 @@ export default defineComponent({
   <div :class="containerClass" @click="onWrapperClick">
     <AppTopBar @menu-toggle="onMenuToggle" />
 
-    <div class="layout-sidebar" v-if="$route.path.includes('coe')">
+    <div class="layout-sidebar" v-if="getCurrentProfile().includes('COE')">
       <CoeMenu @menuitem-click="onMenuItemClick" />
     </div>
 
-    <div class="layout-sidebar" v-else-if="$route.path.includes('coord')">
+    <div
+      class="layout-sidebar"
+      v-else-if="getCurrentProfile().includes('Coordenacao')"
+    >
       <CoordMenu @menuitem-click="onMenuItemClick" />
     </div>
 
-    <div class="layout-sidebar" v-else-if="$route.path.includes('coafe')">
+    <div
+      class="layout-sidebar"
+      v-else-if="getCurrentProfile().includes('COAFE')"
+    >
       <CoafeMenu @menuitem-click="onMenuItemClick" />
     </div>
 
-    <div class="layout-sidebar" v-else-if="$route.path.includes('orientador')">
+    <div
+      class="layout-sidebar"
+      v-else-if="getCurrentProfile().includes('Orientador')"
+    >
       <OrientadorMenu @menuitem-click="onMenuItemClick" />
     </div>
 

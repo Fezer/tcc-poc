@@ -4,8 +4,5 @@ export default function parseDate(date?: string) {
   if (!date) return "";
 
   const dateObject = dayjs(date);
-  return `${dateObject.format("DD/MM/YYYY")} (${dateObject.diff(
-    dayjs(),
-    "months"
-  )} meses)`;
+  return `${dateObject.format("DD/MM/YYYY")}`;
 }

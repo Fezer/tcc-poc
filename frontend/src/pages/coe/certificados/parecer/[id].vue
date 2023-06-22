@@ -102,14 +102,17 @@ export default defineComponent({
 
         <div class="col-4">
           <strong>Etapa fluxo</strong>
-          <p>Parecer COE</p>
+          <p>{{ certificado?.etapaFluxo }}</p>
         </div>
       </div>
     </div>
 
     <Estagio :termo="estagio" />
 
-    <div class="w-full flex justify-end gap-2">
+    <div
+      class="w-full flex justify-end gap-2"
+      v-if="certificado?.etapaFluxo === 'COE'"
+    >
       <NuxtLink
         :to="`/estagio/${estagio?.id}?perfil=coe&certificado=${certificado?.id}`"
       >

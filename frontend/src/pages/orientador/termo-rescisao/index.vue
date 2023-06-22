@@ -6,15 +6,11 @@ export default defineComponent({
   setup() {
     const route = useRoute();
 
-    const { processo } = route.params;
-
-    const orientador = 6;
+    const { auth } = useAuth();
 
     const { data: processes } = useFetch(
-      `/orientador/${orientador}/termoDeRescisao/pendenteCiencia`
+      `/orientador/${auth?.value?.identifier}/termoDeRescisao/pendenteCiencia`
     );
-
-    console.log(processes);
 
     return {
       processes,
@@ -37,20 +33,9 @@ export default defineComponent({
         <Column field="process_type" header="Tipo de Processo">
           <template #body="{ data }"> Termo de Rescisão </template>
         </Column>
-        <Column field="student_name" header="Nome do Aluno">
-          <template #body="{ data }">
-            {{ data?.aluno?.nome }}
-          </template>
-        </Column>
-        <Column field="curse" header="Curso">
-          <template #body="{ data }">
-            {{ data.curse }}
-          </template>
-        </Column>
-        <Column field="contratante" header="Contratante">
-          <template #body="{ data }">
-            {{ data?.contratante?.nome }}
-          </template>
+
+        <Column field="estagio" header="Estágio">
+          <template #body="{ data }"> #{{ data?.estagio?.id }} </template>
         </Column>
         <Column field="process_type" header="Data Término Estágio">
           <template #body="{ data }">

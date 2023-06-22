@@ -12,6 +12,10 @@ export default defineComponent({
     const alunoService = new AlunoService();
     const toast = useToast();
 
+    const { auth } = useAuth();
+
+    const grr = auth?.value?.identifier || "";
+
     const { data: estagio, refresh } = useFetch(`/estagio/${estagioID}`);
 
     const idFichaAvaliacao = ref("");
@@ -21,12 +25,11 @@ export default defineComponent({
     };
 
     const handleGerarFichaAvaliacao = async () => {
-      const grr = "GRR20200141";
       await alunoService
         .criarFichaDeAvaliacao(grr, estagioID)
         .then((res) => {
           idFichaAvaliacao.value = res.id;
-          const grr = "GRR20200141";
+
           const url = `/aluno/${grr}/${estagioID}/gerar-ficha`;
           window.open(url, "_blank");
         })
@@ -43,7 +46,6 @@ export default defineComponent({
     };
 
     const handleDownloadBaseDocument = async () => {
-      const grr = "GRR20200141";
       const url = `${config.BACKEND_URL}/aluno/${grr}/${estagioID}/gerar-ficha`;
 
       const file = await $fetch(url, {
@@ -63,7 +65,7 @@ export default defineComponent({
       formData.append("file", file);
 
       await alunoService
-        .uploadFichaDeAvaliacao("GRR20200141", formData)
+        .uploadFichaDeAvaliacao(grr, formData)
         .then(() => {
           toast.add({
             severity: "success",

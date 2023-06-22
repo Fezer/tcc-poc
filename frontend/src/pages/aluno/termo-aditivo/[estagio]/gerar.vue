@@ -17,6 +17,10 @@ export default defineComponent({
     const toast = useToast();
     const errors = ref({} as Record<string, string>);
 
+    const { auth } = useAuth();
+
+    const grr = auth?.value?.identifier || "";
+
     const { termo } = useTermo();
 
     const parseDateToMask = (date?: string) => {
@@ -129,8 +133,6 @@ export default defineComponent({
       }
 
       try {
-        const grr = "GRR20200141";
-
         let termoAditivoID = termo?.value?.id;
         if (!termoAditivoID) {
           const { id: novoID } = await alunoSerivce.criarTermoAditivo(
@@ -490,17 +492,7 @@ export default defineComponent({
         </div>
         <div class="card p-fluid col-12">
           <h5>Plano de Atividades</h5>
-          <!-- <div class="formgrid grid">
-          <div class="field col">
-            <label for="coordenador">Coordenador do curso</label>
-            <InputText
-            id="coordenador"
-            type="text"
-            disabled
-            :value="aluno?.coordenador"
-            />
-          </div>
-        </div> -->
+
           <div class="formgrid grid">
             <div class="field col">
               <label for="orientador">Professor Orientador na UFPR</label>

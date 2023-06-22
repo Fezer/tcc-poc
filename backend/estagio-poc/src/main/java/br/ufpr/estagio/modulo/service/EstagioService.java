@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,53 +29,110 @@ import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
- 
+
 @Service
 @Transactional
 public class EstagioService {
-	
-	private static final String selectEstagiosPorIdOrientador = "SELECT e FROM Estagio e INNER JOIN e.orientador o "
-    		+ "WHERE o.id = :idOrientador";
+
 	private static final String selectPorIdOrientadorFiltroStatusEstagio = "SELECT e FROM Estagio e INNER JOIN e.orientador o "
-    		+ "WHERE o.id = :idOrientador "
-    		+ "and e.statusEstagio = :statusEstagio"; 
+			+ "WHERE o.id = :idOrientador "
+			+ "and e.statusEstagio = :statusEstagio";
 	private static final String selectPorIdAlunoFiltroStatusTermoCompromisso = "SELECT e FROM Estagio e "
 			+ "INNER JOIN e.aluno a "
 			+ "INNER JOIN e.termoDeCompromisso t "
-    		+ "WHERE a.id = :idAluno "
-    		+ "and t.statusTermo = :statusTermo"; 
+			+ "WHERE a.id = :idAluno "
+			+ "and t.statusTermo = :statusTermo";
+
+	private static final String selectEstagioWithCustomFilters = "SELECT e FROM Estagio e "
+			+ "INNER JOIN e.aluno a "
+			+ "WHERE 1=1 ";
 
 	@Autowired
 	private EstagioRepository estagioRepo;
-	
-    @PersistenceContext
-    private EntityManager em;
-	     
-    public List<Estagio> listarTodosEstagios() {
-        return estagioRepo.findAll();
-    }
-     
-    public Estagio novoEstagio(Estagio estagio) {
-    	EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
-    	estagio.setStatusEstagio(statusEstagio);
-        return estagioRepo.save(estagio);
-    }
-    
-    public Optional<Estagio> buscarEstagioPorId(long id) {
-        return estagioRepo.findById(id);
-    }
-     
-    public Estagio salvarEstagio(Estagio estagio) {
-        return estagioRepo.save(estagio);
-    }
-     
-    public Estagio atualizarEstagio(Estagio estagio) {
-    	return estagioRepo.save(estagio);
-    }
-     
-    public void deletarEstagio(long id) {
-    	estagioRepo.deleteById(id);
-    }
+
+	@PersistenceContext
+	private EntityManager em;
+
+	public List<Estagio> listarTodosEstagios() {
+
+		return estagioRepo.findAll();
+	}
+
+	public Page<Estagio> listarEstagioPaginated(
+			int page,
+			Optional<String> grrAluno,
+			Optional<String> nomeEmpresa,
+			Optional<EnumTipoEstagio> tipoEstagio,
+			Optional<EnumStatusEstagio> statusEstagio
+
+	) {
+
+		StringBuilder jpql = new StringBuilder(selectEstagioWithCustomFilters);
+
+		// Configurar os parâmetros da consultas
+		if (grrAluno.isPresent()) {
+			jpql.append(" AND e.aluno.matricula LIKE :grrAluno");
+		}
+		if (nomeEmpresa.isPresent()) {
+			jpql.append(" AND e.contratante.nome  LIKE :nomeEmpresa");
+		}
+		if (tipoEstagio.isPresent()) {
+			jpql.append(" AND e.tipoEstagio = :tipoEstagio");
+		}
+		if (statusEstagio.isPresent()) {
+			jpql.append(" AND e.statusEstagio = :statusEstagio");
+		}
+
+		TypedQuery<Estagio> query = em.createQuery(jpql.toString(), Estagio.class);
+
+		// Configurar os parâmetros da consultas
+		if (grrAluno.isPresent()) {
+			query.setParameter("grrAluno", "%" + grrAluno.get() + "%");
+		}
+		if (nomeEmpresa.isPresent()) {
+			query.setParameter("nomeEmpresa", "%" + nomeEmpresa.get() + "%");
+		}
+		if (tipoEstagio.isPresent()) {
+			query.setParameter("tipoEstagio", tipoEstagio.get());
+		}
+		if (statusEstagio.isPresent()) {
+			query.setParameter("statusEstagio", statusEstagio.get());
+		}
+
+		// Configurar a paginação
+		int totalRegistros = query.getResultList().size();
+		PageRequest pageRequest = PageRequest.of(page, 10);
+
+		// Executar a consulta paginada
+		List<Estagio> estagioPaginado = query
+				.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize())
+				.setMaxResults(pageRequest.getPageSize())
+				.getResultList();
+
+		return new PageImpl<>(estagioPaginado, pageRequest, totalRegistros);
+	}
+
+	public Estagio novoEstagio(Estagio estagio) {
+		EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmPreenchimento;
+		estagio.setStatusEstagio(statusEstagio);
+		return estagioRepo.save(estagio);
+	}
+
+	public Optional<Estagio> buscarEstagioPorId(long id) {
+		return estagioRepo.findById(id);
+	}
+
+	public Estagio salvarEstagio(Estagio estagio) {
+		return estagioRepo.save(estagio);
+	}
+
+	public Estagio atualizarEstagio(Estagio estagio) {
+		return estagioRepo.save(estagio);
+	}
+
+	public void deletarEstagio(long id) {
+		estagioRepo.deleteById(id);
+	}
 
 	public EstagioDTO toEstagioDTO(Estagio estagio) {
 		EnumTipoTermoDeEstagio tipoTermoAditivo = EnumTipoTermoDeEstagio.TermoAditivo;
@@ -95,11 +155,12 @@ public class EstagioService {
 		estagioDTO.setJornadaSemanal(estagio.getJornadaSemanal());
 		estagioDTO.setValorBolsa(estagio.getValorBolsa());
 		estagioDTO.setValorTransporte(estagio.getValorTransporte());
-		estagioDTO.setTermoDeCompromisso(estagio.getTermoDeCompromisso() == null ? 0 : estagio.getTermoDeCompromisso().getId());
+		estagioDTO.setTermoDeCompromisso(
+				estagio.getTermoDeCompromisso() == null ? 0 : estagio.getTermoDeCompromisso().getId());
 		List<Long> termoAditivo = new ArrayList<Long>();
-		if(estagio.getTermoAdivito() != null) {
+		if (estagio.getTermoAdivito() != null) {
 			for (TermoDeEstagio t : estagio.getTermoAdivito()) {
-				if(t.getTipoTermoDeEstagio() == tipoTermoAditivo) {
+				if (t.getTipoTermoDeEstagio() == tipoTermoAditivo) {
 					termoAditivo.add(t.getId());
 				}
 			}
@@ -109,7 +170,7 @@ public class EstagioService {
 		estagioDTO.setTermoAdivito(termoAditivo);
 		estagioDTO.setTermoDeRescisao(estagio.getTermoDeRescisao() == null ? 0 : estagio.getTermoDeRescisao().getId());
 		List<Long> relatorioDeEstagio = new ArrayList<Long>();
-		if(estagio.getRelatorioDeEstagio() != null) {
+		if (estagio.getRelatorioDeEstagio() != null) {
 			for (RelatorioDeEstagio r : estagio.getRelatorioDeEstagio()) {
 				relatorioDeEstagio.add(r.getId());
 			}
@@ -117,22 +178,24 @@ public class EstagioService {
 			relatorioDeEstagio.add((long) 0);
 		}
 		estagioDTO.setRelatorioDeEstagio(relatorioDeEstagio);
-		estagioDTO.setFichaDeAvaliacao(estagio.getFichaDeAvaliacao() == null ? 0 : estagio.getFichaDeAvaliacao().getId());
-		estagioDTO.setCertificadoDeEstagio(estagio.getCertificadoDeEstagio() == null ? 0 : estagio.getCertificadoDeEstagio().getId());
+		estagioDTO
+				.setFichaDeAvaliacao(estagio.getFichaDeAvaliacao() == null ? 0 : estagio.getFichaDeAvaliacao().getId());
+		estagioDTO.setCertificadoDeEstagio(
+				estagio.getCertificadoDeEstagio() == null ? 0 : estagio.getCertificadoDeEstagio().getId());
 		estagioDTO.setDataCriacao(estagio.getDataCriacao());
 		return estagioDTO;
 	}
 
 	public Estagio definirTipoEstagio(Estagio estagio, EnumTipoEstagio tipoEstagio) {
 		estagio.setTipoEstagio(tipoEstagio);
-		return estagioRepo.save(estagio);		
+		return estagioRepo.save(estagio);
 	}
 
 	public Estagio definirEstagioUfpr(Estagio estagio, Boolean estagioUfpr) {
 		estagio.setEstagioUfpr(estagioUfpr);
 		return estagioRepo.save(estagio);
 	}
-	
+
 	public Estagio definirEstagioSeed(Estagio estagio, Boolean estagioSeed) {
 		estagio.setEstagioSeed(estagioSeed);
 		return estagioRepo.save(estagio);
@@ -144,17 +207,19 @@ public class EstagioService {
 		return estagio;
 	}
 
-	//Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em andamento.
+	// Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não
+	// iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em
+	// andamento.
 	public List<Estagio> buscarEstagioEmProgressoPorAluno(Aluno aluno) {
-		//Primeiro busca por estágio aprovado.
+		// Primeiro busca por estágio aprovado.
 		EnumStatusEstagio statusEstagio = EnumStatusEstagio.Aprovado;
 		List<Estagio> estagioAprovado = estagioRepo.findByStatusEstagioAndAluno(statusEstagio, aluno);
-		
-		//Depois busca por estágio iniciado.
+
+		// Depois busca por estágio iniciado.
 		statusEstagio = EnumStatusEstagio.Iniciado;
 		List<Estagio> estagioIniciado = estagioRepo.findByStatusEstagioAndAluno(statusEstagio, aluno);
-		
-		//Por fim, concatena as duas listas em uma única lista.
+
+		// Por fim, concatena as duas listas em uma única lista.
 		List<Estagio> estagio = new ArrayList<>();
 		estagio.addAll(estagioAprovado);
 		estagio.addAll(estagioIniciado);
@@ -170,7 +235,7 @@ public class EstagioService {
 	public List<Estagio> buscarEstagioPorStatusEstagio(Aluno aluno, String statusEstagioString) {
 		EnumStatusEstagio statusEstagio;
 		statusEstagioString = statusEstagioString.toUpperCase();
-		switch(statusEstagioString) {
+		switch (statusEstagioString) {
 			case "EMPREENCHIMENTO":
 				statusEstagio = EnumStatusEstagio.EmPreenchimento;
 				break;
@@ -201,11 +266,11 @@ public class EstagioService {
 		List<Estagio> estagio = estagioRepo.findByStatusEstagioAndAluno(statusEstagio, aluno);
 		return estagio;
 	}
-	
+
 	public List<Estagio> buscarEstagioPorStatusTermoCompromisso(Aluno aluno, String statusTermoString) {
 		EnumStatusTermo statusTermo;
 		statusTermoString = statusTermoString.toUpperCase();
-		switch(statusTermoString) {
+		switch (statusTermoString) {
 			case "EMPREENCHIMENTO":
 				statusTermo = EnumStatusTermo.EmPreenchimento;
 				break;
@@ -230,12 +295,12 @@ public class EstagioService {
 			default:
 				return null;
 		}
-        TypedQuery<Estagio> query = em.createQuery(selectPorIdAlunoFiltroStatusTermoCompromisso, Estagio.class);
-        
-        query.setParameter("idAluno", aluno.getId());
-        query.setParameter("statusTermo", statusTermo);
-        
-        return query.getResultList();
+		TypedQuery<Estagio> query = em.createQuery(selectPorIdAlunoFiltroStatusTermoCompromisso, Estagio.class);
+
+		query.setParameter("idAluno", aluno.getId());
+		query.setParameter("statusTermo", statusTermo);
+
+		return query.getResultList();
 	}
 
 	public List<Estagio> listarTodosEstagiosPendenteAprovacaoCoe() {
@@ -243,44 +308,67 @@ public class EstagioService {
 		return null;
 	}
 
-	public List<Estagio> listarEstagiosPorIdOrientador(long idOrientador) {
-				        
-        TypedQuery<Estagio> query = em.createQuery(selectEstagiosPorIdOrientador, Estagio.class);
-        
-        query.setParameter("idOrientador", idOrientador);
-        
-        return query.getResultList();
+	public Page<Estagio> listarEstagiosPorIdOrientador(long idOrientador,
+			int page,
+			Optional<String> grrAluno,
+			Optional<EnumStatusEstagio> statusEstagio) {
+
+		StringBuilder queryString = new StringBuilder(selectEstagioWithCustomFilters);
+
+		queryString.append(" AND e.orientador.id = :idOrientador");
+
+		if (grrAluno.isPresent()) {
+			queryString.append(" AND e.aluno.matricula LIKE :grrAluno");
+		}
+
+		if (statusEstagio.isPresent()) {
+			queryString.append(" AND e.statusEstagio = :statusEstagio");
+		}
+
+		TypedQuery<Estagio> query = em.createQuery(queryString.toString(), Estagio.class);
+
+		query.setParameter("idOrientador", idOrientador);
+
+		if (grrAluno.isPresent()) {
+			query.setParameter("grrAluno", "%" + grrAluno.get() + "%");
+		}
+
+		if (statusEstagio.isPresent()) {
+			query.setParameter("statusEstagio", statusEstagio.get());
+		}
+
+		return new PageImpl<>(query.getResultList(), PageRequest.of(page, 10), query.getResultList().size());
 	}
 
 	public List<Estagio> listarEstagiosPendenteAprovacaoPorIdOrientador(long idOrientador) {
-		
+
 		EnumStatusEstagio statusEstagio = EnumStatusEstagio.EmAprovacao;
-        
-        TypedQuery<Estagio> query = em.createQuery(selectPorIdOrientadorFiltroStatusEstagio, Estagio.class);
-        
-        query.setParameter("idOrientador", idOrientador);
-        query.setParameter("statusEstagio", statusEstagio);
-        
-        return query.getResultList();
+
+		TypedQuery<Estagio> query = em.createQuery(selectPorIdOrientadorFiltroStatusEstagio, Estagio.class);
+
+		query.setParameter("idOrientador", idOrientador);
+		query.setParameter("statusEstagio", statusEstagio);
+
+		return query.getResultList();
 	}
 
 	public List<Estagio> listarEstagiosIndeferidosPorIdOrientador(long idOrientador) {
-		
+
 		EnumStatusEstagio statusEstagio = EnumStatusEstagio.Reprovado;
-        
-        TypedQuery<Estagio> query = em.createQuery(selectPorIdOrientadorFiltroStatusEstagio, Estagio.class);
-        
-        query.setParameter("idOrientador", idOrientador);
-        query.setParameter("statusEstagio", statusEstagio);
-        
-        return query.getResultList();
+
+		TypedQuery<Estagio> query = em.createQuery(selectPorIdOrientadorFiltroStatusEstagio, Estagio.class);
+
+		query.setParameter("idOrientador", idOrientador);
+		query.setParameter("statusEstagio", statusEstagio);
+
+		return query.getResultList();
 	}
-	
+
 	public List<Estagio> buscarEstagioPorAluno(Aluno aluno) {
 		List<Estagio> estagio = estagioRepo.findByAluno(aluno);
 		return estagio;
 	}
-	
+
 	public List<Estagio> buscarEstagioPorSeguradoraUfpr() {
 		List<Estagio> estagio = estagioRepo.findBySeguradoraSeguradoraUfprIsTrue();
 		return estagio;

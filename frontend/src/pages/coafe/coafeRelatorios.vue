@@ -11,128 +11,235 @@
         <h3><b>Relatórios</b></h3>
       </span>
     </div>
-    <div>
-      <span class="p-input-icon-left">
-        <h5>Relatório de Estágios Ativos</h5>
-    </span>
-    <div class="card flex-column">
-      <div class="flex flex-row gap-10">
-        <div class="flex align-items-left pb-4">
-            <Checkbox
-                v-model="checked"
-                inputId="opção1"
-                name="tipoEstagio"
-                value="estagioUfpr"
-                :binary="true"
-              />
-            <label for="opção1" class="ml-2"> Estágios UFPR </label>
-        </div>
-        <div class="flex align-items-left pb-6">
-            <Checkbox
-              v-model="checked"
-              inputId="opção2"
-              name="tipoEstagio"
-              value="estagioExterno"
-              :binary="true"
-            />
-            <label for="opção2" class="ml-2"> Estágios Externos </label>
-        </div>
-      </div>
-      <div>
-        <div class="flex align-items-center pb-6 gap-6">
-          <span class="p-float-label ml-2">
-            <Calendar
-              v-model="date"
-              dateFormat="dd/mm/yy"
-              inputId="dataInicio"
-              showIcon
-              showButtonBar
-            />
-            <label for="dataInicio">De </label>
-          </span>
-          <span class="p-float-label ml-2">
-            <Calendar
-              v-model="date"
-              dateFormat="dd/mm/yy"
-              inputId="DatadeFim"
-              showIcon
-              showButtonBar
-            />
-            <label for="DatadeFim">Até</label>
-          </span>
-        </div>
-      </div>
-      <div class="flex flex-column gap-1">
-          <label for="curso">Curso</label>
-          <InputText id="curso" v-model="value" />
+    <div class="card">
+      <h4 class="flex justify-content-center">Gerar Relatórios</h4>
+      <div class="w-full flex justify-content-around p-3">
+        <Button
+          @click="relatorioSeguradora = true"
+          :label="'Seguradoras'"
+          icon="pi pi-file"
+          class="p-button-success"
+        />
+        <Button
+          @click="relatorioCertificado = true"
+          :label="'Certificados'"
+          icon="pi pi-file"
+          class="p-button-success"
+        />
+        <Button
+          @click="relatorioEstagio = true"
+          :label="'Estágios'"
+          icon="pi pi-file"
+          class="p-button-success"
+        />
       </div>
     </div>
-    <div class="flex justify-content-end">
-        <Button label="Cadastrar" class="botao-principal"></Button>
+    <div v-if="relatorioSeguradora">
+      <EscolhaRelatorio
+        :excel="() => relatorioExcelSeguradora()"
+        :pdf="() => relatorioPDFSeguradora()"
+        :cancelar="() => (relatorioSeguradora = false)"
+        :description="`Gerar relatório das Seguradoras em que formato?`"
+      >
+      </EscolhaRelatorio>
+    </div>
+    <div v-if="relatorioCertificado">
+      <EscolhaRelatorio
+        :excel="() => relatorioExcelCertificados()"
+        :pdf="() => relatorioPDFCertificados()"
+        :cancelar="() => (relatorioCertificado = false)"
+        :description="`Gerar relatório dos Certificados em que formato?`"
+      >
+      </EscolhaRelatorio>
+    </div>
+    <div v-if="relatorioEstagio">
+      <EscolhaRelatorio
+        :excel="() => relatorioExcelEstagios()"
+        :pdf="() => relatorioPDFEstagios()"
+        :cancelar="() => (relatorioEstagio = false)"
+        :description="`Gerar relatório dos Estágios em que formato?`"
+      >
+      </EscolhaRelatorio>
     </div>
   </div>
-  <div>
-    <span class="p-input-icon-left">
-        <h5>Relatório de Indeferimentos</h5>
-    </span>
-    <div class="card flex-column">
-      <div class="flex flex-row gap-10">
-        <div class="flex align-items-left pb-4">
-            <Checkbox  v-model="checked" inputId="opção1" name="tipoEstagio" value="estagioUfpr" :binary="true" />
-            <label for="opção1" class="ml-2"> Estágios UFPR </label>
-        </div>
-        <div class="flex align-items-left pb-6">
-            <Checkbox v-model="checked" inputId="opção2" name="tipoEstagio" value="estagioExterno" :binary="true" />
-            <label for="opção2" class="ml-2"> Estágios Externos </label>
-        </div>
-      </div>
-      <div>
-        <div class="flex align-items-center pb-6 gap-6">
-          <span class="p-float-label ml-2">
-            <Calendar v-model="date" dateFormat="dd/mm/yy" inputId="dataInicio" showIcon showButtonBar />
-            <label for="dataInicio">De </label>
-          </span>
-          <span class="p-float-label ml-2">
-            <Calendar v-model="date" dateFormat="dd/mm/yy" inputId="DatadeFim" showIcon  showButtonBar />
-            <label for="DatadeFim">Até</label>
-          </span>
-        </div>
-      </div>
-      <div class="flex flex-column gap-1">
-          <label for="curso">Curso</label>
-          <InputText id="curso" v-model="value" />
-      </div>
-    </div>
-    <div class="flex justify-content-end">
-        <Button label="Cadastrar" class="botao-principal"></Button>
-    </div>
-  </div>
-</div>
 </template>
-<script>
-  import InputText from "primevue/inputtext";
-  import Button from "primevue/button";
-  import Checkbox from 'primevue/checkbox';
- export default {
-    data() {
-      return {
-        Relatorios:[{
-        empresa:'Empresa de Estágio 1',
-        cnpj:'124412142',
-        situação:'ATIVO',
-        },
-        {
-          empresa: "Empresa de Estágio 2",
-          cnpj: "89024908",
-          situação: "INATIVO",
-        },
-      ],
-    };
-  },
-};
+<script lang="ts">
+export default defineComponent({
+  components: { EscolhaRelatorio },
+});
 </script>
-<script setup>
+<script setup lang="ts">
+import Button from "primevue/button";
 import { ref } from "vue";
-const value = ref(null);
-const date = ref();
+import { defineComponent } from "vue";
+import { useToast } from "primevue/usetoast";
+import SeguradoraService from "~~/services/SeguradoraService";
+import EscolhaRelatorio from "~~/src/components/common/escolha-relatorios.vue";
+import CoafeService from "~~/services/CoafeService";
+import RelatorioEstagioService from "~~/services/RelatorioEstagioService";
+let relatorioSeguradora = ref(false);
+let relatorioCertificado = ref(false);
+let relatorioEstagio = ref(false);
+const toast = useToast();
+const seguradoraService = new SeguradoraService();
+const coafeService = new CoafeService();
+const relatorioService = new RelatorioEstagioService();
+const relatorioExcelSeguradora = async () => {
+  relatorioSeguradora.value = false;
+  try {
+    const file = await seguradoraService.baixarRelatorioExcel();
+    var blob = new Blob([file], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = `relatorio-de-seguradoras-excel.xlsx`;
+    link.click();
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Não foi possível baixar o Relatório",
+      life: 3000,
+    });
+  }
+};
+const relatorioPDFSeguradora = async () => {
+  relatorioSeguradora.value = false;
+  try {
+    const file = await seguradoraService.baixarRelatorioPdf();
+    const fileURL = URL.createObjectURL(file);
+    return window.open(fileURL, "_blank");
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Não foi possível baixar o Relatório",
+      life: 3000,
+    });
+  }
+};
+const relatorioExcelCertificados = async () => {
+  relatorioCertificado.value = false;
+  try {
+    const file = await coafeService.baixarRelatorioCertificadoExcel();
+    var blob = new Blob([file], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = `relatorio-de-certificados-excel.xlsx`;
+    link.click();
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Não foi possível baixar o Relatório",
+      life: 3000,
+    });
+  }
+};
+const relatorioPDFCertificados = async () => {
+  relatorioCertificado.value = false;
+  try {
+    const file = await coafeService.baixarRelatorioCertificadoPdf();
+    const fileURL = URL.createObjectURL(file);
+    return window.open(fileURL, "_blank");
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Não foi possível baixar o Relatório",
+      life: 3000,
+    });
+  }
+};
+
+const relatorioExcelEstagios = async () => {
+  relatorioEstagio.value = false;
+  try {
+    const file = await relatorioService.baixarRelatorioEstagioExcel();
+    var blob = new Blob([file], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = `relatorio-de-estagios-excel.xlsx`;
+    link.click();
+  } catch (error) {
+    if (error?.response?._data?.error) {
+      toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + error?.response?._data?.error,
+        life: 3000,
+      });
+    } else {
+      toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "Não foi possível baixar o Relatório",
+        life: 3000,
+      });
+    }
+  }
+};
+const relatorioPDFEstagios = async () => {
+  relatorioEstagio.value = false;
+  try {
+    const file = await relatorioService.baixarRelatorioEstagioPdf();
+    const fileURL = URL.createObjectURL(file);
+    return window.open(fileURL, "_blank");
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    }
+    return toast.add({
+      severity: "error",
+      summary: "Erro",
+      detail: "Não foi possível baixar o Relatório",
+      life: 3000,
+    });
+  }
+};
 </script>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-const grr = "GRR20200141";
-const { data: relatorios } = await useFetch(`/aluno/${grr}/relatorioDeEstagio`);
+const { auth } = useAuth();
+
+const grr = auth?.value?.identifier || "";
+const { data: relatorios } = useFetch(`/aluno/${grr}/relatorioDeEstagio`);
 
 const parseTipoRelatorio = (tipo: "RelatorioParcial" | "RelatorioFinal") => {
   if (tipo === "RelatorioParcial") return "Relatório Parcial";

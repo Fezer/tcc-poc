@@ -31,6 +31,9 @@ export default defineComponent({
     periodo?: PeriodoRecesso;
     onRemove?: (periodo: string) => void;
   }) {
+    const { auth } = useAuth();
+
+    const grr = auth?.value?.identifier || "";
     const termoService = new TermoDeRescisaoService();
 
     const handleRemoveRecessPeriod = async () => {
@@ -38,7 +41,7 @@ export default defineComponent({
       if (!periodo?.id) return onRemove(periodo.dataInicio, "dataInicio");
 
       await termoService
-        .removePeriodoDeRecesso("GRR20200141", termo, estagio, periodo.id)
+        .removePeriodoDeRecesso(grr, termo, estagio, periodo.id)
         .then(() => {
           onRemove(periodo.id, "id");
         })

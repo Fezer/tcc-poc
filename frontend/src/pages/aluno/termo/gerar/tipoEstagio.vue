@@ -30,7 +30,9 @@ export default defineComponent({
     const toast = useToast();
     const { termo, setTermo } = useTermo();
 
-    const grr = "GRR20200141";
+    const { auth } = useAuth();
+
+    const grr = auth?.value?.identifier || "";
 
     const locais = [
       { label: "Empresa Externa", value: "EXTERNO" },
@@ -75,7 +77,7 @@ export default defineComponent({
       if (localEstagio && tipoEstagio) {
         try {
           if (!termo?.value?.id) {
-            const termo = await novoEstagioService.criarNovoEstagio();
+            const termo = await novoEstagioService.criarNovoEstagio(grr);
 
             setTermo(termo);
           }

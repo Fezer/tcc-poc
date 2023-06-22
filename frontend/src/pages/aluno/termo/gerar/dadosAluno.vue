@@ -25,7 +25,9 @@ export default defineComponent({
 
     const curso = reactive({});
 
-    const grr = "GRR20200141";
+    const { auth } = useAuth();
+
+    const grr = auth?.value?.identifier || "";
 
     const handleFetchCurso = async (cursoID: string) => {
       // if (aluno?.curso) return;
@@ -84,7 +86,7 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label for="email2">CPF</label>
-            <InputText disabled type="text" :value="aluno?.documento" />
+            <InputText disabled type="text" :value="aluno?.cpf" />
           </div>
         </div>
         <div class="formgrid grid">

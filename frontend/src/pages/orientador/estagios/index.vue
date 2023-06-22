@@ -2,18 +2,46 @@
 import { defineComponent } from "vue";
 import { Estagio } from "~~/src/types/NovoEstagio";
 import parseTipoTermo from "~~/src/utils/parseTipoProcesso";
+import { PaginatedEstagio } from "../../../types/Termos";
 
 export default defineComponent({
   setup() {
     const route = useRoute();
 
-    const { data: estagios } = useFetch<Estagio>(`/orientador/6/estagio`);
+    const { statusOptions } = useTermoFilters();
+
+    const { auth } = useAuth();
+
+    const page = ref(0);
+
+    const filters = reactive({
+      statusEstagio: "",
+      grrAluno: "",
+    });
+    const { data: estagios } = useAsyncData<PaginatedEstagio>(
+      "estagiosOrientador",
+      () =>
+        $fetch(`/orientador/${auth?.value?.identifier}/estagio`, {
+          params: {
+            page: page.value,
+            statusEstagio: filters.statusEstagio || undefined,
+            grrAluno: filters.grrAluno || undefined,
+          },
+        }),
+      {
+        watch: [page, filters],
+        lazy: true,
+      }
+    );
 
     console.log(estagios);
 
     return {
       estagios,
       parseTipoTermo,
+      page,
+      filters,
+      statusOptions,
     };
   },
 });
@@ -25,7 +53,41 @@ export default defineComponent({
       <h1>Estágios de Orientados</h1>
     </div>
     <div>
-      <DataTable :value="estagios" rowHover stripedRows :show-gridlines="true">
+      <DataTable
+        :value="estagios?.content"
+        rowHover
+        stripedRows
+        :show-gridlines="true"
+        :rows="10"
+        @page="page = $event.page"
+        :totalRecords="estagios?.totalElements"
+        :paginator="true"
+      >
+        <template #header>
+          <div class="flex items-center justify-content-between">
+            <span class="">
+              <h4 class="font-bold">Estágios</h4>
+            </span>
+            <div class="flex gap-2">
+              <Dropdown
+                :options="statusOptions"
+                v-model="filters.statusEstagio"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Status"
+              >
+              </Dropdown>
+
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText
+                  placeholder="Matrícula (GRRXXXXXXXX)"
+                  v-model="filters.grrAluno"
+                />
+              </span>
+            </div>
+          </div>
+        </template>
         <Column field="process" header="Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>

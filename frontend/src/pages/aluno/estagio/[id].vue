@@ -24,6 +24,10 @@ export default defineComponent({
     const alunoService = new AlunoService();
     const toast = useToast();
 
+    const { auth } = useAuth();
+
+    const grr = auth?.value?.identifier || "";
+
     const { setTermoRescisao } = useTermoRescisao();
 
     const { id } = route.params;
@@ -52,8 +56,6 @@ export default defineComponent({
     };
 
     const handleNovoTermoAditivo = async () => {
-      const grr = "GRR20200141";
-
       const termoEmProcessoExiste = await alunoService.getTermoAditivoAtivo(
         grr
       );
@@ -84,7 +86,6 @@ export default defineComponent({
     const cancelationConfirm = ref(false);
 
     const handleSolicitarCertificado = async () => {
-      const grr = "GRR20200141";
       await alunoService
         .solicitarCertificadoEstagio(grr, id)
         .then(() => {

@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "a416c79d-1384-4ca3-b000-63bc73a861c5",
+		"_postman_id": "c0a403b5-66a1-44cd-bb27-4ea9b61c0faf",
 		"name": "TCC-Estagio",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17301767"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -25,7 +24,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"coe2@ufpr.br\",\r\n    \"senha\":\"coe123\",\r\n    \"tipoUsuario\":\"COE\"\r\n}"
+							"raw": "{\r\n    \"login\":\"orientador@orientador.com\",\r\n    \"senha\":\"orientador@orientador.com\",\r\n    \"tipoUsuario\":\"COE\",\r\n    \"identifier\": \"5\"\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/auth/criarUsuario",
@@ -55,7 +54,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"coafe@ufpr.br\",\r\n    \"senha\":\"coafe123\"\r\n}"
+							"raw": "{\r\n    \"login\":\"coe@coe.com\",\r\n    \"senha\":\"coe@coe.com\"\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/auth/login",
@@ -141,7 +140,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo",
+							"raw": "http://localhost:5000/termo?page=0&status=EmAprovacao&tipoEstagio=NaoObrigatorio&tipoTermo=TermoDeCompromisso&etapa=COAFE&grr=GRR2020014",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -149,6 +148,32 @@
 							"port": "5000",
 							"path": [
 								"termo"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "status",
+									"value": "EmAprovacao"
+								},
+								{
+									"key": "tipoEstagio",
+									"value": "NaoObrigatorio"
+								},
+								{
+									"key": "tipoTermo",
+									"value": "TermoDeCompromisso"
+								},
+								{
+									"key": "etapa",
+									"value": "COAFE"
+								},
+								{
+									"key": "grr",
+									"value": "GRR2020014"
+								}
 							]
 						}
 					},
@@ -435,7 +460,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termoDeRescisao",
+							"raw": "http://localhost:5000/termoDeRescisao?page=0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -443,6 +468,42 @@
 							"port": "5000",
 							"path": [
 								"termoDeRescisao"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "grrAluno",
+									"value": "GRR",
+									"disabled": true
+								},
+								{
+									"key": "etapaFluxo",
+									"value": "Ciencia",
+									"disabled": true
+								},
+								{
+									"key": "cienciaCOE",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "cienciaOrientador",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "cienciaCOAFE",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "cienciaCoordenacao",
+									"value": "true",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -693,7 +754,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20175486/estagio",
+									"raw": "http://localhost:5000/aluno/20204481/estagio",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -701,7 +762,7 @@
 									"port": "5000",
 									"path": [
 										"aluno",
-										"GRR20175486",
+										"20204481",
 										"estagio"
 									]
 								}
@@ -1075,6 +1136,29 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "downloadTermoAditivo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"termo-aditivo",
+										"2",
+										"download"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1434,6 +1518,29 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "downloadTermoDeRescisao",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-de-rescisao/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"termo-de-rescisao",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1695,6 +1802,29 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "downloadRelatorioDeEstagio",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/relatorio-de-estagio/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"relatorio-de-estagio",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1879,6 +2009,29 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "downloadFichaDeAvaliacao",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/aluno/GRR20204481/ficha-de-avaliacao/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"aluno",
+										"GRR20204481",
+										"ficha-de-avaliacao",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1983,6 +2136,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Buscar Aluno - Atores Institucionais",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/siga/aluno/GRR20200141",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"siga",
+								"aluno",
+								"GRR20200141"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2040,7 +2214,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/",
+							"raw": "http://localhost:5000/estagio/?page=0&grr=GRR20200141&nomeEmpresa=Empre&tipoEstagio=Obrigatorio&statusEstagio=Cancelado",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2049,6 +2223,28 @@
 							"path": [
 								"estagio",
 								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "grr",
+									"value": "GRR20200141"
+								},
+								{
+									"key": "nomeEmpresa",
+									"value": "Empre"
+								},
+								{
+									"key": "tipoEstagio",
+									"value": "Obrigatorio"
+								},
+								{
+									"key": "statusEstagio",
+									"value": "Cancelado"
+								}
 							]
 						}
 					},
@@ -2471,7 +2667,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/certificadoDeEstagio/",
+							"raw": "http://localhost:5000/certificadoDeEstagio/?page=0&grrAluno=2020014&etapaFluxo=COE",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2480,6 +2676,20 @@
 							"path": [
 								"certificadoDeEstagio",
 								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "grrAluno",
+									"value": "2020014"
+								},
+								{
+									"key": "etapaFluxo",
+									"value": "COE"
+								}
 							]
 						}
 					},
@@ -2783,7 +2993,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/seguradora/",
+							"raw": "http://localhost:5000/seguradora/?page=0&nome=Tes&ativo=false&seguradoraUFPR=false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2792,6 +3002,24 @@
 							"path": [
 								"seguradora",
 								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "nome",
+									"value": "Tes"
+								},
+								{
+									"key": "ativo",
+									"value": "false"
+								},
+								{
+									"key": "seguradoraUFPR",
+									"value": "false"
+								}
 							]
 						}
 					},
@@ -3089,7 +3317,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/",
+							"raw": "http://localhost:5000/agente-integrador/?page=0&nome=Tes124",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3098,6 +3326,41 @@
 							"path": [
 								"agente-integrador",
 								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "cnpj",
+									"value": "2124124124",
+									"disabled": true
+								},
+								{
+									"key": "nome",
+									"value": "Tes124"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarTodosAgentesIntegradores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/agente-integrador/todos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"agente-integrador",
+								"todos"
 							]
 						}
 					},
@@ -3335,7 +3598,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/contratante/",
+							"raw": "http://localhost:5000/contratante/?page=0&nome=Tes&cnpj=41",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3344,6 +3607,20 @@
 							"path": [
 								"contratante",
 								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "nome",
+									"value": "Tes"
+								},
+								{
+									"key": "cnpj",
+									"value": "41"
+								}
 							]
 						}
 					},
@@ -3666,6 +3943,29 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "baixarTermoDeCompromissoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/GRR20204481/termo-de-compromisso/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"GRR20204481",
+										"termo-de-compromisso",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -3709,6 +4009,29 @@
 										"coe",
 										"termoAditivo",
 										"indeferido"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoAditivoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/GRR20204481/termo-aditivo/2/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"GRR20204481",
+										"termo-aditivo",
+										"2",
+										"download"
 									]
 								}
 							},
@@ -3757,6 +4080,29 @@
 										"termoDeRescisao",
 										"2",
 										"darCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoDeRescisaoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/GRR20204481/termo-de-rescisao/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"GRR20204481",
+										"termo-de-rescisao",
+										"1",
+										"download"
 									]
 								}
 							},
@@ -4059,6 +4405,29 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "baixarTermoDeCompromissoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coordenacao/GRR20204481/termo-de-compromisso/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coordenacao",
+										"GRR20204481",
+										"termo-de-compromisso",
+										"1",
+										"download"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -4150,6 +4519,29 @@
 										"coordenacao",
 										"termoAditivo",
 										"indeferido"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoAditivoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/GRR20204481/termo-aditivo/2/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"GRR20204481",
+										"termo-aditivo",
+										"2",
+										"download"
 									]
 								}
 							},
@@ -4441,6 +4833,29 @@
 										"termoDeRescisao",
 										"2",
 										"darCiencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "baixarTermoDeRescisaoUpadoPeloAluno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/coe/GRR20204481/termo-de-rescisao/1/download",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"coe",
+										"GRR20204481",
+										"termo-de-rescisao",
+										"1",
+										"download"
 									]
 								}
 							},
@@ -5312,7 +5727,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/orientador/106/estagio",
+									"raw": "http://localhost:5000/orientador/5/estagio?page=0&grrAluno&statusEstagio",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -5320,8 +5735,22 @@
 									"port": "5000",
 									"path": [
 										"orientador",
-										"106",
+										"5",
 										"estagio"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "grrAluno",
+											"value": null
+										},
+										{
+											"key": "statusEstagio",
+											"value": null
+										}
 									]
 								}
 							},

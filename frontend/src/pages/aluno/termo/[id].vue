@@ -1,6 +1,6 @@
 <script lang="ts">
 import { useToast } from "primevue/usetoast";
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import NovoEstagioService from "../../../../services/NovoEstagioService";
 import aluno from "../../../components/common/aluno.vue";
 import Contratante from "../../../components/common/contratante.vue";
@@ -28,6 +28,10 @@ export default defineComponent({
 
     const { id } = route.params;
 
+    const { auth } = useAuth();
+
+    const grr: string = auth?.value?.identifier || "";
+
     const alunoService = new AlunoService();
 
     const novoEstagioService = new NovoEstagioService();
@@ -36,7 +40,7 @@ export default defineComponent({
 
     const { data: termo, refresh } = useFetch(`/termo/${id}`);
 
-    // const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
+    const uploaded = ref(false);
 
     function refreshData() {
       refresh();
@@ -51,24 +55,6 @@ export default defineComponent({
 
       uploadModalVisible: false,
     });
-    const checkIfTermoCompleto = () => {
-      const necessaryValues = [
-        "planoAtividades",
-        "orientador",
-        "jornadaSemanal",
-        "jornadaDiaria",
-        "dadaInicio",
-        "dataTermino",
-        "valorBolsa",
-        "valorTransporte",
-      ];
-
-      for (const value of necessaryValues) {
-        if (!termo.value[value]) {
-          return false;
-        }
-      }
-    };
 
     const handleEditarTermo = () => {
       setTermo({
@@ -84,7 +70,7 @@ export default defineComponent({
 
     const handleCancelarTermo = async () => {
       try {
-        await novoEstagioService.cancelarTermo(termo.value.id);
+        await novoEstagioService.cancelarTermo(termo.value.id, grr);
         toast.add({
           severity: "success",
           summary: `Termo cancelado!`,
@@ -110,17 +96,9 @@ export default defineComponent({
 
     const handleSolicitarAprovacao = async () => {
       state.uploadModalVisible = false;
-      // if (!checkIfTermoCompleto()) {
-      //   return toast.add({
-      //     severity: "error",
-      //     summary: "Ops!",
-      //     detail:
-      //       "Termo incompleto. Por favor, visite a edição de termo, e termine o fluxo!",
-      //     life: 3000,
-      //   });
-      // }
+
       await novoEstagioService
-        .solicitarAprovacaoTermo(termo.value.id)
+        .solicitarAprovacaoTermo(grr, termo.value.id)
         .then(() => {
           refreshData();
         })
@@ -135,15 +113,15 @@ export default defineComponent({
     };
 
     const handleUploadTermo = async (event) => {
-      console.log("upload");
       const file = event.files[0];
 
       const formData = new FormData();
       formData.append("file", file);
 
       await alunoService
-        .uploadTermo("GRR20200141", formData)
+        .uploadTermo(grr, termo?.value?.id, formData)
         .then(() => {
+          uploaded.value = true;
           toast.add({
             severity: "success",
             summary: `Termo enviado!`,
@@ -155,8 +133,8 @@ export default defineComponent({
           console.error(err);
           toast.add({
             severity: "error",
-            summary: "Ops!",
-            detail: "Tivemos um problema ao enviar o termo.",
+            summary: "Tivemos um problema ao enviar o termo!",
+            detail: err?.response?.data?.error || "Erro inesperado.",
             life: 3000,
           });
         });
@@ -170,6 +148,7 @@ export default defineComponent({
       handleSolicitarAprovacao,
       handleCancelarTermo,
       handleUploadTermo,
+      uploaded,
     };
   },
 });
@@ -249,72 +228,25 @@ export default defineComponent({
       </template>
     </div>
 
-    <Dialog
-      :visible="state.uploadModalVisible"
-      header="Upload do termo assinado."
-      :closable="false"
-      style="width: 600px"
-      :modal="true"
-    >
-      <p>
-        Para solicitar a aprovação do seu termo de compromisso, por favor faça o
-        upload do termo assinado pelo supervisor do estágio (na contratante),
-        seu professor(a) orientador(a) e por você.
-      </p>
-
-      <!-- 10MB file size -->
-      <FileUpload
-        accept=".pdf"
-        :multiple="false"
-        :maxFileSize="10000000"
-        chooseLabel="Adicionar termo"
-        mode="basic"
-        customUpload
-        @uploader="handleUploadTermo"
+    <div v-if="state.uploadModalVisible">
+      <UploadConfirm
+        header="Upload do termo assinado."
+        :onConfirm="handleSolicitarAprovacao"
+        :handleUpload="handleUploadTermo"
+        :confirmBlocked="false"
+        :onClose="() => (state.uploadModalVisible = false)"
+        description="Para solicitar a aprovação do seu termo de compromisso, por favor faça o upload do termo assinado pelo supervisor do estágio (na contratante), seu professor(a) orientador(a) e por você."
       />
-      <template #footer>
-        <Button
-          label="Fechar"
-          icon="pi pi-times"
-          class="p-button-secondary"
-          @click="state.uploadModalVisible = false"
-        />
-        <Button
-          label="Solicitar Aprovação"
-          icon="pi pi-check"
-          class="p-button-primary"
-          @click="handleSolicitarAprovacao"
-        />
-      </template>
-    </Dialog>
+    </div>
 
-    <Dialog
-      :visible="state.cancelationConfirm"
-      header="Confirmar cancelamento"
-      :closable="false"
-      style="width: 500px"
-      :modal="true"
-    >
-      <p>
-        Tem certeza que deseja cancelar esse termo de compromisso? Para começar
-        em um estágio, será necessário iniciar todo o processo novamente.
-      </p>
-      <template #footer>
-        <Button
-          label="Voltar"
-          icon="pi pi-times"
-          class="p-button-secondary"
-          @click="state.cancelationConfirm = false"
-        />
-        <Button
-          label="Cancelar"
-          icon="pi pi-check"
-          class="p-button-danger"
-          autofocus
-          @click="handleCancelarTermo"
-        />
-      </template>
-    </Dialog>
+    <div v-if="state.cancelationConfirm">
+      <CancelationConfirm
+        :onConfirm="handleCancelarTermo"
+        description="Tem certeza que deseja cancelar esse termo de compromisso? Para começar
+        em um estágio, será necessário iniciar todo o processo novamente."
+        :onClose="() => (state.cancelationConfirm = false)"
+      />
+    </div>
   </div>
 </template>
 

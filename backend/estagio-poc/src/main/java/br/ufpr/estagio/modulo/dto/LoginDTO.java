@@ -14,6 +14,7 @@ public class LoginDTO implements Serializable {
 	private String login;
 	private EnumTipoUsuario tipoUsuario;
 	private String token;
+	private String identifier;
 
 	public LoginDTO() {
 		super();
@@ -61,6 +62,14 @@ public class LoginDTO implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 
 }

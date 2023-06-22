@@ -53,4 +53,50 @@ export default class ContratanteService extends BaseService {
 
     return response;
   }
+
+  async atualizaContratante(
+    id?: number,
+    nome?: string,
+    tipo?: string,
+    cpf?: string,
+    cnpj?: string,
+    representanteEmpresa?: string,
+    telefone?: string
+  ) {
+    console.log(nome, tipo, cpf, cnpj, representanteEmpresa, telefone);
+    const response = await $fetch(`/contratante/${id}`, {
+      method: "PUT",
+      body: {
+        nome,
+        tipo,
+        cpf,
+        cnpj,
+        representanteEmpresa,
+        telefone,
+      },
+    });
+
+    if (!response?.id) {
+      throw new Error("Erro ao atualizar contratante");
+    }
+
+    return response;
+  }
+
+  async getContratantePerId(id: number) {
+    const response = await $fetch(`/contratante/${id}`);
+
+    return response;
+  }
+  async baixarRelatorioEstagioPdfEspecifico(id:number) {
+    return $fetch(`/coafe/gerar-relatorio-empresa/${id}`, {
+      method: "GET",
+    });
+  }
+  async baixarRelatorioEstagioExcelEspecifico(id:number) {
+    return $fetch(`/coafe/gerar-relatorio-empresa-excel/${id}`, {
+      method: "GET",
+      responseType: "blob",
+    });
+  }
 }

@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lowagie.text.DocumentException;
@@ -988,19 +989,23 @@ public class AlunoREST {
 	}
 
 	@PostMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/upload")
-	public ResponseEntity<String> uploadTermo(@PathVariable String grrAlunoURL, @PathVariable String id,
+	public ResponseEntity<Object> uploadTermo(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-				throw new BadRequestException("GRR do aluno não informado!");
+				throw new InvalidFieldException("GRR do aluno não informado!");
 			} else {
 				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
 					if (file.isEmpty()) {
-						throw new BadRequestException("Arquivo não informado!");
+						throw new InvalidFieldException("Arquivo não informado!");
 					} else {
+	                    if (!file.getContentType().equals(MediaType.APPLICATION_PDF_VALUE)) {
+	                        throw new InvalidFieldException("Tipo de arquivo inválido! Apenas arquivos PDF são aceitos.");
+	                    }
+	                    
 						long idLong = Long.parseLong(id);
 				    	
 				    	if (idLong < 1L)
@@ -1034,19 +1039,30 @@ public class AlunoREST {
 			}
 		} catch (NotFoundException ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ou o ID do termo de compromisso não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (RuntimeException ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
@@ -2541,6 +2557,9 @@ public class AlunoREST {
 					if (file.isEmpty()) {
 						throw new InvalidFieldException("Arquivo não informado!");
 					} else {
+						if (!file.getContentType().equals(MediaType.APPLICATION_PDF_VALUE)) {
+	                        throw new InvalidFieldException("Tipo de arquivo inválido! Apenas arquivos PDF são aceitos.");
+	                    }
 						try {
 
 							Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -2695,6 +2714,9 @@ public class AlunoREST {
 					if (file.isEmpty()) {
 						throw new InvalidFieldException("Arquivo não informado!");
 					} else {
+						if (!file.getContentType().equals(MediaType.APPLICATION_PDF_VALUE)) {
+	                        throw new InvalidFieldException("Tipo de arquivo inválido! Apenas arquivos PDF são aceitos.");
+	                    }
 						try {
 
 							Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -2834,6 +2856,10 @@ public class AlunoREST {
 				        if (termo == null) {
 				            throw new NotFoundException("O termo aditivo não foi encontrado.");
 				        }
+				        
+				        if (!file.getContentType().equals(MediaType.APPLICATION_PDF_VALUE)) {
+	                        throw new InvalidFieldException("Tipo de arquivo inválido! Apenas arquivos PDF são aceitos.");
+	                    }
 				        
 						try {
 							
@@ -2990,6 +3016,10 @@ public class AlunoREST {
 				            throw new NotFoundException("O termo de rescisão não foi encontrado.");
 				        }
 				        
+				        if (!file.getContentType().equals(MediaType.APPLICATION_PDF_VALUE)) {
+	                        throw new InvalidFieldException("Tipo de arquivo inválido! Apenas arquivos PDF são aceitos.");
+	                    }
+				        
 				        TermoDeRescisao termo = termoFind.get();
 						try {
 
@@ -3048,6 +3078,7 @@ public class AlunoREST {
 
 					/* Métodos para Aluno baixar documentos upados por ele mesmo */
 	
+	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/download")
 	public ResponseEntity<Object> downloadTermoDeCompromissoAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@RequestHeader("Authorization") String accessToken) {
 	    try {

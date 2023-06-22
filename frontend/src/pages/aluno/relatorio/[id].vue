@@ -16,8 +16,13 @@ export default defineComponent({
     );
     const router = useRouter();
     const toast = useToast();
+    const { auth } = useAuth();
+
+    const grr = auth?.value?.identifier || "";
 
     const uploadVisible = ref(false);
+
+    const cancelVisible = ref(false);
 
     const handleCancelarRelatorio = async () => {
       const estagio = relatorio?.value?.estagio?.id;
@@ -47,7 +52,7 @@ export default defineComponent({
     const handlePedirCienciaOrientador = async () => {
       const estagio = relatorio?.value?.estagio?.id;
       await alunoService
-        .solicitarCienciaDeRelatorioDeEstagio("GRR20200141", estagio, id)
+        .solicitarCienciaDeRelatorioDeEstagio(grr, estagio, id)
         .then(() => {
           toast.add({
             severity: "success",
@@ -72,10 +77,7 @@ export default defineComponent({
 
     const handleDownloadRelatorio = async () => {
       try {
-        const file = await relatorioService.baixarRelatorioBase(
-          "GRR20200141",
-          id
-        );
+        const file = await relatorioService.baixarRelatorioBase(grr, id);
 
         const fileURL = URL.createObjectURL(file);
 
@@ -99,7 +101,7 @@ export default defineComponent({
       formData.append("file", file);
 
       await relatorioService
-        .uploadRelatorio("GRR20200141", formData)
+        .uploadRelatorio(grr, formData)
         .then(() => {
           toast.add({
             severity: "success",
@@ -127,6 +129,7 @@ export default defineComponent({
       handleDownloadRelatorio,
       uploadVisible,
       handleUploadRelatorio,
+      cancelVisible,
     };
   },
 });
@@ -225,7 +228,7 @@ export default defineComponent({
         label="Cancelar relatório"
         icon="pi pi-times"
         class="p-button-danger"
-        @click="handleCancelarRelatorio"
+        @click="cancelVisible = true"
       ></Button>
 
       <Button
@@ -236,6 +239,15 @@ export default defineComponent({
         @click="uploadVisible = true"
       >
       </Button>
+    </div>
+
+    <div v-if="!!cancelVisible">
+      <CancelationConfirm
+        :onClose="() => (cancelVisible = false)"
+        :onConfirm="handleCancelarRelatorio"
+        description="Você realmente deseja cancelar esse relatório de estágio? Essa ação não poderá ser desfeita."
+      >
+      </CancelationConfirm>
     </div>
 
     <div v-if="uploadVisible">

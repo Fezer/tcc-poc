@@ -82,9 +82,9 @@ public class Aluno extends Pessoa implements Serializable {
 	@JoinColumn(name="endereco_id", referencedColumnName="id", nullable=true)
 	private Endereco endereco;
 	
-	@JsonIgnore
-	@ManyToMany(mappedBy = "aluno", cascade=CascadeType.REMOVE)
-	private List<Disciplina> disciplina;
+//	@JsonIgnore
+//	@ManyToMany(mappedBy = "aluno", cascade=CascadeType.REMOVE)
+//	private List<Disciplina> disciplina;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="aluno", cascade=CascadeType.REMOVE)
@@ -92,7 +92,7 @@ public class Aluno extends Pessoa implements Serializable {
 	
 	public Aluno() {
 		super();
-		this.disciplina = new ArrayList<Disciplina>();
+//		this.disciplina = new ArrayList<Disciplina>();
 		this.estagio = new ArrayList<Estagio>();
 	}
 
@@ -101,7 +101,7 @@ public class Aluno extends Pessoa implements Serializable {
 			int periodoAtual, String rg, String cpf, String email, Date dataNascimento, String turno,
 			String coordenador, String idPrograma, String ira, Long idCurso, boolean isMatriculado, Curso curso,
 			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, Endereco endereco,
-			List<Disciplina> disciplina, List<Estagio> estagio) {
+			/**List<Disciplina> disciplina,**/ List<Estagio> estagio) {
 		super(id, nome, telefone);
 		this.idDiscente = idDiscente;
 		this.isPcd = isPcd;
@@ -121,7 +121,7 @@ public class Aluno extends Pessoa implements Serializable {
 		this.dadosAuxiliares = dadosAuxiliares;
 		this.dadosBancarios = dadosBancarios;
 		this.endereco = endereco;
-		this.disciplina = disciplina;
+//		this.disciplina = disciplina;
 		this.estagio = estagio;
 	}
 
@@ -300,13 +300,13 @@ public class Aluno extends Pessoa implements Serializable {
 		this.dadosBancarios = dadosBancarios;
 	}
 
-	public List<Disciplina> getDisciplina() {
-		return disciplina;
-	}
-
-	public void setDisciplina(List<Disciplina> disciplina) {
-		this.disciplina = disciplina;
-	}
+//	public List<Disciplina> getDisciplina() {
+//		return disciplina;
+//	}
+//
+//	public void setDisciplina(List<Disciplina> disciplina) {
+//		this.disciplina = disciplina;
+//	}
 
 	public List<Estagio> getEstagio() {
 		return estagio;

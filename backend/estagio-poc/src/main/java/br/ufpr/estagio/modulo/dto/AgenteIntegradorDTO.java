@@ -9,21 +9,23 @@ import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 
 public class AgenteIntegradorDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private long id;
-	
+
 	private String cnpj;
-	
+
 	private String nome;
-	
+
 	private String telefone;
-	
+
+	// TODO: remover lists
+
 	private List<Convenio> convenio;
-	
+
 	private List<TermoDeEstagio> termoDeEstagio;
-	
+
 	private List<Estagio> estagio;
-	
+  
 	private boolean ativo;
 	
 	public AgenteIntegradorDTO() {

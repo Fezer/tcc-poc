@@ -1,5 +1,7 @@
 <script setup>
-const grr = "GRR20200141";
+const { auth } = useAuth();
+
+const grr = auth?.value?.identifier || "";
 
 const { data: estagios } = await useFetch(`/aluno/${grr}/estagio/`);
 

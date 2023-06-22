@@ -31,7 +31,7 @@ export default defineComponent({
 
     const { data: termo, refresh } = useFetch(`/termo/${id}`);
 
-    const { data: agentesIntegracao } = useFetch(`/agente-integrador/`);
+    const { data: agentesIntegracao } = useFetch(`/agente-integrador/todos`);
 
     function refreshData() {
       refresh();
@@ -236,7 +236,7 @@ export default defineComponent({
       />
     </NuxtLink>
 
-    <Aluno />
+    <Aluno :grrAluno="termo?.grrAluno" v-if="termo?.grrAluno" />
 
     <Estagio :termo="termo" />
 
@@ -249,9 +249,7 @@ export default defineComponent({
     <SuspensaoEstagio :termo="termo" />
 
     <div
-      v-if="
-        termo?.statusTermo === 'EmAprovacao' && state.tipoUsuario !== 'ALUNO'
-      "
+      v-if="termo?.etapaFluxo === 'COAFE'"
       class="flex align-items-end justify-content-end gap-2"
     >
       <Button

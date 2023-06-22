@@ -10,21 +10,20 @@ export default defineComponent({
   setup() {
     const config = useRuntimeConfig();
     const router = useRouter();
-    const { setGRR } = useGRR();
+    const { auth, setAuth } = useAuth();
 
     onMounted(async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const authorizationCode = urlParams.get("code");
 
       if (authorizationCode) {
-        const tokenUrl =
-          "https://login.ufpr.br/realms/master/protocol/openid-connect/token";
+        const tokenUrl = config.SIGA_TOKEN_URL;
         const data = new URLSearchParams();
         data.append("grant_type", "authorization_code");
         data.append("code", authorizationCode);
-        data.append("client_id", "estagios");
-        data.append("client_secret", "2xWHPudAW4hmAsnOYzW9eg4oUUKUHTLu");
-        data.append("redirect_uri", "http://localhost:3000/");
+        data.append("client_id", config.SIGA_CLIENT_ID);
+        data.append("client_secret", config.SIGA_CLIENT_SECRET);
+        data.append("redirect_uri", config.SIGA_REDIRECT_URI);
 
         try {
           const response = await fetch(tokenUrl, {
@@ -38,14 +37,6 @@ export default defineComponent({
           const accessToken = tokenData.access_token;
           localStorage.setItem("accessToken", accessToken);
 
-          const decodedToken = parseJWT(accessToken);
-
-          const email = decodedToken["email"];
-
-          console.log(decodedToken);
-
-          // redirect to aluno page
-
           globalThis.$fetch = ofetch.create({
             baseURL: config.BACKEND_URL || "http://localhost:5000",
             headers: {
@@ -53,25 +44,34 @@ export default defineComponent({
             },
           });
 
-          // // get aluno grr
-          // if (email) {
-          //   const grr = await $fetch(
-          //     `http://siga.ufpr.br:8380/siga/api/graduacao/discente?email=${email}`,
-          //     {
-          //       method: "GET",
-          //       headers: {
-          //         origin: "http://localhost:3000",
-          //         Authorization: `Bearer ${accessToken}`,
-          //       },
-          //     }
-          //   );
-          //   console.log(grr);
-          //   setGRR(grr);
-          // }
+          // get aluno grr
+          const grrData = await $fetch(`/siga/grr`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+
+          if (typeof grrData !== "string") {
+            throw new Error(
+              "Erro ao obter o GRR do aluno. Tente novamente mais tarde."
+            );
+          }
+
+          setAuth({
+            token: accessToken,
+            tipoUsuario: "aluno",
+            identifier: JSON.parse(grrData)?.data?.grr,
+          });
+
+          console.log(JSON.parse(grrData)?.data?.grr);
 
           console.log("Token de acesso obtido com sucesso!");
           router.push("/aluno");
         } catch (error) {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("perfil");
+
           router.replace("/login");
           console.error("Erro ao obter o token de acesso:", error);
         }

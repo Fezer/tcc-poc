@@ -281,7 +281,7 @@ export default defineComponent({
     </h2>
 
     <NuxtLink
-      :to="`/estagio/${termo?.estagio?.id}?perfil=coe&termo=${termo?.id}`"
+      :to="`/estagio/${termo?.estagio?.id}?perfil=coord&termo=${termo?.id}`"
     >
       <Button
         label="Ver estágio"
@@ -290,7 +290,7 @@ export default defineComponent({
       />
     </NuxtLink>
 
-    <Aluno />
+    <Aluno :grrAluno="termo?.grrAluno" v-if="termo?.grrAluno" />
 
     <Estagio :termo="termo" />
 
@@ -303,9 +303,7 @@ export default defineComponent({
     <SuspensaoEstagio :termo="termo" />
 
     <div
-      v-if="
-        termo?.statusTermo === 'EmAprovacao' && state.tipoUsuario !== 'ALUNO'
-      "
+      v-if="termo?.etapaFluxo === 'Coordenacao'"
       class="flex align-items-end justify-content-end gap-2"
     >
       <Button

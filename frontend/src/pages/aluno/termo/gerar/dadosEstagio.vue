@@ -4,7 +4,6 @@ import { defineComponent, onMounted, reactive, ref } from "vue";
 import { z } from "zod";
 import NovoEstagioService from "../../../../../services/NovoEstagioService";
 import ZodErrorsService from "../../../../../services/ZodErrorsService";
-import validateStringDate from "../../../../utils/validateStringDate";
 import { useToast } from "primevue/usetoast";
 import { DadoEstagio } from "~~/src/types/NovoEstagio";
 import dayjs from "dayjs";
@@ -40,8 +39,7 @@ export default defineComponent({
 
     const parseDateToMask = (date?: string) => {
       if (!date) return "";
-      const [year, month, day] = date.split("-");
-      return `${day}/${month}/${year}`;
+      return dayjs(date).toDate();
     };
 
     onMounted(() => {
@@ -81,8 +79,8 @@ export default defineComponent({
     };
 
     const state = reactive({
-      dataInicio: undefined as undefined | string,
-      dataFinal: undefined as undefined | string,
+      dataInicio: undefined as undefined | Date | string,
+      dataFinal: undefined as undefined | Date | string,
       jornadaDiaria: undefined as number | undefined,
       jornadaSemanal: undefined as number | undefined,
       bolsaAuxilio: undefined as number | undefined,
@@ -98,11 +96,26 @@ export default defineComponent({
     const validateAndAdvance = async () => {
       // return this.advanceStep();
       errors.value = {};
+
+      // verifica de dataInicio é menor que dataFinal
+      // verifica se dataFinal é maior que dataInicio
       const validator = z.object({
-        dataInicio: z.custom(validateStringDate, {
-          message: "Data inválida",
-        }),
-        dataFinal: z.custom(validateStringDate, { message: "Data inválida" }),
+        dataInicio: z
+          .date()
+          .refine(
+            (dataInicio) => dayjs(dataInicio).isBefore(dayjs(state.dataFinal)),
+            {
+              message: "Data de início deve ser menor que data de término",
+            }
+          ),
+        dataFinal: z
+          .date()
+          .refine(
+            (dataFinal) => dayjs(dataFinal).isAfter(dayjs(state.dataInicio)),
+            {
+              message: "Data de término deve ser maior que data de início",
+            }
+          ),
         jornadaDiaria: z.number().min(1).max(24),
         jornadaSemanal: z.number().min(1).max(99),
         bolsaAuxilio: z.number(),
@@ -170,7 +183,8 @@ export default defineComponent({
           severity: "error",
           summary: "Erro na etapa de atualizar o orientador",
           detail:
-            err?.response?._data?.error || "Erro ao salvar dados do estágio",
+            err?.response?._data?.error ||
+            "Erro não identificado, tente novamente",
           life: 3000,
         });
       }
@@ -201,8 +215,9 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="dataInicio">Data de Início</label>
-            <InputMask
-              mask="99/99/9999"
+            <Calendar
+              dateFormat="dd/mm/yy"
+              showIcon
               v-tooltip.top="
                 'Inserir o período de início e término do estágio. Este termo de compromisso deve ser colocado na plataforma, contendo todas as assinaturas, com pelo menos 10 dias ANTES do início das atividades de estágio.'
               "
@@ -213,8 +228,9 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label for="dataFinal">Data de Termino</label>
-            <InputMask
-              mask="99/99/9999"
+            <Calendar
+              dateFormat="dd/mm/yy"
+              showIcon
               v-model="state.dataFinal"
               :class="errors['dataFinal'] && 'p-invalid'"
             />

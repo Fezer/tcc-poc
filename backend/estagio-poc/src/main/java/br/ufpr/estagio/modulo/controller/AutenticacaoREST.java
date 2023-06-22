@@ -28,12 +28,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/auth")
 public class AutenticacaoREST {
-	
-	@Autowired
-	private UsuarioService usuarioService;
-	
+
+    @Autowired
+    private UsuarioService usuarioService;
+
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    
+
     private String hashPassword(String password) {
         return passwordEncoder.encode(password);
     }
@@ -51,35 +51,38 @@ public class AutenticacaoREST {
                 .signWith(key)
                 .compact();
     }
-    
+
     @PostMapping("/criarUsuario")
     public ResponseEntity<Object> criarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         String login = usuarioDTO.getLogin();
         String senha = usuarioDTO.getSenha();
         EnumTipoUsuario tipoUsuario = usuarioDTO.getTipoUsuario();
-        
-        if (login == null || senha == null || tipoUsuario == null ) {
+        String identifier = usuarioDTO.getIdentifier();
+
+        if (login == null || senha == null || tipoUsuario == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados obrigatórios não foram preenchidos.");
         }
-        
+
         Optional<Usuario> usuarioExiste = usuarioService.buscarUsuarioPorLogin(login);
         if (!usuarioExiste.isEmpty()) {
-           return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Usuário já cadastrado ou já existe outro usuário cadastrado com o mesmo login.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Usuário já cadastrado ou já existe outro usuário cadastrado com o mesmo login.");
         }
-        
+
         String hashedPassword = hashPassword(senha);
-        
+
         Usuario usuarioNovo = new Usuario();
-        
+
         usuarioNovo.setLogin(login);
         usuarioNovo.setSenha(hashedPassword);
         usuarioNovo.setTipoUsuario(tipoUsuario);
-        
+        usuarioNovo.setIdentifier(identifier);
+
         usuarioNovo = usuarioService.criarUsuario(usuarioNovo);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Novo usuario cadastrado com sucesso!");
     }
-    	
+
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody UsuarioDTO usuarioDTO) {
         String login = usuarioDTO.getLogin();
@@ -90,7 +93,7 @@ public class AutenticacaoREST {
             if (usuarioFind.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum usuário encontrado com esse login");
             } else {
-            	Usuario usuario = usuarioFind.get();
+                Usuario usuario = usuarioFind.get();
                 if (passwordEncoder.matches(senha, usuario.getSenha())) {
                     String token = generateToken(usuario.getId(), usuario.getTipoUsuario());
                     LoginDTO loginSucesso = new LoginDTO();
@@ -98,13 +101,14 @@ public class AutenticacaoREST {
                     loginSucesso.setLogin(usuario.getLogin());
                     loginSucesso.setTipoUsuario(usuario.getTipoUsuario());
                     loginSucesso.setToken(token);
+                    loginSucesso.setIdentifier(usuario.getIdentifier());
                     return ResponseEntity.status(HttpStatus.CREATED).body(loginSucesso);
                 } else {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta");
                 }
             }
         } else {
-        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados obrigatórios não foram preenchidos.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados obrigatórios não foram preenchidos.");
         }
     }
 

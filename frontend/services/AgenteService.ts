@@ -63,4 +63,15 @@ export default class AgenteService extends BaseService {
       return response;
     }
   }
+  async baixarRelatorioEstagioPdfEspecifico(id:number) {
+    return $fetch(`/coafe/gerar-relatorio-agenteIntegrador/${id}`, {
+      method: "GET",
+    });
+  }
+  async baixarRelatorioEstagioExcelEspecifico(id:number) {
+    return $fetch(`/coafe/gerar-relatorio-agenteIntegrador-excel/${id}`, {
+      method: "GET",
+      responseType: "blob",
+    });
+  }
 }
