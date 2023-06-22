@@ -159,7 +159,7 @@ export default defineComponent({
     onMounted(() => {
       if (!!termoRescisao?.value?.id) {
         state.dataTermino = termoRescisao.value.dataTermino
-          ? dayjs(termoRescisao.value.dataTermino).format("DD/MM/YYYY")
+          ? dayjs(termoRescisao.value.dataTermino).toDate()
           : null;
         state.periodoTotalRecesso = termoRescisao.value.periodoTotalRecesso;
 

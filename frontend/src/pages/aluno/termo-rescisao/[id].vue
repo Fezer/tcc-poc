@@ -112,8 +112,6 @@ export default defineComponent({
     };
 
     const handleDownloadTermoBase = async () => {
-      // http://localhost:5000/aluno/GRR20204481/termo-rescisao/1/gerar-termo-rescisao
-
       const url = `/aluno/${grr}/termo-rescisao/${id}/gerar-termo-rescisao`;
 
       try {
@@ -189,7 +187,7 @@ export default defineComponent({
   <div class="relative">
     <h3>Termo de Rescisão</h3>
 
-    <div class="absolute right-0 top-4 gap-2 flex">
+    <div class="absolute right-0 -top-2 gap-2 flex">
       <Button
         label="Baixar documento base"
         class="p-button-secondary"
