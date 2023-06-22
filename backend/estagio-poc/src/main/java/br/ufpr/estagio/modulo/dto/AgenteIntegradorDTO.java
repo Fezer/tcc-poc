@@ -24,6 +24,8 @@ public class AgenteIntegradorDTO implements Serializable {
 	
 	private List<Estagio> estagio;
 	
+	private boolean ativo;
+	
 	public AgenteIntegradorDTO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -49,6 +51,19 @@ public class AgenteIntegradorDTO implements Serializable {
 		this.convenio = convenio;
 		this.termoDeEstagio = termoDeEstagio;
 		this.estagio = estagio;
+	}
+
+	public AgenteIntegradorDTO(long id, String cnpj, String nome, String telefone, List<Convenio> convenio,
+			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio, boolean ativo) {
+		super();
+		this.id = id;
+		this.cnpj = cnpj;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.convenio = convenio;
+		this.termoDeEstagio = termoDeEstagio;
+		this.estagio = estagio;
+		this.ativo = ativo;
 	}
 
 	public long getId() {
@@ -109,5 +124,13 @@ public class AgenteIntegradorDTO implements Serializable {
 
 	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 }

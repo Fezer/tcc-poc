@@ -1215,4 +1215,13 @@ public class TermoDeEstagioService {
 		return termoRepo.save(termo);
 	}
 	
+	public boolean listarTermosDeEstagioPorAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
+
+		List<TermoDeEstagio> termos = termoRepo.findByAgenteIntegrador(agenteIntegrador);
+		
+        if (termos.size() == 0)
+        	return false;
+
+        return true;
+	}
 }
