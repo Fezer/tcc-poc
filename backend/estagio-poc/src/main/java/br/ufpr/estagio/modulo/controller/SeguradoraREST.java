@@ -27,7 +27,9 @@ import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.service.ApoliceService;
+import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.SeguradoraService;
+import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
 @RestController
@@ -36,6 +38,12 @@ public class SeguradoraREST {
 
 	@Autowired
     private ApoliceService apoliceService;
+	
+	@Autowired
+	private EstagioService estagioService;
+	
+	@Autowired
+	private TermoDeEstagioService termoDeEstagioService;
     
     @Autowired
     private SeguradoraService seguradoraService;
@@ -321,10 +329,21 @@ public class SeguradoraREST {
 	    		throw new InvalidFieldException("Id da seguradora inválido!");
 	    	}
 	    	
-        	Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(idInt);
+        	Optional<Seguradora> seguradoraFind = seguradoraService.buscarSeguradoraPorId(idInt);
             
-        	if(seguradora.isPresent()) {
-                seguradoraService.excluirSeguradora(seguradora.get());
+        	if(seguradoraFind.isPresent()) {
+        		Seguradora seguradora = seguradoraFind.get();
+        		
+        		boolean presenteEmTermosDeEstagio = termoDeEstagioService.listarTermosDeEstagioPorSeguradora(seguradora);
+				boolean presenteEmEstagios = estagioService.listarEstagiosPorSeguradora(seguradora);
+				
+				if (presenteEmTermosDeEstagio)
+					throw new InvalidFieldException("Não é possível excluir uma seguradora presente em termo de estágio.");
+				
+				if (presenteEmEstagios)
+					throw new InvalidFieldException("Não é possível excluir uma seguradora presente em estágio.");
+        		
+                seguradoraService.excluirSeguradora(seguradora);
                 return ResponseEntity.noContent().build();
             } else {
             	throw new NotFoundException("Seguradora não encontrada!");

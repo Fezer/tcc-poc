@@ -29,6 +29,7 @@ import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
+import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
@@ -1249,6 +1250,16 @@ public class TermoDeEstagioService {
 	public boolean listarTermosDeEstagioPorContratante(Contratante contratante) {
 
 		List<TermoDeEstagio> termos = termoRepo.findByContratante(contratante);
+		
+        if (termos.size() == 0)
+        	return false;
+
+        return true;
+	}
+	
+	public boolean listarTermosDeEstagioPorSeguradora(Seguradora seguradora) {
+
+		List<TermoDeEstagio> termos = termoRepo.findBySeguradora(seguradora);
 		
         if (termos.size() == 0)
         	return false;

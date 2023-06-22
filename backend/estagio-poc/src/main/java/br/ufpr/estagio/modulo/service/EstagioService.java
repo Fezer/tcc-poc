@@ -20,6 +20,7 @@ import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
+import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import jakarta.persistence.EntityManager;
@@ -308,6 +309,16 @@ public class EstagioService {
 	public boolean listarEstagiosPorContratante(Contratante contratante) {
 
 		List<Estagio> estagios = estagioRepo.findByContratante(contratante);
+		
+        if (estagios.size() == 0)
+        	return false;
+
+        return true;
+	}
+	
+	public boolean listarEstagiosPorSeguradora(Seguradora seguradora) {
+
+		List<Estagio> estagios = estagioRepo.findBySeguradora(seguradora);
 		
         if (estagios.size() == 0)
         	return false;
