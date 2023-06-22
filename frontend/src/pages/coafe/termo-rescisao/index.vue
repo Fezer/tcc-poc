@@ -22,6 +22,11 @@ export default defineComponent({
             page: page.value,
             grrAluno: filters.grrAluno || undefined,
             cienciaCOAFE: filters.cienciaCOAFE,
+            cienciaCOE: filters?.cienciaCOAFE === false ? true : undefined,
+            cienciaOrientador:
+              filters?.cienciaCOAFE === false ? true : undefined,
+            cienciaCoordenacao:
+              filters?.cienciaCOAFE === false ? true : undefined,
           },
         }),
       {

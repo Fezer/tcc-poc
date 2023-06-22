@@ -70,6 +70,12 @@ interface TermoRescisao {
   cienciaCoordenacao?: boolean;
   cienciaCOAFE?: boolean;
   cienciaOrientador?: boolean;
+
+  // nome do aluno e grr do aluno
+  aluno?: string;
+  grrAluno?: string;
+
+  upload: boolean;
 }
 
 type PeriodoRecesso = {

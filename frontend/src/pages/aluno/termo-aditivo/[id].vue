@@ -165,13 +165,25 @@ export default defineComponent({
     const handleDownloadTermoAssinado = async () => {
       const url = `/aluno/${grr}/termo-aditivo/${termo?.value?.id}/download`;
 
-      const file = await $fetch(url, {
-        method: "GET",
-      });
+      try {
+        const file = await $fetch(url, {
+          method: "GET",
+        });
 
-      const fileURL = URL.createObjectURL(file);
+        const fileURL = URL.createObjectURL(file);
 
-      return window.open(fileURL, "_blank");
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail:
+            err?.response?._data?.error ||
+            "Tivemos um problema ao baixar o termo.",
+          life: 3000,
+        });
+      }
     };
 
     return {
