@@ -1245,4 +1245,14 @@ public class TermoDeEstagioService {
 
         return true;
 	}*/
+	
+	public boolean listarTermosDeEstagioPorContratante(Contratante contratante) {
+
+		List<TermoDeEstagio> termos = termoRepo.findByContratante(contratante);
+		
+        if (termos.size() == 0)
+        	return false;
+
+        return true;
+	}
 }

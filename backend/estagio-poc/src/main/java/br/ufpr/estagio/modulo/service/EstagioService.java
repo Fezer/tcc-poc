@@ -16,6 +16,7 @@ import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Apolice;
+import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
@@ -297,6 +298,16 @@ public class EstagioService {
 	public boolean listarEstagiosPorApolice(Apolice apolice) {
 
 		List<Estagio> estagios = estagioRepo.findByApolice(apolice);
+		
+        if (estagios.size() == 0)
+        	return false;
+
+        return true;
+	}
+	
+	public boolean listarEstagiosPorContratante(Contratante contratante) {
+
+		List<Estagio> estagios = estagioRepo.findByContratante(contratante);
 		
         if (estagios.size() == 0)
         	return false;

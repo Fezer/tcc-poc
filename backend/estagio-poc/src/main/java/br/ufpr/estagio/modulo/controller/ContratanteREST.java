@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTO;
 import br.ufpr.estagio.modulo.dto.ContratanteDTO;
 import br.ufpr.estagio.modulo.dto.EnderecoDTO;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
@@ -25,9 +26,12 @@ import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
+import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.service.ContratanteService;
+import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 
 @CrossOrigin
@@ -37,6 +41,12 @@ public class ContratanteREST {
 	
 	@Autowired
     private ContratanteService contratanteService;
+	
+	@Autowired
+	private EstagioService estagioService;
+	
+	@Autowired
+	private TermoDeEstagioService termoDeEstagioService;
         
     @Autowired
 	private ModelMapper mapper;
@@ -350,10 +360,21 @@ public class ContratanteREST {
 	    		throw new InvalidFieldException("Id do contratante inválido!");
 	    	}
 	    	
-			Optional<Contratante> contratante = contratanteService.buscarPorId(idLong);
+			Optional<Contratante> contratanteFind = contratanteService.buscarPorId(idLong);
 	    
-		    if(contratante.isPresent()) {
-		    	contratanteService.excluirContratante(contratante.get());
+		    if(contratanteFind.isPresent()) {
+		    	Contratante contratante = contratanteFind.get();
+				
+				boolean presenteEmTermosDeEstagio = termoDeEstagioService.listarTermosDeEstagioPorContratante(contratante);
+				boolean presenteEmEstagios = estagioService.listarEstagiosPorContratante(contratante);
+				
+				if (presenteEmTermosDeEstagio)
+					throw new InvalidFieldException("Não é possível excluir um contratante presente em termo de estágio.");
+				
+				if (presenteEmEstagios)
+					throw new InvalidFieldException("Não é possível excluir um contratante presente em estágio.");
+		    	
+		    	contratanteService.excluirContratante(contratante);
 		        return ResponseEntity.noContent().build();
 		    } else {
 		    	throw new NotFoundException("Contratante não encontrado!");
@@ -441,4 +462,56 @@ public class ContratanteREST {
 		}
 	}
     
+    @PutMapping("/{id}/alterar-status")
+	public ResponseEntity<Object> alterarStatusContratante(@PathVariable String id) {
+		try {
+			Long idLong = Long.parseLong(id);
+
+			if (idLong < 1) {
+				throw new InvalidFieldException("Id docontratante inválido!");
+			}
+
+			Optional<Contratante> contratanteFind = contratanteService.buscarPorId(idLong);
+			
+			if (contratanteFind.isPresent()) {
+				Contratante contratante = contratanteFind.get();
+				
+				if (contratante.isAtivo())
+					contratante.setAtivo(false);
+				
+				else if (!contratante.isAtivo())
+					contratante.setAtivo(true);
+
+				contratante.setId(idLong);
+				contratante = contratanteService
+						.atualizarContratante(contratante);
+				
+				ContratanteDTO contratanteDTOAtualizado = mapper.map(contratante,
+						ContratanteDTO.class);
+				return ResponseEntity.ok().body(contratanteDTOAtualizado);
+			} else {
+				throw new NotFoundException("Contratante não encontrado!");
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse("O id deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (RuntimeException ex) {
+			ex.printStackTrace();
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
 }
