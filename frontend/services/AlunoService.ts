@@ -176,8 +176,6 @@ export default class AlunoService {
     );
   }
 
-  // http://localhost:5000/aluno/GRR20204481/upload-ficha/FichaDeAvaliacaoParcial
-
   public async uploadFichaDeAvaliacao(grr: string, fichaData: FormData) {
     return await $fetch(`/aluno/${grr}/upload-ficha/FichaDeAvaliacaoParcial`, {
       method: "POST",
@@ -191,7 +189,6 @@ export default class AlunoService {
     ).catch((err) => console.error(err));
   }
 
-  // http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/gerar-termo-aditivo
   public async downloadTermoAditivo(grr: string, termo: number) {
     return await $fetch(
       `/aluno/${grr}/termo-aditivo/${termo}/gerar-termo-aditivo`,

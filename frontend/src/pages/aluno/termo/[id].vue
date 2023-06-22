@@ -128,6 +128,7 @@ export default defineComponent({
             detail: `O termo de compromisso foi enviado com sucesso!`,
             life: 3000,
           });
+          refreshData();
         })
         .catch((err) => {
           console.error(err);
@@ -140,6 +141,49 @@ export default defineComponent({
         });
     };
 
+    const handleDownloadTermoBase = async () => {
+      try {
+        const url = `/aluno/${grr}/gerar-termo`;
+
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        return toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail: "Tivemos um problema ao baixar o termo.",
+          life: 3000,
+        });
+      }
+    };
+
+    const handleDownloadTermoAssinado = async () => {
+      try {
+        const url = `/aluno/${grr}/download-termo`;
+
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        return toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail: "Tivemos um problema ao baixar o termo.",
+          life: 3000,
+        });
+      }
+    };
     return {
       termo,
       refreshData,
@@ -149,15 +193,41 @@ export default defineComponent({
       handleCancelarTermo,
       handleUploadTermo,
       uploaded,
+      handleDownloadTermoBase,
+      handleDownloadTermoAssinado,
     };
   },
 });
 </script>
 
 <template>
-  <div>
+  <div class="relative">
     <small>Processos > Ver processo</small>
     <h2>Termo de Compromisso</h2>
+
+    <div class="absolute right-0 top-10 gap-2 flex">
+      <Button
+        label="Baixar documento base"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        @click="handleDownloadTermoBase"
+        v-if="['EmPreenchimento', 'EmRevisao'].includes(termo?.statusTermo)"
+      />
+      <Button
+        label="Baixar documento assinado"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        @click="handleDownloadTermoAssinado"
+        v-if="termo?.uploadCompromisso"
+      />
+      <NuxtLink :to="`/aluno/estagio/${termo?.estagio?.id}`">
+        <Button
+          label="Ver estágio"
+          icon="pi pi-eye"
+          class="p-button-secondary"
+        />
+      </NuxtLink>
+    </div>
 
     <StatusTermo
       :etapa="termo?.etapaFluxo"
@@ -233,7 +303,9 @@ export default defineComponent({
         header="Upload do termo assinado."
         :onConfirm="handleSolicitarAprovacao"
         :handleUpload="handleUploadTermo"
-        :confirmBlocked="false"
+        :confirmBlocked="
+          !termo?.estagio?.estagioSEED && !termo?.uploadCompromisso
+        "
         :onClose="() => (state.uploadModalVisible = false)"
         description="Para solicitar a aprovação do seu termo de compromisso, por favor faça o upload do termo assinado pelo supervisor do estágio (na contratante), seu professor(a) orientador(a) e por você."
       />

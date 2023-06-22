@@ -51,6 +51,10 @@ interface BaseTermo {
   apolice?: Apolice;
   seguradora?: Seguradora;
   estagio?: BasicEstagio;
+
+  // verfica se o aluno já fez upload do termo em questão
+  uploadAditivo?: boolean;
+  uploadCompromisso?: boolean;
 }
 
 interface TermoRescisao {
