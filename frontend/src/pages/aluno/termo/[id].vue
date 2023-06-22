@@ -128,7 +128,8 @@ export default defineComponent({
             detail: `O termo de compromisso foi enviado com sucesso!`,
             life: 3000,
           });
-          refreshData();
+          state.uploadModalVisible = false;
+          refresh().then(() => (state.uploadModalVisible = true));
         })
         .catch((err) => {
           console.error(err);

@@ -127,7 +127,8 @@ export default defineComponent({
             detail: `O termo aditivo foi enviado com sucesso!`,
             life: 3000,
           });
-          refreshData();
+          state.uploadModalVisible = false;
+          refresh().then(() => (state.uploadModalVisible = true));
         })
         .catch((err) => {
           console.error(err);
@@ -161,7 +162,6 @@ export default defineComponent({
       }
     };
 
-    // aluno/GRR20204481/termo-aditivo/2/download
     const handleDownloadTermoAssinado = async () => {
       const url = `/aluno/${grr}/termo-aditivo/${termo?.value?.id}/download`;
 
