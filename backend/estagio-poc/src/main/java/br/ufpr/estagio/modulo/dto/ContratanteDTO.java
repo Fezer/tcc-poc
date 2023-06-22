@@ -22,11 +22,12 @@ public class ContratanteDTO implements Serializable {
 	private String representanteEmpresa;
 	private Endereco endereco;
 	private List<Estagio> estagio;
-	private boolean ativo;
 	
 	// adicionado para concluir a task de associar contratante ao termo
 	private List<TermoDeEstagio> termoDeEstagio;
 	
+	private boolean ativo;
+
 	public ContratanteDTO() {
 		super();
 		// TODO Auto-generated constructor stub

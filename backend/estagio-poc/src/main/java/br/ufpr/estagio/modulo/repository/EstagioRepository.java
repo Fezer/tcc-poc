@@ -28,5 +28,6 @@ public interface EstagioRepository extends JpaRepository<Estagio, Long>{
 	List<Estagio> findByContratante(Contratante contratante);
 
 	List<Estagio> findBySeguradora(Seguradora seguradora);
+
 	
 }

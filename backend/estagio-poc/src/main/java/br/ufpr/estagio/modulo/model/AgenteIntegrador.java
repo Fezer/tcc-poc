@@ -58,7 +58,7 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 		this.estagio = estagio;
 		this.ativo = ativo;
 	}
-
+	
 	public long getId() {
 		return super.getId();
 	}

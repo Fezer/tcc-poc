@@ -423,25 +423,24 @@ public class AgenteIntegradorREST {
 			}
 		} catch (NotFoundException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(ex.getMessage());
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (NumberFormatException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	    } catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse("O id deve ser um inteiro!");
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-		} catch (InvalidFieldException ex) {
+	        ErrorResponse response = new ErrorResponse("O id deve ser um inteiro!");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (InvalidFieldException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(ex.getMessage());
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-		} catch (RuntimeException ex) {
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch (RuntimeException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(ex.getMessage());
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(
-					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	        ErrorResponse response = new ErrorResponse(ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    } catch(Exception ex) {
+	    	ex.printStackTrace();
+	    	ErrorResponse response = new ErrorResponse("Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 

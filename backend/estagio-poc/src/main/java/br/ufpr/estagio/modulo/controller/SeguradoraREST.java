@@ -360,7 +360,6 @@ public class SeguradoraREST {
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
-
 	}
 
 	@DeleteMapping("/{id}")
