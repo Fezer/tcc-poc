@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "c0a403b5-66a1-44cd-bb27-4ea9b61c0faf",
+		"_postman_id": "a416c79d-1384-4ca3-b000-63bc73a861c5",
 		"name": "TCC-Estagio",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17301767"
 	},
 	"item": [
 		{
@@ -24,7 +25,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"orientador@orientador.com\",\r\n    \"senha\":\"orientador@orientador.com\",\r\n    \"tipoUsuario\":\"COE\",\r\n    \"identifier\": \"5\"\r\n}"
+							"raw": "{\r\n    \"login\":\"coe2@ufpr.br\",\r\n    \"senha\":\"coe123\",\r\n    \"tipoUsuario\":\"COE\"\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/auth/criarUsuario",
@@ -54,7 +55,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"coe@coe.com\",\r\n    \"senha\":\"coe@coe.com\"\r\n}"
+							"raw": "{\r\n    \"login\":\"coafe@ufpr.br\",\r\n    \"senha\":\"coafe123\"\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/auth/login",
@@ -140,7 +141,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termo?page=0&status=EmAprovacao&tipoEstagio=NaoObrigatorio&tipoTermo=TermoDeCompromisso&etapa=COAFE&grr=GRR2020014",
+							"raw": "http://localhost:5000/termo",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -148,32 +149,6 @@
 							"port": "5000",
 							"path": [
 								"termo"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "status",
-									"value": "EmAprovacao"
-								},
-								{
-									"key": "tipoEstagio",
-									"value": "NaoObrigatorio"
-								},
-								{
-									"key": "tipoTermo",
-									"value": "TermoDeCompromisso"
-								},
-								{
-									"key": "etapa",
-									"value": "COAFE"
-								},
-								{
-									"key": "grr",
-									"value": "GRR2020014"
-								}
 							]
 						}
 					},
@@ -460,7 +435,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5000/termoDeRescisao?page=0",
+							"raw": "http://localhost:5000/termoDeRescisao",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -468,42 +443,6 @@
 							"port": "5000",
 							"path": [
 								"termoDeRescisao"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "grrAluno",
-									"value": "GRR",
-									"disabled": true
-								},
-								{
-									"key": "etapaFluxo",
-									"value": "Ciencia",
-									"disabled": true
-								},
-								{
-									"key": "cienciaCOE",
-									"value": "false",
-									"disabled": true
-								},
-								{
-									"key": "cienciaOrientador",
-									"value": "false",
-									"disabled": true
-								},
-								{
-									"key": "cienciaCOAFE",
-									"value": "true",
-									"disabled": true
-								},
-								{
-									"key": "cienciaCoordenacao",
-									"value": "true",
-									"disabled": true
-								}
 							]
 						}
 					},
@@ -754,7 +693,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/aluno/20204481/estagio",
+									"raw": "http://localhost:5000/aluno/GRR20175486/estagio",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -762,7 +701,7 @@
 									"port": "5000",
 									"path": [
 										"aluno",
-										"20204481",
+										"GRR20175486",
 										"estagio"
 									]
 								}
@@ -2136,27 +2075,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Buscar Aluno - Atores Institucionais",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/siga/aluno/GRR20200141",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"siga",
-								"aluno",
-								"GRR20200141"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -2214,7 +2132,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/estagio/?page=0&grr=GRR20200141&nomeEmpresa=Empre&tipoEstagio=Obrigatorio&statusEstagio=Cancelado",
+							"raw": "http://localhost:5000/estagio/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2223,28 +2141,6 @@
 							"path": [
 								"estagio",
 								""
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "grr",
-									"value": "GRR20200141"
-								},
-								{
-									"key": "nomeEmpresa",
-									"value": "Empre"
-								},
-								{
-									"key": "tipoEstagio",
-									"value": "Obrigatorio"
-								},
-								{
-									"key": "statusEstagio",
-									"value": "Cancelado"
-								}
 							]
 						}
 					},
@@ -2667,7 +2563,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/certificadoDeEstagio/?page=0&grrAluno=2020014&etapaFluxo=COE",
+							"raw": "http://localhost:5000/certificadoDeEstagio/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2676,20 +2572,6 @@
 							"path": [
 								"certificadoDeEstagio",
 								""
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "grrAluno",
-									"value": "2020014"
-								},
-								{
-									"key": "etapaFluxo",
-									"value": "COE"
-								}
 							]
 						}
 					},
@@ -2902,6 +2784,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "alterarStatusApolice",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/apolice/1/alterar-status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"apolice",
+								"1",
+								"alterar-status"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2915,7 +2827,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Seguradora4321\",\n    \"seguradoraUfpr\": false,\n    \"ativa\": true\n}",
+							"raw": "{\n    \"nome\": \"Nova\",\n    \"seguradoraUfpr\": false,\n    \"ativa\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2993,7 +2905,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/seguradora/?page=0&nome=Tes&ativo=false&seguradoraUFPR=false",
+							"raw": "http://localhost:5000/seguradora/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3002,24 +2914,6 @@
 							"path": [
 								"seguradora",
 								""
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "nome",
-									"value": "Tes"
-								},
-								{
-									"key": "ativo",
-									"value": "false"
-								},
-								{
-									"key": "seguradoraUFPR",
-									"value": "false"
-								}
 							]
 						}
 					},
@@ -3317,7 +3211,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/agente-integrador/?page=0&nome=Tes124",
+							"raw": "http://localhost:5000/agente-integrador/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3326,41 +3220,6 @@
 							"path": [
 								"agente-integrador",
 								""
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "cnpj",
-									"value": "2124124124",
-									"disabled": true
-								},
-								{
-									"key": "nome",
-									"value": "Tes124"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "listarTodosAgentesIntegradores",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/agente-integrador/todos",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"agente-integrador",
-								"todos"
 							]
 						}
 					},
@@ -3410,6 +3269,36 @@
 							"path": [
 								"agente-integrador",
 								"152"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterarStatusAgenteIntegrador",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/agente-integrador/152/alterar-status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"agente-integrador",
+								"152",
+								"alterar-status"
 							]
 						}
 					},
@@ -3537,6 +3426,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "alterarStatusConvenio",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/convenio/1/alterar-status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"convenio",
+								"1",
+								"alterar-status"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -3598,7 +3517,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/contratante/?page=0&nome=Tes&cnpj=41",
+							"raw": "http://localhost:5000/contratante/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3607,20 +3526,6 @@
 							"path": [
 								"contratante",
 								""
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "nome",
-									"value": "Tes"
-								},
-								{
-									"key": "cnpj",
-									"value": "41"
-								}
 							]
 						}
 					},
@@ -3766,6 +3671,27 @@
 								"152",
 								"endereco",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterarStatusContratante",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/contratante/3/alterar-status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"contratante",
+								"3",
+								"alterar-status"
 							]
 						}
 					},
@@ -5727,7 +5653,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/orientador/5/estagio?page=0&grrAluno&statusEstagio",
+									"raw": "http://localhost:5000/orientador/106/estagio",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -5735,22 +5661,8 @@
 									"port": "5000",
 									"path": [
 										"orientador",
-										"5",
+										"106",
 										"estagio"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "0"
-										},
-										{
-											"key": "grrAluno",
-											"value": null
-										},
-										{
-											"key": "statusEstagio",
-											"value": null
-										}
 									]
 								}
 							},
