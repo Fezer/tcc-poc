@@ -191,9 +191,11 @@ export default defineComponent({
       <div class="grid formgrid">
         <div class="field col">
           <label for="dataTermino">Data encerramento estágio</label>
-          <InputMask
-            mask="99/99/9999"
+          <Calendar
             v-model="state.dataTermino"
+            :showIcon="true"
+            dateFormat="dd/mm/yy"
+            showButtonBar
             :class="errors['dataTermino'] && 'p-invalid'"
           />
           <small class="text-rose-500">{{ errors["dataTermino"] }}</small>
@@ -229,8 +231,10 @@ export default defineComponent({
       <div class="grid formgrid">
         <div class="field col-5">
           <label for="dataInicio">Data Inicio</label>
-          <InputMask
-            mask="99/99/9999"
+          <Calendar
+            :showIcon="true"
+            dateFormat="dd/mm/yy"
+            showButtonBar
             v-model="editingRecessPeriod.dataInicio"
             :class="errors['dataInicio'] && 'p-invalid'"
           />
@@ -238,8 +242,10 @@ export default defineComponent({
         </div>
         <div class="field col-5">
           <label for="dataFim">Data Fim</label>
-          <InputMask
-            mask="99/99/9999"
+          <Calendar
+            :showIcon="true"
+            dateFormat="dd/mm/yy"
+            showButtonBar
             v-model="editingRecessPeriod.dataFim"
             :class="errors['dataFim'] && 'p-invalid'"
           />

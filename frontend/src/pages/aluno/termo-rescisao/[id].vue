@@ -23,7 +23,9 @@ export default defineComponent({
 
     const { id } = route.params;
 
-    const { data: termo } = useFetch<TermoRescisao>("/termoDeRescisao/" + id);
+    const { data: termo, refresh } = useFetch<TermoRescisao>(
+      "/termoDeRescisao/" + id
+    );
 
     const cancelVisible = ref(false);
     const uploadVisible = ref(false);
@@ -85,13 +87,17 @@ export default defineComponent({
       formData.append("file", file);
 
       await termoService
-        .uploadTermoDeRescisao(grr, formData)
+        .uploadTermoDeRescisao(grr, termo?.value?.id, formData)
         .then(() => {
           toast.add({
             severity: "success",
             summary: `Termo de rescisão enviado!`,
             detail: `O termo de rescisão foi enviada com sucesso!`,
             life: 3000,
+          });
+          uploadVisible.value = false;
+          refresh().then(() => {
+            uploadVisible.value = true;
           });
         })
         .catch((err) => {
@@ -103,6 +109,52 @@ export default defineComponent({
             life: 3000,
           });
         });
+    };
+
+    const handleDownloadTermoBase = async () => {
+      // http://localhost:5000/aluno/GRR20204481/termo-rescisao/1/gerar-termo-rescisao
+
+      const url = `/aluno/${grr}/termo-rescisao/${id}/gerar-termo-rescisao`;
+
+      try {
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        return toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail: "Tivemos um problema ao baixar o termo.",
+          life: 3000,
+        });
+      }
+    };
+
+    const handleDownloadTermoAssinado = async () => {
+      try {
+        const url = `/aluno/${grr}/termo-de-rescisao/${termo?.value?.id}/download`;
+
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        return toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail: "Tivemos um problema ao baixar o termo.",
+          life: 3000,
+        });
+      }
     };
 
     const getTodasAsCiencias = () => {
@@ -127,13 +179,32 @@ export default defineComponent({
       todasAsCiencias,
       uploadVisible,
       handleUploadTermoRescisao,
+      handleDownloadTermoBase,
+      handleDownloadTermoAssinado,
     };
   },
 });
 </script>
 <template>
-  <div>
+  <div class="relative">
     <h3>Termo de Rescisão</h3>
+
+    <div class="absolute right-0 top-4 gap-2 flex">
+      <Button
+        label="Baixar documento base"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        @click="handleDownloadTermoBase"
+        v-if="termo?.etapaFluxo === 'Aluno' && !termo?.cienciaCOAFE"
+      />
+      <Button
+        label="Baixar documento assinado"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        v-if="termo?.upload"
+        @click="handleDownloadTermoAssinado"
+      />
+    </div>
 
     <div class="card">
       <h5>Dados Termo</h5>
@@ -224,7 +295,7 @@ export default defineComponent({
         :onConfirm="handleSolicitarAprovacao"
         description="Você precisa enviar esse termo de rescisão assinado para solicitar aprovação."
         :handleUpload="handleUploadTermoRescisao"
-        :confirmBlocked="false"
+        :confirmBlocked="!termo?.upload"
       >
       </UploadConfirm>
     </div>
