@@ -43,9 +43,6 @@ public class ContratanteREST {
 
 	@Autowired
 	private ContratanteService contratanteService;
-
-	@Autowired
-  private ContratanteService contratanteService;
 	
 	@Autowired
 	private EstagioService estagioService;
@@ -511,7 +508,7 @@ public class ContratanteREST {
 		}
 	}
 
-  @PutMapping("/{id}/alterar-status")
+	@PutMapping("/{id}/alterar-status")
 	public ResponseEntity<Object> alterarStatusContratante(@PathVariable String id) {
 		try {
 			Long idLong = Long.parseLong(id);

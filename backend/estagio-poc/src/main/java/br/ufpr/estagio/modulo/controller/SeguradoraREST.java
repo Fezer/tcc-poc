@@ -40,7 +40,7 @@ import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 public class SeguradoraREST {
 
 	@Autowired
-  private ApoliceService apoliceService;
+	private ApoliceService apoliceService;
 	
 	@Autowired
 	private EstagioService estagioService;
@@ -360,7 +360,8 @@ public class SeguradoraREST {
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
-
+	}
+	
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluirSeguradora(@PathVariable String id){
         try {
@@ -412,6 +413,6 @@ public class SeguradoraREST {
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
-
-	}
+    	
+    }
 }

@@ -91,6 +91,23 @@ public class ConvenioService {
         }
 		
 	}
+	
+	/*public boolean verificarTermoConvenio(Convenio c) {
+	Optional<Convenio> convenioOptional = convenioRepository.findById(c.getId());
+    if (convenioOptional.isPresent()) {
+    	Convenio convenio = convenioOptional.get();
+    	AgenteIntegrador agente = convenio.getAgenteIntegrador();
+    	
+    	boolean termos = estagioService.listarEstagiosPorAgenteIntegrador(agente);
+    	boolean estagios = termoDeEstagioService.listarTermosDeEstagioPorAgenteIntegrador(agente);
+    	
+    	if (!termos || !estagios)
+    		return false;
+    	
+    	return true;
+    }
+	return false;
+}*/
 
 	public Convenio associarAgenteAoConvenio(Convenio convenio, AgenteIntegrador agente) {
 		convenio.setAgenteIntegrador(agente);
