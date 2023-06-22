@@ -13,6 +13,7 @@ import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
+import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
@@ -279,6 +280,16 @@ public class EstagioService {
 	public List<Estagio> buscarEstagioPorSeguradoraUfpr() {
 		List<Estagio> estagio = estagioRepo.findBySeguradoraSeguradoraUfprIsTrue();
 		return estagio;
+	}
+
+	public boolean listarEstagiosPorAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
+
+		List<Estagio> estagios = estagioRepo.findByAgenteIntegrador(agenteIntegrador);
+		
+        if (estagios.size() == 0)
+        	return false;
+
+        return true;
 	}
 
 }

@@ -28,6 +28,7 @@ import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
 import br.ufpr.estagio.modulo.service.ConvenioService;
+import br.ufpr.estagio.modulo.service.EstagioService;
 import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
@@ -37,6 +38,9 @@ public class AgenteIntegradorREST {
 
 	@Autowired
 	private AgenteIntegradorService agenteIntegradorService;
+	
+	@Autowired
+	private EstagioService estagioService;
 	
 	@Autowired
 	private TermoDeEstagioService termoDeEstagioService;
@@ -341,9 +345,13 @@ public class AgenteIntegradorREST {
 				AgenteIntegrador agenteIntegrador = agenteIntegradorFind.get();
 				
 				boolean presenteEmTermosDeEstagio = termoDeEstagioService.listarTermosDeEstagioPorAgenteIntegrador(agenteIntegrador);
+				boolean presenteEmEstagios = estagioService.listarEstagiosPorAgenteIntegrador(agenteIntegrador);
 				
 				if (presenteEmTermosDeEstagio)
 					throw new InvalidFieldException("Não é possível excluir um agente integrador presente em termo de estágio.");
+				
+				if (presenteEmEstagios)
+					throw new InvalidFieldException("Não é possível excluir um agente integrador presente em estágio.");
 				
 				agenteIntegradorService.excluirAgenteIntegrador(agenteIntegrador);
 				return ResponseEntity.noContent().build();
