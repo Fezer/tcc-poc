@@ -40,16 +40,16 @@ import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 public class SeguradoraREST {
 
 	@Autowired
-  private ApoliceService apoliceService;
-	
+	private ApoliceService apoliceService;
+
 	@Autowired
 	private EstagioService estagioService;
-	
+
 	@Autowired
 	private TermoDeEstagioService termoDeEstagioService;
-    
-  @Autowired
-  private SeguradoraService seguradoraService;
+
+	@Autowired
+	private SeguradoraService seguradoraService;
 
 	@Autowired
 	private ModelMapper mapper;
@@ -361,48 +361,52 @@ public class SeguradoraREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluirSeguradora(@PathVariable String id){
-        try {
-        	int idInt = Integer.parseInt(id);
-	    	
-	    	if (idInt < 1) {
-	    		throw new InvalidFieldException("Id da seguradora inválido!");
-	    	}
-	    	
-        	Optional<Seguradora> seguradoraFind = seguradoraService.buscarSeguradoraPorId(idInt);
-            
-        	if(seguradoraFind.isPresent()) {
-        		Seguradora seguradora = seguradoraFind.get();
-        		
-        		boolean presenteEmTermosDeEstagio = termoDeEstagioService.listarTermosDeEstagioPorSeguradora(seguradora);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> excluirSeguradora(@PathVariable String id) {
+		try {
+			int idInt = Integer.parseInt(id);
+
+			if (idInt < 1) {
+				throw new InvalidFieldException("Id da seguradora inválido!");
+			}
+
+			Optional<Seguradora> seguradoraFind = seguradoraService.buscarSeguradoraPorId(idInt);
+
+			if (seguradoraFind.isPresent()) {
+				Seguradora seguradora = seguradoraFind.get();
+
+				boolean presenteEmTermosDeEstagio = termoDeEstagioService
+						.listarTermosDeEstagioPorSeguradora(seguradora);
 				boolean presenteEmEstagios = estagioService.listarEstagiosPorSeguradora(seguradora);
-				
+
 				if (presenteEmTermosDeEstagio)
-					throw new InvalidFieldException("Não é possível excluir uma seguradora presente em termo de estágio.");
-				
+					throw new InvalidFieldException(
+							"Não é possível excluir uma seguradora presente em termo de estágio.");
+
 				if (presenteEmEstagios)
 					throw new InvalidFieldException("Não é possível excluir uma seguradora presente em estágio.");
-        		
-                seguradoraService.excluirSeguradora(seguradora);
-                return ResponseEntity.noContent().build();
-            } else {
-            	throw new NotFoundException("Seguradora não encontrada!");
-            }
-        	
-        } catch (NotFoundException ex) {
-        	ex.printStackTrace();
-        	ErrorResponse response = new ErrorResponse(ex.getMessage());
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-	    } catch (NumberFormatException ex) {
-	    	ex.printStackTrace();
-	    	ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    } catch (InvalidFieldException ex) {
-	    	ex.printStackTrace();
-	    	ErrorResponse response = new ErrorResponse(ex.getMessage());
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	    } catch (RuntimeException ex) {
+
+				seguradoraService.excluirSeguradora(seguradora);
+				return ResponseEntity.noContent().build();
+			} else {
+				throw new NotFoundException("Seguradora não encontrada!");
+			}
+
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("Id da seguradora deve ser um inteiro!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

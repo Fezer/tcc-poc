@@ -245,6 +245,30 @@ export default defineComponent({
       return state.justificativa.trim().length > 0;
     };
 
+    const handleDownloadTermo = async () => {
+      const grrAluno = termo?.value?.grrAluno;
+      let url = `/coordenacao/${grrAluno}/termo-de-compromisso/${termo?.value?.id}/download`;
+      if (termo?.value?.tipoTermoDeEstagio === "TermoAditivo") {
+        url = `/coordenacao/${grrAluno}/termo-aditivo/${termo?.value?.id}/download`;
+      }
+
+      const file = await $fetch(url, {
+        method: "GET",
+      }).catch((err) => {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: err?.response?._data?.error || "Erro inesperado",
+          detail: "Erro ao baixar o termo!",
+          life: 3000,
+        });
+      });
+
+      const fileURL = URL.createObjectURL(file);
+
+      return window.open(fileURL, "_blank");
+    };
+
     onMounted(() => {
       console.log(termo);
       if (termo) {
@@ -268,6 +292,7 @@ export default defineComponent({
       handleCienciaPlanoAtividades,
       handleCienciaFormacaoSupervisor,
       canConfirmAction,
+      handleDownloadTermo,
     };
   },
 });
@@ -280,15 +305,24 @@ export default defineComponent({
       {{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}
     </h2>
 
-    <NuxtLink
-      :to="`/estagio/${termo?.estagio?.id}?perfil=coord&termo=${termo?.id}`"
-    >
+    <div class="absolute right-8 top-36 flex items-center gap-2">
       <Button
-        label="Ver estágio"
-        class="p-button-secondary absolute right-8 top-36"
+        label="Ver documento"
+        class="p-button-secondary"
         icon="pi pi-eye"
+        @click="handleDownloadTermo"
       />
-    </NuxtLink>
+
+      <NuxtLink
+        :to="`/estagio/${termo?.estagio?.id}?perfil=coord&termo=${termo?.id}`"
+      >
+        <Button
+          label="Ver estágio"
+          class="p-button-secondary"
+          icon="pi pi-eye"
+        />
+      </NuxtLink>
+    </div>
 
     <Aluno :grrAluno="termo?.grrAluno" v-if="termo?.grrAluno" />
 

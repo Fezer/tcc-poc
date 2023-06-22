@@ -157,11 +157,10 @@ export default defineComponent({
 
     const handleDownloadTermo = async () => {
       const grrAluno = termo?.value?.grrAluno;
-
-      let url = `${config.BACKEND_URL}/coe/${grrAluno}/download-termo`;
-      // if (termo?.tipoTermoDeEstagio === "TermoAditivo") {
-      //   url = `${config.BACKEND_URL}/aluno/${grrAluno}/termo-aditivo/${termo?.id}/gerar-termo-aditivo`;
-      // }
+      let url = `/coe/${grrAluno}/termo-de-compromisso/${termo?.value?.id}/download`;
+      if (termo?.value?.tipoTermoDeEstagio === "TermoAditivo") {
+        url = `/coe/${grrAluno}/termo-aditivo/${termo?.value?.id}/download`;
+      }
 
       const file = await $fetch(url, {
         method: "GET",

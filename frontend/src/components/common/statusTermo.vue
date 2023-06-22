@@ -46,7 +46,7 @@ export default defineComponent({
 
     const percentage = getPercentageByEtapa();
 
-    const handleDownloadTermo = async () => {
+    const handleDownloadTermoBase = async () => {
       let url = `/aluno/${grr}/gerar-termo`;
       if (termo?.tipoTermoDeEstagio === "TermoAditivo") {
         url = `/aluno/${grr}/termo-aditivo/${termo?.id}/gerar-termo-aditivo`;
@@ -66,7 +66,7 @@ export default defineComponent({
       parseDate,
       motivo,
       termo,
-      handleDownloadTermo,
+      handleDownloadTermoBase,
     };
   },
 });
@@ -99,19 +99,6 @@ export default defineComponent({
         <div class="text-box col-4 flex flex-col">
           <strong>Data de Início do processo</strong>
           <span>{{ parseDate(termo?.dataCriacao) }}</span>
-        </div>
-        <div
-          class="col-4 flex items-center justify-end"
-          v-if="
-            ['EmPreenchimento', 'Aprovado'].includes(termo?.statusTermo || '')
-          "
-        >
-          <Button
-            label="Baixar documento"
-            class="p-button-secondary self-center"
-            icon="pi pi-file"
-            @click="handleDownloadTermo"
-          />
         </div>
       </div>
       <div v-if="!!termo?.descricaoAjustes">

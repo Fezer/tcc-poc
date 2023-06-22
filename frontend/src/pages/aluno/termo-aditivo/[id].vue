@@ -137,7 +137,7 @@ export default defineComponent({
       formData.append("file", file);
 
       await alunoService
-        .uploadTermoAditivo(grr, formData)
+        .uploadTermoAditivo(grr, termo?.value?.id, formData)
         .then(() => {
           toast.add({
             severity: "success",
@@ -157,7 +157,7 @@ export default defineComponent({
         });
     };
 
-    const handleDownloadTermo = async () => {
+    const handleDownloadTermoBase = async () => {
       try {
         const file = await alunoService.downloadTermoAditivo(
           grr,
@@ -178,6 +178,19 @@ export default defineComponent({
       }
     };
 
+    // aluno/GRR20204481/termo-aditivo/2/download
+    const handleDownloadTermoAssinado = async () => {
+      const url = `/aluno/${grr}/termo-aditivo/${termo?.value?.id}/download`;
+
+      const file = await $fetch(url, {
+        method: "GET",
+      });
+
+      const fileURL = URL.createObjectURL(file);
+
+      return window.open(fileURL, "_blank");
+    };
+
     return {
       termo,
       refreshData,
@@ -186,7 +199,8 @@ export default defineComponent({
       handleSolicitarAprovacao,
       handleCancelarTermo,
       handleUploadTermo,
-      handleDownloadTermo,
+      handleDownloadTermoBase,
+      handleDownloadTermoAssinado,
     };
   },
 });
@@ -199,10 +213,16 @@ export default defineComponent({
 
     <div class="absolute right-0 top-10 gap-2 flex">
       <Button
-        label="Ver documento"
+        label="Baixar documento base"
         class="p-button-secondary"
         icon="pi pi-file"
-        @click="handleDownloadTermo"
+        @click="handleDownloadTermoBase"
+      />
+      <Button
+        label="Baixar documento assinado"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        @click="handleDownloadTermoAssinado"
       />
       <NuxtLink :to="`/aluno/estagio/${termo?.estagio?.id}`">
         <Button

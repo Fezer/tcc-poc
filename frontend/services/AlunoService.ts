@@ -105,9 +105,13 @@ export default class AlunoService {
     });
   }
 
-  // http://localhost:5000/aluno/GRR20204481/upload-termo-aditivo
-  public async uploadTermoAditivo(grr: string, termoData: FormData) {
-    return await $fetch(`/aluno/${grr}/upload-termo-aditivo`, {
+  // http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/upload
+  public async uploadTermoAditivo(
+    grr: string,
+    termo: number,
+    termoData: FormData
+  ) {
+    return await $fetch(`/aluno/${grr}/termo-aditivo/${termo}/upload`, {
       method: "POST",
       body: termoData,
     });

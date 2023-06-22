@@ -361,12 +361,11 @@ public class CoeREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/download-termo")
-	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL,
-			@RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL) {
 		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 			throw new BadRequestException("GRR do aluno não informado!");
 		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, null);
 			if (aluno == null) {
 				throw new NotFoundException("Aluno não encontrado!");
 			} else {
@@ -400,13 +399,12 @@ public class CoeREST {
 
 	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/download")
 	public ResponseEntity<Object> downloadTermoDeCompromissoAluno(@PathVariable String grrAlunoURL,
-			@PathVariable String id,
-			@RequestHeader("Authorization") String accessToken) {
+			@PathVariable String id) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, null);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -481,13 +479,12 @@ public class CoeREST {
 	}
 
 	@GetMapping("/{grrAlunoURL}/termo-aditivo/{id}/download")
-	public ResponseEntity<Object> downloadTermoAditivoAluno(@PathVariable String grrAlunoURL, @PathVariable String id,
-			@RequestHeader("Authorization") String accessToken) {
+	public ResponseEntity<Object> downloadTermoAditivoAluno(@PathVariable String grrAlunoURL, @PathVariable String id) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, null);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -563,13 +560,12 @@ public class CoeREST {
 
 	@GetMapping("/{grrAlunoURL}/termo-de-rescisao/{id}/download")
 	public ResponseEntity<Object> downloadTermoDeRescisaoAluno(@PathVariable String grrAlunoURL,
-			@PathVariable String id,
-			@RequestHeader("Authorization") String accessToken) {
+			@PathVariable String id) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, null);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -650,13 +646,12 @@ public class CoeREST {
 
 	@GetMapping("/{grrAlunoURL}/ficha-de-avaliacao/{id}/download")
 	public ResponseEntity<Object> downloadFichaDeAvaliacaoAluno(@PathVariable String grrAlunoURL,
-			@PathVariable String id,
-			@RequestHeader("Authorization") String accessToken) {
+			@PathVariable String id) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, null);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
@@ -734,13 +729,12 @@ public class CoeREST {
 
 	@GetMapping("/{grrAlunoURL}/relatorio-de-estagio/{id}/download")
 	public ResponseEntity<Object> downloadRelatorioDeEstagioAluno(@PathVariable String grrAlunoURL,
-			@PathVariable String id,
-			@RequestHeader("Authorization") String accessToken) {
+			@PathVariable String id) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, null);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
