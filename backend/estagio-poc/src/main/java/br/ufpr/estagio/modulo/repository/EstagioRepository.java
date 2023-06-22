@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.*;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Aluno;
+import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Estagio;
 
 public interface EstagioRepository extends JpaRepository<Estagio, Long>{
@@ -18,5 +19,7 @@ public interface EstagioRepository extends JpaRepository<Estagio, Long>{
 	List<Estagio> findBySeguradoraSeguradoraUfprIsTrue();
 
 	List<Estagio> findByAgenteIntegrador(AgenteIntegrador agenteIntegrador);
+	
+	List<Estagio> findByApolice(Apolice apolice);
 	
 }

@@ -1224,4 +1224,14 @@ public class TermoDeEstagioService {
 
         return true;
 	}
+	
+	public boolean listarTermosDeEstagioPorApolice(Apolice apolice) {
+
+		List<TermoDeEstagio> termos = termoRepo.findByApolice(apolice);
+		
+        if (termos.size() == 0)
+        	return false;
+
+        return true;
+	}
 }
