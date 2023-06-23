@@ -126,7 +126,7 @@ public class TermoREST {
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> listarTermo(@PathVariable Long id) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(id);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -151,7 +151,7 @@ public class TermoREST {
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody TermoDeEstagioDTO termo) {
 		try {
-			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(id);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -174,7 +174,7 @@ public class TermoREST {
 	public ResponseEntity<Object> atualizarPlanoAtividades(@PathVariable Long id,
 			@RequestBody PlanoDeAtividadesDTO planoAtividades) {
 		try {
-			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(id);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -197,7 +197,7 @@ public class TermoREST {
 	@PutMapping("/{termoId}/associarOrientador/{orientadorId}")
 	public ResponseEntity<Object> associarOrientador(@PathVariable Long termoId, @PathVariable Long orientadorId) {
 		try {
-			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(termoId);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
@@ -224,7 +224,7 @@ public class TermoREST {
 	@PutMapping("/{termoId}/associarAgenteIntegrador/{agenteId}")
 	public ResponseEntity<Object> associarAgenteIntegrador(@PathVariable Long termoId, @PathVariable Long agenteId) {
 		try {
-			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(termoId);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
@@ -251,7 +251,7 @@ public class TermoREST {
 	@PutMapping("/{termoId}/associarApolice/{apoliceId}")
 	public ResponseEntity<Object> associarApolice(@PathVariable Long termoId, @PathVariable Long apoliceId) {
 		try {
-			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(termoId);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
@@ -278,7 +278,7 @@ public class TermoREST {
 	@PutMapping("/{termoId}/associarContratante/{contratanteId}")
 	public ResponseEntity<Object> associarContratante(@PathVariable Long termoId, @PathVariable Long contratanteId) {
 		try {
-			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(termoId);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
@@ -305,7 +305,7 @@ public class TermoREST {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> delete(@PathVariable Long id) {
 		try {
-			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(id));
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(id);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
