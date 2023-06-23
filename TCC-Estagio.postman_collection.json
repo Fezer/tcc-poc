@@ -1037,7 +1037,7 @@
 									]
 								},
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/upload",
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-aditivo/4/upload",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1047,7 +1047,7 @@
 										"aluno",
 										"GRR20204481",
 										"termo-aditivo",
-										"2",
+										"4",
 										"upload"
 									]
 								}
@@ -2827,7 +2827,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Nova\",\n    \"seguradoraUfpr\": false,\n    \"ativa\": true\n}",
+							"raw": "{\n    \"nome\": \"Seguradora1234\",\n    \"seguradoraUfpr\": false,\n    \"ativa\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5122,6 +5122,14 @@
 										"download-termo"
 									]
 								}
+							},
+							"response": []
+						},
+						{
+							"name": "associarApoliceAoTermo",
+							"request": {
+								"method": "GET",
+								"header": []
 							},
 							"response": []
 						}
