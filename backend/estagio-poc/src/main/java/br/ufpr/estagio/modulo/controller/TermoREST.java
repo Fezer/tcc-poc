@@ -32,6 +32,8 @@ import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
+import br.ufpr.estagio.modulo.exception.BadRequestException;
+import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
@@ -73,8 +75,12 @@ public class TermoREST {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -82,7 +88,7 @@ public class TermoREST {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<Page<TermoDeEstagioDTO>> listarTermoDeCompromissoFiltro(
+	public ResponseEntity<Object> listarTermoDeCompromissoFiltro(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(required = false) Optional<EnumStatusTermo> status,
 			@RequestParam(required = false) Optional<EnumEtapaFluxo> etapa,
@@ -114,19 +120,27 @@ public class TermoREST {
 				return ResponseEntity.status(HttpStatus.OK).body(
 						new PageImpl<>(listaTermosDTO, paginaTermos.getPageable(), paginaTermos.getTotalElements()));
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> listarTermo(@PathVariable Long id) {
+	public ResponseEntity<Object> listarTermo(@PathVariable String id) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(id);
+			long idLong = Long.parseLong(id);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -140,8 +154,25 @@ public class TermoREST {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -149,9 +180,14 @@ public class TermoREST {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody TermoDeEstagioDTO termo) {
+	public ResponseEntity<Object> atualizar(@PathVariable String id, @RequestBody TermoDeEstagioDTO termo) {
 		try {
-			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(id);
+			long idLong = Long.parseLong(id);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -162,8 +198,25 @@ public class TermoREST {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -171,10 +224,15 @@ public class TermoREST {
 	}
 
 	@PutMapping("/{id}/planoAtividades")
-	public ResponseEntity<Object> atualizarPlanoAtividades(@PathVariable Long id,
+	public ResponseEntity<Object> atualizarPlanoAtividades(@PathVariable String id,
 			@RequestBody PlanoDeAtividadesDTO planoAtividades) {
 		try {
-			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(id);
+			long idLong = Long.parseLong(id);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -186,8 +244,25 @@ public class TermoREST {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -195,13 +270,23 @@ public class TermoREST {
 	}
 
 	@PutMapping("/{termoId}/associarOrientador/{orientadorId}")
-	public ResponseEntity<Object> associarOrientador(@PathVariable Long termoId, @PathVariable Long orientadorId) {
+	public ResponseEntity<Object> associarOrientador(@PathVariable String termoId, @PathVariable String orientadorId) {
 		try {
-			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(termoId);
+			long idLong = Long.parseLong(termoId);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id do termo inválido.");
+			
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
-			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(orientadorId);
+			
+			long idOrientadorLong = Long.parseLong(orientadorId);
+
+			if (idOrientadorLong < 1L)
+				throw new InvalidFieldException("Id do orientador inválido.");
+			Optional<Orientador> orientadorFind = orientadorService.buscarOrientadorPorId(idOrientadorLong);
 			if (orientadorFind.isEmpty()) {
 				throw new NotFoundException("Orientador não encontrado!");
 			} else {
@@ -213,8 +298,25 @@ public class TermoREST {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -222,13 +324,24 @@ public class TermoREST {
 	}
 
 	@PutMapping("/{termoId}/associarAgenteIntegrador/{agenteId}")
-	public ResponseEntity<Object> associarAgenteIntegrador(@PathVariable Long termoId, @PathVariable Long agenteId) {
+	public ResponseEntity<Object> associarAgenteIntegrador(@PathVariable String termoId, @PathVariable String agenteId) {
 		try {
-			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(termoId);
+			long idLong = Long.parseLong(termoId);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id do termo inválido.");
+			
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
-			Optional<AgenteIntegrador> agenteFind = agenteIntegradorService.buscarPorId(agenteId);
+			
+			long idAgenteLong = Long.parseLong(agenteId);
+
+			if (idAgenteLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<AgenteIntegrador> agenteFind = agenteIntegradorService.buscarPorId(idAgenteLong);
 			if (agenteFind.isEmpty()) {
 				throw new NotFoundException("Agente integrador não encontrado!");
 			} else {
@@ -240,8 +353,25 @@ public class TermoREST {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -249,13 +379,23 @@ public class TermoREST {
 	}
 
 	@PutMapping("/{termoId}/associarApolice/{apoliceId}")
-	public ResponseEntity<Object> associarApolice(@PathVariable Long termoId, @PathVariable Long apoliceId) {
+	public ResponseEntity<Object> associarApolice(@PathVariable String termoId, @PathVariable String apoliceId) {
 		try {
-			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(termoId);
+			long idLong = Long.parseLong(termoId);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
-			Optional<Apolice> apoliceFind = apoliceService.buscarPorId(apoliceId);
+			long idApoliceLong = Long.parseLong(apoliceId);
+
+			if (idApoliceLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<Apolice> apoliceFind = apoliceService.buscarPorId(idApoliceLong);
 			if (apoliceFind.isEmpty()) {
 				throw new NotFoundException("Apolice não encontrada!");
 			} else {
@@ -267,8 +407,25 @@ public class TermoREST {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -276,13 +433,24 @@ public class TermoREST {
 	}
 
 	@PutMapping("/{termoId}/associarContratante/{contratanteId}")
-	public ResponseEntity<Object> associarContratante(@PathVariable Long termoId, @PathVariable Long contratanteId) {
+	public ResponseEntity<Object> associarContratante(@PathVariable String termoId, @PathVariable String contratanteId) {
 		try {
-			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(termoId);
+			long idLong = Long.parseLong(termoId);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id do termo inválido.");
+			
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
-			Optional<Contratante> contratanteFind = contratanteService.buscarPorId(contratanteId);
+			
+			long idContratanteLong = Long.parseLong(contratanteId);
+
+			if (idContratanteLong < 1L)
+				throw new InvalidFieldException("Id do contratante inválido.");
+			
+			Optional<Contratante> contratanteFind = contratanteService.buscarPorId(idContratanteLong);
 			if (contratanteFind.isEmpty()) {
 				throw new NotFoundException("Contratante não encontrado!");
 			} else {
@@ -294,8 +462,25 @@ public class TermoREST {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -303,21 +488,43 @@ public class TermoREST {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> delete(@PathVariable Long id) {
+	public ResponseEntity<Object> delete(@PathVariable String id) {
 		try {
-			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(id);
+			long idLong = Long.parseLong(id);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
-				termoDeEstagioService.deletar(id);
+				termoDeEstagioService.deletar(idLong);
 				return ResponseEntity.status(HttpStatus.OK).body(null);
 			}
 		} catch (NotFoundException ex) {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

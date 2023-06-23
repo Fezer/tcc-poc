@@ -412,10 +412,16 @@ public class CoordenacaoREST {
 	}
 
 	@PutMapping("/termo/{idTermo}/indeferir")
-	public ResponseEntity<Object> indeferirTermoDeCompromisso(@PathVariable Long idTermo,
+	public ResponseEntity<Object> indeferirTermoDeCompromisso(@PathVariable String idTermo,
 			@RequestBody JustificativaDTO justificativa) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idTermo);
+			long idLong = Long.parseLong(idTermo);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
+			
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -453,10 +459,16 @@ public class CoordenacaoREST {
 	}
 
 	@PutMapping("/termo/{idTermo}/solicitarAjustes")
-	public ResponseEntity<Object> solicitarAjutesTermoDeCompromisso(@PathVariable Long idTermo,
+	public ResponseEntity<Object> solicitarAjutesTermoDeCompromisso(@PathVariable String idTermo,
 			@RequestBody DescricaoAjustesDTO descricaoAjustes) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idTermo);
+			long idLong = Long.parseLong(idTermo);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
+			
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -494,9 +506,14 @@ public class CoordenacaoREST {
 	}
 
 	@PutMapping("/termo/{idTermo}/cienciaFormacaoSupervisor")
-	public ResponseEntity<Object> darCienciaFormacaoSupervisor(@PathVariable Long idTermo) {
+	public ResponseEntity<Object> darCienciaFormacaoSupervisor(@PathVariable String idTermo) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idTermo);
+			long idLong = Long.parseLong(idTermo);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -534,9 +551,14 @@ public class CoordenacaoREST {
 	}
 
 	@PutMapping("/termo/{idTermo}/cienciaPlanoAtividades")
-	public ResponseEntity<Object> darCienciaPlanoAtividades(@PathVariable Long idTermo) {
+	public ResponseEntity<Object> darCienciaPlanoAtividades(@PathVariable String idTermo) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idTermo);
+			long idLong = Long.parseLong(idTermo);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -574,9 +596,14 @@ public class CoordenacaoREST {
 	}
 
 	@PutMapping("/termo/{idTermo}/cienciaIra")
-	public ResponseEntity<Object> darCienciaIra(@PathVariable Long idTermo) {
+	public ResponseEntity<Object> darCienciaIra(@PathVariable String idTermo) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idTermo);
+			long idLong = Long.parseLong(idTermo);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -614,9 +641,14 @@ public class CoordenacaoREST {
 	}
 
 	@PutMapping("/termo/{idTermo}/cienciaIndeferimento")
-	public ResponseEntity<Object> darCienciaTermoIndeferido(@PathVariable Long idTermo) {
+	public ResponseEntity<Object> darCienciaTermoIndeferido(@PathVariable String idTermo) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idTermo);
+			long idLong = Long.parseLong(idTermo);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -654,9 +686,14 @@ public class CoordenacaoREST {
 	}
 
 	@PutMapping("/termo/{idTermo}/aprovar")
-	public ResponseEntity<Object> aprovarTermoDeCompromisso(@PathVariable Long idTermo) {
+	public ResponseEntity<Object> aprovarTermoDeCompromisso(@PathVariable String idTermo) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idTermo);
+			long idLong = Long.parseLong(idTermo);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -733,9 +770,14 @@ public class CoordenacaoREST {
 	}
 
 	@PutMapping("/termoDeRescisao/{idTermo}/darCiencia")
-	public ResponseEntity<Object> darCienciaTermoDeRescisao(@PathVariable Long idTermo) {
+	public ResponseEntity<Object> darCienciaTermoDeRescisao(@PathVariable String idTermo) {
 		try {
-			Optional<TermoDeRescisao> termoOptional = termoDeRescisaoService.buscarPorId(idTermo);
+			long idLong = Long.parseLong(idTermo);
+
+			if (idLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeRescisao> termoOptional = termoDeRescisaoService.buscarPorId(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {

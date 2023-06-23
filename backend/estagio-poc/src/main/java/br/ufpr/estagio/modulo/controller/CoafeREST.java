@@ -1903,13 +1903,24 @@ public class CoafeREST {
 	}
 	
 	@PutMapping("/{termoId}/associarApolice/{apoliceId}")
-	public ResponseEntity<Object> associarApolice(@PathVariable Long termoId, @PathVariable Long apoliceId) {
+	public ResponseEntity<Object> associarApolice(@PathVariable String termoId, @PathVariable String apoliceId) {
 		try {
-			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
+			long idTermoLong = Long.parseLong(termoId);
+
+			if (idTermoLong < 1L)
+				throw new InvalidFieldException("Id do termo inválido.");
+			
+			long idApoliceLong = Long.parseLong(apoliceId);
+
+			if (idApoliceLong < 1L)
+				throw new InvalidFieldException("Id inválido.");
+			
+			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idTermoLong);
+			
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
-			Optional<Apolice> apoliceFind = apoliceService.buscarPorId(apoliceId);
+			Optional<Apolice> apoliceFind = apoliceService.buscarPorId(idApoliceLong);
 			if (apoliceFind.isEmpty()) {
 				throw new NotFoundException("Apólice não encontrada!");
 			} else {
