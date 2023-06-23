@@ -53,6 +53,7 @@ import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
+import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
@@ -71,6 +72,7 @@ import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 import br.ufpr.estagio.modulo.service.AgenteIntegradorService;
 import br.ufpr.estagio.modulo.service.AlunoService;
+import br.ufpr.estagio.modulo.service.ApoliceService;
 import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.ContratanteService;
 import br.ufpr.estagio.modulo.service.EstagioService;
@@ -112,6 +114,9 @@ public class CoafeREST {
 
 	@Autowired
 	private AgenteIntegradorService agenteIntegradorService;
+	
+	@Autowired
+	private ApoliceService apoliceService;
 
 	@Autowired
 	private GeradorDeExcelService geradorExcelService;
@@ -1352,6 +1357,57 @@ public class CoafeREST {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(
 					"O GRR informado para o aluno ou o ID do relatório de estágio não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+	
+	@PutMapping("/{termoId}/associarApolice/{apoliceId}")
+	public ResponseEntity<Object> associarApolice(@PathVariable Long termoId, @PathVariable Long apoliceId) {
+		try {
+			Optional<TermoDeEstagio> termofind = Optional.ofNullable(termoDeEstagioService.buscarPorId(termoId));
+			if (termofind.isEmpty()) {
+				throw new NotFoundException("Termo não encontrado!");
+			}
+			Optional<Apolice> apoliceFind = apoliceService.buscarPorId(apoliceId);
+			if (apoliceFind.isEmpty()) {
+				throw new NotFoundException("Apólice não encontrada!");
+			} else {
+				Apolice apolice = apoliceFind.get();
+				TermoDeEstagio termo = termofind.get();
+				
+				if (!apolice.getSeguradora().isSeguradoraUfpr())
+					throw new InvalidFieldException("A seguradora não é uma seguradora UFPR.");
+				
+				if (!termo.getEstagio().isEstagioUfpr())
+					throw new InvalidFieldException("O estágio não será realizado na UFPR.");
+				
+				TermoDeEstagio termoAtualizado = termoDeEstagioService.associarApoliceAoTermoDeEstagio(termo, apolice);
+				return ResponseEntity.status(HttpStatus.OK).body(mapper.map(termoAtualizado, TermoDeEstagioDTO.class));
+			}
+		}  catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 			ex.printStackTrace();
