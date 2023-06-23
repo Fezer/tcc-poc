@@ -440,7 +440,7 @@ public class CoafeREST {
 	}
 
 	// Não lembro como veio parar aqui e estou no meio de outra coisa.
-	// Mantido para não quebrar algo, mas acho que pode apagar. Vou revisar em breve
+	// Mantido para não quebrar algo, mas acho que pode apagar.
 	@GetMapping("/{grrAlunoURL}/download-termo")
 	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL,
 			@RequestHeader("Authorization") String accessToken) {
@@ -480,54 +480,49 @@ public class CoafeREST {
 	/* Métodos para COAFE gerar relatórios */
 
 	@GetMapping("/gerar-relatorio-seguradora-ufpr")
-	public ResponseEntity<byte[]> gerarRelatorioSeguradoraUfprPdf() throws IOException, DocumentException {
+	public ResponseEntity<Object> gerarRelatorioSeguradoraUfprPdf() throws IOException, DocumentException {
 
-		// TO-DO: Jogar dentro de um try-catch
+		try {
 
-		List<Estagio> estagio = estagioService.buscarEstagioPorSeguradoraUfpr();
-
-		// Alterar para gerar relatórios de N estágios
-		byte[] pdf = geradorService.gerarPdfEstagioSeguradoraUfpr(estagio);
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_PDF);
-		headers.setContentDisposition(
-				ContentDisposition.builder("inline").filename("relatorio-estagios-seguradora-ufpr.pdf").build());
-
-		return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+			List<Estagio> estagio = estagioService.buscarEstagioPorSeguradoraUfpr();
+	
+			byte[] pdf = geradorService.gerarPdfEstagioSeguradoraUfpr(estagio);
+	
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDisposition(
+					ContentDisposition.builder("inline").filename("relatorio-estagios-seguradora-ufpr.pdf").build());
+	
+			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
 
 	}
-
-	/*
-	 * @GetMapping("/gerar-relatorio-seguradora-ufpr/excel")
-	 * public ResponseEntity<Resource> gerarRelatorioSeguradoraUfprExcel() throws
-	 * IOException, DocumentException {
-	 * 
-	 * try {
-	 * List<Estagio> estagios = estagioService.buscarEstagioPorSeguradoraUfpr();
-	 * 
-	 * Workbook workbook = geradorService.gerarExcelEstagioSeguradoraUfpr(estagios);
-	 * 
-	 * // Criar arquivo temporário
-	 * ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-	 * workbook.write(outputStream);
-	 * byte[] bytes = outputStream.toByteArray();
-	 * 
-	 * // Salvar o workbook no arquivo temporário
-	 * InputStreamResource resource = new InputStreamResource(new
-	 * ByteArrayInputStream(bytes));
-	 * 
-	 * HttpHeaders headers = new HttpHeaders();
-	 * headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-	 * headers.setContentDisposition(ContentDisposition.builder("attachment").
-	 * filename("relatorio-seguradora-ufpr.xlsx").build());
-	 * 
-	 * return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-	 * } catch (PocException e) {
-	 * throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
-	 * }
-	 * }
-	 */
 
 	@GetMapping("/gerar-relatorio-seguradora-ufpr-excel")
 	public ResponseEntity<Object> gerarRelatorioSeguradoraUfprExcel() throws IOException {
@@ -539,55 +534,100 @@ public class CoafeREST {
 
 			ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelEstagioSeguradoraUfpr(estagios);
 
-			// Criar um recurso de byte array a partir do fluxo de bytes
 			ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
 
-			// Configurar os cabeçalhos da resposta
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentDisposition(ContentDisposition.builder("attachment")
 					.filename("relatorio-estagios-seguradora-ufpr-excel.xlsx").build());
 			headers.set("Content-Encoding", "UTF-8");
 
-			// Retornar a resposta com o recurso de byte array
 			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 		} catch (NotFoundException ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (PocException e) {
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/gerar-relatorio-empresa/{idContratanteURL}")
-	public ResponseEntity<byte[]> gerarPdfEmpresa(@PathVariable String idContratanteURL)
+	public ResponseEntity<Object> gerarPdfEmpresa(@PathVariable String idContratanteURL)
 			throws IOException, DocumentException {
 
-		// TO-DO: Jogar dentro de um try-catch
+		try {
 
-		if (idContratanteURL.isBlank() || idContratanteURL.isEmpty()) {
-			throw new BadRequestException("GRR do aluno não informado!");
-		} else {
-			long idInt = Long.parseLong(idContratanteURL);
-
-			Optional<Contratante> contratanteFind = contratanteService.buscarPorId(idInt);
-
-			if (!contratanteFind.isPresent()) {
-				throw new NotFoundException("Contratante não encontrado!");
+			if (idContratanteURL.isBlank() || idContratanteURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
 			} else {
-
-				Contratante contratante = contratanteFind.get();
-
-				byte[] pdf = geradorService.gerarPdfContratante(contratante);
-
-				// byte[] pdf = geradorService.gerarPdfSimples();
-
-				HttpHeaders headers = new HttpHeaders();
-				headers.setContentType(MediaType.APPLICATION_PDF);
-				headers.setContentDisposition(ContentDisposition.builder("inline")
-						.filename("relatorio-contratante" + contratante.getId() + ".pdf").build());
-
-				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+				long idInt = Long.parseLong(idContratanteURL);
+	
+				Optional<Contratante> contratanteFind = contratanteService.buscarPorId(idInt);
+	
+				if (!contratanteFind.isPresent()) {
+					throw new NotFoundException("Contratante não encontrado!");
+				} else {
+	
+					Contratante contratante = contratanteFind.get();
+	
+					byte[] pdf = geradorService.gerarPdfContratante(contratante);
+	
+					// byte[] pdf = geradorService.gerarPdfSimples();
+	
+					HttpHeaders headers = new HttpHeaders();
+					headers.setContentType(MediaType.APPLICATION_PDF);
+					headers.setContentDisposition(ContentDisposition.builder("inline")
+							.filename("relatorio-contratante" + contratante.getId() + ".pdf").build());
+	
+					return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+				}
 			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
@@ -612,55 +652,100 @@ public class CoafeREST {
 
 					ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelContratante(contratante);
 
-					// Criar um recurso de byte array a partir do fluxo de bytes
 					ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
 
-					// Configurar os cabeçalhos da resposta
 					HttpHeaders headers = new HttpHeaders();
 					headers.setContentDisposition(ContentDisposition.builder("attachment")
 							.filename("relatorio-contratante-" + contratante.getId() + "-excel.xlsx").build());
 					headers.set("Content-Encoding", "UTF-8");
 
-					// Retornar a resposta com o recurso de byte array
 					return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 				}
 			}
 		} catch (NotFoundException ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (PocException e) {
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/gerar-relatorio-agenteIntegrador/{idAgenteURL}")
-	public ResponseEntity<byte[]> gerarPdfAgenteIntegrador(@PathVariable String idAgenteURL)
+	public ResponseEntity<Object> gerarPdfAgenteIntegrador(@PathVariable String idAgenteURL)
 			throws IOException, DocumentException {
 
-		// TO-DO: Jogar dentro de um try-catch
+		try {
 
-		if (idAgenteURL.isBlank() || idAgenteURL.isEmpty()) {
-			throw new BadRequestException("Id do agente integradornão informado!");
-		} else {
-			long idInt = Long.parseLong(idAgenteURL);
-
-			Optional<AgenteIntegrador> agenteIntegradorFind = agenteIntegradorService.buscarPorId(idInt);
-
-			if (!agenteIntegradorFind.isPresent()) {
-				throw new NotFoundException("Contratante não encontrado!");
+			if (idAgenteURL.isBlank() || idAgenteURL.isEmpty()) {
+				throw new BadRequestException("Id do agente integradornão informado!");
 			} else {
-
-				AgenteIntegrador agenteIntegrador = agenteIntegradorFind.get();
-
-				byte[] pdf = geradorService.gerarPdfAgenteIntegrador(agenteIntegrador);
-
-				HttpHeaders headers = new HttpHeaders();
-				headers.setContentType(MediaType.APPLICATION_PDF);
-				headers.setContentDisposition(ContentDisposition.builder("inline")
-						.filename("relatorio-agente-integrador-" + agenteIntegrador.getId() + ".pdf").build());
-
-				return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+				long idInt = Long.parseLong(idAgenteURL);
+	
+				Optional<AgenteIntegrador> agenteIntegradorFind = agenteIntegradorService.buscarPorId(idInt);
+	
+				if (!agenteIntegradorFind.isPresent()) {
+					throw new NotFoundException("Contratante não encontrado!");
+				} else {
+	
+					AgenteIntegrador agenteIntegrador = agenteIntegradorFind.get();
+	
+					byte[] pdf = geradorService.gerarPdfAgenteIntegrador(agenteIntegrador);
+	
+					HttpHeaders headers = new HttpHeaders();
+					headers.setContentType(MediaType.APPLICATION_PDF);
+					headers.setContentDisposition(ContentDisposition.builder("inline")
+							.filename("relatorio-agente-integrador-" + agenteIntegrador.getId() + ".pdf").build());
+	
+					return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+				}
 			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
@@ -668,45 +753,68 @@ public class CoafeREST {
 	public ResponseEntity<Object> gerarExcelAgenteIntegrador(@PathVariable String idAgenteURL)
 			throws IOException, DocumentException {
 
-		// TO-DO: Jogar dentro de um try-catch
+		try {
 
-		if (idAgenteURL.isBlank() || idAgenteURL.isEmpty()) {
-			throw new BadRequestException("Id do agente integrador não informado!");
-		} else {
-			long idInt = Long.parseLong(idAgenteURL);
-
-			Optional<AgenteIntegrador> agenteIntegradorFind = agenteIntegradorService.buscarPorId(idInt);
-
-			if (!agenteIntegradorFind.isPresent()) {
-				throw new NotFoundException("Agente integrador não encontrado!");
+			if (idAgenteURL.isBlank() || idAgenteURL.isEmpty()) {
+				throw new BadRequestException("Id do agente integrador não informado!");
 			} else {
-
-				AgenteIntegrador agenteIntegrador = agenteIntegradorFind.get();
-
-				ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelAgenteIntegrador(agenteIntegrador);
-
-				// Criar um recurso de byte array a partir do fluxo de bytes
-				ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
-
-				// Configurar os cabeçalhos da resposta
-				HttpHeaders headers = new HttpHeaders();
-				headers.setContentDisposition(ContentDisposition.builder("attachment")
-						.filename("relatorio-agente-integrador-" + agenteIntegrador.getId() + "-excel.xlsx").build());
-				headers.set("Content-Encoding", "UTF-8");
-
-				// Retornar a resposta com o recurso de byte array
-				return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+				long idInt = Long.parseLong(idAgenteURL);
+	
+				Optional<AgenteIntegrador> agenteIntegradorFind = agenteIntegradorService.buscarPorId(idInt);
+	
+				if (!agenteIntegradorFind.isPresent()) {
+					throw new NotFoundException("Agente integrador não encontrado!");
+				} else {
+	
+					AgenteIntegrador agenteIntegrador = agenteIntegradorFind.get();
+	
+					ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelAgenteIntegrador(agenteIntegrador);
+	
+					ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+	
+					HttpHeaders headers = new HttpHeaders();
+					headers.setContentDisposition(ContentDisposition.builder("attachment")
+							.filename("relatorio-agente-integrador-" + agenteIntegrador.getId() + "-excel.xlsx").build());
+					headers.set("Content-Encoding", "UTF-8");
+	
+					return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+				}
 			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/gerar-relatorio-certificados")
-	public ResponseEntity<byte[]> gerarRelatorioCertificadosPdf() throws IOException, DocumentException {
+	public ResponseEntity<Object> gerarRelatorioCertificadosPdf() throws IOException, DocumentException {
 
 		try {
 			List<CertificadoDeEstagio> certificados = certificadoDeEstagioService.listarTodosCertificadosDeEstagio();
 
-			// Alterar para gerar relatórios de N estágios
 			byte[] pdf = geradorService.gerarPdfCertificadosDeEstagio(certificados);
 
 			HttpHeaders headers = new HttpHeaders();
@@ -715,8 +823,32 @@ public class CoafeREST {
 					ContentDisposition.builder("inline").filename("relatorio-certificados-de-estagio.pdf").build());
 
 			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
-		} catch (PocException e) {
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 
 	}
@@ -730,28 +862,48 @@ public class CoafeREST {
 			if (certificados.isEmpty())
 				throw new NotFoundException("Não foram encontrados certificados de estágio.");
 
-			// Alterar para gerar relatórios de N estágios
 			ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelCertificadosDeEstagio(certificados);
 
-			// Criar um recurso de byte array a partir do fluxo de bytes
 			ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
 
-			// Configurar os cabeçalhos da resposta
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentDisposition(ContentDisposition.builder("attachment")
 					.filename("relatorio-certificados-de-estagio-excel.xlsx").build());
 			headers.set("Content-Encoding", "UTF-8");
 
-			// Retornar a resposta com o recurso de byte array
 			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-		} catch (PocException e) {
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar certificados!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 
 	}
 
 	@GetMapping("/gerar-relatorios-relatorioDeEstagio")
-	public ResponseEntity<byte[]> gerarRelatorioRealtoriosDeEstagioPdf() throws IOException, DocumentException {
+	public ResponseEntity<Object> gerarRelatorioRealtoriosDeEstagioPdf() throws IOException, DocumentException {
 
 		try {
 			List<RelatorioDeEstagio> relatorios = relatorioDeEstagioService.listarTodosRelatorios();
@@ -764,8 +916,32 @@ public class CoafeREST {
 					ContentDisposition.builder("inline").filename("relatorio-relatorios-de-estagio.pdf").build());
 
 			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
-		} catch (PocException e) {
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 
 	}
@@ -776,22 +952,42 @@ public class CoafeREST {
 		try {
 			List<RelatorioDeEstagio> relatorios = relatorioDeEstagioService.listarTodosRelatorios();
 
-			// Alterar para gerar relatórios de N estágios
 			ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelRelatoriosDeEstagio(relatorios);
 
-			// Criar um recurso de byte array a partir do fluxo de bytes
 			ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
 
-			// Configurar os cabeçalhos da resposta
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentDisposition(ContentDisposition.builder("attachment")
 					.filename("relatorio-relatorios-de-estagio-excel.xlsx").build());
 			headers.set("Content-Encoding", "UTF-8");
 
-			// Retornar a resposta com o recurso de byte array
 			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-		} catch (PocException e) {
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar apólice!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 
 	}
@@ -823,13 +1019,31 @@ public class CoafeREST {
 
 			return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
 		} catch (NotFoundException ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (NumberFormatException ex) {
-			ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-		} catch (PocException e) {
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
@@ -851,28 +1065,42 @@ public class CoafeREST {
 
 			RelatorioDeEstagio relatorio = relatorioFind.get();
 
-			// Alterar para gerar relatórios de N estágios
 			ByteArrayOutputStream outputStream = geradorExcelService.gerarExcelRelatorioDeEstagio(relatorio);
 
-			// Criar um recurso de byte array a partir do fluxo de bytes
 			ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
 
-			// Configurar os cabeçalhos da resposta
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentDisposition(ContentDisposition.builder("attachment")
 					.filename("relatorio-relatorio-de-estagio-" + relatorio.getId() + "-excel.xlsx").build());
 			headers.set("Content-Encoding", "UTF-8");
 
-			// Retornar a resposta com o recurso de byte array
 			return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 		} catch (NotFoundException ex) {
+			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		} catch (NumberFormatException ex) {
-			ErrorResponse response = new ErrorResponse("Id do relatório de estágio deve ser um inteiro!");
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-		} catch (PocException e) {
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar relatório de estágio!");
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
