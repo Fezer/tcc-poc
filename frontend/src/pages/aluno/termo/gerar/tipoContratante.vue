@@ -181,8 +181,14 @@ export default defineComponent({
               ...state,
               id: 0,
               nome: state.nomeContratante,
-              cnpj: state.cnpjContratante,
-              cpf: state.cpfContratante,
+              cnpj:
+                state.tipoContratante === "PessoaFisica"
+                  ? undefined
+                  : state.cnpjContratante,
+              cpf:
+                state.tipoContratante === "PessoaJuridica"
+                  ? undefined
+                  : state.cpfContratante,
               telefone: state.telefoneContratante,
               tipo: state.tipoContratante,
               representanteEmpresa: state.representanteEmpresa,
