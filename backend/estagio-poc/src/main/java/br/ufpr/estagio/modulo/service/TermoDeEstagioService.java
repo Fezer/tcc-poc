@@ -141,6 +141,10 @@ public class TermoDeEstagioService {
 	public TermoDeEstagio buscarPorId(long id) {
 		return termoRepo.findById(id).get();
 	}
+	
+	public Optional<TermoDeEstagio> buscarPorIdOptional(long id) {
+		return termoRepo.findById(id);
+	}
 
 	public TermoDeEstagio salvar(TermoDeEstagio termoDeEstagio) {
 		return termoRepo.save(termoDeEstagio);
