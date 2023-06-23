@@ -82,7 +82,7 @@ public class CoeREST {
 	private ModelMapper mapper;
 
 	@GetMapping("/termo/pendenteAprovacaoCoe")
-	public ResponseEntity<Page<TermoDeEstagioDTO>> listarTermosDeCompromissoPendenteAprovacaoCoe(
+	public ResponseEntity<Object> listarTermosDeCompromissoPendenteAprovacaoCoe(
 			@RequestParam(defaultValue = "0") int page) {
 		try {
 			Page<TermoDeEstagio> paginaTermos = termoDeEstagioService
@@ -103,17 +103,36 @@ public class CoeREST {
 				return ResponseEntity.status(HttpStatus.OK).body(
 						new PageImpl<>(listaTermosDTO, paginaTermos.getPageable(), paginaTermos.getTotalElements()));
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/termo/indeferido")
-	public ResponseEntity<Page<TermoDeEstagioDTO>> listarTermosDeCompromissoIndeferidos(
+	public ResponseEntity<Object> listarTermosDeCompromissoIndeferidos(
 			@RequestParam(defaultValue = "0") int page) {
 		try {
 			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidos(page);
@@ -127,17 +146,36 @@ public class CoeREST {
 				return ResponseEntity.status(HttpStatus.OK).body(
 						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(), listaTermos.getTotalElements()));
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/termoAditivo/pendenteAprovacaoCoe")
-	public ResponseEntity<Page<TermoDeEstagioDTO>> listarTermosAditivoPendenteAprovacaoCoe(
+	public ResponseEntity<Object> listarTermosAditivoPendenteAprovacaoCoe(
 			@RequestParam(defaultValue = "0") int page) {
 		try {
 			Page<TermoDeEstagio> listaTermosPaginated = termoDeEstagioService
@@ -154,17 +192,36 @@ public class CoeREST {
 						new PageImpl<>(listaTermosDTO, listaTermosPaginated.getPageable(),
 								listaTermosPaginated.getTotalElements()));
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/termoAditivo/indeferido")
-	public ResponseEntity<Page<TermoDeEstagioDTO>> listarTermosAditivoIndeferidos(
+	public ResponseEntity<Object> listarTermosAditivoIndeferidos(
 			@RequestParam(defaultValue = "0") int page) {
 		try {
 			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosIndeferidos(
@@ -180,20 +237,39 @@ public class CoeREST {
 						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(),
 								listaTermos.getTotalElements()));
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@PutMapping("/termo/{idTermo}/indeferir")
-	public ResponseEntity<TermoDeEstagioDTO> indeferirTermoDeCompromisso(@PathVariable Long idTermo,
+	public ResponseEntity<Object> indeferirTermoDeCompromisso(@PathVariable Long idTermo,
 			@RequestBody JustificativaDTO justificativa) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idTermo);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -202,20 +278,39 @@ public class CoeREST {
 				TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 				return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@PutMapping("/termo/{idTermo}/solicitarAjustes")
-	public ResponseEntity<TermoDeEstagioDTO> solicitarAjutesTermoDeCompromisso(@PathVariable Long idTermo,
+	public ResponseEntity<Object> solicitarAjutesTermoDeCompromisso(@PathVariable Long idTermo,
 			@RequestBody DescricaoAjustesDTO descricaoAjustes) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idTermo);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -224,19 +319,38 @@ public class CoeREST {
 				TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 				return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@PutMapping("/termo/{idTermo}/aprovar")
-	public ResponseEntity<TermoDeEstagioDTO> aprovarTermoDeCompromisso(@PathVariable Long idTermo) {
+	public ResponseEntity<Object> aprovarTermoDeCompromisso(@PathVariable Long idTermo) {
 		try {
-			Optional<TermoDeEstagio> termoOptional = Optional.ofNullable(termoDeEstagioService.buscarPorId(idTermo));
+			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idTermo);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -245,17 +359,36 @@ public class CoeREST {
 				TermoDeEstagioDTO termoDTO = mapper.map(termo, TermoDeEstagioDTO.class);
 				return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/certificado/pendenteAprovacaoCoe")
-	public ResponseEntity<List<CertificadoDeEstagioDTO>> listarCertificadosPendenteAprovacao() {
+	public ResponseEntity<Object> listarCertificadosPendenteAprovacao() {
 		try {
 			List<CertificadoDeEstagio> listaCertificados = certificadoDeEstagioService
 					.listarCertificadosPendentesAprovacaoCoe();
@@ -265,17 +398,36 @@ public class CoeREST {
 				return ResponseEntity.status(HttpStatus.OK).body(listaCertificados.stream()
 						.map(e -> mapper.map(e, CertificadoDeEstagioDTO.class)).collect(Collectors.toList()));
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@PutMapping("/certificado/{idCertificado}/aprovar")
-	public ResponseEntity<CertificadoDeEstagioDTO> aprovarCertificadoDeEstagio(@PathVariable Long idCertificado) {
+	public ResponseEntity<Object> aprovarCertificadoDeEstagio(@PathVariable Long idCertificado) {
 		try {
 			Optional<CertificadoDeEstagio> certificadoOptional = certificadoDeEstagioService
 					.buscarCertificadoDeEstagioPorId(idCertificado);
@@ -287,17 +439,36 @@ public class CoeREST {
 				CertificadoDeEstagioDTO certificadoDTO = mapper.map(certificado, CertificadoDeEstagioDTO.class);
 				return new ResponseEntity<>(certificadoDTO, HttpStatus.OK);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@PutMapping("/certificado/{idCertificado}/reprovar")
-	public ResponseEntity<CertificadoDeEstagioDTO> reprovarCertificadoDeEstagio(@PathVariable Long idCertificado,
+	public ResponseEntity<Object> reprovarCertificadoDeEstagio(@PathVariable Long idCertificado,
 			@RequestBody JustificativaDTO justificativa) {
 		try {
 			Optional<CertificadoDeEstagio> certificadoOptional = certificadoDeEstagioService
@@ -310,17 +481,36 @@ public class CoeREST {
 				CertificadoDeEstagioDTO certificadoDTO = mapper.map(certificado, CertificadoDeEstagioDTO.class);
 				return new ResponseEntity<>(certificadoDTO, HttpStatus.OK);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@GetMapping("/termoDeRescisao/pendenteCiencia")
-	public ResponseEntity<List<TermoDeRescisaoDTO>> listarTermosDeRescisaoPendenteCienciaCoe() {
+	public ResponseEntity<Object> listarTermosDeRescisaoPendenteCienciaCoe() {
 		try {
 			List<TermoDeRescisao> listaTermosDeRescisao = termoDeRescisaoService
 					.listarTermosDeRescisaoPendenteCienciaCoe();
@@ -330,17 +520,36 @@ public class CoeREST {
 				return ResponseEntity.status(HttpStatus.OK).body(listaTermosDeRescisao.stream()
 						.map(e -> mapper.map(e, TermoDeRescisaoDTO.class)).collect(Collectors.toList()));
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
 	@PutMapping("/termoDeRescisao/{idTermo}/darCiencia")
-	public ResponseEntity<TermoDeRescisaoDTO> darCienciaTermoDeRescisao(@PathVariable Long idTermo) {
+	public ResponseEntity<Object> darCienciaTermoDeRescisao(@PathVariable Long idTermo) {
 		try {
 			Optional<TermoDeRescisao> termoOptional = termoDeRescisaoService.buscarPorId(idTermo);
 			if (termoOptional.isEmpty()) {
@@ -351,51 +560,98 @@ public class CoeREST {
 				TermoDeRescisaoDTO termoDTO = mapper.map(termo, TermoDeRescisaoDTO.class);
 				return new ResponseEntity<>(termoDTO, HttpStatus.OK);
 			}
-		} catch (PocException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro!");
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
-	@GetMapping("/{grrAlunoURL}/download-termo")
-	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL) {
-		if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
-			throw new BadRequestException("GRR do aluno não informado!");
-		} else {
-			Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, null);
-			if (aluno == null) {
-				throw new NotFoundException("Aluno não encontrado!");
-			} else {
-				Path diretorioAtual = Paths.get("").toAbsolutePath();
-				String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
-
-				String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
-				Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
-
-				try {
-					Resource resource = new UrlResource(arquivo.toUri());
-
-					if (resource.exists()) {
-						return ResponseEntity.ok()
-								.contentType(MediaType.APPLICATION_PDF)
-								.header(HttpHeaders.CONTENT_DISPOSITION,
-										"attachment; filename=\"" + resource.getFilename() + "\"")
-								.body(resource);
-					} else {
-						throw new NotFoundException("Arquivo não encontrado!");
-					}
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-					throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
-				}
-			}
-		}
-	}
 
 	/* Métodos para Coe baixar documentos upados pelo Aluno */
+	
+	@GetMapping("/{grrAlunoURL}/download-termo")
+	public ResponseEntity<Object> downloadTermo(@PathVariable String grrAlunoURL) {
+		try {
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new BadRequestException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, null);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Path diretorioAtual = Paths.get("").toAbsolutePath();
+					String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
+	
+					String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
+					Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
+	
+					try {
+						Resource resource = new UrlResource(arquivo.toUri());
+	
+						if (resource.exists()) {
+							return ResponseEntity.ok()
+									.contentType(MediaType.APPLICATION_PDF)
+									.header(HttpHeaders.CONTENT_DISPOSITION,
+											"attachment; filename=\"" + resource.getFilename() + "\"")
+									.body(resource);
+						} else {
+							throw new NotFoundException("Arquivo não encontrado!");
+						}
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+						throw new PocException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao obter o arquivo!");
+					}
+				}
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse("O ID informado não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
 
 	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/download")
 	public ResponseEntity<Object> downloadTermoDeCompromissoAluno(@PathVariable String grrAlunoURL,
