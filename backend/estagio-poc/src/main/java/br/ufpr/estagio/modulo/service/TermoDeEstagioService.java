@@ -1417,13 +1417,7 @@ public class TermoDeEstagioService {
 		List<String> listaAux = new ArrayList<>();
 		listaAux.add(nomeArquivo);
 
-		if (termo.getArquivos() == null) {
-			termo.setArquivos(listaAux);
-		} else {
-			List<String> arquivos = termo.getArquivos();
-			arquivos.add(nomeArquivo);
-			termo.setArquivos(arquivos);
-		}
+		termo.setArquivos(listaAux);
 
 		return termoRepo.save(termo);
 	}

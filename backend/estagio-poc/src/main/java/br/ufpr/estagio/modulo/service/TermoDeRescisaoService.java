@@ -456,13 +456,7 @@ public class TermoDeRescisaoService {
 		List<String> listaAux = new ArrayList<>();
 		listaAux.add(nomeArquivo);
 
-		if (termoDeRescisao.getArquivos() == null) {
-			termoDeRescisao.setArquivos(listaAux);
-		} else {
-			List<String> arquivos = termoDeRescisao.getArquivos();
-			arquivos.add(nomeArquivo);
-			termoDeRescisao.setArquivos(arquivos);
-		}
+		termoDeRescisao.setArquivos(listaAux);
 
 		return termoDeRescisaoRepo.save(termoDeRescisao);
 	}
