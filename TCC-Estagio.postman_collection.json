@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "a416c79d-1384-4ca3-b000-63bc73a861c5",
+		"_postman_id": "27806178-82ae-4421-a545-a6710f2f4bc5",
 		"name": "TCC-Estagio",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17301767"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -25,7 +24,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"coe2@ufpr.br\",\r\n    \"senha\":\"coe123\",\r\n    \"tipoUsuario\":\"COE\"\r\n}"
+							"raw": "{\r\n    \"login\":\"coe@coe.com\",\r\n    \"senha\":\"coe@coe.com\",\r\n    \"tipoUsuario\":\"COE\",\r\n    \"identifier\": \"5\"\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/auth/criarUsuario",
@@ -5129,7 +5128,10 @@
 							"name": "associarApoliceAoTermo",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": ""
+								}
 							},
 							"response": []
 						}

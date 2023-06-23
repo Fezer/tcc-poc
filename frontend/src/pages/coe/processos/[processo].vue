@@ -35,6 +35,7 @@ export default defineComponent({
             tipoTermo:
               processo === "termo" ? "TermoDeCompromisso" : "TermoAditivo",
             etapa: filters.etapa,
+            tipoEstagio: "NaoObrigatorio",
             grr: filters.grr || undefined,
           },
         }),

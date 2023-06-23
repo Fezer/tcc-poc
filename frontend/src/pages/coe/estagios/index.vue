@@ -11,7 +11,6 @@ export default defineComponent({
 
     const filters = reactive({
       statusEstagio: "",
-      tipoEstagio: "",
       grr: "",
       nomeEmpresa: "",
     });
@@ -23,7 +22,7 @@ export default defineComponent({
         $fetch("/estagio/", {
           params: {
             statusEstagio: filters.statusEstagio || undefined,
-            tipoEstagio: filters.tipoEstagio || undefined,
+            tipoEstagio: "NaoObrigatorio",
             grr: filters.grr || undefined,
             nomeEmpresa: filters.nomeEmpresa || undefined,
             page: page.value,
@@ -81,15 +80,7 @@ export default defineComponent({
                 @change="() => handleSearch()"
               >
               </Dropdown>
-              <Dropdown
-                :options="tipoOptions"
-                v-model="filters.tipoEstagio"
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Tipo Estágio"
-                @change="() => handleSearch()"
-              >
-              </Dropdown>
+
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
                 <InputText
