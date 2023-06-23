@@ -2293,7 +2293,7 @@ public class AlunoREST {
 								/* Métodos para Aluno gerar arquivos */
 	
 	@GetMapping("/{grrAlunoURL}/gerar-termo")
-	public ResponseEntity<byte[]> gerarTermoPdf(@PathVariable String grrAlunoURL,
+	public ResponseEntity<Object> gerarTermoPdf(@PathVariable String grrAlunoURL,
 			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
@@ -2318,21 +2318,32 @@ public class AlunoREST {
 					}
 				}
 			}
-		} catch (NotFoundException ex) {
+		}  catch (NotFoundException ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (RuntimeException ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
