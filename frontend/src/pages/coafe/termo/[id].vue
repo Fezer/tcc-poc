@@ -8,7 +8,11 @@ import dadosAuxiliaresVue from "../../../components/common/dadosAuxiliares.vue";
 import estagio from "../../../components/common/estagio.vue";
 import planoAtividades from "../../../components/common/plano-atividades.vue";
 import CoafeService from "~~/services/CoafeService";
+import ApoliceService from "~~/services/ApoliceService";
+import Seguradora from "~~/src/types/Seguradora";
+import NovoEstagioService from "~~/services/NovoEstagioService";
 import parseTipoTermo from "~~/src/utils/parseTipoProcesso";
+import { BaseTermo } from "~~/src/types/Termos";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
 
@@ -28,10 +32,20 @@ export default defineComponent({
     const { id } = route.params;
 
     const coafeService = new CoafeService();
+    const apoliceService = new ApoliceService();
+    const novoEstagioService = new NovoEstagioService();
 
-    const { data: termo, refresh } = useFetch(`/termo/${id}`);
+    const { data: termo, refresh } = useFetch<BaseTermo>(`/termo/${id}`);
 
     const { data: agentesIntegracao } = useFetch(`/agente-integrador/todos`);
+
+    const { data: seguradoras } = useFetch<Seguradora[]>(`/seguradora/`, {
+      params: {
+        page: 0,
+        ativo: true,
+        seguradoraUFPR: true,
+      },
+    });
 
     function refreshData() {
       refresh();
@@ -41,6 +55,8 @@ export default defineComponent({
       confirmAction: null as null | "APROVAR" | "AJUSTAR" | "INDEFERIR",
 
       agenteIntegracao: null as null | string,
+      seguradora: null as null | string,
+      apolice: null as null | string,
 
       indeferimentoConfirm: false,
       justificativa: "",
@@ -106,17 +122,34 @@ export default defineComponent({
       try {
         switch (state.confirmAction) {
           case "APROVAR":
-            if (
-              state.agenteIntegracao === null &&
-              termo?.value?.tipoTermoDeEstagio === "TermoDeCompromisso"
-            ) {
-              return toast.add({
-                severity: "error",
-                summary: "Erro",
-                detail:
-                  "Por favor, selecione um agente de integração para esse estágio.",
-                life: 3000,
-              });
+            if (termo?.value?.tipoTermoDeEstagio === "TermoDeCompromisso") {
+              if (state.agenteIntegracao === null) {
+                return toast.add({
+                  severity: "error",
+                  summary: "Erro",
+                  detail:
+                    "Por favor, selecione um agente de integração para esse estágio.",
+                  life: 3000,
+                });
+              }
+              if (!state.seguradora && termo?.value?.estagio?.estagioUfpr) {
+                return toast.add({
+                  severity: "error",
+                  summary: "Erro",
+                  detail:
+                    "Por favor, selecione uma seguradora para esse estágio.",
+                  life: 3000,
+                });
+              }
+
+              if (!state.apolice && termo?.value?.estagio?.estagioUfpr) {
+                return toast.add({
+                  severity: "error",
+                  summary: "Erro",
+                  detail: "Por favor, insira uma apólicec para esse estágio.",
+                  life: 3000,
+                });
+              }
             }
 
             if (termo?.value?.tipoTermoDeEstagio === "TermoAditivo") {
@@ -131,20 +164,36 @@ export default defineComponent({
             }
 
             try {
-              await coafeService
-                .associarAgenteIntegradorAoEstagio(
-                  termo.value.id,
-                  state.agenteIntegracao
-                )
-                .then(async () => {
-                  await aprovarTermo();
-                  toast.add({
-                    severity: "success",
-                    summary: "Sucesso",
-                    detail: "Termo de compromisso aprovado com sucesso",
-                    life: 3000,
-                  });
+              await coafeService.associarAgenteIntegradorAoEstagio(
+                termo.value.id,
+                state.agenteIntegracao
+              );
+
+              if (termo.value?.estagio?.estagioUfpr) {
+                const apolice = await apoliceService.criarApolice(
+                  {
+                    numero: state.apolice,
+                    dataInicio: termo?.value?.dataInicio,
+                    dataFim: termo?.value?.dataTermino,
+                  },
+                  {
+                    id: state.seguradora,
+                  }
+                );
+
+                await novoEstagioService.setApolice(
+                  termo?.value?.id,
+                  apolice?.id
+                );
+              }
+              await aprovarTermo().then(() => {
+                toast.add({
+                  severity: "success",
+                  summary: "Sucesso",
+                  detail: "Termo de compromisso aprovado com sucesso",
+                  life: 3000,
                 });
+              });
             } catch (err) {
               toast.add({
                 severity: "error",
@@ -240,7 +289,8 @@ export default defineComponent({
       getConfirmationButtonClass,
       handleParecerTermo,
       agentesIntegracao,
-      handleDownloadTermo
+      handleDownloadTermo,
+      seguradoras,
     };
   },
 });
@@ -269,7 +319,6 @@ export default defineComponent({
         />
       </NuxtLink>
     </div>
-
 
     <Aluno :grrAluno="termo?.grrAluno" v-if="termo?.grrAluno" />
 
@@ -340,6 +389,27 @@ export default defineComponent({
             v-model="state.agenteIntegracao"
           >
           </Dropdown>
+        </div>
+
+        <div
+          class="w-full"
+          v-if="
+            termo?.tipoTermoDeEstagio === 'TermoDeCompromisso' &&
+            termo?.estagio?.estagioUfpr
+          "
+        >
+          <p class="mt-4">Selecionar Seguradora</p>
+          <Dropdown
+            class="w-full"
+            :options="seguradoras?.content || []"
+            :optionLabel="(a) => `${a.nome}`"
+            optionValue="id"
+            v-model="state.seguradora"
+          >
+          </Dropdown>
+
+          <p class="mt-4">Número da apólice</p>
+          <InputText class="w-full" v-model="state.apolice" />
         </div>
       </div>
       <template #footer>

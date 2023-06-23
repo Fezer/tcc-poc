@@ -78,6 +78,8 @@ export default defineComponent({
 
     <Aluno :grrAluno="estagio?.aluno?.matricula" v-if="estagio?.aluno" />
 
+    <DadosAuxiliares :termo="estagio" />
+
     <Estagio :termo="estagio" />
 
     <PlanoAtividades

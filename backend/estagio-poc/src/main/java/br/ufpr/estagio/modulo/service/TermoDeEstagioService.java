@@ -141,7 +141,7 @@ public class TermoDeEstagioService {
 	public TermoDeEstagio buscarPorId(long id) {
 		return termoRepo.findById(id).get();
 	}
-	
+
 	public Optional<TermoDeEstagio> buscarPorIdOptional(long id) {
 		return termoRepo.findById(id);
 	}
@@ -977,14 +977,16 @@ public class TermoDeEstagioService {
 
 		List<Estagio> listaEstagios = null;
 
-		estagio.setContratante(termo.getContratante());
-		listaEstagios = termo.getContratante().getEstagio();
-		if (listaEstagios == null) {
-			listaEstagios = new ArrayList<Estagio>();
-		}
-		if (!listaEstagios.contains(termo.getEstagio())) {
-			listaEstagios.add(termo.getEstagio());
-			termo.getContratante().setEstagio(listaEstagios);
+		if (estagio.isEstagioUfpr() == false) {
+			estagio.setContratante(termo.getContratante());
+			listaEstagios = termo.getContratante().getEstagio();
+			if (listaEstagios == null) {
+				listaEstagios = new ArrayList<Estagio>();
+			}
+			if (!listaEstagios.contains(termo.getEstagio())) {
+				listaEstagios.add(termo.getEstagio());
+				termo.getContratante().setEstagio(listaEstagios);
+			}
 		}
 
 		estagio.setSeguradora(termo.getSeguradora());
@@ -1023,7 +1025,9 @@ public class TermoDeEstagioService {
 		estagio.setPlanoDeAtividades(termo.getPlanoAtividades());
 		termo.getPlanoAtividades().setEstagio(estagio);
 
-		contratanteRepo.save(estagio.getContratante());
+		if (estagio.isEstagioUfpr() == false) {
+			contratanteRepo.save(estagio.getContratante());
+		}
 		seguradoraRepo.save(estagio.getSeguradora());
 		apoliceRepo.save(estagio.getApolice());
 		orientadorRepo.save(estagio.getOrientador());
@@ -1425,55 +1429,57 @@ public class TermoDeEstagioService {
 
 		return termoRepo.save(termo);
 	}
-	
+
 	public boolean listarTermosDeEstagioPorAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
 
 		List<TermoDeEstagio> termos = termoRepo.findByAgenteIntegrador(agenteIntegrador);
-		
-        if (termos.size() == 0)
-        	return false;
 
-        return true;
+		if (termos.size() == 0)
+			return false;
+
+		return true;
 	}
-	
+
 	public boolean listarTermosDeEstagioPorApolice(Apolice apolice) {
 
 		List<TermoDeEstagio> termos = termoRepo.findByApolice(apolice);
-		
-        if (termos.size() == 0)
-        	return false;
 
-        return true;
+		if (termos.size() == 0)
+			return false;
+
+		return true;
 	}
-	
-	/*public boolean listarTermosDeEstagioPorConvenio(Convenio convenio) {
 
-		List<TermoDeEstagio> termos = termoRepo.findByConvenio(convenio);
-		
-        if (termos.size() == 0)
-        	return false;
+	/*
+	 * public boolean listarTermosDeEstagioPorConvenio(Convenio convenio) {
+	 * 
+	 * List<TermoDeEstagio> termos = termoRepo.findByConvenio(convenio);
+	 * 
+	 * if (termos.size() == 0)
+	 * return false;
+	 * 
+	 * return true;
+	 * }
+	 */
 
-        return true;
-	}*/
-	
 	public boolean listarTermosDeEstagioPorContratante(Contratante contratante) {
 
 		List<TermoDeEstagio> termos = termoRepo.findByContratante(contratante);
-		
-        if (termos.size() == 0)
-        	return false;
 
-        return true;
+		if (termos.size() == 0)
+			return false;
+
+		return true;
 	}
-	
+
 	public boolean listarTermosDeEstagioPorSeguradora(Seguradora seguradora) {
 
 		List<TermoDeEstagio> termos = termoRepo.findBySeguradora(seguradora);
-		
-        if (termos.size() == 0)
-        	return false;
 
-        return true;
+		if (termos.size() == 0)
+			return false;
+
+		return true;
 	}
-  
+
 }

@@ -41,7 +41,11 @@ export default defineComponent({
       </div>
       <div class="col-4">
         <strong>Estágio na UFPR</strong>
-        <p>{{ termo?.estagio?.estagioUfpr ? "Sim" : "Não" }}</p>
+        <p>
+          {{
+            termo?.estagio?.estagioUfpr || termo?.estagioUfpr ? "Sim" : "Não"
+          }}
+        </p>
       </div>
       <div class="col-4">
         <strong>Estágio SEED</strong>

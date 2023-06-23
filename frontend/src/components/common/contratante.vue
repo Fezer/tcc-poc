@@ -22,30 +22,32 @@ export default {
 </script>
 
 <template>
-  <div class="card" v-if="!termo?.estagio?.estagioUfpr">
+  <div class="card">
     <h5>Dados do Contratante</h5>
 
     <div class="grid">
-      <div class="col-4">
-        <strong>Nome do Contratante</strong>
-        <p>{{ termo?.contratante?.nome }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Tipo do Contratante</strong>
-        <p>{{ parseTipoContratante(termo?.contratante?.tipo) }}</p>
-      </div>
-      <div class="col-4" v-if="termo?.contratante?.tipo === 'PessoaJuridica'">
-        <strong>CNPJ</strong>
-        <p>{{ termo?.contratante?.cnpj }}</p>
-      </div>
-      <div class="col-4" v-else>
-        <strong>CPF</strong>
-        <p>{{ termo?.contratante?.cpf }}</p>
-      </div>
-      <div class="col-4">
-        <strong>Telefone do Contratante</strong>
-        <p>{{ termo?.contratante?.telefone }}</p>
-      </div>
+      <template v-if="!termo?.estagio?.estagioUfpr && !termo?.estagioUfpr">
+        <div class="col-4">
+          <strong>Nome do Contratante</strong>
+          <p>{{ termo?.contratante?.nome }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Tipo do Contratante</strong>
+          <p>{{ parseTipoContratante(termo?.contratante?.tipo) }}</p>
+        </div>
+        <div class="col-4" v-if="termo?.contratante?.tipo === 'PessoaJuridica'">
+          <strong>CNPJ</strong>
+          <p>{{ termo?.contratante?.cnpj }}</p>
+        </div>
+        <div class="col-4" v-else>
+          <strong>CPF</strong>
+          <p>{{ termo?.contratante?.cpf }}</p>
+        </div>
+        <div class="col-4">
+          <strong>Telefone do Contratante</strong>
+          <p>{{ termo?.contratante?.telefone }}</p>
+        </div>
+      </template>
       <div class="col-4">
         <strong>Seguradora</strong>
         <p>{{ termo?.seguradora?.nome }}</p>
