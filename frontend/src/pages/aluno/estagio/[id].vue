@@ -70,7 +70,7 @@ export default defineComponent({
         return;
       }
 
-      setTermo(null);
+      // setTermo(null);
       router.push(`/aluno/termo-aditivo/${estagio?.value?.id}/gerar`);
     };
 

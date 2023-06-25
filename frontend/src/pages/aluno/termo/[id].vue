@@ -165,7 +165,7 @@ export default defineComponent({
     };
     const handleDownloadTermoAssinado = async () => {
       try {
-        const url = `/aluno/${grr}/download-termo`;
+        const url = `/aluno/${grr}/termo-de-compromisso/${termo?.value?.id}/download`;
 
         const file = await $fetch(url, {
           method: "GET",
