@@ -11,14 +11,14 @@ export default defineComponent({
     const relatorioService = new RelatorioEstagioService();
     const alunoService = new AlunoService();
     const { id } = route.params;
-    const { data: relatorio } = useFetch<RelatorioEstagio>(
+    const { data: relatorio, refresh } = useFetch<RelatorioEstagio>(
       `/relatorioDeEstagio/${id}`
     );
     const router = useRouter();
     const toast = useToast();
     const { auth } = useAuth();
 
-    const grr = auth?.value?.id || "";
+    const grr = auth?.value?.identifier || "";
 
     const uploadVisible = ref(false);
 
@@ -75,7 +75,7 @@ export default defineComponent({
         });
     };
 
-    const handleDownloadRelatorio = async () => {
+    const handleDownloadRelatorioBase = async () => {
       try {
         const file = await relatorioService.baixarRelatorioBase(grr, id);
 
@@ -101,13 +101,18 @@ export default defineComponent({
       formData.append("file", file);
 
       await relatorioService
-        .uploadRelatorio(grr, formData)
+        .uploadRelatorio(grr, id, formData)
         .then(() => {
           toast.add({
             severity: "success",
             summary: `Relatório de Estágio enviado!`,
             detail: `O relatório de estágio foi enviado com sucesso!`,
             life: 3000,
+          });
+
+          uploadVisible.value = false;
+          refresh().then(() => {
+            uploadVisible.value = true;
           });
         })
         .catch((err) => {
@@ -121,23 +126,68 @@ export default defineComponent({
         });
     };
 
+    const handleDownloadRelatorioAssinado = async () => {
+      const url = `/aluno/${grr}/relatorio-de-estagio/${id}/download`;
+
+      try {
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail:
+            err?.response?._data?.error ||
+            "Tivemos um problema ao baixar o termo.",
+          life: 3000,
+        });
+      }
+    };
+
     return {
       relatorio,
       handleCancelarRelatorio,
       parseTipoRelatorio,
       handlePedirCienciaOrientador,
-      handleDownloadRelatorio,
+      handleDownloadRelatorioBase,
       uploadVisible,
       handleUploadRelatorio,
       cancelVisible,
+      handleDownloadRelatorioAssinado,
     };
   },
 });
 </script>
 <template>
-  <div>
+  <div class="relative">
     <h2 class="m-0">Relatório de estágio</h2>
     <h4 class="m-0 mt-2 mb-2">Dados do relatório</h4>
+
+    <div class="absolute right-0 top-4 gap-2 flex">
+      <Button
+        label="Baixar relatório base"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        v-if="
+          relatorio?.etapaFluxo === 'Aluno' && !relatorio?.cienciaOrientador
+        "
+        @click="handleDownloadRelatorioBase"
+      />
+      <Button
+        label="Baixar relatório assinado"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        @click="handleDownloadRelatorioAssinado"
+        v-if="relatorio?.uploadFinal || relatorio?.uploadParcial"
+      />
+    </div>
+
     <div class="card grid mt-2">
       <div class="col-6">
         <strong class="text-md mb-2">Tipo do relatório</strong>
@@ -217,13 +267,6 @@ export default defineComponent({
 
     <div class="flex gap-2 justify-end">
       <Button
-        label="Ver documento"
-        icon="pi pi-file"
-        class="p-button-secondary"
-        @click="handleDownloadRelatorio"
-      ></Button>
-
-      <Button
         v-if="relatorio?.etapaFluxo === 'Aluno'"
         label="Cancelar relatório"
         icon="pi pi-times"
@@ -256,7 +299,7 @@ export default defineComponent({
         :onConfirm="handlePedirCienciaOrientador"
         description="Você precisa enviar esse relatório de estágio assinado pela contratante para pedir ciência."
         :handleUpload="handleUploadRelatorio"
-        :confirmBlocked="false"
+        :confirmBlocked="!relatorio?.uploadFinal && !relatorio?.uploadParcial"
       >
       </UploadConfirm>
     </div>

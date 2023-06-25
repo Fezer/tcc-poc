@@ -134,14 +134,8 @@ public class FichaDeAvaliacaoService {
 		
 		List<String> listaAux = new ArrayList<>();
 		listaAux.add(nomeArquivo);
-		
-		if (fichaDeAvaliacao.getArquivos() == null) {
-			fichaDeAvaliacao.setArquivos(listaAux);
-		} else {
-			List<String> arquivos = fichaDeAvaliacao.getArquivos();
-			arquivos.add(nomeArquivo);
-			fichaDeAvaliacao.setArquivos(arquivos);
-		}
+
+		fichaDeAvaliacao.setArquivos(listaAux);
 		
 		return fichaRepo.save(fichaDeAvaliacao);
 	}

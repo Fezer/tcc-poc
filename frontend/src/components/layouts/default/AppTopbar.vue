@@ -12,6 +12,7 @@ export default {
       this.$emit("topbar-menu-toggle", event);
     },
     handleLogout() {
+      if (!process?.client) return;
       localStorage.removeItem("accessToken");
       localStorage.removeItem("profile");
       window.location.href = "/login";

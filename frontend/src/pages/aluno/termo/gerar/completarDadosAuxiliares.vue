@@ -40,7 +40,8 @@ export default defineComponent({
 
     const { auth } = useAuth();
 
-    const grr = auth?.value?.id || "";
+    const grr = auth?.value?.identifier || "";
+    const { data: alunoSiga } = useFetch(`/siga/aluno?grr=${grr}`);
 
     const tiposDeVaga = ref([
       {
@@ -147,7 +148,7 @@ export default defineComponent({
         estadoCivil: z.string().min(1),
         grupoSanguineo: z.string().min(1),
         // dataChegada: z.string(),
-        dataExpedicao: z.string(),
+        dataExpedicao: z.date(),
         tituloEleitoral: z.string().min(1),
         zona: z.string().min(1).or(z.number().min(0)),
         secao: z.string().min(1).or(z.number().min(0)),
@@ -165,10 +166,10 @@ export default defineComponent({
         estadoNascimento: z.string().min(1),
         cidadeNascimento: z.string().min(1),
         tipoVaga: z.string().min(1),
-        dataEmissaoTitulo: z.string(),
+        dataEmissaoTitulo: z.date(),
         banco: z.string().min(1),
-        numeroDaAgencia: z.string().min(1),
-        numeroDaConta: z.string().min(1),
+        numeroDaAgencia: z.number().min(1),
+        numeroDaConta: z.number().min(1),
         nomeDaAgencia: z.string().min(1),
         cidadeDaAgencia: z.string().min(1),
         enderecoDaAgencia: z.string().min(1),
@@ -240,11 +241,21 @@ export default defineComponent({
     console.log(aluno?.dadosAuxiliares?.nacionalidade);
 
     onMounted(() => {
-      if (aluno && aluno?.value?.dadosAuxiliares) {
-        console.log(aluno?.value?.dadosAuxiliares);
+      const dadosAuxiliares = aluno?.value?.dadosAuxiliares;
+      if (aluno && dadosAuxiliares) {
         for (let key in aluno?.value?.dadosAuxiliares) {
           state[key] = aluno?.value?.dadosAuxiliares[key];
         }
+
+        state.dataChegada = dadosAuxiliares?.dataChegada
+          ? dayjs(dadosAuxiliares?.dataDeChegadaNoPais).toDate()
+          : null;
+        state.dataExpedicao = dadosAuxiliares?.dataExpedicao
+          ? dayjs(dadosAuxiliares?.dataExpedicao).toDate()
+          : null;
+        state.dataEmissaoTitulo = dadosAuxiliares?.dataEmissaoTitulo
+          ? dayjs(dadosAuxiliares?.dataEmissaoTitulo).toDate()
+          : null;
       }
 
       if (aluno?.value?.dadosBancarios) {
@@ -264,6 +275,7 @@ export default defineComponent({
       gruposSanguineos,
       aluno,
       dadosBancarios,
+      alunoSiga,
     };
   },
 });
@@ -308,7 +320,7 @@ export default defineComponent({
             <label for="orgaoEmissor">Órgão Emissor RG</label>
             <InputText
               v-model="state.orgaoEmissor"
-              :disabled="!!aluno?.dadosAuxiliares?.orgaoEmissor"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.orgaoEmissor"
               :class="{ 'p-invalid': errors['orgaoEmissor'] }"
             />
             <small class="text-rose-600">{{ errors["orgaoEmissor"] }}</small>
@@ -320,15 +332,17 @@ export default defineComponent({
             <label for="uf">UF RG</label>
             <InputText
               v-model="state.uf"
-              :disabled="!!aluno?.dadosAuxiliares?.uf"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.uf"
             />
           </div>
           <div class="field col">
             <label for="dataExpedicaoRG">Data de expedição RG</label>
-            <InputMask
+
+            <Calendar
+              showIcon
+              dateFormat="dd/mm/yy"
               v-model="state.dataExpedicao"
-              :disabled="!!aluno?.dadosAuxiliares?.dataExpedicao"
-              mask="99/99/9999"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.dataExpedicao"
               :class="{ 'p-invalid': errors['dataExpedicao'] }"
             />
             <small class="text-rose-600">{{ errors["dataExpedicao"] }}</small>
@@ -340,17 +354,19 @@ export default defineComponent({
             <label for="tituloEleitoral">Título eleitoral</label>
             <InputText
               v-model="state.tituloEleitoral"
-              :disabled="!!aluno?.dadosAuxiliares?.tituloEleitoral"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.tituloEleitoral"
               :class="{ 'p-invalid': errors['tituloEleitoral'] }"
             />
             <small class="text-rose-600">{{ errors["tituloEleitoral"] }}</small>
           </div>
           <div class="field col">
             <label for="dataEmissaoTitulo">Data de emissão</label>
-            <InputMask
-              mask="99/99/9999"
+
+            <Calendar
+              showIcon
+              dateFormat="dd/mm/yy"
               v-model="state.dataEmissaoTitulo"
-              :disabled="!!aluno?.dadosAuxiliares?.dataEmissaoTitulo"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.dataEmissaoTitulo"
               :class="{ 'p-invalid': errors['dataEmissaoTitulo'] }"
             />
             <small class="text-rose-600">{{
@@ -362,18 +378,18 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="zonaEleitoral">Zona</label>
-            <InputText
+            <InputNumber
               v-model="state.zona"
-              :disabled="!!aluno?.dadosAuxiliares?.zona"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.zona"
               :class="{ 'p-invalid': errors['zona'] }"
             />
             <small class="text-rose-600">{{ errors["zona"] }}</small>
           </div>
           <div class="field col">
             <label for="secaoEleitora">Seção</label>
-            <InputText
+            <InputNumber
               v-model="state.secao"
-              :disabled="!!aluno?.dadosAuxiliares?.secao"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.secao"
               :class="{ 'p-invalid': errors['secao'] }"
             />
             <small class="text-rose-600">{{ errors["secao"] }}</small>
@@ -385,7 +401,7 @@ export default defineComponent({
             <label for="estadoCivil">Estado Civil</label>
             <InputText
               v-model="state.estadoCivil"
-              :disabled="!!aluno?.dadosAuxiliares?.estadoCivil"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.estadoCivil"
               :class="{ 'p-invalid': errors['estadoCivil'] }"
             />
             <small class="text-rose-600">{{ errors["estadoCivil"] }}</small>
@@ -394,7 +410,7 @@ export default defineComponent({
             <label for="dependentes">Dependentes</label>
             <InputNumber
               v-model="state.dependentes"
-              :disabled="!!aluno?.dadosAuxiliares?.dependentes"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.dependentes"
               :class="{ 'p-invalid': errors['dependentes'] }"
             />
             <small class="text-rose-600">{{ errors["dependentes"] }}</small>
@@ -410,7 +426,7 @@ export default defineComponent({
               optionLabel="name"
               optionValue="name"
               v-model="state.grupoSanguineo"
-              :disabled="!!aluno?.dadosAuxiliares?.grupoSanguineo"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.grupoSanguineo"
               :class="{ 'p-invalid': errors['grupoSanguineo'] }"
             />
             <small class="text-rose-600">{{ errors["grupoSanguineo"] }}</small>
@@ -421,7 +437,7 @@ export default defineComponent({
               id="corDaPele"
               type="text"
               v-model="state.corRaca"
-              :disabled="!!aluno?.dadosAuxiliares?.corRaca"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.corRaca"
               :class="{ 'p-invalid': errors['corRaca'] }"
             />
             <small class="text-rose-600">{{ errors["corRaca"] }}</small>
@@ -435,7 +451,7 @@ export default defineComponent({
               id="sexo"
               type="text"
               v-model="state.sexo"
-              :disabled="!!aluno?.dadosAuxiliares?.sexo"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.sexo"
               :class="{ 'p-invalid': errors['sexo'] }"
             />
             <small class="text-rose-600">{{ errors["sexo"] }}</small>
@@ -444,7 +460,7 @@ export default defineComponent({
             <label for="cidadeNascimento">Cidade de Nascimento</label>
             <InputText
               v-model="state.cidadeNascimento"
-              :disabled="!!aluno?.dadosAuxiliares?.cidadeNascimento"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.cidadeNascimento"
               :class="{ 'p-invalid': errors['cidadeNascimento'] }"
             />
             <small class="text-rose-600">{{
@@ -460,7 +476,7 @@ export default defineComponent({
               id="nomeDoPai"
               type="text"
               v-model="state.nomePai"
-              :disabled="!!aluno?.dadosAuxiliares?.nomePai"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.nomePai"
               :class="{ 'p-invalid': errors['nomePai'] }"
             />
             <small class="text-rose-600">{{ errors["nomePai"] }}</small>
@@ -471,7 +487,7 @@ export default defineComponent({
               id="nomeDaMae"
               type="text"
               v-model="state.nomeMae"
-              :disabled="!!aluno?.dadosAuxiliares?.nomeMae"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.nomeMae"
               :class="{ 'p-invalid': errors['nomeMae'] }"
             />
             <small class="text-rose-600">{{ errors["nomeMae"] }}</small>
@@ -495,10 +511,12 @@ export default defineComponent({
             "
           >
             <label for="dataChegadaPais">Data de chegada no pais</label>
-            <InputMask
-              mask="99/99/9999"
+
+            <Calendar
+              showIcon
+              dateFormat="dd/mm/yy"
               v-model="state.dataChegada"
-              :disabled="!!aluno?.dadosAuxiliares?.dataChegada"
+              :disabled="!!alunoSiga?.dadosAuxiliares?.dataChegada"
               :class="{ 'p-invalid': errors['dataChegada'] }"
             />
             <small class="text-rose-600">{{ errors["dataChegada"] }}</small>
@@ -527,9 +545,8 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="numeroDaAgencia">Número da Agência</label>
-            <InputText
+            <InputNumber
               id="numeroDaAgencia"
-              type="text"
               v-model="dadosBancarios.numeroDaAgencia"
               :class="{ 'p-invalid': errors['numeroDaAgencia'] }"
             />
@@ -538,7 +555,7 @@ export default defineComponent({
 
           <div class="field col">
             <label for="numeroDaConta">Número da Conta</label>
-            <InputText
+            <InputNumber
               id="numeroDaConta"
               v-model="dadosBancarios.numeroDaConta"
               :class="{ 'p-invalid': errors['numeroDaConta'] }"

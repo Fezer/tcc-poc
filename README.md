@@ -19,28 +19,6 @@
 
 ### Como rodar
 
-<!-- Antes de rodar a primeira vez: -->
-
-<!-- ```bash
-docker compose build
-```
-
-Então:
-
-```bash
-docker-compose up
-```
-
-_Rodando pelo docker é necessário atualzar a página para que as alterações tenham efeito_
-
-Se for preciso instalar alguma dependência, é preciso buildar novamente a imagem do docker, logo:
-
-```bash
-docker-compose build --no-cache
-``` -->
-
-<!-- Então pode rodar novamente o comando acima. -->
-
 ## Banco
 
 Criando imagem do banco em docker:
@@ -87,3 +65,34 @@ E rode o projeto com:
 ```
 pnpm run dev
 ```
+
+### Rodando com docker compose
+
+Antes de rodar a primeira vez é necessário buildar o back, e depois o banco e o front:
+
+```bash
+cd backend
+cd estagios-poc
+
+./mnvw clean install -D skipTests
+```
+
+```bash
+docker compose build
+```
+
+Então:
+
+```bash
+docker-compose up
+```
+
+_Rodando pelo docker é necessário atualzar a página para que as alterações tenham efeito_
+
+Se for preciso instalar alguma dependência, é preciso buildar novamente a imagem do docker, logo:
+
+```bash
+docker-compose build --no-cache
+```
+
+Então pode rodar novamente o comando acima.

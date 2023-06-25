@@ -14,6 +14,7 @@ public class UsuarioDTO implements Serializable {
 	private String login;
 	private String senha;
 	private EnumTipoUsuario tipoUsuario;
+	private String identifier;
 
 	public UsuarioDTO() {
 		super();
@@ -57,6 +58,14 @@ public class UsuarioDTO implements Serializable {
 
 	public void setTipoUsuario(EnumTipoUsuario tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 
 }

@@ -41,6 +41,17 @@ export default defineComponent({
 
 <template>
   <div>
+    <Divider />
+
+    <h3>Termo de Compromisso</h3>
+
+    <div class="card flex items-center justify-between">
+      <h5>Termo de Compromisso</h5>
+      <NuxtLink :to="`/${perfil}/termo/${estagio?.termoDeCompromisso}`">
+        <Button label="Ver termo" class="p-button-secondary"></Button>
+      </NuxtLink>
+    </div>
+
     <template v-if="!!estagio?.certificadoDeEstagio">
       <Divider />
 

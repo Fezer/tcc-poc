@@ -1,7 +1,7 @@
 import Agente from "./Agente";
 import Apolice from "./Apolice";
 import Contratante from "./Contratante";
-import { BasicEstagio, PlanoAtividades } from "./NovoEstagio";
+import { BasicEstagio, Estagio, PlanoAtividades } from "./NovoEstagio";
 import Orientador from "./Orientador";
 import Seguradora from "./Seguradora";
 
@@ -32,6 +32,10 @@ interface BaseTermo {
   motivoIndeferimento: string | null;
   descricaoAjustes: string | null;
 
+  // nome do aluno e grr do aluno
+  aluno?: string;
+  grrAluno?: string;
+
   orientador?: Orientador;
   agenteIntegrador?: Agente;
   planoAtividades?: PlanoAtividades;
@@ -47,6 +51,10 @@ interface BaseTermo {
   apolice?: Apolice;
   seguradora?: Seguradora;
   estagio?: BasicEstagio;
+
+  // verfica se o aluno já fez upload do termo em questão
+  uploadAditivo?: boolean;
+  uploadCompromisso?: boolean;
 }
 
 interface TermoRescisao {
@@ -62,6 +70,12 @@ interface TermoRescisao {
   cienciaCoordenacao?: boolean;
   cienciaCOAFE?: boolean;
   cienciaOrientador?: boolean;
+
+  // nome do aluno e grr do aluno
+  aluno?: string;
+  grrAluno?: string;
+
+  upload: boolean;
 }
 
 type PeriodoRecesso = {
@@ -70,4 +84,23 @@ type PeriodoRecesso = {
   dataFim: string;
 };
 
-export { StatusTermo, BaseTermo, TermoRescisao, PeriodoRecesso };
+type PaginatedTermo = {
+  content: BaseTermo[];
+  totalElements: number;
+  totalPages: number;
+};
+
+type PaginatedEstagio = {
+  content: Estagio[];
+  totalElements: number;
+  totalPages: number;
+};
+
+export {
+  StatusTermo,
+  BaseTermo,
+  TermoRescisao,
+  PeriodoRecesso,
+  PaginatedTermo,
+  PaginatedEstagio,
+};

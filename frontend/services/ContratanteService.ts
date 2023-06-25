@@ -96,6 +96,7 @@ export default class ContratanteService extends BaseService {
   async baixarRelatorioEstagioExcelEspecifico(id:number) {
     return $fetch(`/coafe/gerar-relatorio-empresa-excel/${id}`, {
       method: "GET",
+      responseType: "blob",
     });
   }
 }

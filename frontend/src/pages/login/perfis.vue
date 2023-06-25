@@ -24,8 +24,8 @@ export default defineComponent({
       const rotas = {
         COE: "/coe/processos/termo",
         COAFE: "/coafe/processos/termo",
-        Orientador: "/orientador",
-        Coordenacao: "/coord",
+        Orientador: "/orientador/relatorio",
+        Coordenacao: "/coord/processos/termo",
       };
       return rotas[perfil] || "/login";
     };
@@ -64,7 +64,7 @@ export default defineComponent({
         toast.add({
           severity: "error",
           summary: "Erro ao fazer login!",
-          detail: err?.response?._data?.error || "Erro inesperado ao logar!",
+          detail: "Email ou senha incorretos",
         });
       }
     };

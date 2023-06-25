@@ -43,6 +43,8 @@ public class Convenio implements Serializable{
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="agente_integrador_id", referencedColumnName="id", nullable=true)
 	private AgenteIntegrador agenteIntegrador;
+	
+	private boolean ativo;
 
 	public Convenio() {
 		super();
@@ -58,6 +60,18 @@ public class Convenio implements Serializable{
 		this.dataInicio = dataInicio;
 		this.dataFim = dataFim;
 		this.agenteIntegrador = agenteIntegrador;
+	}
+
+	public Convenio(long id, int numero, String descricao, Date dataInicio, Date dataFim,
+			AgenteIntegrador agenteIntegrador, boolean ativo) {
+		super();
+		this.id = id;
+		this.numero = numero;
+		this.descricao = descricao;
+		this.dataInicio = dataInicio;
+		this.dataFim = dataFim;
+		this.agenteIntegrador = agenteIntegrador;
+		this.ativo = ativo;
 	}
 
 	public long getId() {
@@ -106,6 +120,14 @@ public class Convenio implements Serializable{
 
 	public void setAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
 		this.agenteIntegrador = agenteIntegrador;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 	

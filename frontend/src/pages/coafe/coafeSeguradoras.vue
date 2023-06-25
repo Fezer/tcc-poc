@@ -17,29 +17,67 @@
     </div>
     <div>
       <DataTable
-        v-model:filters="filtros"
-        :value="seguradoras"
+        :value="seguradoras?.content"
         rowHover
         stripedRows
         paginator
         :show-gridlines="true"
-        :rows="5"
-        :globalFilterFields="['nome']"
-        :rowsPerPageOptions="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
-        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+        :rows="10"
+        @page="page = $event.page"
       >
         <template #header>
           <div class="flex justify-content-between">
             <span class="p-input-icon-left">
               <h4><b>Seguradoras</b></h4>
             </span>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search" />
-              <InputText
-                v-model="filtros['nome'].value"
-                placeholder="Pesquisar Seguradoras"
+            <div class="flex items-center gap-2">
+              <SelectButton
+                v-model="filtros.ativo"
+                :options="[
+                  {
+                    label: 'Ativo',
+                    value: true,
+                  },
+                  {
+                    label: 'Inativo',
+                    value: false,
+                  },
+                ]"
+                optionLabel="label"
+                optionValue="value"
+                aria-labelledby="basic"
               />
-            </span>
+
+              <Dropdown
+                v-model="filtros.seguradoraUFPR"
+                :options="[
+                  {
+                    label: 'UFPR',
+                    value: true,
+                  },
+                  {
+                    label: 'Externa',
+                    value: false,
+                  },
+                  {
+                    label: 'UFPR & Externa',
+                    value: undefined,
+                  },
+                ]"
+                optionLabel="label"
+                optionValue="value"
+                aria-labelledby="basic"
+                placeholder="Seguradora UFPR"
+              />
+
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText
+                  v-model="filtros.nome"
+                  placeholder="Pesquisar Seguradoras"
+                />
+              </span>
+            </div>
           </div>
         </template>
         <template #empty> Nenhuma seguradora encontrada. </template>
@@ -90,15 +128,35 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Button from "primevue/button";
 import SeguradoraService from "~~/services/SeguradoraService";
 import { FilterMatchMode } from "primevue/api";
-const { data: seguradoras } = useFetch(`http://localhost:5000/seguradora/`);
 const seguradoraService = new SeguradoraService();
-const filtros = ref({
-  nome: { value: null, matchMode: FilterMatchMode.CONTAINS },
+
+const filtros = reactive({
+  nome: "",
+  ativo: true,
+  seguradoraUFPR: true,
 });
+
+const page = ref(0);
+
+const { data: seguradoras } = useAsyncData(
+  "seguradorasList",
+  () =>
+    $fetch("/seguradora/", {
+      params: {
+        page: page.value,
+        nome: filtros.nome || undefined,
+        ativo: filtros.ativo,
+        seguradoraUFPR: filtros.seguradoraUFPR,
+      },
+    }),
+  {
+    watch: [page, filtros],
+  }
+);
 </script>

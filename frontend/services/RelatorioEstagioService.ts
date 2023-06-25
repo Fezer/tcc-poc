@@ -32,16 +32,19 @@ export default class RelatorioEstagioService extends BaseService {
       method: "DELETE",
     });
   }
-  // http://localhost:5000/aluno/GRR20204481/relatorio/1/gerar-relatorio
+  y;
   public async baixarRelatorioBase(grr: string, id: number) {
     return $fetch(`/aluno/${grr}/relatorio/${id}/gerar-relatorio`, {
       method: "GET",
     });
   }
 
-  // http://localhost:5000/aluno/GRR20204481/upload-relatorio
-  public async uploadRelatorio(grr: string, dados: FormData) {
-    return $fetch(`/aluno/${grr}/upload-relatorio`, {
+  public async uploadRelatorio(
+    grr: string,
+    relatorio: number,
+    dados: FormData
+  ) {
+    return $fetch(`/aluno/${grr}/relatorio-de-estagio/${relatorio}/upload`, {
       method: "POST",
       body: dados,
     });
@@ -51,19 +54,21 @@ export default class RelatorioEstagioService extends BaseService {
       method: "GET",
     });
   }
-  async baixarRelatorioEstagioPdfEspecifico(id:number) {
+  async baixarRelatorioEstagioPdfEspecifico(id: number) {
     return $fetch(`/coafe/gerar-relatorio-relatorioDeEstagio/${id}`, {
       method: "GET",
     });
   }
-  async baixarRelatorioEstagioExcelEspecifico(id:number) {
+  async baixarRelatorioEstagioExcelEspecifico(id: number) {
     return $fetch(`/coafe/gerar-relatorio-relatorioDeEstagio-excel/${id}`, {
       method: "GET",
+      responseType: "blob",
     });
   }
   async baixarRelatorioEstagioExcel() {
     return $fetch(`/coafe/gerar-relatorios-relatorioDeEstagio-excel`, {
       method: "GET",
+      responseType: "blob",
     });
   }
 }

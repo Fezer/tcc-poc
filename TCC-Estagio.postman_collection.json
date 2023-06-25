@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "a416c79d-1384-4ca3-b000-63bc73a861c5",
+		"_postman_id": "27806178-82ae-4421-a545-a6710f2f4bc5",
 		"name": "TCC-Estagio",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17301767"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -25,7 +24,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\":\"coe2@ufpr.br\",\r\n    \"senha\":\"coe123\",\r\n    \"tipoUsuario\":\"COE\"\r\n}"
+							"raw": "{\r\n    \"login\":\"coe@coe.com\",\r\n    \"senha\":\"coe@coe.com\",\r\n    \"tipoUsuario\":\"COE\",\r\n    \"identifier\": \"5\"\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/auth/criarUsuario",
@@ -1037,7 +1036,7 @@
 									]
 								},
 								"url": {
-									"raw": "http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/upload",
+									"raw": "http://localhost:5000/aluno/GRR20204481/termo-aditivo/4/upload",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1047,7 +1046,7 @@
 										"aluno",
 										"GRR20204481",
 										"termo-aditivo",
-										"2",
+										"4",
 										"upload"
 									]
 								}
@@ -2784,6 +2783,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "alterarStatusApolice",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/apolice/1/alterar-status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"apolice",
+								"1",
+								"alterar-status"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2797,7 +2826,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Seguradora4321\",\n    \"seguradoraUfpr\": false,\n    \"ativa\": true\n}",
+							"raw": "{\n    \"nome\": \"Seguradora1234\",\n    \"seguradoraUfpr\": false,\n    \"ativa\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3243,6 +3272,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "alterarStatusAgenteIntegrador",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/agente-integrador/152/alterar-status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"agente-integrador",
+								"152",
+								"alterar-status"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -3362,6 +3421,36 @@
 							"path": [
 								"convenio",
 								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterarStatusConvenio",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/convenio/1/alterar-status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"convenio",
+								"1",
+								"alterar-status"
 							]
 						}
 					},
@@ -3581,6 +3670,27 @@
 								"152",
 								"endereco",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterarStatusContratante",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/contratante/3/alterar-status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"contratante",
+								"3",
+								"alterar-status"
 							]
 						}
 					},
@@ -5013,6 +5123,17 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "associarApoliceAoTermo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -5883,41 +6004,6 @@
 									"key": "idCurso",
 									"value": "229"
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "buscarAlunoPorEmail",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "headerPrefix",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						}, 
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/siga/grr",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"siga",
-								"grr"
 							]
 						}
 					},

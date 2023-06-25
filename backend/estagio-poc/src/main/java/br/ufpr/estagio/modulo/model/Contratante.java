@@ -39,6 +39,8 @@ public class Contratante extends Pessoa implements Serializable {
 	@OneToMany(mappedBy="contratante", cascade=CascadeType.REMOVE)
 	private List<TermoDeEstagio> termoDeEstagio;
 	
+	private boolean ativo;
+	
 	public Contratante() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -64,6 +66,18 @@ public class Contratante extends Pessoa implements Serializable {
 		this.representanteEmpresa = representanteEmpresa;
 		this.estagio = estagio;
 		this.termoDeEstagio = termoDeEstagio;
+	}
+
+	public Contratante(long id, String nome, String telefone, EnumTipoContratante tipo, String cnpj, String cpf,
+			String representanteEmpresa, List<Estagio> estagio, List<TermoDeEstagio> termoDeEstagio, boolean ativo) {
+		super(id, nome, telefone);
+		this.tipo = tipo;
+		this.cnpj = cnpj;
+		this.cpf = cpf;
+		this.representanteEmpresa = representanteEmpresa;
+		this.estagio = estagio;
+		this.termoDeEstagio = termoDeEstagio;
+		this.ativo = ativo;
 	}
 
 	public long getId() {
@@ -122,6 +136,14 @@ public class Contratante extends Pessoa implements Serializable {
 	// adicionado para concluir a task de associar contratante ao termo
 	public void setTermoDeEstagio(List<TermoDeEstagio> termoDeEstagio) {
 		this.termoDeEstagio = termoDeEstagio;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 
 }

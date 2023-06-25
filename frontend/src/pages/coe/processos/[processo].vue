@@ -1,33 +1,63 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import parseTipoTermo from "~~/src/utils/parseTipoProcesso";
+import { BaseTermo } from "~~/src/types/Termos";
+import parseObrigatoriedadeEstagio from "~~/src/utils/parseObrigatoriedadeEstagio";
+
+import { PaginatedTermo } from "../../../types/Termos";
 
 export default defineComponent({
   setup() {
     const config = useRuntimeConfig();
     const route = useRoute();
+    const { statusOptions, etapaOptions, tipoOptions } = useTermoFilters();
 
     const { processo } = route.params;
 
-    const { data: processes } = useAsyncData(
-      "coeProcesses",
-      () => {
-        if (!config.BACKEND_URL) return [];
+    const filters = reactive({
+      status: "EmAprovacao",
+      etapa: "COE",
+      grr: "",
+    });
 
-        return $fetch(
-          `${config.BACKEND_URL}/coe/${processo}/pendenteAprovacaoCoe`
-        );
-      },
+    const page = ref(0);
+
+    const {
+      data: processes,
+      refresh,
+      execute,
+    } = useAsyncData(
+      "termosCOE",
+      () =>
+        $fetch("/termo", {
+          params: {
+            page: page.value,
+            status: filters.status,
+            tipoTermo:
+              processo === "termo" ? "TermoDeCompromisso" : "TermoAditivo",
+            etapa: filters.etapa,
+            tipoEstagio: "NaoObrigatorio",
+            grr: filters.grr || undefined,
+          },
+        }),
       {
-        watch: [config.BACKEND_URL, processo],
+        watch: [filters, page],
       }
     );
 
-    console.log(processes);
+    const handleSearch = () => {
+      page.value = 0;
+    };
 
     return {
+      processo,
       processes,
-      parseTipoTermo,
+      page,
+      statusOptions,
+      etapaOptions,
+      tipoOptions,
+      filters,
+      handleSearch,
+      parseObrigatoriedadeEstagio,
     };
   },
 });
@@ -42,34 +72,64 @@ export default defineComponent({
       </h1>
     </div>
     <div>
-      <DataTable :value="processes" rowHover stripedRows :show-gridlines="true">
+      <DataTable
+        :value="processes?.content"
+        rowHover
+        stripedRows
+        :show-gridlines="true"
+      >
         <template #header>
           <div class="flex items-center justify-content-between">
-            <span class="p-input-icon-left">
-              <h4 class="font-bold">Processos pendentes de parecer</h4>
+            <span class="">
+              <h4 class="font-bold">
+                {{
+                  processo === "termo"
+                    ? "Termo de Compromisso"
+                    : "Termo Aditivo"
+                }}
+              </h4>
             </span>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search" />
-              <InputText placeholder="Keyword Search" />
-            </span>
+            <div class="flex gap-2">
+              <Dropdown
+                :options="statusOptions"
+                v-model="filters.status"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Status"
+                @change="() => handleSearch()"
+              >
+              </Dropdown>
+              <Dropdown
+                :options="etapaOptions"
+                v-model="filters.etapa"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Etapa do termo"
+                @change="() => handleSearch()"
+              >
+              </Dropdown>
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText
+                  placeholder="Matrícula (GRRXXXXXXXX)"
+                  v-model="filters.grr"
+                />
+              </span>
+            </div>
           </div>
         </template>
         <Column field="process" header="Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
-        <Column field="process_type" header="Tipo de Processo">
+
+        <Column field="tipo" header="Tipo Estágio">
           <template #body="{ data }">
-            {{ parseTipoTermo(data.tipoTermoDeEstagio) }}
+            {{ parseObrigatoriedadeEstagio(data?.estagio?.tipoEstagio) }}
           </template>
         </Column>
-        <Column field="student_name" header="Nome do Aluno">
+        <Column field="ufpr" header="Estágio UFPR">
           <template #body="{ data }">
-            {{ data?.aluno }}
-          </template>
-        </Column>
-        <Column field="grr" header="GRR">
-          <template #body="{ data }">
-            {{ data.grrAluno }}
+            {{ data.estagio?.estagioUfpr ? "Sim" : "Não" }}
           </template>
         </Column>
         <Column field="contratante" header="Contratante">
@@ -82,23 +142,33 @@ export default defineComponent({
             {{ parseDate(data?.dataCriacao) }}
           </template>
         </Column>
-        <Column
-          field="action"
-          header="Ação necessária"
-          bodyStyle="color:orange;"
-        >
+        <Column field="action" header="Status" bodyStyle="color:orange;">
           <template #body="{ data }">
-            <Tag value="Parecer" severity="warning" class="p-2 font-md" />
+            <StatusTag :status="data?.statusTermo" />
+          </template>
+        </Column>
+        <Column field="action" header="Etapa" bodyStyle="color:orange;">
+          <template #body="{ data }">
+            {{ data?.etapaFluxo }}
           </template>
         </Column>
         <Column field="button">
           <template #body="{ data }">
             <NuxtLink :to="`/coe/termo/${data.id}`">
-              <Button label="Ver contato"></Button>
+              <Button
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
+              ></Button>
             </NuxtLink>
           </template>
         </Column>
       </DataTable>
+      <Paginator
+        :rows="10"
+        :totalRecords="processes?.totalElements"
+        @page="page = $event.page"
+      ></Paginator>
     </div>
   </div>
 </template>

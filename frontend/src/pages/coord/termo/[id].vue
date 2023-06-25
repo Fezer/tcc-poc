@@ -245,6 +245,54 @@ export default defineComponent({
       return state.justificativa.trim().length > 0;
     };
 
+    const handleDownloadTermo = async () => {
+      const grrAluno = termo?.value?.grrAluno;
+      let url = `/coordenacao/${grrAluno}/termo-de-compromisso/${termo?.value?.id}/download`;
+      if (termo?.value?.tipoTermoDeEstagio === "TermoAditivo") {
+        url = `/coordenacao/${grrAluno}/termo-aditivo/${termo?.value?.id}/download`;
+      }
+
+      const file = await $fetch(url, {
+        method: "GET",
+      }).catch((err) => {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: err?.response?._data?.error || "Erro inesperado",
+          detail: "Erro ao baixar o termo!",
+          life: 3000,
+        });
+      });
+
+      const fileURL = URL.createObjectURL(file);
+
+      return window.open(fileURL, "_blank");
+    };
+
+    const handleCienciaIndeferimento = async () => {
+      try {
+        await coordService.cienciaIndeferimentoTermo(termo?.value?.id);
+
+        toast.add({
+          severity: "success",
+          summary: "Sucesso",
+          detail: "Ciência de Indeferimento registrada com sucesso!",
+          life: 3000,
+        });
+        refresh();
+      } catch (err) {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail:
+            err?.response?._data?.error ||
+            "Erro ao registrar ciência de Indeferimento!",
+          life: 3000,
+        });
+      }
+    };
+
     onMounted(() => {
       console.log(termo);
       if (termo) {
@@ -268,6 +316,8 @@ export default defineComponent({
       handleCienciaPlanoAtividades,
       handleCienciaFormacaoSupervisor,
       canConfirmAction,
+      handleDownloadTermo,
+      handleCienciaIndeferimento,
     };
   },
 });
@@ -280,17 +330,26 @@ export default defineComponent({
       {{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}
     </h2>
 
-    <NuxtLink
-      :to="`/estagio/${termo?.estagio?.id}?perfil=coe&termo=${termo?.id}`"
-    >
+    <div class="absolute right-8 top-36 flex items-center gap-2">
       <Button
-        label="Ver estágio"
-        class="p-button-secondary absolute right-8 top-36"
+        label="Ver documento"
+        class="p-button-secondary"
         icon="pi pi-eye"
+        @click="handleDownloadTermo"
       />
-    </NuxtLink>
 
-    <Aluno />
+      <NuxtLink
+        :to="`/estagio/${termo?.estagio?.id}?perfil=coord&termo=${termo?.id}`"
+      >
+        <Button
+          label="Ver estágio"
+          class="p-button-secondary"
+          icon="pi pi-eye"
+        />
+      </NuxtLink>
+    </div>
+
+    <Aluno :grrAluno="termo?.grrAluno" v-if="termo?.grrAluno" />
 
     <Estagio :termo="termo" />
 
@@ -303,8 +362,20 @@ export default defineComponent({
     <SuspensaoEstagio :termo="termo" />
 
     <div
+      class="card"
       v-if="
-        termo?.statusTermo === 'EmAprovacao' && state.tipoUsuario !== 'ALUNO'
+        termo?.etapaFluxo === 'Coordenacao' &&
+        termo?.statusTermo === 'Reprovado'
+      "
+    >
+      <strong>Justificativa indeferimento</strong>
+      <p>{{ termo?.motivoIndeferimento }}</p>
+    </div>
+
+    <div
+      v-if="
+        termo?.etapaFluxo === 'Coordenacao' &&
+        termo?.statusTermo === 'EmAprovacao'
       "
       class="flex align-items-end justify-content-end gap-2"
     >
@@ -325,6 +396,18 @@ export default defineComponent({
         @click="() => (state.confirmAction = 'INDEFERIR')"
       >
         Indeferir
+      </Button>
+    </div>
+
+    <div
+      class="flex align-items-end justify-content-end gap-2"
+      v-if="
+        termo?.etapaFluxo === 'Coordenacao' &&
+        termo?.statusTermo === 'Reprovado'
+      "
+    >
+      <Button class="p-button-info" @click="handleCienciaIndeferimento">
+        Ciência indeferimento
       </Button>
     </div>
 

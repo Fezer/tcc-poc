@@ -1,8 +1,8 @@
 type Auth = {
-  perfil: "coe" | "coafe" | "coordenacao" | "orientador" | "aluno";
+  tipoUsuario: "COE" | "COAFE" | "Coordenacao" | "Orientador" | "aluno";
   token: string;
   // id do orientador ou grr do aluno
-  id: string;
+  identifier: string;
 };
 
 export default function useAuth() {

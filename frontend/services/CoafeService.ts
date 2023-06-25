@@ -52,6 +52,7 @@ export default class CoafeService extends BaseService {
   async baixarRelatorioCertificadoExcel() {
     return $fetch(`/coafe/gerar-relatorio-certificados-excel`, {
       method: "GET",
+      responseType: "blob",
     });
   }
 }

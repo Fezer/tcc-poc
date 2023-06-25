@@ -25,12 +25,17 @@ export default defineComponent({
       tipo === "Obrigatorio" ? "Obrigatório" : "Não Obrigatório";
 
     const dadosAuxiliares: DadosAuxiliares | null =
-      aluno.value?.dadosAuxiliares || null;
+      aluno.value?.dadosAuxiliares ||
+      termo?.value?.aluno?.dadosAuxiliares ||
+      null;
 
-    const dadosBancarios = aluno.value?.dadosBancarios || null;
+    const dadosBancarios =
+      aluno.value?.dadosBancarios ||
+      termo?.value?.aluno?.dadosBancarios ||
+      null;
 
     const shouldShowDadosAuxiliares =
-      (!!termo?.estagio?.estagioUfpr &&
+      ((!!termo?.estagio?.estagioUfpr || !!termo?.estagioUfpr) &&
         termo?.estagio?.tipoEstagio == "NaoObrigatorio") ||
       (termo?.estagioUfpr && termo?.tipoEstagio == "NaoObrigatorio");
 

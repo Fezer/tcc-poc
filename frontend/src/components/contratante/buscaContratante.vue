@@ -9,6 +9,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const config = useRuntimeConfig();
     const contratantes = ref([]);
 
     const contratantesInput = ref("");
@@ -17,10 +18,15 @@ export default defineComponent({
     let controller; // Declara uma variável para o controlador de cancelamento
     let timeoutId; // Declara uma variável para o ID do timeout
     onMounted(async () => {
+      console.log(props.modelValue);
       localContratante.value = props.modelValue;
 
       if (props.modelValue) {
-        await $fetch(`/contratante/${props.modelValue}`)
+        const url = `${config.BACKEND_URL}/contratante/${props.modelValue}`;
+
+        console.log(url);
+
+        await fetch(url)
           .then((response) => response.json())
           .then((data) => {
             contratantesInput.value = `${data.nome} - ${data.cnpj}`;
@@ -98,6 +104,7 @@ export default defineComponent({
   <div>
     <div class="relative">
       <InputText
+        v-tooltip="'Digite pelo menos 3 caracteres para buscar a contratante'"
         v-if="!localContratante"
         placeholder="Busca por nome da contratante"
         v-model="contratantesInput"
@@ -119,10 +126,6 @@ export default defineComponent({
       >
       </span>
     </div>
-
-    <p v-if="contratantesInput.length < 3" class="text-sm italic text-gray-700">
-      Digite pelo menos 3 caracteres para buscar a contratante
-    </p>
 
     <!-- <Listbox
       v-if="contratantesInput.length >= 3 && !modelValue"

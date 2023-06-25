@@ -26,7 +26,7 @@ export default defineComponent({
 
     const { auth } = useAuth();
 
-    const grr = auth?.value?.id || "";
+    const grr = auth?.value?.identifier || "";
 
     const { setTermoRescisao } = useTermoRescisao();
 
@@ -168,6 +168,10 @@ export default defineComponent({
     </div>
 
     <Status :estagio="estagio" tipoUsuario="ALUNO" />
+
+    <Aluno :grrAluno="estagio?.aluno?.matricula" v-if="estagio?.aluno" />
+
+    <DadosAuxiliares :termo="estagio" />
 
     <Estagio :termo="estagio" />
 

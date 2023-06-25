@@ -31,7 +31,7 @@ export default defineComponent({
   }) {
     const { auth } = useAuth();
 
-    const grr = auth?.value?.id || "";
+    const grr = auth?.value?.identifier || "";
     const getPercentageByEtapa = () => {
       if (status === "EmAprovacao") {
         if (etapa === "COE") return 40;
@@ -46,7 +46,7 @@ export default defineComponent({
 
     const percentage = getPercentageByEtapa();
 
-    const handleDownloadTermo = async () => {
+    const handleDownloadTermoBase = async () => {
       let url = `/aluno/${grr}/gerar-termo`;
       if (termo?.tipoTermoDeEstagio === "TermoAditivo") {
         url = `/aluno/${grr}/termo-aditivo/${termo?.id}/gerar-termo-aditivo`;
@@ -66,7 +66,7 @@ export default defineComponent({
       parseDate,
       motivo,
       termo,
-      handleDownloadTermo,
+      handleDownloadTermoBase,
     };
   },
 });
@@ -100,19 +100,6 @@ export default defineComponent({
           <strong>Data de Início do processo</strong>
           <span>{{ parseDate(termo?.dataCriacao) }}</span>
         </div>
-        <div
-          class="col-4 flex items-center justify-end"
-          v-if="
-            ['EmPreenchimento', 'Aprovado'].includes(termo?.statusTermo || '')
-          "
-        >
-          <Button
-            label="Baixar documento"
-            class="p-button-secondary self-center"
-            icon="pi pi-file"
-            @click="handleDownloadTermo"
-          />
-        </div>
       </div>
       <div v-if="!!termo?.descricaoAjustes">
         <strong>Ajustes necessários</strong>
@@ -121,7 +108,7 @@ export default defineComponent({
         </p>
       </div>
       <div v-if="!!termo?.motivoIndeferimento">
-        <strong>Ajustes necessários</strong>
+        <strong>Motivo indeferimento</strong>
         <p>
           {{ termo?.motivoIndeferimento }}
         </p>

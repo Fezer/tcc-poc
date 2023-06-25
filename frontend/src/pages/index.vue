@@ -13,18 +13,18 @@ export default defineComponent({
     const { auth, setAuth } = useAuth();
 
     onMounted(async () => {
+      if (!process?.client) return;
       const urlParams = new URLSearchParams(window.location.search);
       const authorizationCode = urlParams.get("code");
 
       if (authorizationCode) {
-        const tokenUrl =
-          "https://login.ufpr.br/realms/master/protocol/openid-connect/token";
+        const tokenUrl = config.SIGA_TOKEN_URL;
         const data = new URLSearchParams();
         data.append("grant_type", "authorization_code");
         data.append("code", authorizationCode);
-        data.append("client_id", "estagios");
-        data.append("client_secret", "2xWHPudAW4hmAsnOYzW9eg4oUUKUHTLu");
-        data.append("redirect_uri", "http://localhost:3000/");
+        data.append("client_id", config.SIGA_CLIENT_ID);
+        data.append("client_secret", config.SIGA_CLIENT_SECRET);
+        data.append("redirect_uri", config.SIGA_REDIRECT_URI);
 
         try {
           const response = await fetch(tokenUrl, {
@@ -36,7 +36,8 @@ export default defineComponent({
           });
           const tokenData = await response.json();
           const accessToken = tokenData.access_token;
-          localStorage.setItem("accessToken", accessToken);
+          localStorage?.setItem("accessToken", accessToken);
+          localStorage?.setItem("proofile", "aluno");
 
           globalThis.$fetch = ofetch.create({
             baseURL: config.BACKEND_URL || "http://localhost:5000",
@@ -61,17 +62,14 @@ export default defineComponent({
 
           setAuth({
             token: accessToken,
-            perfil: "aluno",
-            id: JSON.parse(grrData)?.data?.grr,
+            tipoUsuario: "aluno",
+            identifier: JSON.parse(grrData)?.data?.grr,
           });
 
-          console.log(JSON.parse(grrData)?.data?.grr);
-
-          console.log("Token de acesso obtido com sucesso!");
           router.push("/aluno");
         } catch (error) {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("perfil");
+          localStorage?.removeItem("accessToken");
+          localStorage?.removeItem("perfil");
 
           router.replace("/login");
           console.error("Erro ao obter o token de acesso:", error);

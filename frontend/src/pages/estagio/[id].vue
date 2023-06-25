@@ -5,6 +5,7 @@ import Contratante from "../../components/common/contratante.vue";
 import ObjetosDeEstagio from "../../components/common/objetos-de-estagio.vue";
 import planoAtividades from "../../components/common/plano-atividades.vue";
 import Status from "../../components/common/statusEstagio.vue";
+import { Estagio } from "../../types/NovoEstagio";
 
 type TipoUsuario = "ALUNO" | "COE" | "COAFE" | "COORD";
 
@@ -21,7 +22,9 @@ export default defineComponent({
 
     const { id } = route.params;
 
-    const { data: estagio, refresh } = await useFetch(`/estagio/${id}`);
+    const { data: estagio, refresh } = await useFetch<Estagio>(
+      `/estagio/${id}`
+    );
 
     const { perfil, termoDeRescisao, termo, certificado } = route.query;
 
@@ -58,7 +61,7 @@ export default defineComponent({
   <div>
     <NuxtLink
       :to="`/${perfil}/${tipoTermo}/${termoDeRescisao || termo || certificado}`"
-      v-if="perfil && tipoTermo"
+      v-if="perfil && tipoTermo && (termo || certificado)"
     >
       <Button
         label="Voltar ao Termo"
@@ -73,7 +76,9 @@ export default defineComponent({
 
     <Status :estagio="estagio" tipoUsuario="OUTRO" />
 
-    <Aluno />
+    <Aluno :grrAluno="estagio?.aluno?.matricula" v-if="estagio?.aluno" />
+
+    <DadosAuxiliares :termo="estagio" />
 
     <Estagio :termo="estagio" />
 

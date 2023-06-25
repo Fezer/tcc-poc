@@ -29,7 +29,7 @@ export default defineComponent({
     const { id } = route.params;
     const { auth } = useAuth();
 
-    const grr = auth?.value?.id || "";
+    const grr = auth?.value?.identifier || "";
 
     const alunoService = new AlunoService();
 
@@ -52,24 +52,6 @@ export default defineComponent({
 
       uploadModalVisible: false,
     });
-    const checkIfTermoCompleto = () => {
-      const necessaryValues = [
-        "planoAtividades",
-        "orientador",
-        "jornadaSemanal",
-        "jornadaDiaria",
-        "dadaInicio",
-        "dataTermino",
-        "valorBolsa",
-        "valorTransporte",
-      ];
-
-      for (const value of necessaryValues) {
-        if (!termo.value[value]) {
-          return false;
-        }
-      }
-    };
 
     const handleEditarTermo = () => {
       // seta o termo atual para edição
@@ -137,7 +119,7 @@ export default defineComponent({
       formData.append("file", file);
 
       await alunoService
-        .uploadTermoAditivo(grr, formData)
+        .uploadTermoAditivo(grr, termo?.value?.id, formData)
         .then(() => {
           toast.add({
             severity: "success",
@@ -145,6 +127,8 @@ export default defineComponent({
             detail: `O termo aditivo foi enviado com sucesso!`,
             life: 3000,
           });
+          state.uploadModalVisible = false;
+          refresh().then(() => (state.uploadModalVisible = true));
         })
         .catch((err) => {
           console.error(err);
@@ -157,7 +141,7 @@ export default defineComponent({
         });
     };
 
-    const handleDownloadTermo = async () => {
+    const handleDownloadTermoBase = async () => {
       try {
         const file = await alunoService.downloadTermoAditivo(
           grr,
@@ -178,6 +162,30 @@ export default defineComponent({
       }
     };
 
+    const handleDownloadTermoAssinado = async () => {
+      const url = `/aluno/${grr}/termo-aditivo/${termo?.value?.id}/download`;
+
+      try {
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail:
+            err?.response?._data?.error ||
+            "Tivemos um problema ao baixar o termo.",
+          life: 3000,
+        });
+      }
+    };
+
     return {
       termo,
       refreshData,
@@ -186,7 +194,8 @@ export default defineComponent({
       handleSolicitarAprovacao,
       handleCancelarTermo,
       handleUploadTermo,
-      handleDownloadTermo,
+      handleDownloadTermoBase,
+      handleDownloadTermoAssinado,
     };
   },
 });
@@ -199,10 +208,18 @@ export default defineComponent({
 
     <div class="absolute right-0 top-10 gap-2 flex">
       <Button
-        label="Ver documento"
+        label="Baixar documento base"
         class="p-button-secondary"
         icon="pi pi-file"
-        @click="handleDownloadTermo"
+        @click="handleDownloadTermoBase"
+        v-if="['EmPreenchimento', 'EmRevisao'].includes(termo?.statusTermo)"
+      />
+      <Button
+        label="Baixar documento assinado"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        @click="handleDownloadTermoAssinado"
+        v-if="termo?.uploadCompromisso"
       />
       <NuxtLink :to="`/aluno/estagio/${termo?.estagio?.id}`">
         <Button
@@ -280,72 +297,24 @@ export default defineComponent({
       </template>
     </div>
 
-    <Dialog
-      :visible="state.uploadModalVisible"
-      header="Upload do termo assinado."
-      :closable="false"
-      style="width: 600px"
-      :modal="true"
-    >
-      <p>
-        Para solicitar a aprovação do seu termo aditivo, por favor faça o upload
-        do termo assinado pelo supervisor do estágio (na contratante), seu
-        professor(a) orientador(a) e por você.
-      </p>
-
-      <!-- 10MB file size -->
-      <FileUpload
-        accept=".pdf"
-        :multiple="false"
-        :maxFileSize="10000000"
-        chooseLabel="Adicionar termo"
-        mode="basic"
-        customUpload
-        @uploader="handleUploadTermo"
+    <div v-if="state.uploadModalVisible">
+      <UploadConfirm
+        header="Upload do termo assinado."
+        :onConfirm="handleSolicitarAprovacao"
+        :handleUpload="handleUploadTermo"
+        :confirmBlocked="!termo?.estagio?.estagioSeed && !termo?.uploadAditivo"
+        :onClose="() => (state.uploadModalVisible = false)"
+        description="Para solicitar a aprovação do seu termo aditivo, por favor faça o upload do termo assinado pelo supervisor do estágio (na contratante), seu professor(a) orientador(a) e por você."
       />
-      <template #footer>
-        <Button
-          label="Fechar"
-          icon="pi pi-times"
-          class="p-button-secondary"
-          @click="state.uploadModalVisible = false"
-        />
-        <Button
-          label="Solicitar Aprovação"
-          icon="pi pi-check"
-          class="p-button-primary"
-          @click="handleSolicitarAprovacao"
-        />
-      </template>
-    </Dialog>
+    </div>
 
-    <Dialog
-      :visible="state.cancelationConfirm"
-      header="Confirmar cancelamento"
-      :closable="false"
-      style="width: 500px"
-      :modal="true"
-    >
-      <p>
-        Tem certeza que deseja cancelar esse termo aditivo? Você poderá iniciar
-        outro processo de termo aditivo.
-      </p>
-      <template #footer>
-        <Button
-          label="Voltar"
-          icon="pi pi-times"
-          class="p-button-secondary"
-          @click="state.cancelationConfirm = false"
-        />
-        <Button
-          label="Cancelar"
-          icon="pi pi-check"
-          class="p-button-danger"
-          autofocus
-          @click="handleCancelarTermo"
-        />
-      </template>
-    </Dialog>
+    <div v-if="state.cancelationConfirm">
+      <CancelationConfirm
+        :onConfirm="handleCancelarTermo"
+        description="Tem certeza que deseja cancelar esse termo aditivo? Será necessário iniciar todo o processo novamente."
+        :onClose="() => (state.cancelationConfirm = false)"
+      />
+    </div>
   </div>
 </template>
 

@@ -66,8 +66,12 @@ export default class TermoDeRescisaoService {
     );
   }
 
-  public async uploadTermoDeRescisao(grr: string, termoData: FormData) {
-    return await $fetch(`/aluno/${grr}/upload-termo-de-rescisao`, {
+  public async uploadTermoDeRescisao(
+    grr: string,
+    termo: number,
+    termoData: FormData
+  ) {
+    return await $fetch(`/aluno/${grr}/termo-de-rescisao/${termo}/upload`, {
       method: "POST",
       body: termoData,
     });

@@ -1,14 +1,25 @@
-<script>
+<script lang="ts">
 export default {
   setup() {
+    const { auth } = useAuth();
+
     const { data: processes } = useFetch(
-      "/orientador/6/relatorioDeEstagio/pendenteCiencia"
+      `/orientador/${auth?.value?.identifier}/relatorioDeEstagio/pendenteCiencia`
     );
 
-    console.log(processes);
+    const parseTipoRelatorio = (
+      tipo: "RelatorioParcial" | "RelatorioFinal"
+    ) => {
+      if (tipo === "RelatorioParcial") {
+        return "Relatório Parcial";
+      } else {
+        return "Relatório Final";
+      }
+    };
 
     return {
       processes,
+      parseTipoRelatorio,
     };
   },
 };
@@ -27,45 +38,23 @@ export default {
         <template #header>
           <div class="flex items-center justify-content-between">
             <span class="p-input-icon-left">
-              <h4 class="font-bold">Processos pendentes de parecer</h4>
-            </span>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search" />
-              <InputText placeholder="Keyword Search" />
+              <h4 class="font-bold">Relatórios de Estágio pendentes ciência</h4>
             </span>
           </div>
         </template>
         <Column field="process" header="Processo">
-          <template #body="{ data }">
-            {{ data.id }}
-          </template>
+          <template #body="{ data }"> #{{ data.id }} </template>
+        </Column>
+        <Column field="process" header="Estágio">
+          <template #body="{ data }"> #{{ data.estagio?.id }} </template>
         </Column>
         <Column field="process_type" header="Tipo de Processo">
           <template #body="{ data }">
-            {{ data.tipoRelatorio }}
+            {{ parseTipoRelatorio(data.tipoRelatorio) }}
           </template>
         </Column>
-        <Column field="student_name" header="Nome do Aluno">
-          <template #body="{ data }">
-            {{ data?.aluno?.nome }}
-          </template>
-        </Column>
-        <Column field="curse" header="Curso">
-          <template #body="{ data }">
-            {{ data.curse }}
-          </template>
-        </Column>
-        <Column field="contratante" header="Contratante">
-          <template #body="{ data }">
-            {{ data?.contratante?.nome }}
-          </template>
-        </Column>
-        <Column
-          field="action"
-          header="Ação necessária"
-          bodyStyle="color:orange;"
-        >
-          <template #body="{ data }"> Ciência Relatório Estágio </template>
+        <Column field="action" header="Etapa" bodyStyle="color:orange;">
+          <template #body="{ data }">{{ data?.etapaFluxo }}</template>
         </Column>
         <Column field="button">
           <template #body="{ data }">

@@ -3,8 +3,13 @@ import BaseService from "./BaseService";
 import { BaseTermo } from "~~/src/types/Termos";
 
 export default class AlunoService {
+  // a rota /siga/aluno/grr formata o aluno para o padrão do backend
+  // a rota /aluno/grr precisa de autenticação do siga -> logo só funciona para o aluno logado
+  // estamos utilizando essa rota para não precisar de autenticação para atores institucionais
   public async getAlunoFromSiga(grr: string) {
-    return await $fetch(`/aluno/${grr}`).catch((err) => console.error(err));
+    return await $fetch(`/siga/aluno/${grr}`).catch((err) =>
+      console.error(err)
+    );
   }
 
   public async getCursoAlunoFromSiga(idCurso: string) {
@@ -100,9 +105,13 @@ export default class AlunoService {
     });
   }
 
-  // http://localhost:5000/aluno/GRR20204481/upload-termo-aditivo
-  public async uploadTermoAditivo(grr: string, termoData: FormData) {
-    return await $fetch(`/aluno/${grr}/upload-termo-aditivo`, {
+  // http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/upload
+  public async uploadTermoAditivo(
+    grr: string,
+    termo: number,
+    termoData: FormData
+  ) {
+    return await $fetch(`/aluno/${grr}/termo-aditivo/${termo}/upload`, {
       method: "POST",
       body: termoData,
     });
@@ -167,8 +176,6 @@ export default class AlunoService {
     );
   }
 
-  // http://localhost:5000/aluno/GRR20204481/upload-ficha/FichaDeAvaliacaoParcial
-
   public async uploadFichaDeAvaliacao(grr: string, fichaData: FormData) {
     return await $fetch(`/aluno/${grr}/upload-ficha/FichaDeAvaliacaoParcial`, {
       method: "POST",
@@ -182,7 +189,6 @@ export default class AlunoService {
     ).catch((err) => console.error(err));
   }
 
-  // http://localhost:5000/aluno/GRR20204481/termo-aditivo/2/gerar-termo-aditivo
   public async downloadTermoAditivo(grr: string, termo: number) {
     return await $fetch(
       `/aluno/${grr}/termo-aditivo/${termo}/gerar-termo-aditivo`,

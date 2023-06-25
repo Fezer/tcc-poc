@@ -33,6 +33,8 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 	@OneToMany(mappedBy="agenteIntegrador", cascade=CascadeType.ALL)
 	private List<Estagio> estagio;
 	
+	private boolean ativo;
+	
 	public AgenteIntegrador() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -47,6 +49,16 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 		this.estagio = estagio;
 	}
 
+	public AgenteIntegrador(long id, String nome, String telefone, String cnpj, List<Convenio> convenio,
+			List<TermoDeEstagio> termoDeEstagio, List<Estagio> estagio, boolean ativo) {
+		super(id, nome, telefone);
+		this.cnpj = cnpj;
+		this.convenio = convenio;
+		this.termoDeEstagio = termoDeEstagio;
+		this.estagio = estagio;
+		this.ativo = ativo;
+	}
+	
 	public long getId() {
 		return super.getId();
 	}
@@ -85,6 +97,14 @@ public class AgenteIntegrador extends Pessoa implements Serializable {
 
 	public void setEstagio(List<Estagio> estagio) {
 		this.estagio = estagio;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 
 }

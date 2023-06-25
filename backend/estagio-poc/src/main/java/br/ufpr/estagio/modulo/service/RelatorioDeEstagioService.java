@@ -207,14 +207,8 @@ public class RelatorioDeEstagioService {
 		
 		List<String> listaAux = new ArrayList<>();
 		listaAux.add(nomeArquivo);
-		
-		if (relatorio.getArquivos() == null) {
-			relatorio.setArquivos(listaAux);
-		} else {
-			List<String> arquivos = relatorio.getArquivos();
-			arquivos.add(nomeArquivo);
-			relatorio.setArquivos(arquivos);
-		}
+
+		relatorio.setArquivos(listaAux);
 		
 		return relatorioRepo.save(relatorio);
 	}

@@ -44,16 +44,50 @@ export default defineComponent({
         });
     };
 
+    const handleDownloadTermoAssinado = async () => {
+      const url = `/coe/${termo?.value?.grrAluno}/termo-de-rescisao/${id}/download`;
+
+      try {
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: "Ops!",
+          detail:
+            err?.response?._data?.error ||
+            "Tivemos um problema ao baixar o termo.",
+          life: 3000,
+        });
+      }
+    };
+
     return {
       termo,
       handleDarCiencia,
+      handleDownloadTermoAssinado,
     };
   },
 });
 </script>
 <template>
-  <div>
+  <div class="relative">
     <h3>Termo de Rescisão</h3>
+
+    <div class="absolute right-0 -top-2 gap-2 flex">
+      <Button
+        label="Ver documento"
+        class="p-button-secondary"
+        icon="pi pi-file"
+        @click="handleDownloadTermoAssinado"
+      />
+    </div>
 
     <div class="card">
       <h5>Dados Termo</h5>
@@ -84,7 +118,7 @@ export default defineComponent({
 
     <div class="w-full flex justify-end gap-2 mt-4">
       <NuxtLink
-        :to="`/estagio/${termo?.estagio?.id}?perfil=orientador&termoDeRescisao=5`"
+        :to="`/estagio/${termo?.estagio?.id}?perfil=coe&termoDeRescisao=5`"
       >
         <Button
           label="Ver estágio"
@@ -97,6 +131,7 @@ export default defineComponent({
         class="p-button-primary"
         icon="pi pi-check"
         @click="handleDarCiencia"
+        v-if="termo?.cienciaCOE === false"
       />
     </div>
   </div>

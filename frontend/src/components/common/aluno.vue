@@ -4,7 +4,13 @@ import { defineComponent, onMounted, reactive } from "vue";
 import AlunoService from "~~/services/AlunoService";
 
 export default defineComponent({
-  setup() {
+  props: {
+    grrAluno: {
+      type: String,
+      required: false,
+    },
+  },
+  setup({ grrAluno }: { grrAluno: string }) {
     const { aluno, setAluno } = useAluno();
     const route = useRoute();
 
@@ -14,7 +20,7 @@ export default defineComponent({
 
     const { auth } = useAuth();
 
-    const grr = auth?.value?.id || "";
+    const grr = grrAluno || auth?.value?.identifier || "";
 
     const curso = reactive({});
 

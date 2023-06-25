@@ -1,10 +1,17 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import { ofetch } from "ofetch";
+import AlunoService from "~~/services/AlunoService";
 
 export default defineComponent({
   setup() {
+    const { auth, setAuth } = useAuth();
     const route = useRoute();
-    const { aluno } = useAluno();
+    const { aluno, setAluno } = useAluno();
+    const router = useRouter();
+    const config = useRuntimeConfig();
+    const alunoService = new AlunoService();
+
     const estagios = [
       {
         label: "Estágio atual",
@@ -50,6 +57,48 @@ export default defineComponent({
 
       return route.path === tab;
     };
+
+    onMounted(async () => {
+      if (!auth?.value?.identifier) {
+        const accessToken = localStorage.getItem("accessToken");
+
+        if (!accessToken) return router.replace("/login");
+        const grrData = await $fetch(`${config.BACKEND_URL}/siga/grr`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (typeof grrData !== "string") {
+          throw new Error(
+            "Erro ao obter o GRR do aluno. Tente novamente mais tarde."
+          );
+        }
+
+        globalThis.$fetch = ofetch.create({
+          baseURL: config.BACKEND_URL || "http://localhost:5000",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        setAuth({
+          token: accessToken,
+          tipoUsuario: "aluno",
+          identifier: JSON.parse(grrData)?.data?.grr,
+        });
+
+        if (!aluno?.value) {
+          await alunoService
+            .getAlunoFromSiga(auth?.value?.identifier)
+            .then(async (res) => {
+              setAluno(res);
+              return res;
+            });
+        }
+      }
+    });
 
     return {
       aluno,
