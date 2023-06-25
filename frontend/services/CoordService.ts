@@ -48,4 +48,10 @@ export default class CoordService extends BaseService {
       method: "PUT",
     });
   }
+
+  async cienciaIndeferimentoTermo(termo: number) {
+    return await $fetch(`/coordenacao/termo/${termo}/cienciaIndeferimento`, {
+      method: "PUT",
+    });
+  }
 }

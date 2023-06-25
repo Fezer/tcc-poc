@@ -269,6 +269,30 @@ export default defineComponent({
       return window.open(fileURL, "_blank");
     };
 
+    const handleCienciaIndeferimento = async () => {
+      try {
+        await coordService.cienciaIndeferimentoTermo(termo?.value?.id);
+
+        toast.add({
+          severity: "success",
+          summary: "Sucesso",
+          detail: "Ciência de Indeferimento registrada com sucesso!",
+          life: 3000,
+        });
+        refresh();
+      } catch (err) {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: "Erro",
+          detail:
+            err?.response?._data?.error ||
+            "Erro ao registrar ciência de Indeferimento!",
+          life: 3000,
+        });
+      }
+    };
+
     onMounted(() => {
       console.log(termo);
       if (termo) {
@@ -293,6 +317,7 @@ export default defineComponent({
       handleCienciaFormacaoSupervisor,
       canConfirmAction,
       handleDownloadTermo,
+      handleCienciaIndeferimento,
     };
   },
 });
@@ -337,7 +362,21 @@ export default defineComponent({
     <SuspensaoEstagio :termo="termo" />
 
     <div
-      v-if="termo?.etapaFluxo === 'Coordenacao'"
+      class="card"
+      v-if="
+        termo?.etapaFluxo === 'Coordenacao' &&
+        termo?.statusTermo === 'Reprovado'
+      "
+    >
+      <strong>Justificativa indeferimento</strong>
+      <p>{{ termo?.motivoIndeferimento }}</p>
+    </div>
+
+    <div
+      v-if="
+        termo?.etapaFluxo === 'Coordenacao' &&
+        termo?.statusTermo === 'EmAprovacao'
+      "
       class="flex align-items-end justify-content-end gap-2"
     >
       <Button
@@ -357,6 +396,18 @@ export default defineComponent({
         @click="() => (state.confirmAction = 'INDEFERIR')"
       >
         Indeferir
+      </Button>
+    </div>
+
+    <div
+      class="flex align-items-end justify-content-end gap-2"
+      v-if="
+        termo?.etapaFluxo === 'Coordenacao' &&
+        termo?.statusTermo === 'Reprovado'
+      "
+    >
+      <Button class="p-button-info" @click="handleCienciaIndeferimento">
+        Ciência indeferimento
       </Button>
     </div>
 

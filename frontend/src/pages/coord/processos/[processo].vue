@@ -12,8 +12,10 @@ export default defineComponent({
 
     const { processo } = route.params;
 
+    // status padrão da coord não é definido como "EmAprovacao"
+    // pois Coord também tem que dar ciência de indeferimentos
     const filters = reactive({
-      status: "EmAprovacao",
+      status: "",
       etapa: "Coordenacao",
       grr: "",
     });
