@@ -45,13 +45,6 @@ public class Discente implements Serializable{
 	@Column(name = "rg")
 	private String rg;
 	
-//03-05-2023 - ApiSiga não retorna mais objeto curso
-//	@ManyToOne
-//  @JoinColumn(name = "curso_id")
-//    private CursoSiga curso;
-
-//15-04-2023 - Atributo dataNascimento não existe na versão da API do SIGA nesta data.	
-//03-05-2023 - Atributo adicionado
 	@Column(name = "dataNascimento")
 	private Date dataNascimento;
 	
@@ -87,8 +80,7 @@ public class Discente implements Serializable{
 	
 	@Column(name = "isMatriculado")
 	private boolean isMatriculado;
-	
-	// Atributos de dados auxiliares que estao vindo diretamente em Discente, via SIGA:
+
 	@Column(name = "orgao")
 	private String orgao;
 	

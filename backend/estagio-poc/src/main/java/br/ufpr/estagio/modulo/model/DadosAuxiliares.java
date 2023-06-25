@@ -105,7 +105,6 @@ public class DadosAuxiliares implements Serializable{
 	@Column(name = "emailInstitucional")
 	private String emailInstitucional;
 	
-	// Colunas adicionadas a pedido do Lucas
 	@Column(name = "tipoVaga")
 	private String tipoVaga;
 	

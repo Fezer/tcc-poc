@@ -30,6 +30,7 @@ import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CienciaCoordenacaoRepository;
+import br.ufpr.estagio.modulo.repository.DadosAuxiliaresRepository;
 import br.ufpr.estagio.modulo.repository.EnderecoRepository;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
@@ -61,6 +62,9 @@ public class AlunoService {
 	private CienciaCoordenacaoRepository cienciaRepo;
 	
 	@Autowired
+	private DadosAuxiliaresRepository dadosRepo;
+	
+	@Autowired
 	private SigaApiAlunoService sigaApiAlunoService;
 	
 	@Autowired
@@ -85,7 +89,6 @@ public class AlunoService {
     	if(alunoFind.isEmpty()) {
     		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula, accessToken);
     		aluno = sigaApiModuloEstagioMapping.mapearDiscenteEmAluno(discente, accessToken);
-    		//aluno = this.salvarAluno(aluno);
     	} else {
     		aluno = alunoFind.get();
     		Optional<Endereco> enderecoFind = enderecoRepo.findByAlunoId(aluno.getId());
@@ -100,16 +103,10 @@ public class AlunoService {
         	endereco.setUf(enderecoFind.get().getUf());
         	
         	endereco.setAluno(enderecoFind.get().getAluno());
-        	
-        	aluno.setEndereco(endereco);
-        	
+        	aluno.setEndereco(endereco);	
         	enderecoRepo.save(endereco);
 
     	}
-
-    	
-    	
-    	
         return aluno;
     }
     
@@ -131,7 +128,6 @@ public class AlunoService {
         return alunoRepo.save(aluno);
     }
     
-    /////////////////////////////////////////////// 
     public Aluno atualizarAluno(Aluno alunoAtualizado, String accessToken) {
     	
     	System.out.println(alunoAtualizado.getId());
@@ -165,7 +161,7 @@ public class AlunoService {
     	 *		-> Colocar os dados bancários no bloco a ser criado abaixo.
     	 */
     	
-    	//dados.save?
+    	dadosRepo.save(dadosAuxiliaresExistente);
     	return alunoRepo.save(alunoExistente);
     }
      
@@ -182,7 +178,9 @@ public class AlunoService {
     }
 	
 	public Estagio novoEstagio(Aluno aluno) {
-		//Bloco de criação do novo estágio e associação deste novo estágio ao Aluno;
+		/**
+		 * Bloco de criação do novo estágio e associação deste novo estágio ao Aluno.
+		**/
 		Estagio estagio = new Estagio();
 		estagio.setStatusEstagio(EnumStatusEstagio.EmPreenchimento);
 		estagio.setAluno(aluno);
@@ -193,7 +191,10 @@ public class AlunoService {
 		listaEstagios.add(estagio);
 		aluno.setEstagio(listaEstagios);
 		
-		//Bloco de criação do Termo De Compromisso com os devidos status inicais pós criação e associação deste termo de compromisso ao Estagio;
+		/**
+		 * Bloco de criação do Termo De Compromisso com os devidos status inicais
+		 * pós criação e associação deste termo de compromisso ao Estagio.
+		**/
 		TermoDeEstagio termoDeCompromisso = new TermoDeEstagio();
 		termoDeCompromisso.setTipoTermoDeEstagio(EnumTipoTermoDeEstagio.TermoDeCompromisso);
 		termoDeCompromisso.setEtapaFluxo(EnumEtapaFluxo.Aluno);
@@ -204,11 +205,10 @@ public class AlunoService {
 		termoDeCompromisso.setCienciaCoordenacao(cienciaCoordenacao);
 		termoDeCompromisso.setCoordenador(aluno.getCurso().getCoordenador().get(0));
 		
-		
-		
-		//termoDeCompromisso.setCoordenador(new Coordenador(1, aluno.getCoordenador(), null, null));
-		
-		//Bloco de criação do Plano De Atividades com as devidas associações entre Termo De Estágio e Estagio.
+		/**
+		 * Bloco de criação do Plano De Atividades com as devidas
+		 * associações entre Termo De Estágio e Estagio.
+		 */
 		PlanoDeAtividades planoDeAtividades = new PlanoDeAtividades();
 		planoDeAtividades.setEstagio(estagio);
 		planoDeAtividades.setTermoDeEstagio(termoDeCompromisso);
@@ -234,11 +234,15 @@ public class AlunoService {
 		}
 		
 		EnumEtapaFluxo etapaFluxo = null;
-		//Se for estágio da SEED o termo é encaminhado direto para a COAFE
+		/**
+		 * Se for estágio da SEED o termo é encaminhado direto para a COAFE.
+		 */
 		if(estagio.isEstagioSeed()) {
 			etapaFluxo = EnumEtapaFluxo.COAFE;
 		} else {
-			//Se for estágio obrigatório não passa pela COE
+			/**
+			 * Se for estágio obrigatório não passa pela COE.
+			 */
 			if(estagio.getTipoEstagio() == EnumTipoEstagio.Obrigatorio) {
 				etapaFluxo = EnumEtapaFluxo.Coordenacao;
 			} else {
@@ -264,19 +268,16 @@ public class AlunoService {
 		termoAtualizado.getCienciaCoordenacao().setCienciaPlanoAtividades(false);
 		termoAtualizado.setDescricaoAjustes(null);
 		
-		
 		estagioRepo.save(estagio);
 				
 		return termoRepo.save(termoAtualizado);
 	}
 	
 	public Aluno atualizarDadosAuxiliares(Aluno aluno) {
-		
     	return alunoRepo.save(aluno);
     }
 	
 public Aluno atualizarDadosBancarios(Aluno aluno) {
-		
     	return alunoRepo.save(aluno);
     }
 	
@@ -284,6 +285,10 @@ public Aluno atualizarDadosBancarios(Aluno aluno) {
 		
 		TermoDeEstagio termoDeCompromisso = estagio.getTermoDeCompromisso();
 		
+		/**
+		 * Só é possível cancelar um estágio desta forma caso o estágio
+		 * se encontre em um dos estados abaixo.
+		 */
 		if(estagio.getStatusEstagio() == EnumStatusEstagio.EmAprovacao || estagio.getStatusEstagio() == EnumStatusEstagio.EmPreenchimento) {
 			estagio.setStatusEstagio(EnumStatusEstagio.Cancelado);
 			termoDeCompromisso.setStatusTermo(EnumStatusTermo.Cancelado);
@@ -305,7 +310,6 @@ public Aluno atualizarDadosBancarios(Aluno aluno) {
 		return listaCertificados;
 	}
 
-	// Teste para pedido do Lucas
 	public List<TermoDeEstagio> listarTermosCompromissoAluno(Aluno aluno) {
 		List<Estagio> listaEstagios = aluno.getEstagio();
 		if (listaEstagios == null || listaEstagios.isEmpty()) {
@@ -318,7 +322,6 @@ public Aluno atualizarDadosBancarios(Aluno aluno) {
 		return listaTermos;
 	}
 
-	// Teste para pedido do Lucas
 	public List<RelatorioDeEstagio> listarRelatoriosEstagioAluno(Aluno aluno) {
 		List<Estagio> listaEstagios = aluno.getEstagio();
 		if (listaEstagios == null || listaEstagios.isEmpty()) {
