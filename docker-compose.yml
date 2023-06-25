@@ -9,5 +9,6 @@ services:
       - ./frontend:/app
     ports:
       - '3000:3000'
-    environment:
-      - NODE_ENV=development
+      - '24678:24678'
+    env_file:
+      - ./frontend/.env

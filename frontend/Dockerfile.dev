@@ -12,6 +12,7 @@ RUN npm install
 # Copia todos os arquivos da aplicação para o diretório de trabalho
 COPY . .
 
+COPY .env.example .env
 
 # Expor a porta 3000
 EXPOSE 3000
