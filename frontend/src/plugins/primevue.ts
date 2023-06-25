@@ -30,7 +30,7 @@ export default defineNuxtPlugin(({ vueApp: app }) => {
 
   const appState = createGlobalState(() =>
     useLocalStorage<AppState>("app-state", {
-      theme: "lara-light-indigo",
+      theme: "tailwind-light",
       darkTheme: false,
     })
   )();
