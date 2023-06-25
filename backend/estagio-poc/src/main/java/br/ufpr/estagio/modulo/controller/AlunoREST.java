@@ -57,6 +57,7 @@ import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
+import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.DadosBancarios;
 import br.ufpr.estagio.modulo.model.Estagio;
@@ -2492,7 +2493,16 @@ public class AlunoREST {
 					if (termo == null) {
 						throw new NotFoundException("Ficha não encontrada.");
 					} else {
-
+						//TO-DO: Revisar isso aqui
+						if(termo.getEstagio().isEstagioUfpr()) {
+							Contratante contratante = new Contratante();
+							contratante.setAtivo(true);
+							contratante.setCnpj("1231231231233");
+							contratante.setNome("UFPR");
+							contratante.setRepresentanteEmpresa("UFPR");
+							termo.setContratante(contratante);
+						}
+						
 						byte[] pdf = geradorService.gerarPdfAlunoTermoAditivo(termo);
 
 						HttpHeaders headers = new HttpHeaders();
