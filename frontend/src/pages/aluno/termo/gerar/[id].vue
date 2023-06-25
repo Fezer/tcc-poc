@@ -1,12 +1,12 @@
 <script lang="ts">
 import { useToast } from "primevue/usetoast";
 import { defineComponent, reactive } from "vue";
-import NovoEstagioService from "../../../services/NovoEstagioService";
-import aluno from "../../components/common/aluno.vue";
-import Contratante from "../../components/common/contratante.vue";
-import dadosAuxiliaresVue from "../../components/common/dadosAuxiliares.vue";
-import estagio from "../../components/common/estagio.vue";
-import planoAtividades from "../../components/common/plano-atividades.vue";
+import NovoEstagioService from "~~/services/NovoEstagioService";
+import aluno from "~/components/common/aluno.vue";
+import Contratante from "~/components/common/contratante.vue";
+import dadosAuxiliaresVue from "~/components/common/dadosAuxiliares.vue";
+import estagio from "~/components/common/estagio.vue";
+import planoAtividades from "~/components/common/plano-atividades.vue";
 import StatusTermo from "./status.vue";
 import AlunoService from "~~/services/AlunoService";
 

@@ -1,6 +1,37 @@
 version: '3'
 
+
 services:
+  database:
+    container_name: tcc-database
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: poc
+      MYSQL_DATABASE: poc
+      MYSQL_USER: poc
+      MYSQL_PASSWORD: poc
+    networks:
+      - default
+  backend: 
+    container_name: tcc-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend:/app
+      - ./backend/estagios-poc/src/main/resources/arquivos:/app/src/main/resources/arquivos
+    ports:
+      - '5000:5000'
+      - '3'
+    depends_on:
+      - database
+    networks:
+      - default
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://tcc-database:3306/poc
+      - SPRING_DATASOURCE_USERNAME=poc
+      - SPRING_DATASOURCE_PASSWORD=poc
+
   frontend:
     build:
       context: ./frontend
@@ -12,3 +43,9 @@ services:
       - '24678:24678'
     env_file:
       - ./frontend/.env
+    networks:
+      - default
+    
+networks:
+  default:
+    driver: bridge

@@ -68,7 +68,14 @@ pnpm run dev
 
 ### Rodando com docker compose
 
-Antes de rodar a primeira vez:
+Antes de rodar a primeira vez é necessário buildar o back, e depois o banco e o front:
+
+```bash
+cd backend
+cd estagios-poc
+
+./mnvw clean install -D skipTests
+```
 
 ```bash
 docker compose build
