@@ -19,7 +19,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./backend:/app
-      - ./backend/estagios-poc/src/main/resources/arquivos:/app/src/main/resources/arquivos
+      - ./backend/estagio-poc/src/main/resources/arquivos:/app/src/main/resources/arquivos
     ports:
       - '5000:5000'
       - '3'
