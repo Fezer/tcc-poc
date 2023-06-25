@@ -105,7 +105,6 @@ export default defineComponent({
   },
 });
 </script>
-<Toast />
 <template>
   <div>
     <div class="flex justify-content-between">

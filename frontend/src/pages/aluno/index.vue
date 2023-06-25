@@ -22,75 +22,73 @@ export default defineComponent({
 
     // busca os dados do aluno ao carregar a página
     const { data: aluno, error: errAluno } = useAsyncData("aluno", async () => {
-      if (alunoData?.value) return alunoData.value;
-
-      const response = await alunoService
-        .getAlunoFromSiga(grr)
-        .then(async (res) => {
-          setAluno(res);
-
-          // busca por estágio em revisão, estágios ativos, estágio
-          // em processo de aprovação e termo de compromisso em termo de aprovação
-          // respectivamente
-          // caso exista, redireciona para página referente ao processo
-          const emRevisao = await alunoService
-            .getEstagioEmRevisao(grr)
-            .then((res) => {
-              if (res && res.length > 0) {
-                console.log("AJUSTE");
-                router.push({
-                  path: "/aluno/termo/" + res[0]?.termoDeCompromisso,
-                });
-                return true;
-              }
-              return false;
-            });
-
-          if (emRevisao) return;
-
-          const emAndamento = await alunoService
-            .getEstagioEmAndamento(grr)
-            .then((res) => {
-              if (res && res.length > 0) {
-                router.push({
-                  path: "/aluno/estagio/" + res[0].id,
-                });
-                return true;
-              }
-              return false;
-            });
-
-          if (emAndamento) return;
-
-          const emAprovacao = await novoEstagioService
-            .getTermoEmAprovacao(grr)
-            .then((res) => {
-              if (res && res.length > 0) {
-                setTermo(res[0]);
-                router.push({
-                  path: "/aluno/termo/" + res[0].id,
-                });
-                return true;
-              }
-              return false;
-            });
-
-          if (emAprovacao) return;
-
-          await novoEstagioService.getTermoEmPreenchimento(grr).then((res) => {
-            if (res && res.length > 0) {
-              setTermo(res[0]);
-              router.push({
-                path: "/aluno/termo/" + res[0].id,
-              });
-              return true;
-            }
-            return false;
+      if (!alunoData?.value) {
+        const response = await alunoService
+          .getAlunoFromSiga(grr)
+          .then(async (res) => {
+            setAluno(res);
+            return res;
           });
+      }
 
-          return res;
+      // busca por estágio em revisão, estágios ativos, estágio
+      // em processo de aprovação e termo de compromisso em termo de aprovação
+      // respectivamente
+      // caso exista, redireciona para página referente ao processo
+      const emRevisao = await alunoService
+        .getEstagioEmRevisao(grr)
+        .then((res) => {
+          if (res && res.length > 0) {
+            console.log("AJUSTE");
+            router.push({
+              path: "/aluno/termo/" + res[0]?.termoDeCompromisso,
+            });
+            return true;
+          }
+          return false;
         });
-      return response;
+
+      if (emRevisao) return;
+
+      const emAndamento = await alunoService
+        .getEstagioEmAndamento(grr)
+        .then((res) => {
+          if (res && res.length > 0) {
+            router.push({
+              path: "/aluno/estagio/" + res[0].id,
+            });
+            return true;
+          }
+          return false;
+        });
+
+      if (emAndamento) return;
+
+      const emAprovacao = await novoEstagioService
+        .getTermoEmAprovacao(grr)
+        .then((res) => {
+          if (res && res.length > 0) {
+            setTermo(res[0]);
+            router.push({
+              path: "/aluno/termo/" + res[0].id,
+            });
+            return true;
+          }
+          return false;
+        });
+
+      if (emAprovacao) return;
+
+      await novoEstagioService.getTermoEmPreenchimento(grr).then((res) => {
+        if (res && res.length > 0) {
+          setTermo(res[0]);
+          router.push({
+            path: "/aluno/termo/" + res[0].id,
+          });
+          return true;
+        }
+        return false;
+      });
     });
 
     return {

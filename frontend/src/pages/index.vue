@@ -13,7 +13,7 @@ export default defineComponent({
     const { auth, setAuth } = useAuth();
 
     onMounted(async () => {
-      if (!localStorage) return;
+      if (!process?.client) return;
       const urlParams = new URLSearchParams(window.location.search);
       const authorizationCode = urlParams.get("code");
 
@@ -66,9 +66,6 @@ export default defineComponent({
             identifier: JSON.parse(grrData)?.data?.grr,
           });
 
-          console.log(JSON.parse(grrData)?.data?.grr);
-
-          console.log("Token de acesso obtido com sucesso!");
           router.push("/aluno");
         } catch (error) {
           localStorage?.removeItem("accessToken");

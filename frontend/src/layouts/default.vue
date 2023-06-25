@@ -65,7 +65,8 @@ export default defineComponent({
     }
   },
   mounted() {
-    if (!localStorage) return;
+    const ls = useLocalStorage();
+
     const accessToken = localStorage.getItem("accessToken");
     const profile = localStorage.getItem("profile");
 
@@ -160,6 +161,7 @@ export default defineComponent({
     },
 
     getCurrentProfile(): string {
+      if (!process.client) return "";
       return localStorage.getItem("profile") || "";
     },
   },
@@ -201,11 +203,10 @@ export default defineComponent({
 
     <div class="layout-main-container">
       <div class="layout-main">
+        <Toast />
         <slot />
       </div>
     </div>
-
-    <Toast />
 
     <!-- <AppConfig :layout-mode="layoutMode" @layout-change="onLayoutChange" /> -->
     <transition name="layout-mask">

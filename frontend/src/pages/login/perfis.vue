@@ -64,7 +64,7 @@ export default defineComponent({
         toast.add({
           severity: "error",
           summary: "Erro ao fazer login!",
-          detail: err?.response?._data?.error || "Erro inesperado ao logar!",
+          detail: "Email ou senha incorretos",
         });
       }
     };

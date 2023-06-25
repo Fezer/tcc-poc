@@ -163,7 +163,6 @@ export default defineComponent({
         });
       }
     };
-
     const handleDownloadTermoAssinado = async () => {
       try {
         const url = `/aluno/${grr}/download-termo`;
