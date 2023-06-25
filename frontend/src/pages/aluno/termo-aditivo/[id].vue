@@ -302,7 +302,7 @@ export default defineComponent({
         header="Upload do termo assinado."
         :onConfirm="handleSolicitarAprovacao"
         :handleUpload="handleUploadTermo"
-        :confirmBlocked="!termo?.estagio?.estagioSEED && !termo?.uploadAditivo"
+        :confirmBlocked="!termo?.estagio?.estagioSeed && !termo?.uploadAditivo"
         :onClose="() => (state.uploadModalVisible = false)"
         description="Para solicitar a aprovação do seu termo aditivo, por favor faça o upload do termo assinado pelo supervisor do estágio (na contratante), seu professor(a) orientador(a) e por você."
       />

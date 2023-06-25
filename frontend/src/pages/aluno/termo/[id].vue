@@ -305,7 +305,7 @@ export default defineComponent({
         :onConfirm="handleSolicitarAprovacao"
         :handleUpload="handleUploadTermo"
         :confirmBlocked="
-          !termo?.estagio?.estagioSEED && !termo?.uploadCompromisso
+          !termo?.estagio?.estagioSeed && !termo?.uploadCompromisso
         "
         :onClose="() => (state.uploadModalVisible = false)"
         description="Para solicitar a aprovação do seu termo de compromisso, por favor faça o upload do termo assinado pelo supervisor do estágio (na contratante), seu professor(a) orientador(a) e por você."
