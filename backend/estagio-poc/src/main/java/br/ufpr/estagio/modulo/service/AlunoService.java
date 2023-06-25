@@ -29,6 +29,7 @@ import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CienciaCoordenacaoRepository;
+import br.ufpr.estagio.modulo.repository.DadosAuxiliaresRepository;
 import br.ufpr.estagio.modulo.repository.EnderecoRepository;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
@@ -57,6 +58,9 @@ public class AlunoService {
 	@Autowired
 	private CienciaCoordenacaoRepository cienciaRepo;
 
+	@Autowired
+	private DadosAuxiliaresRepository dadosRepo;
+	
 	@Autowired
 	private SigaApiAlunoService sigaApiAlunoService;
 
@@ -261,7 +265,6 @@ public class AlunoService {
 		termoAtualizado.getCienciaCoordenacao().setCienciaIRA(false);
 		termoAtualizado.getCienciaCoordenacao().setCienciaPlanoAtividades(false);
 		termoAtualizado.setDescricaoAjustes(null);
-
 		estagioRepo.save(estagio);
 
 		return termoRepo.save(termoAtualizado);
@@ -303,7 +306,6 @@ public class AlunoService {
 		return listaCertificados;
 	}
 
-	// Teste para pedido do Lucas
 	public List<TermoDeEstagio> listarTermosCompromissoAluno(Aluno aluno) {
 		List<Estagio> listaEstagios = aluno.getEstagio();
 		if (listaEstagios == null || listaEstagios.isEmpty()) {
@@ -316,7 +318,6 @@ public class AlunoService {
 		return listaTermos;
 	}
 
-	// Teste para pedido do Lucas
 	public List<RelatorioDeEstagio> listarRelatoriosEstagioAluno(Aluno aluno) {
 		List<Estagio> listaEstagios = aluno.getEstagio();
 		if (listaEstagios == null || listaEstagios.isEmpty()) {
