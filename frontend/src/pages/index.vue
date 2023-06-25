@@ -13,6 +13,7 @@ export default defineComponent({
     const { auth, setAuth } = useAuth();
 
     onMounted(async () => {
+      if (!localStorage) return;
       const urlParams = new URLSearchParams(window.location.search);
       const authorizationCode = urlParams.get("code");
 
@@ -35,7 +36,8 @@ export default defineComponent({
           });
           const tokenData = await response.json();
           const accessToken = tokenData.access_token;
-          localStorage.setItem("accessToken", accessToken);
+          localStorage?.setItem("accessToken", accessToken);
+          localStorage?.setItem("proofile", "aluno");
 
           globalThis.$fetch = ofetch.create({
             baseURL: config.BACKEND_URL || "http://localhost:5000",
@@ -69,8 +71,8 @@ export default defineComponent({
           console.log("Token de acesso obtido com sucesso!");
           router.push("/aluno");
         } catch (error) {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("perfil");
+          localStorage?.removeItem("accessToken");
+          localStorage?.removeItem("perfil");
 
           router.replace("/login");
           console.error("Erro ao obter o token de acesso:", error);

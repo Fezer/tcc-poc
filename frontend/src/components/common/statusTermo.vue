@@ -108,7 +108,7 @@ export default defineComponent({
         </p>
       </div>
       <div v-if="!!termo?.motivoIndeferimento">
-        <strong>Ajustes necessários</strong>
+        <strong>Motivo indeferimento</strong>
         <p>
           {{ termo?.motivoIndeferimento }}
         </p>

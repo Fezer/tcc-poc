@@ -378,7 +378,7 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="zonaEleitoral">Zona</label>
-            <InputText
+            <InputNumber
               v-model="state.zona"
               :disabled="!!alunoSiga?.dadosAuxiliares?.zona"
               :class="{ 'p-invalid': errors['zona'] }"
@@ -387,7 +387,7 @@ export default defineComponent({
           </div>
           <div class="field col">
             <label for="secaoEleitora">Seção</label>
-            <InputText
+            <InputNumber
               v-model="state.secao"
               :disabled="!!alunoSiga?.dadosAuxiliares?.secao"
               :class="{ 'p-invalid': errors['secao'] }"
