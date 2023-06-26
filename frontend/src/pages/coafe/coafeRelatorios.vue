@@ -28,7 +28,7 @@
         />
         <Button
           @click="relatorioEstagio = true"
-          :label="'Estágios'"
+          :label="'Relatório de Relatórios de Estágio'"
           icon="pi pi-file"
           class="p-button-success"
         />
