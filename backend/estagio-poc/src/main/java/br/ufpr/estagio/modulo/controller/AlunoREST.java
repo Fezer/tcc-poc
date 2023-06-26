@@ -49,6 +49,7 @@ import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
+import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
@@ -57,6 +58,7 @@ import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
+import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.DadosBancarios;
 import br.ufpr.estagio.modulo.model.Estagio;
@@ -2492,7 +2494,16 @@ public class AlunoREST {
 					if (termo == null) {
 						throw new NotFoundException("Ficha não encontrada.");
 					} else {
-
+						//TO-DO: Revisar essa implementação.
+						if(termo.getEstagio().isEstagioUfpr()) {
+							Contratante contratante = new Contratante();
+							contratante.setAtivo(true);
+							contratante.setCnpj("123123123123");
+							contratante.setNome("UFPR");
+							contratante.setRepresentanteEmpresa("UFPR");
+							contratante.setTipo(EnumTipoContratante.PessoaJuridica);
+							termo.setContratante(contratante);
+						}
 						byte[] pdf = geradorService.gerarPdfAlunoTermoAditivo(termo);
 
 						HttpHeaders headers = new HttpHeaders();
