@@ -168,13 +168,13 @@
 
 .title1 {
   margin: 0rem 1rem 0rem 0rem;
-  font-size: 2.725vw;
+  font-size: 30px;
   font-weight: bold;
 }
 
 .title2 {
   margin: 0rem 1rem 0rem 0rem;
-  font-size: 1.450vw;
+  font-size: 15px;
 }
 
 #imgprograd {
@@ -486,11 +486,11 @@ b, strong {
                 }
                 
                 .title1{
-                    font-size: 230% !important;
+                    font-size: 30px !important;
                 }
                 
                 .title2{
-                    font-size: 125% !important;
+                    font-size: 15px !important;
                 }
                 
                 img{
@@ -530,9 +530,13 @@ b, strong {
             <div class="page-header col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
                 <div class="row">
                     <div id="divcabecalho" class="col-xs-10 col-sm-10 col-md-10 col-lg-10 text-left" style="padding-right: 0;">
-                        <h1 class="title1" style="margin: 0rem 1rem 0rem 0rem; font-size:  2.725vw; font-weight: bold">TERMO DE COMPROMISSO DE ESTÁGIO</h1>
-                        <h5 class="title2" style="margin: 0rem 1rem 0rem 0rem; font-size: 1.450vw">OBRIGATÓRIO NO ÂMBITO DA UFPR – Para estudantes da UFPR</h5>
+                        <h1 class="title1" style="margin: 0rem 1rem 0rem 0rem; font-size:  30px; font-weight: bold">TERMO DE COMPROMISSO DE ESTÁGIO</h1>
                     </div>
+                    <br></br>
+                    <br></br>
+                    <div id="divcabecalho" class="col-xs-10 col-sm-10 col-md-10 col-lg-10 text-left" style="padding-right: 0;">
+                      <h5 class="title2" style="margin: 0rem 1rem 0rem 0rem; font-size: 15px">OBRIGATÓRIO NO ÂMBITO DA UFPR – Para estudantes da UFPR</h5>
+                  </div>
                     <div id="imgprograd" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right" style="padding-left: 0"> 
                         <img class="img-responsive" style="padding-bottom: 4px;float: right" src="{{imagePath}}" alt="icone da prograd"></img>
                     </div>
@@ -541,13 +545,13 @@ b, strong {
                     <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 text-left">
                         
                     </div>    
-                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 text-right">
+                    <!--<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 text-right">
                         <label for="processo_sei_numero">Processo SEI nº</label>
                         <input name="processo_sei_numero" id="idprocesso_sei_numero" type="text"></input>
-                    </div>
+                    </div>-->
                 </div>   
             </div>
-            
+            <br></br>
             <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <p>
                     O presente Termo de Compromisso de Estágio tem por objetivo solenizar
@@ -561,55 +565,57 @@ b, strong {
             <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <fieldset style="padding-bottom: 1%">
                     <legend style="background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px; border: solid 1px; border-bottom: 0px; font-size: 1.525vw">CONCEDENTE</legend>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; padding: 0px;">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Razão Social:</b> {{razaoSocial}}</span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px; padding: 0% 0% 0% 1%"><b>CNPJ:</b> {{cnpj}}</span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; padding: 0px;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Razão Social:</b> {{razaoSocial}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%"><b>CNPJ:</b> {{cnpj}}</span>
                     </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Representante:</b> {{representante}}</span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Tel:</b> {{telefoneContratante}}</span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="background-color: white; padding: 0% 0% 0% 1%"><b>Representante:</b> {{representante}}</span>
+                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Tel:</b> {{telefoneContratante}}</span>
                     </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Endereço:</b> {{ruaContratante}}</span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Nº:</b> {{numeroContratante}}</span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="background-color: white; padding: 0% 0% 0% 1%"><b>Endereço:</b> {{ruaContratante}}</span>
+                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Nº:</b> {{numeroContratante}}</span>
                     </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0% 0% 0% 1%"><b>Cidade:</b> {{cidadeContratante}}</span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>UF:</b> {{ufContratante}}</span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>CEP:</b> {{cepContratante}}</span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Cidade:</b> {{cidadeContratante}}</span>
+                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>UF:</b> {{ufContratante}}</span>
+                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>CEP:</b> {{cepContratante}}</span>
                     </span>
                 </fieldset>
                 
                 <fieldset style="padding-bottom: 1%">
                     <legend style="background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px;border: solid 1px; border-bottom: 0px; font-size: 1.525vw">ESTUDANTE</legend>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; padding: 0px">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Nome:</b> {{nome}}</span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; padding: 0px">
+                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="background-color: white; padding: 0% 0% 0% 1%"><b>Nome:</b> {{nome}}</span>
+                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%"><b>RG:</b> {{rg}}</span>
                     </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-right: solid 1px; padding: 0% 0% 0% 1%"><b>RG:</b> {{rg}}</span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0% 0% 0% 1%"><b>Data de Nascimento:</b> {{dataNascimento}}</span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Tel:</b> {{telefone}}</span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Data de Nascimento:</b> {{dataNascimento}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Tel:</b> {{telefone}}</span>
                     </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Email:</b> {{email}}</span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="background-color: white; padding: 0% 0% 0% 1%"><b>Email:</b> {{email}}</span>
                     </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="padding: 0% 0% 0% 1%"><b>Endereço:</b> {{rua}}</span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Nº:</b> {{numeroEndereco}}</span>
-                        <span class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border-left: solid 1px;padding: 0% 0% 0% 1%;padding: 0% 0% 0% 1%"><b>Comp.:</b> {{complemento}}</span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="background-color: white; padding: 0% 0% 0% 1%"><b>Endereço:</b> {{rua}}</span>
+                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Nº:</b> {{numeroEndereco}}</span>
                     </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="padding: 0% 0% 0% 1%"><b>Cidade:</b> {{cidade}}</span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>UF:</b> {{uf}}</span>
-                        <span class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>CEP:</b> {{cep}}</span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="background-color: white; padding: 0% 0% 0% 1%;padding: 0% 0% 0% 1%"><b>Comp.:</b> {{complemento}}</span>
+                        <span class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%"><b>Cidade:</b> {{cidade}}</span>
                     </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="padding: 0% 0% 0% 1%"><b>Curso: </b>{{curso}}</span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Matrícula:</b> {{matricula}}<span style="text-transform: uppercase;"> </span></span>
-                        <span class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Nível:</b> {{nivel}}<span style="text-transform: uppercase;"></span></span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                      <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>UF:</b> {{uf}}</span>
+                      <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>CEP:</b> {{cep}}</span>
+                  </span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: white; padding: 0% 0% 0% 1%"><b>Curso: </b>{{curso}}</span>
+                        <span class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Matrícula:</b> {{matricula}}<span style="text-transform: uppercase;"> </span></span>
                     </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0% 0% 0% 1%"><b>Instituição de Ensino:</b> {{instituicao}}</span>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                      <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="background-color: white; padding: 0% 0% 0% 1%"><b>Nível:</b> {{nivel}}<span style="text-transform: uppercase;"></span></span>
+                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%"><b>Instituição de Ensino:</b> {{instituicao}}</span>
                     </span>
                 </fieldset>
             </div>
