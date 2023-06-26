@@ -16,19 +16,19 @@
       <div class="w-full flex justify-content-around p-3">
         <Button
           @click="relatorioSeguradora = true"
-          :label="'Relatório de Seguradoras'"
+          :label="'Seguradoras'"
           icon="pi pi-file"
           class="p-button-success"
         />
         <Button
           @click="relatorioCertificado = true"
-          :label="'Relatório de Certificados'"
+          :label="'Certificados'"
           icon="pi pi-file"
           class="p-button-success"
         />
         <Button
           @click="relatorioEstagio = true"
-          :label="'Relatório de Estágios'"
+          :label="'Relatório de Relatórios de Estágio'"
           icon="pi pi-file"
           class="p-button-success"
         />
