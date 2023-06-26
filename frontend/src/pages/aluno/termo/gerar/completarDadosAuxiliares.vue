@@ -571,7 +571,6 @@ export default defineComponent({
               id="nomeDaAgencia"
               type="text"
               v-model="dadosBancarios.nomeDaAgencia"
-              :disabled="aluno?.dadosBancarios?.nomeDaAgencia"
               :class="{ 'p-invalid': errors['nomeDaAgencia'] }"
             />
             <small class="text-rose-600">{{ errors["nomeDaAgencia"] }}</small>
@@ -583,7 +582,6 @@ export default defineComponent({
               id="cidadeDaAgencia"
               type="text"
               v-model="dadosBancarios.cidadeDaAgencia"
-              :disabled="aluno?.dadosBancarios?.cidadeDaAgencia"
               :class="{ 'p-invalid': errors['cidadeDaAgencia'] }"
             />
             <small class="text-rose-600">{{ errors["cidadeDaAgencia"] }}</small>
@@ -605,7 +603,7 @@ export default defineComponent({
           </div>
 
           <div class="field col">
-            <label for="bairroDaAgencia">Bairo da agência</label>
+            <label for="bairroDaAgencia">Bairro da agência</label>
             <InputText
               id="bairroDaAgencia"
               type="text"
