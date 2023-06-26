@@ -36,7 +36,34 @@ export default defineComponent({
 
     const { estagio: idEstagio } = route.params;
 
-    const { data: estagio } = useFetch<NovoEstagio>(`/estagio/${idEstagio}`);
+    const { data: estagioData } = useAsyncData("estagioTermoAditivo", () =>
+      $fetch(`/estagio/${idEstagio}`).then((res) => {
+        const estagio = res;
+        if (!!estagio?.id) {
+          state.dataInicio = parseDate(estagio?.dataInicio);
+          state.dataFinal = parseDate(estagio?.dataTermino);
+          state.jornadaDiaria = estagio?.jornadaDiaria;
+          state.jornadaSemanal = estagio?.jornadaSemanal;
+          state.bolsaAuxilio = estagio?.valorBolsa;
+          state.auxilioTransporte = estagio?.valorTransporte;
+          state.orientador = estagio?.orientador?.id;
+          state.nomeSupervisor = estagio?.planoDeAtividades?.nomeSupervisor;
+          state.telefoneSupervisor =
+            estagio?.planoDeAtividades?.telefoneSupervisor;
+          state.cpfSupervisor = estagio?.planoDeAtividades?.cpfSupervisor;
+          state.formacaoSupervisor =
+            estagio?.planoDeAtividades?.formacaoSupervisor;
+          state.atividades = estagio?.planoDeAtividades?.descricaoAtividades;
+
+          tipoEstagio.localEstagio = estagio?.estagioUfpr
+            ? "UFPR"
+            : estagio?.estagioUfpr === false && "EXTERNO";
+          tipoEstagio.tipoEstagio = estagio?.tipoEstagio;
+        }
+
+        return res;
+      })
+    );
 
     const { aluno } = useAluno();
     const handleLoadDocentes = async () => {
@@ -244,31 +271,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      if (estagio) {
-        console.log(estagio.value, "estagio");
-        state.dataInicio = parseDate(estagio.value?.dataInicio);
-        state.dataFinal = parseDate(estagio.value?.dataTermino);
-        state.jornadaDiaria = estagio.value?.jornadaDiaria;
-        state.jornadaSemanal = estagio.value?.jornadaSemanal;
-        state.bolsaAuxilio = estagio.value?.valorBolsa;
-        state.auxilioTransporte = estagio.value?.valorTransporte;
-        state.orientador = estagio.value?.orientador?.id;
-        state.nomeSupervisor = estagio.value?.planoDeAtividades?.nomeSupervisor;
-        state.telefoneSupervisor =
-          estagio.value?.planoDeAtividades?.telefoneSupervisor;
-        state.cpfSupervisor = estagio.value?.planoDeAtividades?.cpfSupervisor;
-        state.formacaoSupervisor =
-          estagio.value?.planoDeAtividades?.formacaoSupervisor;
-        state.atividades =
-          estagio.value?.planoDeAtividades?.descricaoAtividades;
-
-        tipoEstagio.localEstagio = estagio.value?.estagioUfpr
-          ? "UFPR"
-          : estagio.value?.estagioUfpr === false && "EXTERNO";
-        tipoEstagio.tipoEstagio = estagio.value?.tipoEstagio;
-      }
-
-      if (termo) {
+      if (termo?.value) {
         console.log("termo", termo.value);
         state.dataInicio = termo.value?.dataInicio
           ? parseDateToMask(termo.value?.dataInicio)
@@ -405,6 +408,7 @@ export default defineComponent({
             <div class="field col">
               <label for="dataInicio">Data de Início</label>
               <InputMask
+                disabled
                 mask="99/99/9999"
                 v-tooltip.top="
                   'Inserir o período de início e término do estágio. Este termo de compromisso deve ser colocado na plataforma, contendo todas as assinaturas, com pelo menos 10 dias ANTES do início das atividades de estágio.'

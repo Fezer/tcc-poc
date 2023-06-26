@@ -37,6 +37,7 @@ export default defineComponent({
           severity: "error",
           summary: "Erro ao fazer login!",
           detail: "Preencha todos os campos",
+          life: 3000,
         });
       }
 
@@ -65,6 +66,7 @@ export default defineComponent({
           severity: "error",
           summary: "Erro ao fazer login!",
           detail: "Email ou senha incorretos",
+          life: 3000,
         });
       }
     };

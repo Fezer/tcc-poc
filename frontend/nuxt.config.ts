@@ -53,8 +53,8 @@ export default defineNuxtConfig({
   modules: [
     "@pinia/nuxt",
     "@vueuse/nuxt",
-    "~/modules/primevue",
     "@nuxtjs/tailwindcss",
+    "~/modules/primevue",
   ],
 
   nitro: {

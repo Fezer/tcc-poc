@@ -1,6 +1,6 @@
 // Suggested location to add your overrides so that migration would be easy by just updating the SASS folder in the future
 
-.p-button.botao-principal { 
+.p-button.botao-principal {
     &:enabled, &:hover, &:enabled:hover {
         color: #ffffff;
         background: $cerulean;
@@ -13,4 +13,8 @@
         border-top-left-radius: 6px;
         border-bottom-left-radius: 6px;
     }
+}
+
+.p-toast .p-toast-message .p-toast-message-content {
+  border:0px;
 }
