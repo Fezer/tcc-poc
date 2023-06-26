@@ -28,7 +28,7 @@
         />
         <Button
           @click="relatorioEstagio = true"
-          :label="'Relatório de Relatórios de Estágio'"
+          :label="'Relatórios de Estágio'"
           icon="pi pi-file"
           class="p-button-success"
         />
@@ -39,7 +39,7 @@
         :excel="() => relatorioExcelSeguradora()"
         :pdf="() => relatorioPDFSeguradora()"
         :cancelar="() => (relatorioSeguradora = false)"
-        :description="`Gerar relatório das Seguradoras em que formato?`"
+        :description="`Gerar Relatório de Estágios Realizados na UFPR em que formato?`"
       >
       </EscolhaRelatorio>
     </div>
@@ -48,7 +48,7 @@
         :excel="() => relatorioExcelCertificados()"
         :pdf="() => relatorioPDFCertificados()"
         :cancelar="() => (relatorioCertificado = false)"
-        :description="`Gerar relatório dos Certificados em que formato?`"
+        :description="`Gerar Relatório dos Certificados em que formato?`"
       >
       </EscolhaRelatorio>
     </div>
@@ -57,7 +57,7 @@
         :excel="() => relatorioExcelEstagios()"
         :pdf="() => relatorioPDFEstagios()"
         :cancelar="() => (relatorioEstagio = false)"
-        :description="`Gerar relatório dos Estágios em que formato?`"
+        :description="`Gerar Relatório dos Relatório Estágios em que formato?`"
       >
       </EscolhaRelatorio>
     </div>
