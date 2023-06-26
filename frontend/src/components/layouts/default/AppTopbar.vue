@@ -26,7 +26,7 @@ export default {
   <div class="layout-topbar gap-3 text-white">
     <div class="flex-1 flex items-center gap-2">
       <img alt="Logo" src="/images/ufpr.png" class="h-3rem" />
-      <span class="text-black">Módulo Estágios - SIGA</span>
+      <span class="text-black">Módulo Estágios</span>
     </div>
 
     <div class="flex gap-2">
