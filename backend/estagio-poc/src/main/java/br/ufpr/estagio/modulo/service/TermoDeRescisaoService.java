@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
+import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
@@ -443,6 +444,7 @@ public class TermoDeRescisaoService {
 		 */
 		termoDeRescisao.setCienciaCOAFE(true);
 		termoDeRescisao.setEtapaFluxo(EnumEtapaFluxo.Aluno);
+		termoDeRescisao.getEstagio().setStatusEstagio(EnumStatusEstagio.Rescindido);
 		if (termoDeRescisao.getEstagio() != null) {
 			termoDeRescisao.getEstagio().setDataTermino(termoDeRescisao.getDataTermino());
 			estagioRepo.save(termoDeRescisao.getEstagio());
