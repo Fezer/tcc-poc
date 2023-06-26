@@ -20,6 +20,7 @@ export default defineComponent({
       Aprovado: "success",
       EmRevisao: "warning",
       Reprovado: "danger",
+      Rescindido: "danger",
       Cancelado: "danger",
     };
 

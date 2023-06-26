@@ -11,6 +11,7 @@ type StatusTermo =
   | "Reprovado"
   | "EmRevisao"
   | "EmPreenchimento"
+  | "Rescindido"
   | "Cancelado";
 
 interface BaseTermo {

@@ -28,7 +28,7 @@ export default {
       </div>
       <div class="col-4">
         <strong>Formação do Supervisor</strong>
-        <p>{{ planoAtividades?.formacaoSupervisor }}o</p>
+        <p>{{ planoAtividades?.formacaoSupervisor }}</p>
       </div>
       <div class="col-4">
         <strong>Nome Professor Orientador UFPR</strong>

@@ -394,6 +394,7 @@ export default defineComponent({
         <div
           class="w-full"
           v-if="
+            state.confirmAction === 'APROVAR' &&
             termo?.tipoTermoDeEstagio === 'TermoDeCompromisso' &&
             termo?.estagio?.estagioUfpr
           "
