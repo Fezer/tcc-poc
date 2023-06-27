@@ -59,7 +59,7 @@ export default {
         <Column field="button">
           <template #body="{ data }">
             <NuxtLink :to="`/orientador/relatorio/${data.id}`">
-              <Button label="Ver contato"></Button>
+              <Button label="Ver Relatório"></Button>
             </NuxtLink>
           </template>
         </Column>

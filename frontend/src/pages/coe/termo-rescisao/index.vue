@@ -107,7 +107,7 @@ export default defineComponent({
         <Column field="button">
           <template #body="{ data }">
             <NuxtLink :to="`/coe/termo-rescisao/${data.id}`">
-              <Button label="Ver contato"></Button>
+              <Button label="Ver Termo"></Button>
             </NuxtLink>
           </template>
         </Column>
