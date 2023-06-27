@@ -289,6 +289,104 @@ public class GeradorDePdfService {
 		html = html.replace("{{data}}", formattedDate);
 		return html;
 	}
+
+	public byte[] gerarPdfRescisao(Aluno aluno, TermoDeRescisao termo) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlTermoDeRescisao(aluno, termo);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
+	
+	private String getHtmlTermoDeRescisao(Aluno aluno, TermoDeRescisao termo) {
+		// carregar o HTML do arquivo
+		ClassLoader classLoader = getClass().getClassLoader();
+		
+		Path diretorioAtual = Paths.get("").toAbsolutePath();
+    	
+    	String resources = diretorioAtual + "/src/main/resources/";
+
+		String html = "";
+		try {
+			
+			html = IOUtils.toString(classLoader.getResourceAsStream("TermoDeRescisao.html"), StandardCharsets.UTF_8);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+		
+		String imagePath = resources + "termo/prograd.png";
+		html = html.replace("{{imagePath}}", imagePath);
+		
+		html = html.replace("{{razaoSocial}}", termo.getEstagio().getContratante().getNome());
+		html = html.replace("{{cnpj}}", termo.getEstagio().getContratante().getCnpj());
+		html = html.replace("{{representante}}", termo.getEstagio().getContratante().getRepresentanteEmpresa());
+		html = html.replace("{{telefoneContratante}}", termo.getEstagio().getContratante().getTelefone());
+
+		html = html.replace("{{ruaContratante}}", termo.getEstagio().getContratante().getEndereco().getRua());
+		html = html.replace("{{numeroContratante}}", String.valueOf(termo.getEstagio().getContratante().getEndereco().getNumero()));
+		html = html.replace("{{cidadeContratante}}", termo.getEstagio().getContratante().getEndereco().getCidade());
+		html = html.replace("{{ufContratante}}", termo.getEstagio().getContratante().getEndereco().getUf());
+		html = html.replace("{{cepContratante}}", termo.getEstagio().getContratante().getEndereco().getCep());
+		//html = html.replace("{{supervisor}}", termo.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
+		html = html.replace("{{supervisor}}", "SUPERVISOR");
+		//html = html.replace("{{formacao}}", termo.getEstagio().getPlanoDeAtividades().getFormacaoSupervisor());
+		html = html.replace("{{formacao}}", "TADS");
+		
+		// Informacoes do aluno
+		LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+        String formattedDate = currentDate.format(formatter);
+        
+        String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(aluno.getDataNascimento());
+        String dataRescisaoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
+        
+        //String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(0));
+        //String dataTerminoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(1));
+
+		html = html.replace("{{nome}}", aluno.getNome());
+		html = html.replace("{{rg}}", aluno.getRg());
+		html = html.replace("{{cpf}}", aluno.getCpf());
+		html = html.replace("{{email}}", aluno.getEmail());
+		html = html.replace("{{dataNascimento}}", dataFormatada);
+		html = html.replace("{{telefone}}", aluno.getTelefone());
+		html = html.replace("{{curso}}", aluno.getCurso().getNome());
+		//html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
+		html = html.replace("{{grr}}", "GRR20204481");
+		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
+		//html = html.replace("{{orientador}}", ficha.getEstagio().getOrientador().getNome());
+		html = html.replace("{{orientador}}", "ORIENTADOR");
+		html = html.replace("{{nivel}}", "4º Período"); // NULO!!
+		
+		/*html = html.replace("{{rua}}", aluno.getEndereco().getRua());
+		html = html.replace("{{numeroEndereco}}", String.valueOf(aluno.getEndereco().getNumero()));
+		html = html.replace("{{complemento}}", aluno.getEndereco().getComplemento());
+		html = html.replace("{{cidade}}", aluno.getEndereco().getCidade());
+		html = html.replace("{{uf}}", aluno.getEndereco().getUf());
+		html = html.replace("{{cep}}", aluno.getEndereco().getCep());*/
+		html = html.replace("{{rua}}", "Rua X");
+		html = html.replace("{{numeroEndereco}}", "0");
+		html = html.replace("{{complemento}}", "Casa 2");
+		html = html.replace("{{cidade}}", "Curitiba");
+		html = html.replace("{{uf}}", "Paraná");
+		html = html.replace("{{cep}}", "81810-481");
+		
+		
+		html = html.replace("{{dataRescisao}}", dataRescisaoFormatada);
+		
+		//html = html.replace("{{dataInicioRecesso}}", dataInicioFormatada);
+		//html = html.replace("{{dataTerminoRecesso}}", dataTerminoFormatada);
+		
+		html = html.replace("{{data}}", formattedDate);
+		return html;
+	}
 	
 	public byte[] gerarPdfContratante(Contratante contratante) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
@@ -402,33 +500,7 @@ public class GeradorDePdfService {
 	    return outputStream.toByteArray();
 	}
 	
-	/*private String getHtmlEstagioSeguradoraUfpr(Estagio estagio) {
-		// carregar o HTML do arquivo
-		ClassLoader classLoader = getClass().getClassLoader();
-		
-		String html = "";
-		try {
-			//html = IOUtils.toString(classLoader.getResourceAsStream("copy.html"), StandardCharsets.UTF_8);
-			
-			html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-estagio-seguradora-ufpr.html"), StandardCharsets.UTF_8);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		
-		html = html.replace("{{nome}}", estagio.getAluno().getNome());
-		html = html.replace("{{seguradora}}", String.valueOf(estagio.getSeguradora().isSeguradoraUfpr()));
-		//html = html.replace("{{telefone}}", agenteIntegrador.getTelefone());
-		/*html = html.replace("{{ruaContratante}}", "Rua");
-		html = html.replace("{{numeroContratante}}", "5");
-		html = html.replace("{{cidadeContratante}}", "Curitiba");
-		html = html.replace("{{ufContratante}}", "Paraná");
-		html = html.replace("{{cepContratante}}", "80213-931");
-		
-		System.out.println(html.length());
-		return html;
-	}*/
+	
 	
 	private String getHtmlEstagioSeguradoraUfpr(List<Estagio> estagios) {
 	    // Carregar o HTML do arquivo
@@ -1025,20 +1097,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	public byte[] gerarPdfAlunoTermoRescisao(TermoDeRescisao termo) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
-	    
-	    String html = getHtmlAlunoTermoRescisao(termo);
-	    
-	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-	    ITextRenderer renderer = new ITextRenderer();
-	    
-	    renderer.setDocumentFromString(html);
-	    renderer.layout();
-	    renderer.createPDF(outputStream);
-	    
-	    return outputStream.toByteArray();
-	}
+	
 	
 	private String getHtmlAlunoTermoRescisao(TermoDeRescisao termo) {
 	    // Carregar o HTML do arquivo

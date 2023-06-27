@@ -2348,7 +2348,7 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-
+	
 	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/{id}/gerar-ficha")
 	public ResponseEntity<Object> gerarFichaPdf(@PathVariable String grrAlunoURL, @PathVariable String id,
@@ -2565,7 +2565,7 @@ public class AlunoREST {
 					} else {
 						TermoDeRescisao termo = termoFind.get();
 
-						byte[] pdf = geradorService.gerarPdfAlunoTermoRescisao(termo);
+						byte[] pdf = geradorService.gerarPdfRescisao(aluno, termo);
 
 						HttpHeaders headers = new HttpHeaders();
 						headers.setContentType(MediaType.APPLICATION_PDF);
