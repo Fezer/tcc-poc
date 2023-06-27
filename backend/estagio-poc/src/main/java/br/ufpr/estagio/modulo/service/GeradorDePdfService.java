@@ -22,6 +22,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.lowagie.text.DocumentException;
 
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
+import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
@@ -54,44 +55,6 @@ import java.util.Optional;
 @Service
 public class GeradorDePdfService {
 	
-	/*public void generatePdf(String html, String filename) throws IOException, DocumentException {
-        ITextRenderer renderer = new ITextRenderer();
-        renderer.setDocumentFromString(html);
-        renderer.layout();
-
-        try (OutputStream os = new FileOutputStream(filename)) {
-            renderer.createPDF(os);
-        }
-    }
-	
-	public void generatePdfFromClasspath(String input, String filename) throws IOException, DocumentException {
-        ClassPathResource resource = new ClassPathResource(input);
-        try (InputStream is = resource.getInputStream()) {
-            generatePdf(new String(is.readAllBytes()), filename);
-        }
-    }*/
-	
-	/*public byte[] gerarPdf(Aluno aluno, Estagio estagio) throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        
-        String html = getHtml(aluno, estagio);
-        
-        ConverterProperties converterProperties = new ConverterProperties();
-        //converterProperties.setBaseUri("src/main/resources");
-        converterProperties.setBaseUri(classLoader.getResource("TermoCompromisso-Obrigatorio-Ufpr-EstudanteUfpr.html").toString()); // caminho base dos recursos
-        
-        //ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter writer = new PdfWriter(outputStream);
-        PdfDocument pdf = new PdfDocument(writer);
-
-        //HtmlConverter.convertToPdf(new FileInputStream(new File(classLoader.getResource("TermoCompromisso-Obrigatorio-Ufpr-EstudanteUfpr.html").getFile())), pdf, converterProperties);
-        HtmlConverter.convertToPdf(html, pdf, converterProperties);
-        
-        pdf.close();
-        return outputStream.toByteArray();
-    }*/
-	
 	public byte[] gerarPdf(Aluno aluno, Estagio estagio) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -114,27 +77,7 @@ public class GeradorDePdfService {
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
     	
     	String resources = diretorioAtual + "/src/main/resources/";
-		
-		String cssPath = resources + "termo/bootstrap.min.css";
-		String estiloPath = resources + "termo/estilo.css";
-		String jqueryPath = resources + "termo/jquery.js";
-		String bootstrapPath = resources + "termo/bootstrap.js";
-		String scriptPath = resources + "termo/script.js";
 
-		//System.out.println(scriptPath);
-		
-		/*URL cssUrl = classLoader.getResource(cssPath);
-		URL estiloUrl = classLoader.getResource(estiloPath);
-		URL jqueryUrl = classLoader.getResource(jqueryPath);
-		URL bootstrapUrl = classLoader.getResource(bootstrapPath);
-		URL scriptUrl = classLoader.getResource(scriptPath);
-		
-		System.out.println("cssUrl: " + cssUrl);
-		System.out.println("estiloUrl: " + estiloUrl);
-		System.out.println("jqueryUrl: " + jqueryUrl);
-		System.out.println("bootstrapUrl: " + bootstrapUrl);
-		System.out.println("scriptUrl: " + scriptUrl);
-		*/
 		String html = "";
 		try {
 			
@@ -144,30 +87,37 @@ public class GeradorDePdfService {
 			e.printStackTrace();
 		}
 		
-		//html = html.replace("${cssPath}", cssPath);
-		//html = html.replace("${estiloPath}", estiloPath);
-		//html = html.replace("${jqueryPath}", jqueryPath);
-		html = html.replace("${bootstrapPath}", bootstrapPath);
-		//html = html.replace("${scriptPath}", scriptPath);
-		
 		
 		String imagePath = resources + "termo/prograd.png";
 		html = html.replace("{{imagePath}}", imagePath);
-		// Informacoes do concedente
 		
-		/*Estagio estagio = new Estagio();
-		estagio = aluno.getEstagio().get(0);*/
+		String subtitulo;
+		
+		if (estagio.getTipoEstagio().equals(EnumTipoEstagio.Obrigatorio)) {
+			if (estagio.isEstagioUfpr()) {
+				subtitulo = "OBRIGATÓRIO NO ÂMBITO DA UFPR – Para estudantes da UFPR";
+			} else {
+				subtitulo = "OBRIGATÓRIO EM EMPRESA EXTERNA";
+			}
+		} else {
+			if (estagio.isEstagioUfpr()) {
+				subtitulo = "NÃO OBRIGATÓRIO NO ÂMBITO DA UFPR – Para estudantes da UFPR";
+			} else {
+				subtitulo = "NÃO OBRIGATÓRIO EM EMPRESA EXTERNA";
+			}
+		}
+		html = html.replace("{{subtitulo}}", subtitulo);
 		
 		if (estagio.isEstagioUfpr()) {
 			html = html.replace("{{razaoSocial}}", "Universidade Federal do Paraná");
-			html = html.replace("{{cnpj}}", "CNPJ UFPR");
-			html = html.replace("{{representante}}", "Dieval Guizelini");
-			html = html.replace("{{telefoneContratante}}", "41 92924 9201");
-			html = html.replace("{{ruaContratante}}", "Rua Alguma Coisa Arcoverde");
-			html = html.replace("{{numeroContratante}}", "1725");
+			html = html.replace("{{cnpj}}", "75.095.679/0001-49");
+			html = html.replace("{{representante}}", "Ricardo Marcelo Fonseca");
+			html = html.replace("{{telefoneContratante}}", "41 3310 2627");
+			html = html.replace("{{ruaContratante}}", "Rua XV de Novembro");
+			html = html.replace("{{numeroContratante}}", "1299");
 			html = html.replace("{{cidadeContratante}}", "Curitiba");
 			html = html.replace("{{ufContratante}}", "Paraná");
-			html = html.replace("{{cepContratante}}", "80213-931");
+			html = html.replace("{{cepContratante}}", "80020-300");
 		} else {
 			html = html.replace("{{razaoSocial}}", estagio.getContratante().getNome());
 			html = html.replace("{{cnpj}}", estagio.getContratante().getCnpj());
@@ -245,20 +195,6 @@ public class GeradorDePdfService {
 		String bootstrapPath = resources + "termo/bootstrap.js";
 		String scriptPath = resources + "termo/script.js";
 
-		//System.out.println(scriptPath);
-		
-		/*URL cssUrl = classLoader.getResource(cssPath);
-		URL estiloUrl = classLoader.getResource(estiloPath);
-		URL jqueryUrl = classLoader.getResource(jqueryPath);
-		URL bootstrapUrl = classLoader.getResource(bootstrapPath);
-		URL scriptUrl = classLoader.getResource(scriptPath);
-		
-		System.out.println("cssUrl: " + cssUrl);
-		System.out.println("estiloUrl: " + estiloUrl);
-		System.out.println("jqueryUrl: " + jqueryUrl);
-		System.out.println("bootstrapUrl: " + bootstrapUrl);
-		System.out.println("scriptUrl: " + scriptUrl);
-		*/
 		String html = "";
 		try {
 			
@@ -266,18 +202,28 @@ public class GeradorDePdfService {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
-		//html = html.replace("${cssPath}", cssPath);
-		//html = html.replace("${estiloPath}", estiloPath);
-		//html = html.replace("${jqueryPath}", jqueryPath);
-		html = html.replace("${bootstrapPath}", bootstrapPath);
-		//html = html.replace("${scriptPath}", scriptPath);
-		
+		}		
 		
 		String imagePath = resources + "termo/prograd.png";
 		html = html.replace("{{imagePath}}", imagePath);
-		// Informacoes do concedente
+		
+		String subtitulo;
+		
+		if (ficha.getEstagio().getTipoEstagio().equals(EnumTipoEstagio.Obrigatorio)) {
+			if (ficha.getEstagio().isEstagioUfpr()) {
+				subtitulo = "OBRIGATÓRIO NO ÂMBITO DA UFPR – Para estudantes da UFPR";
+			} else {
+				subtitulo = "OBRIGATÓRIO EM EMPRESA EXTERNA";
+			}
+		} else {
+			if (ficha.getEstagio().isEstagioUfpr()) {
+				subtitulo = "NÃO OBRIGATÓRIO NO ÂMBITO DA UFPR – Para estudantes da UFPR";
+			} else {
+				subtitulo = "NÃO OBRIGATÓRIO EM EMPRESA EXTERNA";
+			}
+		}
+		html = html.replace("{{subtitulo}}", subtitulo);
+		
 		html = html.replace("{{razaoSocial}}", ficha.getEstagio().getContratante().getNome());
 		html = html.replace("{{cnpj}}", ficha.getEstagio().getContratante().getCnpj());
 		html = html.replace("{{representante}}", ficha.getEstagio().getContratante().getRepresentanteEmpresa());
