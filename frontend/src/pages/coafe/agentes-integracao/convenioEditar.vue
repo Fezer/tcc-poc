@@ -117,7 +117,7 @@ export default defineComponent({
       <div class="p-fluid col-12">
         <div class="flex flex-column gap-1 formgrid grid">
           <div class="field col">
-            <label style="font-size: 20px" for="numero">Numero</label>
+            <label style="font-size: 20px" for="numero">Número</label>
             <InputNumber
               v-model="state.numero"
               inputId="numero"

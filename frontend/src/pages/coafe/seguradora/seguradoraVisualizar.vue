@@ -30,7 +30,7 @@
           />
         </div>
         <div class="flex align-items-left flex-column pb-4">
-          <b>Numero de Apolices</b>
+          <b>Número de Apólices</b>
           <p>{{ seguradora.apolice.length }}</p>
         </div>
       </div>
@@ -82,10 +82,10 @@
       <template #header>
         <div>
           <span>
-            <p><b>Apolices</b></p>
+            <p><b>Apólices</b></p>
           </span>
         </div>
-        <div class="w-full flex justify-end gap-2">
+        <!-- <div class="w-full flex justify-end gap-2">
           <NuxtLink :to="`novo/adicionarApolice?id=${seguradora.id}`">
             <Button
               :label="'Adicionar'"
@@ -94,6 +94,7 @@
             />
           </NuxtLink>
         </div>
+        -->
       </template>
       <template #empty>
         A Seguradora {{ seguradora.nome }} não possui nenhuma apolice

@@ -18,7 +18,7 @@
           <p>{{ agente.cnpj }}</p>
         </div>
         <div class="flex align-items-left flex-column pb-4">
-          <b>Numero de Convênios</b>
+          <b>Número de Convênios</b>
           <p>{{ agente.convenio.length }}</p>
         </div>
       </div>
@@ -59,7 +59,7 @@
       <template #header>
         <div class="flex flex-row justify-content-between gap-10">
           <span class="flex align-items-left flex-column pb-4">
-            <p><b>Cônvênios</b></p>
+            <p><b>Convênios</b></p>
           </span>
           <div class="w-full flex justify-end gap-2">
             <NuxtLink :to="`novo/adicionarConvenio?id=${agente.id}`">
@@ -85,7 +85,7 @@
           {{ data.descricao }}
         </template>
       </Column>
-      <Column field="dataInicio" header="Data de Inicio">
+      <Column field="dataInicio" header="Data de Início">
         <template #body="{ data }">
           <p>{{ parseDate(data?.dataInicio) }}</p>
         </template>
