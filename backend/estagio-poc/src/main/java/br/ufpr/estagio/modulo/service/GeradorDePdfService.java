@@ -44,7 +44,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -322,7 +326,9 @@ public class GeradorDePdfService {
 		
 		
 		// Informacoes do aluno
-		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(aluno.getDataNascimento());
+		LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+        String formattedDate = currentDate.format(formatter);
 
 		html = html.replace("{{nome}}", aluno.getNome());
 		html = html.replace("{{cpf}}", aluno.getCpf());
@@ -333,6 +339,8 @@ public class GeradorDePdfService {
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
 		//html = html.replace("{{orientador}}", ficha.getEstagio().getOrientador().getNome());
 		html = html.replace("{{orientador}}", "ORIENTADOR");
+		
+		html = html.replace("{{data}}", formattedDate);
 		return html;
 	}
 	
