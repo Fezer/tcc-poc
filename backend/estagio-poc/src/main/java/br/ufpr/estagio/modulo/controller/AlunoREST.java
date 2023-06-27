@@ -2434,7 +2434,7 @@ public class AlunoREST {
 					} else {
 						RelatorioDeEstagio relatorio = relatorioFind.get();
 
-						byte[] pdf = geradorService.gerarPdfAlunoRelatorioDeEstagio(relatorio);
+						byte[] pdf = geradorService.gerarPdfAlunoRelatorioDeEstagio(aluno, relatorio);
 
 						HttpHeaders headers = new HttpHeaders();
 						headers.setContentType(MediaType.APPLICATION_PDF);

@@ -188,12 +188,6 @@ public class GeradorDePdfService {
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
     	
     	String resources = diretorioAtual + "/src/main/resources/";
-		
-		String cssPath = resources + "termo/bootstrap.min.css";
-		String estiloPath = resources + "termo/estilo.css";
-		String jqueryPath = resources + "termo/jquery.js";
-		String bootstrapPath = resources + "termo/bootstrap.js";
-		String scriptPath = resources + "termo/script.js";
 
 		String html = "";
 		try {
@@ -885,10 +879,10 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	public byte[] gerarPdfAlunoRelatorioDeEstagio(RelatorioDeEstagio relatorio) throws IOException, DocumentException {
+	public byte[] gerarPdfAlunoRelatorioDeEstagio(Aluno aluno, RelatorioDeEstagio relatorio) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
-	    String html = getHtmlAlunoRelatorioDeEstagio(relatorio);
+	    String html = getHtmlAlunoRelatorioDeEstagio(aluno, relatorio);
 	    
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    ITextRenderer renderer = new ITextRenderer();
@@ -900,34 +894,14 @@ public class GeradorDePdfService {
 	    return outputStream.toByteArray();
 	}
 	
-	private String getHtmlAlunoRelatorioDeEstagio(RelatorioDeEstagio relatorio) {
+	private String getHtmlAlunoRelatorioDeEstagio(Aluno aluno, RelatorioDeEstagio relatorio) {
 	    // Carregar o HTML do arquivo
 		ClassLoader classLoader = getClass().getClassLoader();
 		
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
     	
     	String resources = diretorioAtual + "/src/main/resources/";
-		
-		String cssPath = resources + "termo/bootstrap.min.css";
-		String estiloPath = resources + "termo/estilo.css";
-		String jqueryPath = resources + "termo/jquery.js";
-		String bootstrapPath = resources + "termo/bootstrap.js";
-		String scriptPath = resources + "termo/script.js";
 
-		//System.out.println(scriptPath);
-		
-		/*URL cssUrl = classLoader.getResource(cssPath);
-		URL estiloUrl = classLoader.getResource(estiloPath);
-		URL jqueryUrl = classLoader.getResource(jqueryPath);
-		URL bootstrapUrl = classLoader.getResource(bootstrapPath);
-		URL scriptUrl = classLoader.getResource(scriptPath);
-		
-		System.out.println("cssUrl: " + cssUrl);
-		System.out.println("estiloUrl: " + estiloUrl);
-		System.out.println("jqueryUrl: " + jqueryUrl);
-		System.out.println("bootstrapUrl: " + bootstrapUrl);
-		System.out.println("scriptUrl: " + scriptUrl);
-		*/
 		String html = "";
 		try {
 			
@@ -935,19 +909,53 @@ public class GeradorDePdfService {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
-		//html = html.replace("${cssPath}", cssPath);
-		//html = html.replace("${estiloPath}", estiloPath);
-		//html = html.replace("${jqueryPath}", jqueryPath);
-		html = html.replace("${bootstrapPath}", bootstrapPath);
-		//html = html.replace("${scriptPath}", scriptPath);
-		
+		}		
 		
 		String imagePath = resources + "termo/prograd.png";
 		html = html.replace("{{imagePath}}", imagePath);
 		
 		// Informacoes do relatório
+		html = html.replace("{{razaoSocial}}", relatorio.getEstagio().getContratante().getNome());
+		html = html.replace("{{cnpj}}", relatorio.getEstagio().getContratante().getCnpj());
+		html = html.replace("{{representante}}", relatorio.getEstagio().getContratante().getRepresentanteEmpresa());
+		html = html.replace("{{telefoneContratante}}", relatorio.getEstagio().getContratante().getTelefone());
+
+		html = html.replace("{{ruaContratante}}", relatorio.getEstagio().getContratante().getEndereco().getRua());
+		html = html.replace("{{numeroContratante}}", String.valueOf(relatorio.getEstagio().getContratante().getEndereco().getNumero()));
+		html = html.replace("{{cidadeContratante}}", relatorio.getEstagio().getContratante().getEndereco().getCidade());
+		html = html.replace("{{ufContratante}}", relatorio.getEstagio().getContratante().getEndereco().getUf());
+		html = html.replace("{{cepContratante}}", relatorio.getEstagio().getContratante().getEndereco().getCep());
+		
+		// Informacoes do aluno
+		LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+        String formattedDate = currentDate.format(formatter);
+        html = html.replace("{{data}}", formattedDate);
+
+		html = html.replace("{{nome}}", aluno.getNome());
+		html = html.replace("{{cpf}}", aluno.getCpf());
+		html = html.replace("{{email}}", aluno.getEmail());
+		html = html.replace("{{curso}}", aluno.getCurso().getNome());
+		//html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
+		html = html.replace("{{grr}}", "GRR20204481");
+		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
+		//html = html.replace("{{orientador}}", ficha.getEstagio().getOrientador().getNome());
+		html = html.replace("{{orientador}}", "ORIENTADOR");
+		html = html.replace("{{coordenador}}", aluno.getCoordenador());
+		
+		//html = html.replace("{{supervisor}}", relatorio.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
+		html = html.replace("{{supervisor}}", "SUPERVISOR");
+		
+		html = html.replace("{{tipoRelatorio}}", String.valueOf(relatorio.getTipoRelatorio()));
+		html = html.replace("{{modalidade}}", String.valueOf(relatorio.getEstagio().getTipoEstagio()));
+		
+		/*String inicioRelatorio = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataInicio());
+		String finalRelatorio = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataTermino());
+		
+		html = html.replace("{{inicioRelatorio}}", inicioRelatorio);
+		html = html.replace("{{finalRelatorio}}", finalRelatorio);
+		*/
+		/*
 		html = html.replace("{{consideracoes}}", relatorio.getConsideracoes());
 		html = html.replace("{{avalAtividades}}", String.valueOf(relatorio.getAvalAtividades()));
 		html = html.replace("{{contribuicao}}", String.valueOf(relatorio.getAvalContribuicaoEstagio()));
@@ -955,11 +963,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{efetivacao}}", String.valueOf(relatorio.getAvalEfetivacao()));
 		html = html.replace("{{formacao}}", String.valueOf(relatorio.getAvalFormacaoProfissional()));
 		html = html.replace("{{relacoesInterpessoais}}", String.valueOf(relatorio.getAvalRelacoesInterpessoais()));
-		html = html.replace("{{nome}}", relatorio.getEstagio().getAluno().getNome());
-		html = html.replace("{{grr}}", relatorio.getEstagio().getAluno().getMatricula());
-		html = html.replace("{{ira}}", relatorio.getEstagio().getAluno().getIra());
-		html = html.replace("{{curso}}", relatorio.getEstagio().getAluno().getCurso().getNome());
-		
+		*/
 		return html;
 	}
 	
