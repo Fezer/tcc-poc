@@ -9,6 +9,11 @@ import { ofetch } from "ofetch";
 export default defineComponent({
   components: { DataTable, Column },
   setup() {
+    definePageMeta({
+      title: "Aluno",
+      description: "Página inicial do aluno",
+    });
+
     const { auth } = useAuth();
 
     const grr = auth?.value?.identifier || "";

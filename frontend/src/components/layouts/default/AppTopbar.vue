@@ -14,7 +14,7 @@ export default {
     handleLogout() {
       if (!process?.client) return;
       localStorage.removeItem("accessToken");
-      localStorage.removeItem("profile");
+      localStorage.removeItem("atoresToken");
       window.location.href = "/login";
     },
   },

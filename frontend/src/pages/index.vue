@@ -37,7 +37,7 @@ export default defineComponent({
           const tokenData = await response.json();
           const accessToken = tokenData.access_token;
           localStorage?.setItem("accessToken", accessToken);
-          localStorage?.setItem("proofile", "aluno");
+          localStorage.removeItem("atoresToken");
 
           globalThis.$fetch = ofetch.create({
             baseURL: config.BACKEND_URL || "http://localhost:5000",
@@ -69,7 +69,7 @@ export default defineComponent({
           router.push("/aluno");
         } catch (error) {
           localStorage?.removeItem("accessToken");
-          localStorage?.removeItem("perfil");
+          localStorage.removeItem("atoresToken");
 
           router.replace("/login");
           console.error("Erro ao obter o token de acesso:", error);

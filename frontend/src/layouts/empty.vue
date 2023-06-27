@@ -6,8 +6,6 @@ const config = useRuntimeConfig();
 globalThis.$fetch = ofetch.create({
   baseURL: config.BACKEND_URL || "http://localhost:5000",
 });
-
-console.log("oi");
 </script>
 
 <template>

@@ -7,6 +7,7 @@ import COAFEmenuVue from "../components/layouts/default/COAFEmenu.vue";
 import CoordMenuVue from "../components/layouts/default/CoordMenu.vue";
 import OrientadorMenuVue from "../components/layouts/default/OrientadorMenu.vue";
 import { ofetch } from "ofetch";
+import parseJwt from "../utils/parseJWT";
 
 export default defineComponent({
   components: {
@@ -54,7 +55,6 @@ export default defineComponent({
   watch: {
     $route() {
       this.menuActive = false;
-      this.$toast.removeAllGroups();
     },
   },
   beforeUpdate() {
@@ -65,16 +65,38 @@ export default defineComponent({
     }
   },
   mounted() {
-    const ls = useLocalStorage();
+    if (!process?.client) return;
+    const alunoToken = localStorage.getItem("accessToken");
+    const atoresToken = localStorage.getItem("atoresToken");
 
-    const accessToken = localStorage.getItem("accessToken");
-    const profile = localStorage.getItem("profile");
+    console.log("alunoToken", alunoToken);
+    console.log("atoresToken", atoresToken);
 
-    if (!accessToken && !profile) {
+    if (!alunoToken && !atoresToken) {
       return this.$router.replace("/login");
     }
 
-    if (profile) {
+    if (this.$route.path.includes("/aluno")) {
+      const accessToken = localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("atoresToken");
+        return this.$router.replace("/login");
+      }
+    } else {
+      const atoresToken = localStorage.getItem("atoresToken");
+
+      if (!atoresToken) {
+        console.log("atoresToken", atoresToken);
+
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("atoresToken");
+        return this.$router.replace("/login");
+      }
+    }
+
+    if (atoresToken) {
       globalThis.$fetch = ofetch.create({
         baseURL: this.$config.BACKEND_URL || "http://localhost:5000",
       });
@@ -82,7 +104,7 @@ export default defineComponent({
       globalThis.$fetch = ofetch.create({
         baseURL: this.$config.BACKEND_URL || "http://localhost:5000",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${alunoToken}`,
         },
       });
     }
@@ -162,7 +184,19 @@ export default defineComponent({
 
     getCurrentProfile(): string {
       if (!process.client) return "";
-      return localStorage.getItem("profile") || "";
+      const isAlunoToken = localStorage.getItem("accessToken");
+      const token = localStorage.getItem("atoresToken");
+
+      if (!token && !isAlunoToken) {
+        this.$router.replace("/login");
+        return "";
+      }
+
+      if (isAlunoToken) return "Aluno";
+
+      const profile = parseJwt(token)?.tipo;
+
+      return profile || "";
     },
   },
 });
@@ -197,7 +231,11 @@ export default defineComponent({
       <OrientadorMenu @menuitem-click="onMenuItemClick" />
     </div>
 
-    <div class="layout-sidebar" @click="onSidebarClick" v-else>
+    <div
+      class="layout-sidebar"
+      @click="onSidebarClick"
+      v-else-if="getCurrentProfile().includes('Aluno')"
+    >
       <AlunoMenu @menuitem-click="onMenuItemClick" />
     </div>
 

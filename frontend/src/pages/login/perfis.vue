@@ -2,6 +2,7 @@
 import { ofetch } from "ofetch";
 import { useToast } from "primevue/usetoast";
 import AuthService from "~~/services/AuthService";
+import parseJwt from "~~/src/utils/parseJWT";
 
 definePageMeta({
   layout: "empty",
@@ -50,11 +51,11 @@ export default defineComponent({
           .then((res: { tipoUsuario: string; token: string }) => {
             setAuth(res);
 
-            console.log(res);
-            // localStorage.setItem("accessToken", res?.token);
-            localStorage.setItem("profile", res?.tipoUsuario);
+            localStorage.setItem("atoresToken", res?.token);
 
-            const route = getHomeRouteByPerfil(res?.tipoUsuario);
+            const perfil = parseJwt(res?.token)?.tipo;
+
+            const route = getHomeRouteByPerfil(perfil);
 
             console.log(route);
 
