@@ -121,8 +121,7 @@ public class GeradorDeExcelService {
 
 	    Sheet sheet = workbook.createSheet("Relatório Agente Integrador");
 
-	    String[] headersTitle = {"CNPJ", "Nome", "Telefone", "Rua", "Número", "Cidade", 
-	    		"Estado", "CEP"};
+	    String[] headersTitle = {"CNPJ", "Nome", "Telefone", "qtdConvenios", "qtdEstagios", "ativo"};
 	    Row headerRow = sheet.createRow(0);
 	    for (int i = 0; i < headersTitle.length; i++) {
 	        Cell cell = headerRow.createCell(i);
@@ -135,16 +134,9 @@ public class GeradorDeExcelService {
         row.createCell(0).setCellValue(agenteIntegrador.getCnpj());
         row.createCell(1).setCellValue(agenteIntegrador.getNome());
         row.createCell(2).setCellValue(agenteIntegrador.getTelefone());
-        /*row.createCell(3).setCellValue(contratante.getEndereco().getRua());
-        row.createCell(4).setCellValue(contratante.getEndereco().getNumero());
-        row.createCell(5).setCellValue(contratante.getEndereco().getCidade());
-        row.createCell(6).setCellValue(contratante.getEndereco().getUf());
-        row.createCell(7).setCellValue(contratante.getEndereco().getCep());*/
-        row.createCell(3).setCellValue("Rua A");
-        row.createCell(4).setCellValue(42);
-        row.createCell(5).setCellValue("Curitiba");
-        row.createCell(6).setCellValue("Paraná");
-        row.createCell(7).setCellValue("74329-214");
+        row.createCell(3).setCellValue(agenteIntegrador.getConvenio().size());
+        row.createCell(4).setCellValue(agenteIntegrador.getEstagio().size());
+        row.createCell(5).setCellValue(String.valueOf(agenteIntegrador.isAtivo()));
 
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    workbook.write(outputStream);
