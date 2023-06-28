@@ -381,7 +381,8 @@ public class GeradorDePdfService {
 		html = html.replace("{{data}}", formattedDate);
 		return html;
 	}
-	
+
+	// Revisar
 	public byte[] gerarPdfContratante(Contratante contratante) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -436,6 +437,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
+	// Revisar
 	public byte[] gerarPdfAgenteIntegrador(AgenteIntegrador agenteIntegrador) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -479,6 +481,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
+	// Revisar
 	public byte[] gerarPdfEstagioSeguradoraUfpr(List<Estagio> estagios) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -494,8 +497,6 @@ public class GeradorDePdfService {
 	    return outputStream.toByteArray();
 	}
 	
-	
-	
 	private String getHtmlEstagioSeguradoraUfpr(List<Estagio> estagios) {
 	    // Carregar o HTML do arquivo
 	    ClassLoader classLoader = getClass().getClassLoader();
@@ -508,108 +509,75 @@ public class GeradorDePdfService {
 
 	    StringBuilder estagiosHtml = new StringBuilder();
 	    for (Estagio estagio : estagios) {
-	        String estagioHtml = "<h2>Estágio de {{nome}}</h2>\n"
-	        		+ "    <table>\n"
-	        		+ "        <caption>Dados do Estágio</caption>\n"
-	        		+ "        <tr>\n"
-	        		+ "            <th>Nome Aluno</th>\n"
-	        		+ "            <th>GRR</th>\n"
-	        		+ "			<th>IRA</th>\n"
-	        		+ "			<th>Curso</th>\n"
-	        		+ "        </tr>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <td>{{nome}}</td>\n"
-	        		+ "            <td>{{grr}}</td>\n"
-	        		+ "			<td>{{ira}}</td>\n"
-	        		+ "            <td>{{curso}}</td>\n"
-	        		+ "        </tr>\n"
-	        		+ "        <br></br>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <th colspan=\"2\">Contratante</th>\n"
-	        		+ "            <th>Seguradora</th>\n"
-	        		+ "			<th>Apólice</th>\n"
-	        		+ "            <td></td>\n"
-	        		+ "        </tr>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <td colspan=\"2\">{{contratante}}</td>\n"
-	        		+ "            <td>{{seguradora}}</td>\n"
-	        		+ "			<td>{{apolice}}</td>\n"
-	        		+ "            <td></td>\n"
-	        		+ "        </tr>\n"
-	        		+ "        <br></br>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <th colspan=\"2\">Orientador</th>\n"
-	        		+ "            <th>Agente Integrador</th>\n"
-	        		+ "			<th>Supervisor</th>\n"
-	        		+ "        </tr>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <td colspan=\"2\">{{orientador}}</td>\n"
-	        		+ "            <td>{{agente}}</td>\n"
-	        		+ "			<td>{{supervisor}}</td>\n"
-	        		+ "        </tr>\n"
-	        		+ "        <br></br>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <th>Data de Início</th>\n"
-	        		+ "            <th>Data de Término</th>\n"
-	        		+ "			<th>Jornada Diária</th>\n"
-	        		+ "            <th>Jornada Semanal</th>\n"
-	        		+ "        </tr>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <td>{{dataInicio}}</td>\n"
-	        		+ "            <td>{{dataTermino}}</td>\n"
-	        		+ "			<td>{{jornadaDiaria}}</td>\n"
-	        		+ "            <td>{{jornadaSemanal}}</td>\n"
-	        		+ "        </tr>\n"
-	        		+ "        <br></br>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <th colspan=\"2\">Valor da Bolsa</th>\n"
-	        		+ "            <th colspan=\"2\">Valor de Transporte</th>\n"
-	        		+ "        </tr>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <td colspan=\"2\">{{valorBolsa}}</td>\n"
-	        		+ "            <td colspan=\"2\">{{valorTransporte}}</td>\n"
-	        		+ "        </tr>\n"
-	        		+ "    </table>\n"
-	        		+ "\n"
-	        		+ "    <br></br>\n"
-	        		+ "\n"
-	        		+ "    <table>\n"
-	        		+ "        <caption>Endereço do Estágio</caption>\n"
-	        		+ "        <tr>\n"
-	        		+ "            <th colspan=\"2\">Rua</th>\n"
-	        		+ "            <th>Número</th>\n"
-	        		+ "		</tr>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <td colspan=\"2\">Rua XXXXXXXX YYYYYYY ZZZZZZZZ</td>\n"
-	        		+ "            <td>123</td>\n"
-	        		+ "		</tr>\n"
-	        		+ "\n"
-	        		+ "		<tr>\n"
-	        		+ "            <th>Cidade</th>\n"
-	        		+ "            <th>Estado</th>\n"
-	        		+ "            <th>CEP</th>\n"
-	        		+ "        </tr>\n"
-	        		+ "        <tr>\n"
-	        		+ "            <td>Curitiba</td>\n"
-	        		+ "            <td>Paraná</td>\n"
-	        		+ "            <td>82721-412</td>\n"
-	        		+ "        </tr>\n"
-	        		+ "    </table>\n"
-	        		+ "\n"
-	        		+ "	<br></br>";
+	        String estagioHtml = "<div class=\"row col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"margin-bottom: 10px\">\r\n"
+	        		+ "                <fieldset style=\"padding-bottom: 1%\">\r\n"
+	        		+ "                    <legend style=\"background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px; border: solid 1px; border-bottom: 0px; font-size: 1.525vw\">ESTÁGIO DE {{titulo}}</legend>\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; padding: 0px;\">\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Id do estágio:</b> {{id}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>Nome:</b> {{nome}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-8 col-sm-8 col-md-8 col-lg-8\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Matrícula:</b> {{grr}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-4 col-sm-4 col-md-4 col-lg-4\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>IRA:</b> {{ira}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-8 col-sm-8 col-md-8 col-lg-8\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Curso:</b> {{curso}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-4 col-sm-4 col-md-4 col-lg-4\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Status:</b> {{status}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Contratante:</b> {{contratante}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>Orientador:</b> {{orientador}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Seguradora:</b> {{seguradora}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Apólice:</b> {{apolice}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Agente Integrador:</b> {{agenteIntegrador}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Supervisor:</b> {{supervisor}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-4 col-sm-4 col-md-4 col-lg-4\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Data de Início:</b> {{dataInicio}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-4 col-sm-4 col-md-4 col-lg-4\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Data de Término:</b> {{dataTermino}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-3 col-sm-3 col-md-3 col-lg-3\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Valor da Bolsa:</b> {{valorBolsa}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-4 col-sm-4 col-md-4 col-lg-4\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Valor de Transporte:</b> {{valorTransporte}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-4 col-sm-4 col-md-4 col-lg-4\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Jornada Diária:</b> {{jornadaDiaria}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-3 col-sm-3 col-md-3 col-lg-3\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Jornada Semanal:</b> {{jornadaSemanal}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-8 col-sm-8 col-md-8 col-lg-8\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Endereço do Contratante:</b> {{rua}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-4 col-sm-4 col-md-4 col-lg-4\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>Número:</b> {{numero}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-4 col-sm-4 col-md-4 col-lg-4\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Cidade:</b> {{cidade}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-4 col-sm-4 col-md-4 col-lg-4\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Estado:</b> {{estado}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-3 col-sm-3 col-md-3 col-lg-3\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>CEP:</b> {{cep}}</span>\r\n"
+	        		+ "                    </span>\r\n"	        		
+	        		+ "                </fieldset>\r\n"
+	        		+ "                \r\n"
+	        		+ "                \r\n"
+	        		+ "                <br></br>\r\n"
+	        		+ "            </div>";
+	        estagioHtml = estagioHtml.replace("{{titulo}}", estagio.getAluno().getNome());
 	        estagioHtml = estagioHtml.replace("{{nome}}", estagio.getAluno().getNome());
-	        estagioHtml = estagioHtml.replace("{{seguradora}}", String.valueOf(estagio.getSeguradora().isSeguradoraUfpr()));
+	        estagioHtml = estagioHtml.replace("{{seguradora}}", estagio.getSeguradora().getNome());
 	        estagioHtml = estagioHtml.replace("{{grr}}", estagio.getAluno().getMatricula());
 	        estagioHtml = estagioHtml.replace("{{ira}}", estagio.getAluno().getIra());
 	        estagioHtml = estagioHtml.replace("{{curso}}", estagio.getAluno().getCurso().getNome());
-	        estagioHtml = estagioHtml.replace("{{contratante}}", estagio.getContratante().getNome());
-	        estagioHtml = estagioHtml.replace("{{apolice}}", String.valueOf(estagio.getApolice().getNumero()));
-	        estagioHtml = estagioHtml.replace("{{agente}}", estagio.getAgenteIntegrador().getNome());
-
+	        //estagioHtml = estagioHtml.replace("{{contratante}}", estagio.getContratante().getNome());
+	        estagioHtml = estagioHtml.replace("{{contratante}}", "Contratante Estático");
+	        //estagioHtml = estagioHtml.replace("{{apolice}}", String.valueOf(estagio.getApolice().getNumero()));
+	        estagioHtml = estagioHtml.replace("{{apolice}}", "static");
+	        //estagioHtml = estagioHtml.replace("{{agenteIntegrador}}", estagio.getAgenteIntegrador().getNome());
+	        estagioHtml = estagioHtml.replace("{{agenteIntegrador}}", "static");
+	        
 //	        estagioHtml = estagioHtml.replace("{{orientador}}", estagio.getOrientador().getNome());
 	        estagioHtml = estagioHtml.replace("{{orientador}}", "Orientador Estático");
 	        
-	        estagioHtml = estagioHtml.replace("{{supervisor}}", estagio.getPlanoDeAtividades().getNomeSupervisor());
+	        //estagioHtml = estagioHtml.replace("{{supervisor}}", estagio.getPlanoDeAtividades().getNomeSupervisor());
+	        estagioHtml = estagioHtml.replace("{{supervisor}}", "static");
 	        
 	        //String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(estagio.getDataInicio());
 	        //estagioHtml = estagioHtml.replace("{{dataInicio}}", dataInicioFormatada);
@@ -624,6 +592,23 @@ public class GeradorDePdfService {
 	        
 	        estagioHtml = estagioHtml.replace("{{valorBolsa}}", String.valueOf(estagio.getValorBolsa()));
 	        estagioHtml = estagioHtml.replace("{{valorTransporte}}", String.valueOf(estagio.getValorTransporte()));
+	        
+	        estagioHtml = estagioHtml.replace("{{id}}", String.valueOf(estagio.getId()));
+	        estagioHtml = estagioHtml.replace("{{status}}", String.valueOf(estagio.getStatusEstagio()));
+
+/*	        estagioHtml = estagioHtml.replace("{{rua}}", estagio.getContratante().getEndereco().getRua());
+
+	        estagioHtml = estagioHtml.replace("{{numero}}", estagio.getContratante().getEndereco().getNumero());
+	        estagioHtml = estagioHtml.replace("{{cidade}}", estagio.getContratante().getEndereco().getCidade());
+	        estagioHtml = estagioHtml.replace("{{estado}}", estagio.getContratante().getEndereco().getUf());
+	        estagioHtml = estagioHtml.replace("{{cep}}", estagio.getContratante().getEndereco().getCep());
+*/
+	        estagioHtml = estagioHtml.replace("{{rua}}", "Rua A");
+	        estagioHtml = estagioHtml.replace("{{numero}}", "42");
+	        estagioHtml = estagioHtml.replace("{{cidade}}", "Curitiba");
+	        estagioHtml = estagioHtml.replace("{{estado}}", "Paraná");
+	        estagioHtml = estagioHtml.replace("{{cep}}", "74329-214");
+	        
 	        // Adicionar o HTML do estágio à lista
 	        estagiosHtml.append(estagioHtml);
 	    }
@@ -634,6 +619,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
+	// Revisar
 	public byte[] gerarPdfCertificadosDeEstagio(List<CertificadoDeEstagio> certificados) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -688,6 +674,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
+	// Revisar
 	public byte[] gerarPdfCertificadoOrientador(Orientador orientador, CertificadoDeEstagio certificado) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -769,6 +756,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
+	// Revisar
 	public byte[] gerarPdfRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -823,6 +811,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
+	// Revisar
 	public byte[] gerarPdfRelatorioDeEstagio(Optional<RelatorioDeEstagio> relatorio) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -879,6 +868,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
+	// Revisar
 	public byte[] gerarPdfAlunoRelatorioDeEstagio(Aluno aluno, RelatorioDeEstagio relatorio) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -967,6 +957,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
+	// Revisar
 	public byte[] gerarPdfAlunoTermoAditivo(TermoDeEstagio termo) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -1100,8 +1091,6 @@ public class GeradorDePdfService {
 		
 		return html;
 	}
-	
-	
 	
 	private String getHtmlAlunoTermoRescisao(TermoDeRescisao termo) {
 	    // Carregar o HTML do arquivo

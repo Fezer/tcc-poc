@@ -370,6 +370,7 @@ public class EstagioService {
 
 	public List<Estagio> buscarEstagioPorSeguradoraUfpr() {
 		List<Estagio> estagio = estagioRepo.findBySeguradoraSeguradoraUfprIsTrue();
+		
 		return estagio;
 	}
 	
