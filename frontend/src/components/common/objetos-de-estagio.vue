@@ -41,18 +41,62 @@ export default defineComponent({
 
 <template>
   <div>
-    <Divider />
+    <template v-if="perfil !== 'orientador'">
+      <Divider />
 
-    <h3>Termo de Compromisso</h3>
+      <h3>Termo de Compromisso</h3>
 
-    <div class="card flex items-center justify-between">
-      <h5>Termo de Compromisso</h5>
-      <NuxtLink :to="`/${perfil}/termo/${estagio?.termoDeCompromisso}`">
-        <Button label="Ver termo" class="p-button-secondary"></Button>
-      </NuxtLink>
-    </div>
+      <div class="card flex items-center justify-between">
+        <h5>Termo de Compromisso</h5>
+        <NuxtLink :to="`/${perfil}/termo/${estagio?.termoDeCompromisso}`">
+          <Button label="Ver termo" class="p-button-secondary"></Button>
+        </NuxtLink>
+      </div>
 
-    <template v-if="!!estagio?.certificadoDeEstagio">
+      <template v-if="!!estagio?.fichaDeAvaliacao">
+        <Divider />
+
+        <h3>Ficha de Avaliação</h3>
+
+        <div class="card flex items-center justify-between">
+          <h5>Ficha de Avaliação</h5>
+          <NuxtLink
+            :to="`${perfil === 'aluno' ? '/aluno' : ''}/estagio/avaliacao/${
+              estagio?.id
+            }`"
+          >
+            <Button
+              label="Ver ficha de avaliação"
+              class="p-button-secondary"
+            ></Button>
+          </NuxtLink>
+        </div>
+      </template>
+
+      <Divider />
+
+      <h3 v-if="estagio?.termoAdivito?.length">Termos aditivos</h3>
+
+      <div
+        class="card flex items-center justify-between"
+        v-for="idTermoAditivo in estagio?.termoAdivito"
+        :key="idTermoAditivo"
+      >
+        <h5>Termo Aditivo #{{ idTermoAditivo }}</h5>
+        <Button
+          label="Ver termo aditivo"
+          class="p-button-secondary"
+          @click="() => handleRedirectToTermoAditivo(idTermoAditivo)"
+        ></Button>
+      </div>
+    </template>
+
+    <template
+      v-if="
+        !!estagio?.certificadoDeEstagio &&
+        (perfil === 'orientador' || perfil === 'aluno')
+      "
+    >
       <Divider />
 
       <h3>Certificado de Estágio</h3>
@@ -60,42 +104,6 @@ export default defineComponent({
       <div class="card flex items-center justify-between">
         <h5>Certificado de Estágio</h5>
         <Button label="Baixar certificado" class="p-button-secondary"></Button>
-      </div>
-    </template>
-
-    <template v-if="!!estagio?.termoDeRescisao">
-      <Divider />
-
-      <h3>Termo de Rescisão</h3>
-
-      <div class="card flex items-center justify-between">
-        <h5>Termo de Rescisão</h5>
-        <NuxtLink :to="`/${perfil}/termo-rescisao/${estagio?.termoDeRescisao}`">
-          <Button
-            label="Ver termo de rescisao"
-            class="p-button-secondary"
-          ></Button>
-        </NuxtLink>
-      </div>
-    </template>
-
-    <template v-if="!!estagio?.fichaDeAvaliacao">
-      <Divider />
-
-      <h3>Ficha de Avaliação</h3>
-
-      <div class="card flex items-center justify-between">
-        <h5>Ficha de Avaliação</h5>
-        <NuxtLink
-          :to="`${perfil === 'aluno' ? '/aluno' : ''}/estagio/avaliacao/${
-            estagio?.id
-          }`"
-        >
-          <Button
-            label="Ver ficha de avaliação"
-            class="p-button-secondary"
-          ></Button>
-        </NuxtLink>
       </div>
     </template>
 
@@ -116,21 +124,20 @@ export default defineComponent({
       </NuxtLink>
     </div>
 
-    <Divider />
+    <template v-if="!!estagio?.termoDeRescisao">
+      <Divider />
 
-    <h3 v-if="estagio?.termoAdivito?.length">Termos aditivos</h3>
+      <h3>Termo de Rescisão</h3>
 
-    <div
-      class="card flex items-center justify-between"
-      v-for="idTermoAditivo in estagio?.termoAdivito"
-      :key="idTermoAditivo"
-    >
-      <h5>Termo Aditivo #{{ idTermoAditivo }}</h5>
-      <Button
-        label="Ver termo aditivo"
-        class="p-button-secondary"
-        @click="() => handleRedirectToTermoAditivo(idTermoAditivo)"
-      ></Button>
-    </div>
+      <div class="card flex items-center justify-between">
+        <h5>Termo de Rescisão</h5>
+        <NuxtLink :to="`/${perfil}/termo-rescisao/${estagio?.termoDeRescisao}`">
+          <Button
+            label="Ver termo de rescisao"
+            class="p-button-secondary"
+          ></Button>
+        </NuxtLink>
+      </div>
+    </template>
   </div>
 </template>

@@ -18,6 +18,14 @@ export default defineComponent({
 
     const { data: estagio, refresh } = useFetch(`/estagio/${estagioID}`);
 
+    const { data: ficha } = useAsyncData(
+      "ficha",
+      () => $fetch(`/fichaDeAvaliacao/${estagio?.value?.fichaDeAvaliacao}`),
+      {
+        watch: [estagio],
+      }
+    );
+
     const idFichaAvaliacao = ref("");
 
     const handleCancel = () => {
@@ -44,17 +52,51 @@ export default defineComponent({
           });
         });
     };
+    // http://localhost:5000/aluno/GRR20204481/1/gerar-ficha
 
     const handleDownloadBaseDocument = async () => {
       const url = `${config.BACKEND_URL}/aluno/${grr}/${estagioID}/gerar-ficha`;
 
-      const file = await $fetch(url, {
-        method: "GET",
-      });
+      try {
+        const file = await $fetch(url, {
+          method: "GET",
+        });
 
-      const fileURL = URL.createObjectURL(file);
+        const fileURL = URL.createObjectURL(file);
 
-      return window.open(fileURL, "_blank");
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: "Erro ao baixar ficha de avaliação",
+          detail:
+            err?.response?._data?.error || "Erro ao baixar ficha de avaliação",
+          life: 3000,
+        });
+      }
+    };
+
+    const handleDownloadUploadedDocument = async () => {
+      const url = `/aluno/${grr}/ficha-de-avaliacao/${idFichaAvaliacao.value}/download`;
+
+      try {
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        console.error(err);
+        toast.add({
+          severity: "error",
+          summary: "Erro ao baixar ficha de avaliação",
+          detail:
+            err?.response?._data?.error || "Erro ao baixar ficha de avaliação",
+          life: 3000,
+        });
+      }
     };
 
     const handleUploadFicha = async (event) => {
@@ -65,7 +107,7 @@ export default defineComponent({
       formData.append("file", file);
 
       await alunoService
-        .uploadFichaDeAvaliacao(grr, formData)
+        .uploadFichaDeAvaliacao(grr, ficha?.value?.id, formData)
         .then(() => {
           toast.add({
             severity: "success",
@@ -98,6 +140,8 @@ export default defineComponent({
       idFichaAvaliacao,
       handleDownloadBaseDocument,
       handleUploadFicha,
+      ficha,
+      handleDownloadUploadedDocument,
     };
   },
 });
@@ -105,7 +149,7 @@ export default defineComponent({
 
 <template>
   <div>
-    <div v-if="!idFichaAvaliacao">
+    <div v-if="!ficha">
       <h1>Gerar Ficha de Avaliação</h1>
       <div class="card">
         <p class="text-lg">
@@ -132,13 +176,13 @@ export default defineComponent({
     <div v-else>
       <h1>Preenchimento ficha de avaliação</h1>
       <div class="card">
-        <p class="text-lg">
+        <p class="text-lg" v-if="!ficha?.upload">
           Por favor, baixe o documento base da ficha de avaliação, e peça para
           que seu supervisor de estágio preencha. Após isso, o documento
           assinado.
         </p>
 
-        <div class="flex gap-2">
+        <div class="flex gap-2" v-if="!ficha?.upload">
           <Button
             label="Baixar documento"
             icon="pi pi-download"
@@ -155,6 +199,14 @@ export default defineComponent({
             customUpload
             @uploader="handleUploadFicha"
           />
+        </div>
+        <div v-else>
+          <Button
+            label="Baixar ficha de avaliação"
+            icon="pi pi-download"
+            class="p-button-secondary"
+            @click="handleDownloadUploadedDocument"
+          ></Button>
         </div>
       </div>
     </div>

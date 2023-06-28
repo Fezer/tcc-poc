@@ -32,7 +32,7 @@ export default class RelatorioEstagioService extends BaseService {
       method: "DELETE",
     });
   }
-  y;
+
   public async baixarRelatorioBase(grr: string, id: number) {
     return $fetch(`/aluno/${grr}/relatorio/${id}/gerar-relatorio`, {
       method: "GET",

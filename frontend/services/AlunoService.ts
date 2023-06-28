@@ -176,11 +176,18 @@ export default class AlunoService {
     );
   }
 
-  public async uploadFichaDeAvaliacao(grr: string, fichaData: FormData) {
-    return await $fetch(`/aluno/${grr}/upload-ficha/FichaDeAvaliacaoParcial`, {
-      method: "POST",
-      body: fichaData,
-    });
+  public async uploadFichaDeAvaliacao(
+    grr: string,
+    ficha: number,
+    fichaData: FormData
+  ) {
+    return await $fetch(
+      `/aluno/${grr}/ficha-de-avaliacao/${ficha}/upload/FichaDeAvaliacaoParcial`,
+      {
+        method: "POST",
+        body: fichaData,
+      }
+    );
   }
 
   public async getGRRAluno(email: string) {
