@@ -18,7 +18,7 @@ export default defineComponent({
 
     const { data: estagio, refresh } = useFetch(`/estagio/${estagioID}`);
 
-    const { data: ficha } = useAsyncData(
+    const { data: ficha, refresh: refreshFicha } = useAsyncData(
       "ficha",
       () => $fetch(`/fichaDeAvaliacao/${estagio?.value?.fichaDeAvaliacao}`),
       {
@@ -36,10 +36,8 @@ export default defineComponent({
       await alunoService
         .criarFichaDeAvaliacao(grr, estagioID)
         .then((res) => {
-          idFichaAvaliacao.value = res.id;
-
-          const url = `/aluno/${grr}/${estagioID}/gerar-ficha`;
-          window.open(url, "_blank");
+          refresh();
+          refreshFicha();
         })
         .catch((err) => {
           console.log(err);
@@ -52,10 +50,9 @@ export default defineComponent({
           });
         });
     };
-    // http://localhost:5000/aluno/GRR20204481/1/gerar-ficha
 
     const handleDownloadBaseDocument = async () => {
-      const url = `${config.BACKEND_URL}/aluno/${grr}/${estagioID}/gerar-ficha`;
+      const url = `${config.BACKEND_URL}/aluno/${grr}/${ficha?.value?.id}/gerar-ficha`;
 
       try {
         const file = await $fetch(url, {
@@ -115,6 +112,8 @@ export default defineComponent({
             detail: `A ficha de avaliação foi enviada com sucesso!`,
             life: 3000,
           });
+
+          refreshFicha();
         })
         .catch((err) => {
           console.error(err);
