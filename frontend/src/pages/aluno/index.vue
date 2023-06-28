@@ -75,7 +75,7 @@ export default defineComponent({
           if (res && res.length > 0) {
             setTermo(res[0]);
             router.push({
-              path: "/aluno/termo/" + res[0].termoDeCompromisso,
+              path: "/aluno/termo/" + res[0].id,
             });
             return true;
           }
