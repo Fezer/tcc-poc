@@ -2709,7 +2709,7 @@ public class AlunoREST {
 			        Optional<FichaDeAvaliacao> fichaFind = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idLong);
 
 			        if (fichaFind.isEmpty() || fichaFind == null) {
-			            throw new NotFoundException("A apólice não foi encontrada.");
+			            throw new NotFoundException("A ficha não foi encontrada.");
 			        }
 			        
 			        FichaDeAvaliacao ficha = fichaFind.get();
@@ -2737,7 +2737,7 @@ public class AlunoREST {
 								throw new InvalidFieldException(
 										"O tipo de documento deve ser 'FichaDeAvaliacaoParcial' ou 'FichaDeAvaliacaoFinal'.");
 							}
-							fichaDeAvaliacaoService.uploadFichaDeAvaliacao(ficha, nomeArquivo);
+							fichaDeAvaliacaoService.uploadFichaDeAvaliacao(ficha, (nomeArquivo + '-' + idLong));
 							
 							return ResponseEntity.ok("Ficha de avaliação salva com sucesso!");
 						} catch (NotFoundException ex) {
@@ -3376,7 +3376,7 @@ public class AlunoREST {
 					int tamanho = ficha.getArquivos().size();
 
 					String nomeArquivo = ficha.getArquivos().get(tamanho - 1);
-
+					
 					Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
 
 					try {
