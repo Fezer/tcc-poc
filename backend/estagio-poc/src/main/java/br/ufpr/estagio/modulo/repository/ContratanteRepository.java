@@ -24,5 +24,7 @@ public interface ContratanteRepository extends JpaRepository<Contratante, Long> 
 
 	List<Contratante> findByNomeContainingIgnoreCaseAndTipo(String nomeContratante,
 			EnumTipoContratante tipoContratante);
+
+	Optional<Contratante> findByCnpj(String cnpjFederal);
 	
 }

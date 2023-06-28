@@ -2433,7 +2433,9 @@ public class AlunoREST {
 						throw new NotFoundException("Ficha não encontrada.");
 					} else {
 						RelatorioDeEstagio relatorio = relatorioFind.get();
-
+						
+						
+						
 						byte[] pdf = geradorService.gerarPdfAlunoRelatorioDeEstagio(aluno, relatorio);
 
 						HttpHeaders headers = new HttpHeaders();
