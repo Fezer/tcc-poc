@@ -36,6 +36,15 @@ Necessita:
 
 Para rodar:
 
+```
+cd backend/estagio-poc/src/main/resources
+
+cp application.properties.example application.properties
+
+```
+
+Então coloque as credenciais do siga no application.properties, e rode o back com:
+
 ```bash
 ./mvnw spring-boot:run
 ```
