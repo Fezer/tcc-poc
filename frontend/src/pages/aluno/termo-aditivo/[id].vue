@@ -35,7 +35,7 @@ export default defineComponent({
 
     const novoEstagioService = new NovoEstagioService();
 
-    const { setTermo } = useTermo();
+    const { setTermo } = useTermoAditivo();
 
     const { data: termo, refresh } = useFetch<BaseTermo>(`/termo/${id}`);
 
