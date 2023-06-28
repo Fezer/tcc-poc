@@ -467,21 +467,19 @@ public class GeradorDePdfService {
 			e.printStackTrace();
 		}
 		
-		
+		html = html.replace("{{titulo}}", agenteIntegrador.getNome());
 		html = html.replace("{{nome}}", agenteIntegrador.getNome());
 		html = html.replace("{{cnpj}}", agenteIntegrador.getCnpj());
 		html = html.replace("{{telefone}}", agenteIntegrador.getTelefone());
-		/*html = html.replace("{{ruaContratante}}", "Rua");
-		html = html.replace("{{numeroContratante}}", "5");
-		html = html.replace("{{cidadeContratante}}", "Curitiba");
-		html = html.replace("{{ufContratante}}", "Paraná");
-		html = html.replace("{{cepContratante}}", "80213-931");
-		*/
-		System.out.println(html.length());
+
+		html = html.replace("{{qtdConvenios}}", String.valueOf(agenteIntegrador.getConvenio().size()));
+		html = html.replace("{{qtdEstagios}}", String.valueOf(agenteIntegrador.getEstagio().size()));
+		html = html.replace("{{ativo}}", String.valueOf(agenteIntegrador.isAtivo()));
+		
 		return html;
 	}
 	
-	// Revisar
+	// Descomentar dados estáticos
 	public byte[] gerarPdfEstagioSeguradoraUfpr(List<Estagio> estagios) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
