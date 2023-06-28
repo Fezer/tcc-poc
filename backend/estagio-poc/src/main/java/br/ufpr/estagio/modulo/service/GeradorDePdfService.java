@@ -243,7 +243,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{dataInicioEstagio}}", "01/01/2022");
 		html = html.replace("{{dataFimEstagio}}", "31/03/2023");
 		
-		html = html.replace("{{totalHoras}}", String.valueOf(ficha.getTotalHorasEstagioEfetivamenteRealizadas()));
+		/*html = html.replace("{{totalHoras}}", String.valueOf(ficha.getTotalHorasEstagioEfetivamenteRealizadas()));
 		html = html.replace("{{atividades}}", ficha.getAtividadesRealizadasConsideracoes());
 		html = html.replace("{{consideracoesAtividades}}", ficha.getAtividadesRealizadasConsideracoes());
 		
@@ -252,7 +252,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{acompanhamentoCoord}}", String.valueOf(ficha.getAcompanhamentoCoordenador()));
 		html = html.replace("{{consideracoesOrientador}}", ficha.getAcompanhamentoOrientadorComentario());
 		
-		html = html.replace("{{contribuicao}}", ficha.getContribuicaoEstagio());
+		html = html.replace("{{contribuicao}}", ficha.getContribuicaoEstagio());*/
 		
 		
 		/*html = html.replace("{{conduta}}", String.valueOf(ficha.getAvalConduta()));
