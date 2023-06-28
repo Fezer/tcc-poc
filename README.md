@@ -70,12 +70,34 @@ pnpm run dev
 
 Antes de rodar a primeira vez é necessário buildar o back, e depois o banco e o front:
 
+Antes de rodar o back, é preciso realizar uma cópia do arquivo application.properties, e preencher com as credenciais do keycloak do SIGA:
+
+```
+cd backend/estagio-poc/src/main/resources
+
+cp application.properties.example application.properties
+
+```
+
+Além de também colocar as credenciais no arquivo .env no front:
+
+```
+cd frontend
+
+cp .env.example .env
+
+```
+
+Então, basta buildar o back:
+
 ```bash
 cd backend
 cd estagios-poc
 
 ./mnvw clean install -D skipTests
 ```
+
+E rodar o docker compose
 
 ```bash
 docker compose build
