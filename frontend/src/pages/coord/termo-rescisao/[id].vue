@@ -33,7 +33,7 @@ export default defineComponent({
             summary: "Ciência dada com sucesso",
             detail: "Ciência dada com sucesso",
           });
-          router.push("/orientador/termo-rescisao");
+          router.push("/coord/termo-rescisao");
         })
         .catch((err) => {
           console.error(err);
