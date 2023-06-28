@@ -19,19 +19,6 @@
             />
           </div>
 
-          <div class="field col">
-            <label for="tipo" class="flex flex-direction col"
-              >Tipo de Contratante</label
-            >
-            <SelectButton
-              :disabled="!edicao.ativa"
-              v-model="state.tipo"
-              :options="tiposContratante"
-              optionLabel="label"
-              optionValue="value"
-            />
-          </div>
-
           <div v-if="state.cpf" class="field col">
             <label for="cpf">CPF</label>
             <InputText
