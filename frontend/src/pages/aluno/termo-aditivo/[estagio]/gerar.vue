@@ -21,7 +21,7 @@ export default defineComponent({
 
     const grr = auth?.value?.identifier || "";
 
-    const { termo } = useTermoAditivo();
+    const { termo } = useTermo();
 
     const parseDateToMask = (date?: string) => {
       if (!date) return "";

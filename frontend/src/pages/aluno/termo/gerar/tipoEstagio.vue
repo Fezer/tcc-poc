@@ -83,16 +83,24 @@ export default defineComponent({
           }
           const { id } = termo?.value;
 
-          await novoEstagioService.setTipoEstagio(id, tipoEstagio);
+          await novoEstagioService.setTipoEstagio(
+            termo?.value?.estagio?.id,
+            tipoEstagio
+          );
 
-          await novoEstagioService.setEstagioUfpr(id, localEstagio === "UFPR");
+          await novoEstagioService.setEstagioUfpr(
+            termo?.value?.estagio?.id,
+            localEstagio === "UFPR"
+          );
 
           if (estagioSeed) {
-            await novoEstagioService.setEstagioSeed(id);
+            await novoEstagioService.setEstagioSeed(termo?.value?.estagio?.id);
           }
 
           if (!estagioSeed && termo?.value?.estagioSeed) {
-            await novoEstagioService.removeEstagioSeed(id);
+            await novoEstagioService.removeEstagioSeed(
+              termo?.value?.estagio?.id
+            );
           }
         } catch (error) {
           toast.add({

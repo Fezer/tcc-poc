@@ -61,6 +61,7 @@ export default defineComponent({
         ...termo.value.estagio,
         ...termo.value.planoAtividades,
         ...termo.value,
+        estagio: termo?.value?.estagio,
       });
 
       router.push({
@@ -70,7 +71,7 @@ export default defineComponent({
 
     const handleCancelarTermo = async () => {
       try {
-        await novoEstagioService.cancelarTermo(termo.value.id, grr);
+        await novoEstagioService.cancelarTermo(termo.value.estagio?.id, grr);
         toast.add({
           severity: "success",
           summary: `Termo cancelado!`,
