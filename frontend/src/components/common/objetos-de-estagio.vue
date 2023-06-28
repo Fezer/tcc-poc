@@ -1,4 +1,5 @@
 <script lang="ts">
+import { useToast } from "primevue/usetoast";
 import { Estagio } from "~~/src/types/NovoEstagio";
 
 export default defineComponent({
@@ -20,6 +21,7 @@ export default defineComponent({
   }) {
     const { setTermo } = useTermo();
     const router = useRouter();
+    const toast = useToast();
 
     const handleRedirectToTermoAditivo = (id: string) => {
       if (perfil === "aluno") {
@@ -30,10 +32,33 @@ export default defineComponent({
       return router.push(`/${perfil}/termo/${id} `);
     };
 
+    // /{idOrientador}/certificado/{idCertificado}/imprimir-certificado
+    const handleDownloadCertificado = async () => {
+      try {
+        const url = `/${estagio?.orientador?.id}/certificado/${estagio?.certificadoDeEstagio}/imprimir-certificado`;
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        toast.add({
+          severity: "error",
+          summary: "Erro ao baixar certificado",
+          detail:
+            err?.response?._data?.error ||
+            "Ocorreu um erro ao baixar o certificado, tente novamente mais tarde",
+        });
+      }
+    };
+
     return {
       estagio,
       perfil,
       handleRedirectToTermoAditivo,
+      handleDownloadCertificado,
     };
   },
 });
@@ -102,7 +127,11 @@ export default defineComponent({
 
       <div class="card flex items-center justify-between">
         <h5>Certificado de Estágio</h5>
-        <Button label="Baixar certificado" class="p-button-secondary"></Button>
+        <Button
+          label="Baixar certificado"
+          class="p-button-secondary"
+          @click="handleDownloadCertificado"
+        ></Button>
       </div>
     </template>
 
