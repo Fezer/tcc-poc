@@ -92,7 +92,7 @@ export default defineComponent({
 
     const state = reactive({
       dataInicio: undefined as undefined | string,
-      dataFinal: undefined as undefined | string,
+      dataFinal: undefined as undefined | Date,
       jornadaDiaria: undefined as number | undefined,
       jornadaSemanal: undefined as number | undefined,
       bolsaAuxilio: undefined as number | undefined,
@@ -115,10 +115,7 @@ export default defineComponent({
       // return this.advanceStep();
       errors.value = {};
       const validator = z.object({
-        dataInicio: z.custom(validateStringDate, {
-          message: "Data inválida",
-        }),
-        dataFinal: z.custom(validateStringDate, { message: "Data inválida" }),
+        dataFinal: z.date().or(z.string()),
         jornadaDiaria: z.number().min(1).max(24),
         jornadaSemanal: z.number().min(1).max(99),
         bolsaAuxilio: z.number(),
@@ -132,12 +129,8 @@ export default defineComponent({
       });
 
       const suspensaoValidator = z.object({
-        dataFimSuspensao: z.custom(validateStringDate, {
-          message: "Data inválida",
-        }),
-        dataInicioRetomada: z.custom(validateStringDate, {
-          message: "Data inválida",
-        }),
+        dataFimSuspensao: z.date().or(z.string()),
+        dataInicioRetomada: z.date().or(z.string()),
       });
 
       const result = suspensaoEstagio?.isSuspensao
@@ -172,16 +165,15 @@ export default defineComponent({
 
         const dadosTermoAditivo = suspensaoEstagio?.isSuspensao
           ? {
-              dataFimSuspensao: dayjs(suspensaoEstagio.dataFimSuspensao).format(
-                "YYYY-MM-DD"
-              ),
+              dataFimSuspensao: dayjs(
+                suspensaoEstagio.dataFimSuspensao
+              ).toDate(),
               dataInicioRetomada: dayjs(
                 suspensaoEstagio.dataInicioRetomada
-              ).format("YYYY-MM-DD"),
+              ).toDate(),
             }
           : {
-              dataInicio: dayjs(state.dataInicio).format("YYYY-MM-DD"),
-              dataTermino: dayjs(state.dataFinal).format("YYYY-MM-DD"),
+              dataTermino: dayjs(state.dataFinal).toDate(),
               jornadaDiaria: state.jornadaDiaria,
               jornadaSemanal: state.jornadaSemanal,
               valorBolsa: state.bolsaAuxilio,
@@ -359,8 +351,9 @@ export default defineComponent({
           <div class="formgrid grid">
             <div class="field col">
               <label for="dataInicio">Data de Suspensão</label>
-              <InputMask
-                mask="99/99/9999"
+              <Calendar
+                showIcon
+                dateFormat="dd/mm/yy"
                 v-model="suspensaoEstagio.dataFimSuspensao"
                 :class="errors['dataFimSuspensao'] && 'p-invalid'"
               />
@@ -370,8 +363,9 @@ export default defineComponent({
             </div>
             <div class="field col">
               <label for="dataFinal">Data de Retomada</label>
-              <InputMask
-                mask="99/99/9999"
+              <Calendar
+                showIcon
+                dateFormat="dd/mm/yy"
                 v-model="suspensaoEstagio.dataInicioRetomada"
                 :class="errors['dataInicioRetomada'] && 'p-invalid'"
               />
@@ -407,21 +401,19 @@ export default defineComponent({
           <div class="formgrid grid">
             <div class="field col">
               <label for="dataInicio">Data de Início</label>
-              <InputMask
-                disabled
-                mask="99/99/9999"
-                v-tooltip.top="
-                  'Inserir o período de início e término do estágio. Este termo de compromisso deve ser colocado na plataforma, contendo todas as assinaturas, com pelo menos 10 dias ANTES do início das atividades de estágio.'
-                "
+              <Calendar
+                showIcon
+                dateFormat="dd/mm/yy"
                 v-model="state.dataInicio"
-                :class="errors['dataInicio'] && 'p-invalid'"
+                disabled
               />
               <small class="text-rose-500">{{ errors["dataInicio"] }}</small>
             </div>
             <div class="field col">
               <label for="dataFinal">Data de Termino</label>
-              <InputMask
-                mask="99/99/9999"
+              <Calendar
+                showIcon
+                dateFormat="dd/mm/yy"
                 v-model="state.dataFinal"
                 :class="errors['dataFinal'] && 'p-invalid'"
               />
