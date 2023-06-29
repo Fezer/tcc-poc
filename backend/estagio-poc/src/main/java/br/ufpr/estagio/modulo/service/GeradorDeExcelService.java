@@ -84,8 +84,8 @@ public class GeradorDeExcelService {
 
 	    Sheet sheet = workbook.createSheet("Relatório Contratante");
 	    
-	    String[] headersTitle = {"CNPJ", "CPF", "Nome", "Representante", "Telefone", "Rua", "Número", "Cidade", 
-	    		"Estado", "CEP"};
+	    String[] headersTitle = {"Nome", "CNPJ", "CPF", "Representante", "Telefone", "Rua", "Número", "Cidade", 
+	    		"Estado", "CEP", "Quantidade de Estágios"};
 	    
 	    Row headerRow = sheet.createRow(0);
 	    for (int i = 0; i < headersTitle.length; i++) {
@@ -96,9 +96,9 @@ public class GeradorDeExcelService {
 	    int rowNum = 1;
 	    
         Row row = sheet.createRow(rowNum++);
-        row.createCell(0).setCellValue(contratante.getCnpj());
-        row.createCell(1).setCellValue(contratante.getCpf());
-        row.createCell(2).setCellValue(contratante.getNome());
+        row.createCell(0).setCellValue(contratante.getNome());
+        row.createCell(1).setCellValue(contratante.getCnpj());
+        row.createCell(2).setCellValue(contratante.getCpf());
         row.createCell(3).setCellValue(contratante.getRepresentanteEmpresa());
         row.createCell(4).setCellValue(contratante.getTelefone());
         row.createCell(5).setCellValue(contratante.getEndereco().getRua());
@@ -106,6 +106,7 @@ public class GeradorDeExcelService {
         row.createCell(7).setCellValue(contratante.getEndereco().getCidade());
         row.createCell(8).setCellValue(contratante.getEndereco().getUf());
         row.createCell(9).setCellValue(contratante.getEndereco().getCep());
+        row.createCell(10).setCellValue(contratante.getEstagio().size());
 
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    workbook.write(outputStream);

@@ -385,7 +385,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 
-	// Revisar
+	// Ok
 	public byte[] gerarPdfContratante(Contratante contratante) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
