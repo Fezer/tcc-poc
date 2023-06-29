@@ -90,20 +90,24 @@ export default defineComponent({
         <Column field="estagio" header="Estágio">
           <template #body="{ data }"> #{{ data?.estagio?.id }} </template>
         </Column>
+
+        <Column field="dataInicio" header="Data de Início Estágio">
+          <template #body="{ data }">
+            {{ parseDate(data?.estagio?.dataInicio) }}
+          </template>
+        </Column>
         <Column field="process_type" header="Data Término Estágio">
           <template #body="{ data }">
             {{ parseDate(data?.dataTermino) }}
           </template>
         </Column>
-        <Column
-          field="action"
-          header="Ação necessária"
-          bodyStyle="color:orange;"
-        >
+
+        <Column field="dataInicio" header="Estágio UFPR">
           <template #body="{ data }">
-            <Tag value="Parecer" severity="warning" class="p-2 font-md" />
+            {{ data?.estagio?.estagioUfpr ? "Sim" : "Não" }}
           </template>
         </Column>
+
         <Column field="button">
           <template #body="{ data }">
             <NuxtLink :to="`/coe/termo-rescisao/${data.id}`">
