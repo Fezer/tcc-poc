@@ -223,6 +223,10 @@ public class GeradorDeExcelService {
 	    int rowNum = 1;
 	    for (RelatorioDeEstagio relatorio : relatorios) {
 	        Row row = sheet.createRow(rowNum++);
+	        
+	        String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataInicio());
+	        String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataTermino());
+	        
 	        row.createCell(0).setCellValue(relatorio.getEstagio().getId());
 	        row.createCell(1).setCellValue(relatorio.getEstagio().getAluno().getNome());
 	        row.createCell(2).setCellValue(relatorio.getEstagio().getAluno().getMatricula());
@@ -239,18 +243,13 @@ public class GeradorDeExcelService {
 	        row.createCell(13).setCellValue(relatorio.getEstagio().getOrientador().getNome());
 	        row.createCell(14).setCellValue(relatorio.getEstagio().getAgenteIntegrador().getNome());
 	        row.createCell(15).setCellValue(relatorio.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
-	        row.createCell(16).setCellValue(relatorio.getEstagio().getDataInicio());
-	        row.createCell(17).setCellValue(relatorio.getEstagio().getDataTermino());
+	        row.createCell(16).setCellValue(dataInicio);
+	        row.createCell(17).setCellValue(dataTermino);
 	        row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
 	        row.createCell(19).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getNumero());
 	        row.createCell(20).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCidade());
 	        row.createCell(21).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getUf());
 	        row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());
-	        /*row.createCell(18).setCellValue("Rua A");
-	        row.createCell(19).setCellValue(42);
-	        row.createCell(20).setCellValue("Curitiba");
-	        row.createCell(21).setCellValue("Paraná");
-	        row.createCell(22).setCellValue("74329-214");*/
 	    }
 
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -259,6 +258,7 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 
+	// Ok
 	public ByteArrayOutputStream gerarExcelRelatorioDeEstagio(RelatorioDeEstagio relatorio) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -277,6 +277,10 @@ public class GeradorDeExcelService {
 
 	    int rowNum = 1;
         Row row = sheet.createRow(rowNum++);
+        
+        String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataInicio());
+        String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataTermino());
+        
         row.createCell(0).setCellValue(relatorio.getEstagio().getId());
         row.createCell(1).setCellValue(relatorio.getEstagio().getAluno().getNome());
         row.createCell(2).setCellValue(relatorio.getEstagio().getAluno().getMatricula());
@@ -293,18 +297,13 @@ public class GeradorDeExcelService {
         row.createCell(13).setCellValue(relatorio.getEstagio().getOrientador().getNome());
         row.createCell(14).setCellValue(relatorio.getEstagio().getAgenteIntegrador().getNome());
         row.createCell(15).setCellValue(relatorio.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
-        row.createCell(16).setCellValue(relatorio.getEstagio().getDataInicio());
-        row.createCell(17).setCellValue(relatorio.getEstagio().getDataTermino());
-        /*row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
+        row.createCell(16).setCellValue(dataInicio);
+        row.createCell(17).setCellValue(dataTermino);
+        row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
         row.createCell(19).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getNumero());
         row.createCell(20).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCidade());
         row.createCell(21).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getUf());
-        row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());*/
-        row.createCell(18).setCellValue("Rua A");
-        row.createCell(19).setCellValue(42);
-        row.createCell(20).setCellValue("Curitiba");
-        row.createCell(21).setCellValue("Paraná");
-        row.createCell(22).setCellValue("74329-214");
+        row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());
 
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    workbook.write(outputStream);
