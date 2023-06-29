@@ -145,6 +145,7 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 
+	// Revisar
 	public ByteArrayOutputStream gerarExcelCertificadosDeEstagio(List<CertificadoDeEstagio> certificados) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -202,6 +203,7 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 	
+	//Ok
 	public ByteArrayOutputStream gerarExcelRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -239,16 +241,16 @@ public class GeradorDeExcelService {
 	        row.createCell(15).setCellValue(relatorio.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
 	        row.createCell(16).setCellValue(relatorio.getEstagio().getDataInicio());
 	        row.createCell(17).setCellValue(relatorio.getEstagio().getDataTermino());
-	        /*row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
+	        row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
 	        row.createCell(19).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getNumero());
 	        row.createCell(20).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCidade());
 	        row.createCell(21).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getUf());
-	        row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());*/
-	        row.createCell(18).setCellValue("Rua A");
+	        row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());
+	        /*row.createCell(18).setCellValue("Rua A");
 	        row.createCell(19).setCellValue(42);
 	        row.createCell(20).setCellValue("Curitiba");
 	        row.createCell(21).setCellValue("Paraná");
-	        row.createCell(22).setCellValue("74329-214");
+	        row.createCell(22).setCellValue("74329-214");*/
 	    }
 
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
