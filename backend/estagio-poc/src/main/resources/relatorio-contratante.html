@@ -554,35 +554,31 @@ b, strong {
 
             <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 10px">
                 <fieldset style="padding-bottom: 1%">
-                    <legend style="background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px; border: solid 1px; border-bottom: 0px; font-size: 1.525vw">RELATÓRIO DE RELATÓRIO DE ESTÁGIO DE {{titulo}}</legend>
+                    <legend style="background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px; border: solid 1px; border-bottom: 0px; font-size: 1.525vw">RELATÓRIO DE CONTRATANTE</legend>
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; padding: 0px;">
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Id do relatório:</b> {{id}}</span>
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%"><b>Ciência Orientador:</b> {{cienciaOrientador}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Nome:</b> {{nome}}</span>
+                        {{cpfCnpj}}
                     </span>
                     
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Tipo do Relatório:</b> {{tipo}}</span>
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Etapa do Fluxo:</b> {{etapa}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Representante:</b> {{representante}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Telefone:</b> {{telefone}}</span>
                     </span>
                     
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Aval. Atividades:</b> {{atividades}}</span>
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Aval. Contribuição:</b> {{contribuicao}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Endereço:</b> {{ruaContratante}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Número:</b> {{numeroContratante}}</span>
                     </span>
 
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Aval. Desenvolvimento:</b> {{desenvolvimento}}</span>
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%"><b>Aval. Efetivação:</b> {{efetivacao}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Cidade:</b> {{cidadeContratante}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%"><b>Estado:</b> {{ufContratante}}</span>
 
                     </span>
                     
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Aval. Formação:</b> {{formacao}}</span>
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Aval. Relações:</b> {{relacoes}}</span>
-                    </span>
-
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; padding: 0% 0% 0% 1%"><b>Considerações:</b> {{consideracoes}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>CEP:</b> {{cepContratante}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Quantidade de Estágios:</b> {{qtdEstagios}}</span>
                     </span>
                     
                 </fieldset>

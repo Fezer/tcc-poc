@@ -2,6 +2,7 @@ package br.ufpr.estagio.modulo.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -19,6 +20,8 @@ import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 
 @Service
 public class GeradorDeExcelService {
+	
+	// Ok
 	public ByteArrayOutputStream gerarExcelEstagioSeguradoraUfpr(List<Estagio> estagios) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -38,6 +41,9 @@ public class GeradorDeExcelService {
 	    int rowNum = 1;
 	    for (Estagio estagio : estagios) {
 	        Row row = sheet.createRow(rowNum++);
+	        String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(estagio.getDataInicio());
+	        String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(estagio.getDataTermino());
+	        
 	        row.createCell(0).setCellValue(estagio.getId());
 	        row.createCell(1).setCellValue(estagio.getAluno().getNome());
 	        row.createCell(2).setCellValue(estagio.getAluno().getMatricula());
@@ -50,22 +56,19 @@ public class GeradorDeExcelService {
 	        row.createCell(9).setCellValue(estagio.getOrientador().getNome());
 	        row.createCell(10).setCellValue(estagio.getAgenteIntegrador().getNome());
 	        row.createCell(11).setCellValue(estagio.getPlanoDeAtividades().getNomeSupervisor());
-	        row.createCell(12).setCellValue(estagio.getDataInicio());
-	        row.createCell(13).setCellValue(estagio.getDataTermino());
+	        row.createCell(12).setCellValue(dataInicio);
+	        row.createCell(13).setCellValue(dataTermino);
 	        row.createCell(14).setCellValue(estagio.getJornadaDiaria());
 	        row.createCell(15).setCellValue(estagio.getJornadaSemanal());
 	        row.createCell(16).setCellValue(estagio.getValorBolsa());
 	        row.createCell(17).setCellValue(estagio.getValorTransporte());
-	        /*row.createCell(18).setCellValue(estagio.getContratante().getEndereco().getRua());
+	        row.createCell(18).setCellValue(estagio.getContratante().getEndereco().getRua());
+	        row.createCell(18).setCellValue(estagio.getContratante().getEndereco().getRua());
 	        row.createCell(19).setCellValue(estagio.getContratante().getEndereco().getNumero());
 	        row.createCell(20).setCellValue(estagio.getContratante().getEndereco().getCidade());
 	        row.createCell(21).setCellValue(estagio.getContratante().getEndereco().getUf());
-	        row.createCell(22).setCellValue(estagio.getContratante().getEndereco().getCep());*/
-	        row.createCell(18).setCellValue("Rua A");
-	        row.createCell(19).setCellValue(42);
-	        row.createCell(20).setCellValue("Curitiba");
-	        row.createCell(21).setCellValue("Paraná");
-	        row.createCell(22).setCellValue("74329-214");
+	        row.createCell(22).setCellValue(estagio.getContratante().getEndereco().getCep());
+
 	        break;
 	    }
 
@@ -75,14 +78,15 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 	
+	// Ok
 	public ByteArrayOutputStream gerarExcelContratante(Contratante contratante) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
 
 	    Sheet sheet = workbook.createSheet("Relatório Contratante");
 	    
-	    String[] headersTitle = {"CNPJ", "CPF", "Nome", "Representante", "Telefone", "Rua", "Número", "Cidade", 
-	    		"Estado", "CEP"};
+	    String[] headersTitle = {"Nome", "CNPJ", "CPF", "Representante", "Telefone", "Rua", "Número", "Cidade", 
+	    		"Estado", "CEP", "Quantidade de Estágios"};
 	    
 	    Row headerRow = sheet.createRow(0);
 	    for (int i = 0; i < headersTitle.length; i++) {
@@ -93,21 +97,17 @@ public class GeradorDeExcelService {
 	    int rowNum = 1;
 	    
         Row row = sheet.createRow(rowNum++);
-        row.createCell(0).setCellValue(contratante.getCnpj());
-        row.createCell(1).setCellValue(contratante.getCpf());
-        row.createCell(2).setCellValue(contratante.getNome());
+        row.createCell(0).setCellValue(contratante.getNome());
+        row.createCell(1).setCellValue(contratante.getCnpj());
+        row.createCell(2).setCellValue(contratante.getCpf());
         row.createCell(3).setCellValue(contratante.getRepresentanteEmpresa());
         row.createCell(4).setCellValue(contratante.getTelefone());
-        /*row.createCell(5).setCellValue(contratante.getEndereco().getRua());
+        row.createCell(5).setCellValue(contratante.getEndereco().getRua());
         row.createCell(6).setCellValue(contratante.getEndereco().getNumero());
         row.createCell(7).setCellValue(contratante.getEndereco().getCidade());
         row.createCell(8).setCellValue(contratante.getEndereco().getUf());
-        row.createCell(9).setCellValue(contratante.getEndereco().getCep());*/
-        row.createCell(5).setCellValue("Rua A");
-        row.createCell(6).setCellValue(42);
-        row.createCell(7).setCellValue("Curitiba");
-        row.createCell(8).setCellValue("Paraná");
-        row.createCell(9).setCellValue("74329-214");
+        row.createCell(9).setCellValue(contratante.getEndereco().getCep());
+        row.createCell(10).setCellValue(contratante.getEstagio().size());
 
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    workbook.write(outputStream);
@@ -115,13 +115,14 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 	
+	// Ok
 	public ByteArrayOutputStream gerarExcelAgenteIntegrador(AgenteIntegrador agenteIntegrador) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
 
 	    Sheet sheet = workbook.createSheet("Relatório Agente Integrador");
 
-	    String[] headersTitle = {"CNPJ", "Nome", "Telefone", "qtdConvenios", "qtdEstagios", "ativo"};
+	    String[] headersTitle = {"Nome", "CNPJ", "Telefone", "qtdConvenios", "qtdEstagios", "ativo"};
 	    Row headerRow = sheet.createRow(0);
 	    for (int i = 0; i < headersTitle.length; i++) {
 	        Cell cell = headerRow.createCell(i);
@@ -131,8 +132,8 @@ public class GeradorDeExcelService {
 	    int rowNum = 1;
 	    
         Row row = sheet.createRow(rowNum++);
-        row.createCell(0).setCellValue(agenteIntegrador.getCnpj());
-        row.createCell(1).setCellValue(agenteIntegrador.getNome());
+        row.createCell(0).setCellValue(agenteIntegrador.getNome());
+        row.createCell(1).setCellValue(agenteIntegrador.getCnpj());
         row.createCell(2).setCellValue(agenteIntegrador.getTelefone());
         row.createCell(3).setCellValue(agenteIntegrador.getConvenio().size());
         row.createCell(4).setCellValue(agenteIntegrador.getEstagio().size());
@@ -144,6 +145,7 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 
+	// Revisar
 	public ByteArrayOutputStream gerarExcelCertificadosDeEstagio(List<CertificadoDeEstagio> certificados) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -201,6 +203,7 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 	
+	//Ok
 	public ByteArrayOutputStream gerarExcelRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -220,6 +223,10 @@ public class GeradorDeExcelService {
 	    int rowNum = 1;
 	    for (RelatorioDeEstagio relatorio : relatorios) {
 	        Row row = sheet.createRow(rowNum++);
+	        
+	        String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataInicio());
+	        String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataTermino());
+	        
 	        row.createCell(0).setCellValue(relatorio.getEstagio().getId());
 	        row.createCell(1).setCellValue(relatorio.getEstagio().getAluno().getNome());
 	        row.createCell(2).setCellValue(relatorio.getEstagio().getAluno().getMatricula());
@@ -236,18 +243,13 @@ public class GeradorDeExcelService {
 	        row.createCell(13).setCellValue(relatorio.getEstagio().getOrientador().getNome());
 	        row.createCell(14).setCellValue(relatorio.getEstagio().getAgenteIntegrador().getNome());
 	        row.createCell(15).setCellValue(relatorio.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
-	        row.createCell(16).setCellValue(relatorio.getEstagio().getDataInicio());
-	        row.createCell(17).setCellValue(relatorio.getEstagio().getDataTermino());
-	        /*row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
+	        row.createCell(16).setCellValue(dataInicio);
+	        row.createCell(17).setCellValue(dataTermino);
+	        row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
 	        row.createCell(19).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getNumero());
 	        row.createCell(20).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCidade());
 	        row.createCell(21).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getUf());
-	        row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());*/
-	        row.createCell(18).setCellValue("Rua A");
-	        row.createCell(19).setCellValue(42);
-	        row.createCell(20).setCellValue("Curitiba");
-	        row.createCell(21).setCellValue("Paraná");
-	        row.createCell(22).setCellValue("74329-214");
+	        row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());
 	    }
 
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -256,6 +258,7 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 
+	// Ok
 	public ByteArrayOutputStream gerarExcelRelatorioDeEstagio(RelatorioDeEstagio relatorio) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -274,6 +277,10 @@ public class GeradorDeExcelService {
 
 	    int rowNum = 1;
         Row row = sheet.createRow(rowNum++);
+        
+        String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataInicio());
+        String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataTermino());
+        
         row.createCell(0).setCellValue(relatorio.getEstagio().getId());
         row.createCell(1).setCellValue(relatorio.getEstagio().getAluno().getNome());
         row.createCell(2).setCellValue(relatorio.getEstagio().getAluno().getMatricula());
@@ -290,18 +297,13 @@ public class GeradorDeExcelService {
         row.createCell(13).setCellValue(relatorio.getEstagio().getOrientador().getNome());
         row.createCell(14).setCellValue(relatorio.getEstagio().getAgenteIntegrador().getNome());
         row.createCell(15).setCellValue(relatorio.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
-        row.createCell(16).setCellValue(relatorio.getEstagio().getDataInicio());
-        row.createCell(17).setCellValue(relatorio.getEstagio().getDataTermino());
-        /*row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
+        row.createCell(16).setCellValue(dataInicio);
+        row.createCell(17).setCellValue(dataTermino);
+        row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
         row.createCell(19).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getNumero());
         row.createCell(20).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCidade());
         row.createCell(21).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getUf());
-        row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());*/
-        row.createCell(18).setCellValue("Rua A");
-        row.createCell(19).setCellValue(42);
-        row.createCell(20).setCellValue("Curitiba");
-        row.createCell(21).setCellValue("Paraná");
-        row.createCell(22).setCellValue("74329-214");
+        row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());
 
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    workbook.write(outputStream);
