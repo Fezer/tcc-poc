@@ -85,6 +85,10 @@ export default defineComponent({
             const estagio = await novoEstagioService.criarNovoEstagio(grr);
 
             estagioId = estagio?.id;
+
+            setTermo({
+              ...estagio,
+            });
           }
 
           await novoEstagioService.setTipoEstagio(estagioId, tipoEstagio);
