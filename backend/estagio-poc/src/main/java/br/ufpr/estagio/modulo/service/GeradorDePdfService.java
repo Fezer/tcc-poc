@@ -408,28 +408,38 @@ public class GeradorDePdfService {
 		String html = "";
 		try {
 			//html = IOUtils.toString(classLoader.getResourceAsStream("copy.html"), StandardCharsets.UTF_8);
+			html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-contratante.html"), StandardCharsets.UTF_8);
 			
-			if (contratante.getTipo() == EnumTipoContratante.PessoaJuridica)
-				html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-contratante-juridico.html"), StandardCharsets.UTF_8);
-			
-			else if (contratante.getTipo() == EnumTipoContratante.PessoaFisica)
-				html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-contratante-fisico.html"), StandardCharsets.UTF_8);
-
+			if (contratante.getTipo() == EnumTipoContratante.PessoaJuridica) {
+				html = html.replace("{{cpfCnpj}}", "<span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>CNPJ:</b> {{cnpj}}</span>");
+				html = html.replace("{{cnpj}}", contratante.getCnpj());
+			}
+			else if (contratante.getTipo() == EnumTipoContratante.PessoaFisica) {
+				html = html.replace("{{cpfCnpj}}", "<span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>CPF:</b> {{cpf}}</span>");
+				html = html.replace("{{cpf}}", contratante.getCpf());
+			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		if (contratante.getTipo() == EnumTipoContratante.PessoaJuridica)
+		/*if (contratante.getTipo() == EnumTipoContratante.PessoaJuridica)
 			html = html.replace("{{cnpj}}", contratante.getCnpj());
 		
 		else if (contratante.getTipo() == EnumTipoContratante.PessoaFisica)
-			html = html.replace("{{cpf}}", contratante.getCpf());
+			html = html.replace("{{cpf}}", contratante.getCpf());*/
 		
 		
 		html = html.replace("{{nome}}", contratante.getNome());
 		html = html.replace("{{representante}}", contratante.getRepresentanteEmpresa());
 		html = html.replace("{{telefone}}", contratante.getTelefone());
+		html = html.replace("{{ruaContratante}}", contratante.getEndereco().getRua());
+		html = html.replace("{{numeroContratante}}", String.valueOf(contratante.getEndereco().getNumero()));
+		html = html.replace("{{cidadeContratante}}", contratante.getEndereco().getCidade());
+		html = html.replace("{{ufContratante}}", contratante.getEndereco().getUf());
+		html = html.replace("{{cepContratante}}", contratante.getEndereco().getCep());
+		
+		html = html.replace("{{qtdEstagios}}", String.valueOf(contratante.getEstagio().size()));
 		/*html = html.replace("{{ruaContratante}}", "Rua");
 		html = html.replace("{{numeroContratante}}", "5");
 		html = html.replace("{{cidadeContratante}}", "Curitiba");

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"></meta>
+        <title>RELATÓRIO DE ESTÁGIO</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        
+        
+
+        <style>
+            * {
+                font-size: 1.17vw;
+                text-align: justify;
+                font-family: Times New Roman, Times, Arial;
+                box-sizing: border-box;
+            }
+
+            body {
+                line-height: 1.42857143;
+                color: #333;
+            }
+
+
+.btn-group-vertical > .btn-group::after, .btn-group-vertical > .btn-group::before, .btn-toolbar::after, .btn-toolbar::before, .clearfix::after, .clearfix::before, .container-fluid::after, .container-fluid::before, .container::after, .container::before, .dl-horizontal dd::after, .dl-horizontal dd::before, .form-horizontal .form-group::after, .form-horizontal .form-group::before, .modal-footer::after, .modal-footer::before, .modal-header::after, .modal-header::before, .nav::after, .nav::before, .navbar-collapse::after, .navbar-collapse::before, .navbar-header::after, .navbar-header::before, .navbar::after, .navbar::before, .pager::after, .pager::before, .panel-body::after, .panel-body::before, .row::after, .row::before {
+
+    display: table;
+    content: " ";
+
+}
+::after, ::before {
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+}
+
+            .modal-header {
+                padding:9px 15px;
+                border-bottom:1px solid #eee;
+                background-color: rgba(10, 86, 201, 0.7);
+                -webkit-border-top-left-radius: 5px;
+                -webkit-border-top-right-radius: 5px;
+                -moz-border-radius-topleft: 5px;
+                -moz-border-radius-topright: 5px;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+            }
+
+            .modal-backdrop {
+            background-color: rgb(10, 86, 201);
+            }
+
+            .telas-iniciais{
+                font-size: 9vmin;
+                font-weight: normal;
+                text-align: center;
+                
+            }
+
+            .btn { white-space: pre-line; }
+
+            .sim-ou-nao{
+                padding-right: 0px;
+                font-size: 3vw;
+                
+                
+            }
+
+            #div_header{
+                
+                padding: 3em;
+            }
+
+            .panel-body{
+                text-align: center;
+            }
+
+            .panel-footer {
+                text-align: right;
+                
+                
+                
+            }
+
+            .font_maior{
+                
+                font-size: 1.7vw;
+            }
+
+            .btn-maior {
+                padding:7px 15px; 
+                background:#ccc; 
+                border-radius: 8px;
+                cursor:pointer;
+            }
+
+            /*.radio-bigger {
+                border: 0px;
+                width: 2em;
+                height: 2em;
+            }*/
+
+
+            fieldset{
+                padding-bottom: 3%;
+            }
+
+            textarea{
+                word-break: break-all;
+            }
+            
+            footer{page-break-after: always;}
+            /*p{page-break-inside: avoid;}*/
+                
+
+
+
+
+            .container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container-fluid {
+ /* width: 100%;*/
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.page-header {
+  padding-bottom: 9px;
+  margin: 40px 0 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col-xs-12 {
+  width: 100%;
+}
+
+.col-sm-12 {
+  width: 100%;
+}
+
+.col-md-12 {
+  width: 100%;
+}
+
+.col-lg-12 {
+  width: 100%;
+}
+
+.text-left {
+  text-align: left;
+}
+
+#divcabecalho {
+  padding-right: 0;
+}
+
+.title1 {
+  margin: 0rem 1rem 0rem 0rem;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.title2 {
+  margin: 0rem 1rem 0rem 0rem;
+  font-size: 15px;
+}
+
+#imgprograd {
+  padding-left: 0;
+}
+
+.col-xs-2 {
+  width: 16.66666667%;
+}
+
+.col-sm-2 {
+  width: 16.66666667%;
+}
+
+.col-md-2 {
+  width: 16.66666667%;
+}
+
+.col-lg-2 {
+  width: 16.66666667%;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  padding-bottom: 4px;
+  float: right;
+}
+
+.col-xs-5 {
+  width: 41.66666667%;
+}
+
+.col-sm-5 {
+  width: 41.66666667%;
+}
+
+.col-md-5 {
+  width: 41.66666667%;
+}
+
+.col-lg-5 {
+  width: 41.66666667%;
+}
+
+.col-xs-7 {
+  width: 58.33333333%;
+}
+
+.col-sm-7 {
+  width: 58.33333333%;
+}
+
+.col-md-7 {
+  width: 58.33333333%;
+}
+
+.col-lg-7 {
+  width: 58.33333333%;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"] {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.col-xs-8 {
+  width: 66.66666667%;
+}
+
+.col-sm-8 {
+  width: 66.66666667%;
+}
+
+.col-md-8 {
+  width: 66.66666667%;
+}
+
+.col-lg-8 {
+  width: 66.66666667%;
+}
+
+.col-xs-4 {
+  width: 33.33333333%;
+}
+
+.col-sm-4 {
+  width: 33.33333333%;
+}
+
+.col-md-4 {
+  width: 33.33333333%;
+}
+
+.col-lg-4 {
+  width: 33.33333333%;
+}
+
+.col-xs-6 {
+  width: 50%;
+}
+
+.col-sm-6 {
+  width: 50%;
+}
+
+.col-md-6 {
+  width: 50%;
+}
+
+.col-lg-6 {
+  width: 50%;
+}
+
+.col-xs-3 {
+  width: 25%;
+}
+
+.col-sm-3 {
+  width: 25%;
+}
+
+.col-md-3 {
+  width: 25%;
+}
+
+.col-lg-3 {
+  width: 25%;
+}
+
+
+@media (min-width: 768px) 
+{
+.col-sm-12 {
+  width: 100%;
+}
+}
+
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+  float: left;
+}
+
+@media (min-width: 768px) {
+.col-sm-12 {
+  width: 100%;
+}}
+
+@media (min-width: 768px) 
+{
+.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
+  float: left;
+}}
+
+.btn-group-vertical > .btn-group::after, .btn-group-vertical > .btn-group::before, .btn-toolbar::after, .btn-toolbar::before, .clearfix::after, .clearfix::before, .container-fluid::after, .container-fluid::before, .container::after, .container::before, .dl-horizontal dd::after, .dl-horizontal dd::before, .form-horizontal .form-group::after, .form-horizontal .form-group::before, .modal-footer::after, .modal-footer::before, .modal-header::after, .modal-header::before, .nav::after, .nav::before, .navbar-collapse::after, .navbar-collapse::before, .navbar-header::after, .navbar-header::before, .navbar::after, .navbar::before, .pager::after, .pager::before, .panel-body::after, .panel-body::before, .row::after, .row::before {
+  display: table;
+  content: " ";
+}
+
+::after, ::before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+fieldset {
+  padding-bottom: 3%;
+}
+
+fieldset {
+  min-width: 0;
+  padding: 0;
+    padding-bottom: 0px;
+  margin: 0;
+  border: 0;
+}
+
+legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 20px;
+  font-size: 21px;
+  line-height: inherit;
+  color: #333;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+@media (min-width: 768px){
+.col-sm-12 {
+  width: 100%;
+}}
+
+@media (min-width: 768px){
+.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
+  float: left;
+}}
+
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+@media (min-width: 768px) {
+.col-sm-12 {
+  width: 100%;
+}} 
+
+@media (min-width: 768px){
+.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
+  float: left;
+}}
+
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+b, strong {
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+.col-sm-5 {
+  width: 41.66666667%;
+}}
+
+@media (min-width: 768px) {
+.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
+  float: left;
+}}
+
+@media (min-width: 768px){
+.col-sm-2 {
+  width: 16.66666667%;
+}
+}
+
+.container-fluid {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+  @media (min-width: 1200px){
+.container {
+  width: 1170px;
+}
+}
+
+
+             @media print {
+                
+               
+                *{
+                    font-size: 1.55vw !important;
+                    font-family: Times New Roman, Times, Arial;
+                }
+                              
+                .parag_ativ{
+                    height: 80pt;
+                }
+                
+                #legend_color{
+                    background-color: #c0c0c0 !important;
+                }
+                
+                .page-header{
+                    margin-top: 0
+                }
+                
+                .title1{
+                    font-size: 30px !important;
+                }
+                
+                .title2{
+                    font-size: 15px !important;
+                }
+                
+                img{
+                    width: 100% !important;
+                    height: 100% !important;
+                }
+                
+                #imgprograd{
+                    width: 163px !important;
+                    height: 55px !important;
+                    position: relative;
+                    float: right;
+                }
+                
+                #divcabecalho{
+                   position: absolute;
+                   float: left;
+                }
+
+                .container {
+  width: 750px;
+}
+                
+            }
+            
+            @page {
+                size: A4;
+                margin: 1.5cm 0cm 0cm 0.8cm;
+                
+                
+            }
+            
+        </style>
+    </head>
+    <body>
+        <div class="container container-fluid">
+            <div class="page-header col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
+                <div class="row">
+                    <div id="divcabecalho" class="col-xs-10 col-sm-10 col-md-10 col-lg-10 text-center" style="padding-right: 0;">
+                        <h1 class="title1" style="margin: 0rem 1rem 0rem 0rem; font-size:  30px; font-weight: bold">RELATÓRIO DE RELATÓRIO DE ESTÁGIO</h1>
+                    </div>
+                    <br></br>
+                    <br></br>
+                    
+                    <div id="imgprograd" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right" style="padding-left: 0"> 
+                        <img class="img-responsive" style="padding-bottom: 4px;float: right" src="{{imagePath}}" alt="icone da prograd"></img>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 text-left">
+                        
+                    </div>    
+                    <!--<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 text-right">
+                        <label for="processo_sei_numero">Processo SEI nº</label>
+                        <input name="processo_sei_numero" id="idprocesso_sei_numero" type="text"></input>
+                    </div>-->
+                </div>   
+            </div>
+            <br></br>
+            
+
+            <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 10px">
+                <fieldset style="padding-bottom: 1%">
+                    <legend style="background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px; border: solid 1px; border-bottom: 0px; font-size: 1.525vw">RELATÓRIO DE CONTRATANTE</legend>
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; padding: 0px;">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Nome:</b> {{nome}}</span>
+                        {{cpfCnpj}}
+                    </span>
+                    
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Representante:</b> {{representante}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Telefone:</b> {{telefone}}</span>
+                    </span>
+                    
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Endereço:</b> {{ruaContratante}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Número:</b> {{numeroContratante}}</span>
+                    </span>
+
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>Cidade:</b> {{cidadeContratante}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%"><b>Estado:</b> {{ufContratante}}</span>
+
+                    </span>
+                    
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: white; border: solid 1px; border-top: 0px; padding: 0%">
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; padding: 0% 0% 0% 1%"><b>CEP:</b> {{cepContratante}}</span>
+                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Quantidade de Estágios:</b> {{qtdEstagios}}</span>
+                    </span>
+                    
+                </fieldset>
+                <br></br>
+            </div>
+            
+        </div>
+    
+ </body></html>
