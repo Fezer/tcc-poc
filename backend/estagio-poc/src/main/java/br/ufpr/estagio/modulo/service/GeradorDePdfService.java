@@ -819,7 +819,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// Provavelmente pode apagar ambos
+	// Ok
 	public byte[] gerarPdfRelatorioDeEstagio(Optional<RelatorioDeEstagio> relatorio) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
