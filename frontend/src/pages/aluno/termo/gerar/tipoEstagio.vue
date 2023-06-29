@@ -76,36 +76,35 @@ export default defineComponent({
 
       if (localEstagio && tipoEstagio) {
         try {
-          if (!termo?.value?.id) {
-            const termo = await novoEstagioService.criarNovoEstagio(grr);
+          let estagioId = termo?.value?.estagio?.id;
 
-            setTermo(termo);
+          console.log(estagioId);
+
+          // se não tem id -> novo termo de compromisso
+          if (!termo?.value?.estagio?.id) {
+            const estagio = await novoEstagioService.criarNovoEstagio(grr);
+
+            estagioId = estagio?.id;
           }
-          const { id } = termo?.value;
 
-          await novoEstagioService.setTipoEstagio(
-            termo?.value?.estagio?.id,
-            tipoEstagio
-          );
+          await novoEstagioService.setTipoEstagio(estagioId, tipoEstagio);
 
           await novoEstagioService.setEstagioUfpr(
-            termo?.value?.estagio?.id,
+            estagioId,
             localEstagio === "UFPR"
           );
 
           if (estagioSeed) {
-            await novoEstagioService.setEstagioSeed(termo?.value?.estagio?.id);
+            await novoEstagioService.setEstagioSeed(estagioId);
           }
 
           if (!estagioSeed && termo?.value?.estagioSeed) {
-            await novoEstagioService.removeEstagioSeed(
-              termo?.value?.estagio?.id
-            );
+            await novoEstagioService.removeEstagioSeed(estagioId);
           }
         } catch (error) {
           toast.add({
             severity: "error",
-            summary: error,
+            summary: error?.response?._data?.error || "Erro",
             detail: "Erro ao salvar dados",
             life: 3000,
           });
