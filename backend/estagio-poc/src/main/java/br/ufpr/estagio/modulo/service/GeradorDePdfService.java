@@ -782,23 +782,57 @@ public class GeradorDePdfService {
 
 	    StringBuilder estagiosHtml = new StringBuilder();
 	    for (RelatorioDeEstagio relatorio : relatorios) {
-	        String estagioHtml = "<h2>Relatório de Estágio de {{nome}}</h2>\n"
-	        		+ "    <table>\n"
-	        		+ "        <caption>Somente jogando os dados</caption>\n"
-	        		+ "        <tr>\n"
-	        		+ "            <th>Ciência Orientador</th>\n"
-	        		+ "            <th>Considerações</th>\n"
-	        		+ "        </tr>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <td>{{cienciaOrientador}}</td>\n"
-	        		+ "            <td>{{consideracoes}}</td>\n"
-	        		+ "        </tr>\n"
-	        		+ "        <br></br>\n"
-	        		+ "		\n"
-	        		+ "    </table>";
+	        String estagioHtml = "<div class=\"row col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"margin-bottom: 10px\">\r\n"
+	        		+ "                <fieldset style=\"padding-bottom: 1%\">\r\n"
+	        		+ "                    <legend style=\"background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px; border: solid 1px; border-bottom: 0px; font-size: 1.525vw\">RELATÓRIO DE RELATÓRIO DE ESTÁGIO DE {{titulo}}</legend>\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; padding: 0px;\">\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Id do relatório:</b> {{id}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>Ciência Orientador:</b> {{cienciaOrientador}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    \r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Tipo do Relatório:</b> {{tipo}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Etapa do Fluxo:</b> {{etapa}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    \r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Aval. Atividades:</b> {{atividades}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Aval. Contribuição:</b> {{contribuicao}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Aval. Desenvolvimento:</b> {{desenvolvimento}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>Aval. Efetivação:</b> {{efetivacao}}</span>\r\n"
+	        		+ "\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    \r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Aval. Formação:</b> {{formacao}}</span>\r\n"
+	        		+ "                        <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Aval. Relações:</b> {{relacoes}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "\r\n"
+	        		+ "                    <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "                        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Considerações:</b> {{consideracoes}}</span>\r\n"
+	        		+ "                    </span>\r\n"
+	        		+ "                    \r\n"
+	        		+ "                </fieldset>\r\n"
+	        		+ "                <br></br>\r\n"
+	        		+ "            </div>";
+	        estagioHtml = estagioHtml.replace("{{id}}", String.valueOf(relatorio.getId()));
 	        estagioHtml = estagioHtml.replace("{{cienciaOrientador}}", String.valueOf(relatorio.isCienciaOrientador()));
 	        estagioHtml = estagioHtml.replace("{{consideracoes}}", relatorio.getConsideracoes());
-	        estagioHtml = estagioHtml.replace("{{nome}}", relatorio.getEstagio().getAluno().getNome());
+	        //estagioHtml = estagioHtml.replace("{{nome}}", relatorio.getEstagio().getAluno().getNome());
+	        estagioHtml = estagioHtml.replace("{{titulo}}", relatorio.getEstagio().getAluno().getNome());
+	        
+	        estagioHtml = estagioHtml.replace("{{atividades}}", String.valueOf(relatorio.getAvalAtividades()));
+	        estagioHtml = estagioHtml.replace("{{contribuicao}}", String.valueOf(relatorio.getAvalContribuicaoEstagio()));
+	        estagioHtml = estagioHtml.replace("{{desenvolvimento}}", String.valueOf(relatorio.getAvalDesenvolvimentoAtividades()));
+	        estagioHtml = estagioHtml.replace("{{efetivacao}}", String.valueOf(relatorio.getAvalEfetivacao()));
+	        estagioHtml = estagioHtml.replace("{{formacao}}", String.valueOf(relatorio.getAvalFormacaoProfissional()));
+	        estagioHtml = estagioHtml.replace("{{relacoes}}", String.valueOf(relatorio.getAvalRelacoesInterpessoais()));
+	        estagioHtml = estagioHtml.replace("{{tipo}}", String.valueOf(relatorio.getTipoRelatorio()));
+	        estagioHtml = estagioHtml.replace("{{etapa}}", String.valueOf(relatorio.getEtapaFluxo()));
+
 	        // Adicionar o HTML do estágio à lista
 	        estagiosHtml.append(estagioHtml);
 	    }
@@ -866,7 +900,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// Revisar
+	// Ajustar detalhes e adicionar tabela com as perguntas avaliadoras
 	public byte[] gerarPdfAlunoRelatorioDeEstagio(Aluno aluno, RelatorioDeEstagio relatorio) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -955,7 +989,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	// Revisar
+	// Ajustar detalhes e descomentar dados estáticos
 	public byte[] gerarPdfAlunoTermoAditivo(TermoDeEstagio termo) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -1103,152 +1137,4 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	private String getHtmlAlunoTermoRescisao(TermoDeRescisao termo) {
-	    // Carregar o HTML do arquivo
-		ClassLoader classLoader = getClass().getClassLoader();
-		
-		Path diretorioAtual = Paths.get("").toAbsolutePath();
-    	
-    	String resources = diretorioAtual + "/src/main/resources/";
-		
-		String cssPath = resources + "termo/bootstrap.min.css";
-		String estiloPath = resources + "termo/estilo.css";
-		String jqueryPath = resources + "termo/jquery.js";
-		String bootstrapPath = resources + "termo/bootstrap.js";
-		String scriptPath = resources + "termo/script.js";
-
-		//System.out.println(scriptPath);
-		
-		/*URL cssUrl = classLoader.getResource(cssPath);
-		URL estiloUrl = classLoader.getResource(estiloPath);
-		URL jqueryUrl = classLoader.getResource(jqueryPath);
-		URL bootstrapUrl = classLoader.getResource(bootstrapPath);
-		URL scriptUrl = classLoader.getResource(scriptPath);
-		
-		System.out.println("cssUrl: " + cssUrl);
-		System.out.println("estiloUrl: " + estiloUrl);
-		System.out.println("jqueryUrl: " + jqueryUrl);
-		System.out.println("bootstrapUrl: " + bootstrapUrl);
-		System.out.println("scriptUrl: " + scriptUrl);
-		*/
-		String html = "";
-		try {
-			
-			html = IOUtils.toString(classLoader.getResourceAsStream("TermoDeRescisao.html"), StandardCharsets.UTF_8);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		//html = html.replace("${cssPath}", cssPath);
-		//html = html.replace("${estiloPath}", estiloPath);
-		//html = html.replace("${jqueryPath}", jqueryPath);
-		html = html.replace("${bootstrapPath}", bootstrapPath);
-		//html = html.replace("${scriptPath}", scriptPath);
-		
-		
-		String imagePath = resources + "termo/prograd.png";
-		html = html.replace("{{imagePath}}", imagePath);
-		
-		// Informacoes do relatório
-		if (termo.getEstagio().isEstagioUfpr()) {
-			html = html.replace("{{razaoSocial}}", "Universidade Federal do Paraná");
-			html = html.replace("{{cnpj}}", "CNPJ UFPR");
-			html = html.replace("{{representante}}", "Dieval Guizelini");
-			html = html.replace("{{telefoneContratante}}", "41 92924 9201");
-			html = html.replace("{{ruaContratante}}", "Rua Alguma Coisa Arcoverde");
-			html = html.replace("{{numeroContratante}}", "1725");
-			html = html.replace("{{cidadeContratante}}", "Curitiba");
-			html = html.replace("{{ufContratante}}", "Paraná");
-			html = html.replace("{{cepContratante}}", "80213-931");
-		} else {
-			html = html.replace("{{razaoSocial}}", termo.getEstagio().getContratante().getNome());
-			html = html.replace("{{cnpj}}", termo.getEstagio().getContratante().getCnpj());
-			html = html.replace("{{representante}}", termo.getEstagio().getContratante().getRepresentanteEmpresa());
-			html = html.replace("{{telefoneContratante}}", termo.getEstagio().getContratante().getTelefone());
-			/*html = html.replace("{{ruaContratante}}", termo.getEstagio().getContratante().getEndereco().getRua());
-			html = html.replace("{{numeroContratante}}", termo.getEstagio().valueOf(estagio.getContratante().getEndereco().getNumero()));
-			html = html.replace("{{cidadeContratante}}", termo.getEstagio().getContratante().getEndereco().getCidade());
-			html = html.replace("{{ufContratante}}", termo.getEstagio().getContratante().getEndereco().getUf());
-			html = html.replace("{{cepContratante}}", termo.getEstagio().getContratante().getEndereco().getCep());
-			*/
-			html = html.replace("{{ruaContratante}}", "Rua");
-			html = html.replace("{{numeroContratante}}", "5");
-			html = html.replace("{{cidadeContratante}}", "Curitiba");
-			html = html.replace("{{ufContratante}}", "Paraná");
-			html = html.replace("{{cepContratante}}", "80213-931");
-		}
-		
-		// Informacoes do aluno
-		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getEstagio().getAluno().getDataNascimento());
-
-		html = html.replace("{{nome}}", termo.getEstagio().getAluno().getNome());
-		html = html.replace("{{rg}}", termo.getEstagio().getAluno().getRg());
-		html = html.replace("{{dataNascimento}}", dataFormatada);
-		html = html.replace("{{telefone}}", termo.getEstagio().getAluno().getTelefone());
-		html = html.replace("{{email}}", termo.getEstagio().getAluno().getEmail());
-		/*html = html.replace("{{rua}}", termo.getEstagio().getAluno().getEndereco().getRua());
-		html = html.replace("{{numeroEndereco}}", String.valueOf(termo.getEstagio().getAluno().getEndereco().getNumero()));
-		html = html.replace("{{complemento}}", termo.getEstagio().getAluno().getEndereco().getComplemento());
-		html = html.replace("{{cidade}}", termo.getEstagio().getAluno().getEndereco().getCidade());
-		html = html.replace("{{uf}}", termo.getEstagio().getAluno().getEndereco().getUf());
-		html = html.replace("{{cep}}", termo.getEstagio().getAluno().getEndereco().getCep());*/
-		html = html.replace("{{rua}}", "Rua X");
-		html = html.replace("{{numeroEndereco}}", "0");
-		html = html.replace("{{complemento}}", "Casa 2");
-		html = html.replace("{{cidade}}", "Curitiba");
-		html = html.replace("{{uf}}", "Paraná");
-		html = html.replace("{{cep}}", "81810-481");
-		
-		html = html.replace("{{curso}}", termo.getEstagio().getAluno().getCurso().getNome());
-		
-		html = html.replace("{{matricula}}", termo.getEstagio().getAluno().getMatricula());
-		html = html.replace("{{nivel}}", "4º Período"); // NULO!!
-		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
-		
-		
-		html = html.replace("{{agente}}", termo.getEstagio().getAgenteIntegrador().getNome());
-		html = html.replace("{{apolice}}", String.valueOf(termo.getEstagio().getApolice().getNumero()));
-		html = html.replace("{{contratante}}", termo.getEstagio().getContratante().getNome());
-		//html = html.replace("{{coordenador}}", termo.getEstagio().getCoordenador().getNome());
-		html = html.replace("{{coordenador}}", "Alessandro Brawerman");
-		html = html.replace("{{orientador}}", termo.getEstagio().getOrientador().getNome());
-		//html = html.replace("{{supervisor}}", termo.getEstagio().getPlanoAtividades().getNomeSupervisor());
-		html = html.replace("{{supervisor}}", "Supervisor A");
-		
-		/*html = html.replace("{{totalRecesso}}", String.valueOf(termo.getPeriodoTotalRecesso()));
-		String dataTerminoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
-		html = html.replace("{{dataTermino}}", dataTerminoFormatada);*/
-		
-		html = html.replace("{{totalRecesso}}", "30");
-		html = html.replace("{{dataTermino}}", "28/06/2023");
-		
-		return html;
-	}
-	
-	public Workbook gerarExcelEstagioSeguradoraUfpr(List<Estagio> estagios) {
-	    Workbook workbook = new XSSFWorkbook();
-	    Sheet sheet = workbook.createSheet("Estágios Seguradora UFPR");
-
-	    // Cabeçalho
-	    Row headerRow = sheet.createRow(0);
-	    headerRow.createCell(0).setCellValue("ID");
-	    headerRow.createCell(1).setCellValue("Nome");
-	    headerRow.createCell(2).setCellValue("Período");
-
-	    int rowNum = 1;
-	    for (Estagio estagio : estagios) {
-	        Row row = sheet.createRow(rowNum++);
-	        row.createCell(0).setCellValue(estagio.getId());
-	        row.createCell(1).setCellValue(estagio.getAluno().getNome());
-	        row.createCell(2).setCellValue(estagio.getDataCriacao());
-	    }
-
-	    // Formatação
-	    sheet.autoSizeColumn(0);
-	    sheet.autoSizeColumn(1);
-	    sheet.autoSizeColumn(2);
-
-	    return workbook;
-	}
 }
