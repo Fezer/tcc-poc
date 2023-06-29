@@ -78,6 +78,7 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 	
+	// Ok
 	public ByteArrayOutputStream gerarExcelContratante(Contratante contratante) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -114,13 +115,14 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 	
+	// Ok
 	public ByteArrayOutputStream gerarExcelAgenteIntegrador(AgenteIntegrador agenteIntegrador) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
 
 	    Sheet sheet = workbook.createSheet("Relatório Agente Integrador");
 
-	    String[] headersTitle = {"CNPJ", "Nome", "Telefone", "qtdConvenios", "qtdEstagios", "ativo"};
+	    String[] headersTitle = {"Nome", "CNPJ", "Telefone", "qtdConvenios", "qtdEstagios", "ativo"};
 	    Row headerRow = sheet.createRow(0);
 	    for (int i = 0; i < headersTitle.length; i++) {
 	        Cell cell = headerRow.createCell(i);
@@ -130,8 +132,8 @@ public class GeradorDeExcelService {
 	    int rowNum = 1;
 	    
         Row row = sheet.createRow(rowNum++);
-        row.createCell(0).setCellValue(agenteIntegrador.getCnpj());
-        row.createCell(1).setCellValue(agenteIntegrador.getNome());
+        row.createCell(0).setCellValue(agenteIntegrador.getNome());
+        row.createCell(1).setCellValue(agenteIntegrador.getCnpj());
         row.createCell(2).setCellValue(agenteIntegrador.getTelefone());
         row.createCell(3).setCellValue(agenteIntegrador.getConvenio().size());
         row.createCell(4).setCellValue(agenteIntegrador.getEstagio().size());
