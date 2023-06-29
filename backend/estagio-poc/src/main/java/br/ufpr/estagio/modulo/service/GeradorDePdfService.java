@@ -55,6 +55,7 @@ import java.util.Optional;
 @Service
 public class GeradorDePdfService {
 	
+	// Arrumar assinaturas
 	public byte[] gerarPdf(Aluno aluno, Estagio estagio) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -166,6 +167,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
+	// Arrumar assinaturas e adicionar tabela com as perguntas avaliadoras
 	public byte[] gerarPdfFicha(Aluno aluno, FichaDeAvaliacao ficha) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -284,6 +286,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 
+	// Arrumar assinaturas
 	public byte[] gerarPdfRescisao(Aluno aluno, TermoDeRescisao termo) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -695,27 +698,7 @@ public class GeradorDePdfService {
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
     	
     	String resources = diretorioAtual + "/src/main/resources/";
-		
-		String cssPath = resources + "termo/bootstrap.min.css";
-		String estiloPath = resources + "termo/estilo.css";
-		String jqueryPath = resources + "termo/jquery.js";
-		String bootstrapPath = resources + "termo/bootstrap.js";
-		String scriptPath = resources + "termo/script.js";
-
-		//System.out.println(scriptPath);
-		
-		/*URL cssUrl = classLoader.getResource(cssPath);
-		URL estiloUrl = classLoader.getResource(estiloPath);
-		URL jqueryUrl = classLoader.getResource(jqueryPath);
-		URL bootstrapUrl = classLoader.getResource(bootstrapPath);
-		URL scriptUrl = classLoader.getResource(scriptPath);
-		
-		System.out.println("cssUrl: " + cssUrl);
-		System.out.println("estiloUrl: " + estiloUrl);
-		System.out.println("jqueryUrl: " + jqueryUrl);
-		System.out.println("bootstrapUrl: " + bootstrapUrl);
-		System.out.println("scriptUrl: " + scriptUrl);
-		*/
+    	
 		String html = "";
 		try {
 			
@@ -723,14 +706,7 @@ public class GeradorDePdfService {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
-		//html = html.replace("${cssPath}", cssPath);
-		//html = html.replace("${estiloPath}", estiloPath);
-		//html = html.replace("${jqueryPath}", jqueryPath);
-		html = html.replace("${bootstrapPath}", bootstrapPath);
-		//html = html.replace("${scriptPath}", scriptPath);
-		
+		}		
 		
 		String imagePath = resources + "termo/prograd.png";
 		html = html.replace("{{imagePath}}", imagePath);
@@ -754,7 +730,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	// Revisar
+	// Ok
 	public byte[] gerarPdfRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -843,7 +819,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// Revisar
+	// Provavelmente pode apagar ambos
 	public byte[] gerarPdfRelatorioDeEstagio(Optional<RelatorioDeEstagio> relatorio) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -863,39 +839,36 @@ public class GeradorDePdfService {
 	    // Carregar o HTML do arquivo
 		RelatorioDeEstagio relatorio = relatorioFind.get();
 		
-	    ClassLoader classLoader = getClass().getClassLoader();
-	    String html = "";
+		ClassLoader classLoader = getClass().getClassLoader();
+		
+		Path diretorioAtual = Paths.get("").toAbsolutePath();
+    	
+    	String resources = diretorioAtual + "/src/main/resources/";
+	    
+    	String html = "";
 	    try {
 	        html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-relatorio-de-estagio.html"), StandardCharsets.UTF_8);
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
 
-	    StringBuilder estagiosHtml = new StringBuilder();
-	    
-	        String estagioHtml = "<h2>Relatório de Estágio de {{nome}}</h2>\n"
-	        		+ "    <table>\n"
-	        		+ "        <caption>Somente jogando os dados</caption>\n"
-	        		+ "        <tr>\n"
-	        		+ "            <th>Ciência Orientador</th>\n"
-	        		+ "            <th>Considerações</th>\n"
-	        		+ "        </tr>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <td>{{cienciaOrientador}}</td>\n"
-	        		+ "            <td>{{consideracoes}}</td>\n"
-	        		+ "        </tr>\n"
-	        		+ "        <br></br>\n"
-	        		+ "		\n"
-	        		+ "    </table>";
-	        estagioHtml = estagioHtml.replace("{{cienciaOrientador}}", String.valueOf(relatorio.isCienciaOrientador()));
-	        estagioHtml = estagioHtml.replace("{{consideracoes}}", relatorio.getConsideracoes());
-	        estagioHtml = estagioHtml.replace("{{nome}}", relatorio.getEstagio().getAluno().getNome());
-	        // Adicionar o HTML do estágio à lista
-	        estagiosHtml.append(estagioHtml);
-	    
-
-	    // Substituir a tag no HTML principal com os estágios
-	    html = html.replace("{{relatorio}}", estagiosHtml.toString());
+	    String imagePath = resources + "termo/prograd.png";
+		html = html.replace("{{imagePath}}", imagePath);
+		
+	    html = html.replace("{{id}}", String.valueOf(relatorio.getId()));
+	    html = html.replace("{{cienciaOrientador}}", String.valueOf(relatorio.isCienciaOrientador()));
+        html = html.replace("{{consideracoes}}", relatorio.getConsideracoes());
+        //html = html.replace("{{nome}}", relatorio.getEstagio().getAluno().getNome());
+        html = html.replace("{{titulo}}", relatorio.getEstagio().getAluno().getNome());
+        
+        html = html.replace("{{atividades}}", String.valueOf(relatorio.getAvalAtividades()));
+        html = html.replace("{{contribuicao}}", String.valueOf(relatorio.getAvalContribuicaoEstagio()));
+        html = html.replace("{{desenvolvimento}}", String.valueOf(relatorio.getAvalDesenvolvimentoAtividades()));
+        html = html.replace("{{efetivacao}}", String.valueOf(relatorio.getAvalEfetivacao()));
+        html = html.replace("{{formacao}}", String.valueOf(relatorio.getAvalFormacaoProfissional()));
+        html = html.replace("{{relacoes}}", String.valueOf(relatorio.getAvalRelacoesInterpessoais()));
+        html = html.replace("{{tipo}}", String.valueOf(relatorio.getTipoRelatorio()));
+        html = html.replace("{{etapa}}", String.valueOf(relatorio.getEtapaFluxo()));
 
 	    return html;
 	}
