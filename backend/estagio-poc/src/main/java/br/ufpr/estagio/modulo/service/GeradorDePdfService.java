@@ -437,7 +437,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	// Revisar
+	// Ok
 	public byte[] gerarPdfAgenteIntegrador(AgenteIntegrador agenteIntegrador) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -979,26 +979,6 @@ public class GeradorDePdfService {
     	
     	String resources = diretorioAtual + "/src/main/resources/";
 		
-		String cssPath = resources + "termo/bootstrap.min.css";
-		String estiloPath = resources + "termo/estilo.css";
-		String jqueryPath = resources + "termo/jquery.js";
-		String bootstrapPath = resources + "termo/bootstrap.js";
-		String scriptPath = resources + "termo/script.js";
-
-		//System.out.println(scriptPath);
-		
-		/*URL cssUrl = classLoader.getResource(cssPath);
-		URL estiloUrl = classLoader.getResource(estiloPath);
-		URL jqueryUrl = classLoader.getResource(jqueryPath);
-		URL bootstrapUrl = classLoader.getResource(bootstrapPath);
-		URL scriptUrl = classLoader.getResource(scriptPath);
-		
-		System.out.println("cssUrl: " + cssUrl);
-		System.out.println("estiloUrl: " + estiloUrl);
-		System.out.println("jqueryUrl: " + jqueryUrl);
-		System.out.println("bootstrapUrl: " + bootstrapUrl);
-		System.out.println("scriptUrl: " + scriptUrl);
-		*/
 		String html = "";
 		try {
 			
@@ -1006,14 +986,7 @@ public class GeradorDePdfService {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
-		//html = html.replace("${cssPath}", cssPath);
-		//html = html.replace("${estiloPath}", estiloPath);
-		//html = html.replace("${jqueryPath}", jqueryPath);
-		html = html.replace("${bootstrapPath}", bootstrapPath);
-		//html = html.replace("${scriptPath}", scriptPath);
-		
+		}		
 		
 		String imagePath = resources + "termo/prograd.png";
 		html = html.replace("{{imagePath}}", imagePath);
