@@ -630,7 +630,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// Revisar
+	// revisar TUDO!!!
 	public byte[] gerarPdfCertificadosDeEstagio(List<CertificadoDeEstagio> certificados) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -685,7 +685,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// Revisar
+	// revisar TUDO!!!
 	public byte[] gerarPdfCertificadoOrientador(Orientador orientador, CertificadoDeEstagio certificado) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    

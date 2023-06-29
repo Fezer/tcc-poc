@@ -618,7 +618,7 @@ b, strong {
                 </p>
                 <p style="padding-left: 3%">
                     <b>PERÍODO TOTAL DE REALIZAÇÃO DO ESTÁGIO:</b>
-                    <!--{{dataInicioEstagio}}-->               
+                    <!--{{dataInicioEstagio}}-->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;               
                     <b> até </b>
                     <!--{{dataFimEstagio}}-->               
                 </p>
@@ -646,15 +646,91 @@ b, strong {
                     <!--{{acompanhamentoCoord}}--><br></br>
                     <b>De que forma?</b> <!--{{consideracoesCoord}}-->               
                 </p>
-                <p style="margin-top: -10px; padding-left: 3%">
+                <p style="margin-top: auto; padding-left: 3%">
                     <b>COMO A REALIZAÇÃO DO ESTÁGIO CONTRIBUIU PARA SUA EMPRESA / UNIDADE / DEPARTAMENTO?</b> 
                     <!--{{contribuicao}}-->               
                 </p>
-
-
-                <p style="padding-left: 3%">
+                <!--footer style="margin-top: 3%; text-align: right !important;">página 1/2</footer-->
+                <p style="margin: auto; padding-left: 3%">
                     <b>AVALIE O DESEMPENHO DO ESTUDANTE DURANTE O ESTÁGIO PELOS CRITÉRIOS ABAIXO:</b> 
                 </p>
+
+                <table>
+                  <tr style="text-align: center;">
+                    <th></th>
+                    <th>&nbsp;&nbsp;péssimo&nbsp;&nbsp;</th>
+                    <th>&nbsp;&nbsp;ruim&nbsp;&nbsp;</th>
+                    <th>&nbsp;&nbsp;razoável&nbsp;&nbsp;</th>
+                    <th>&nbsp;&nbsp;bom&nbsp;&nbsp;</th>
+                    <th>&nbsp;&nbsp;excelente&nbsp;&nbsp;</th>
+                  </tr>
+                  <tr>
+                    <td><b>1. Assiduidade / Pontualidade</b></td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                  </tr>
+                  <tr>
+                    <td><b>2. Criatividade</b></td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                  </tr>
+                  <tr>
+                    <td>3. Iniciativa / Protagonismo</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                  </tr>
+                  <tr>
+                    <td>4. Responsabilidade</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                  </tr>
+                  <tr>
+                    <td>5. Conduta / Postura Profissional</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                  </tr>
+                  <tr>
+                    <td>6. Domínio do Conhecimento Técnico</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                  </tr>
+                  <tr>
+                    <!--td>7. Habilidades Necessárias para o desempenho da função</td-->
+                    <td>7. Habilidades Necessárias para a função</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                  </tr>
+                  <tr>
+                    <td>8. Possibilidade de efetivação na área de formação</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                    <td style="text-align: center;">(   )</td>
+                  </tr>
+
+                </table>
                 
                 <p style="text-align: right; margin-bottom: 12%">Curitiba, {{data}}.</p>
 
@@ -665,7 +741,29 @@ b, strong {
                         <span>(assinatura)</span>
                     </div>
                 </div>
+              </div>
+              <!--div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
+                <div class="row">
+                    <div id="divcabecalho" class="col-xs-10 col-sm-10 col-md-10 col-lg-10 text-left" style="padding-right: 0;">
+                        <h1 class="title1" style="margin: 0rem 1rem 0rem 0rem; font-size:  30px; font-weight: bold">FICHA DE AVALIAÇÃO DE ESTÁGIO</h1>
+                    </div>
+                    <br></br>
+                    <br></br>
+                    <div id="divcabecalho" class="col-xs-10 col-sm-10 col-md-10 col-lg-10 text-left" style="padding-right: 0;">
+                      <h5 class="title2" style="margin: 0rem 1rem 0rem 0rem; font-size: 15px">{{subtitulo}}</h5>
+                  </div>
+                    <div id="imgprograd" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right" style="padding-left: 0"> 
+                        <img class="img-responsive" style="padding-bottom: 4px;float: right" src="{{imagePath}}" alt="icone da prograd"></img>
+                    </div>
+                </div> 
             </div>
+            <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <fieldset style="padding-bottom: 1%">
+                  <legend style="background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px; border: solid 1px; font-size: 1.525vw">PARECER DA COMISSÃO ORIENTADORA DE ESTÁGIOS DO CURSO</legend>
+              </fieldset>
+            </div>
+
+              <footer class="text-right" style="margin-top: 3%; text-align: right;">página 2/2</footer-->
         </div>
     
  </body></html>
