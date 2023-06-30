@@ -73,7 +73,7 @@
         </div>
       </template>
       <template #empty>
-        o Agente {{ agente.nome }} não possui nenhum convênio
+        O agente {{ agente.nome }} não possui nenhum convênio
       </template>
       <Column field="numero" header="Número">
         <template #body="{ data }">
