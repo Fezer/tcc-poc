@@ -49,7 +49,7 @@ export default defineComponent({
     <div>
       <h1>
         COAFE
-        <h6>COAFE</h6>
+        <h6>Coordenação de Atividades Formativas e Estágios</h6>
       </h1>
     </div>
     <div>
@@ -88,7 +88,7 @@ export default defineComponent({
             </div>
           </div>
         </template>
-        <Column field="process" header="Processo">
+        <Column field="process" header="Número do Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
 
@@ -96,12 +96,12 @@ export default defineComponent({
           <template #body="{ data }"> #{{ data?.estagio?.id }} </template>
         </Column>
 
-        <Column field="dataInicio" header="Data de Início Estágio">
+        <Column field="dataInicio" header="Data de Início do Estágio">
           <template #body="{ data }">
             {{ parseDate(data?.estagio?.dataInicio) }}
           </template>
         </Column>
-        <Column field="process_type" header="Data Término Estágio">
+        <Column field="process_type" header="Data de Término do Estágio">
           <template #body="{ data }">
             {{ parseDate(data?.dataTermino) }}
           </template>
@@ -113,10 +113,14 @@ export default defineComponent({
           </template>
         </Column>
 
-        <Column field="button">
+        <Column field="button" header="Ver">
           <template #body="{ data }">
             <NuxtLink :to="`/coafe/termo-rescisao/${data.id}`">
-              <Button label="Ver Termo"></Button>
+              <Button
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
+              ></Button>
             </NuxtLink>
           </template>
         </Column>

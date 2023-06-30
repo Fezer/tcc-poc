@@ -85,7 +85,7 @@
             <p><b>Apólices</b></p>
           </span>
         </div>
-        <!-- <div class="w-full flex justify-end gap-2">
+        <div class="w-full flex justify-end gap-2">
           <NuxtLink :to="`novo/adicionarApolice?id=${seguradora.id}`">
             <Button
               :label="'Adicionar'"
@@ -94,17 +94,16 @@
             />
           </NuxtLink>
         </div>
-        -->
       </template>
       <template #empty>
-        A Seguradora {{ seguradora.nome }} não possui nenhuma apolice
+        A Seguradora {{ seguradora.nome }} não possui nenhuma apólice
       </template>
       <Column field="numero" header="Número">
         <template #body="{ data }">
           {{ data.numero }}
         </template>
       </Column>
-      <Column field="dataInicio" header="Data de Inicio">
+      <Column field="dataInicio" header="Data de Início">
         <template #body="{ data }">
           <p>{{ parseDate(data?.dataInicio) }}</p>
         </template>
@@ -175,7 +174,7 @@ const handleInativateSeguradora = async () => {
     await seguradoraService.desativarSeguradora(id).then(() => {
       toast.add({
         severity: "success",
-        summary: "Seguradora Inativada com sucesso",
+        summary: "Seguradora Inativada com Sucesso",
         life: 3000,
       });
     });
@@ -189,7 +188,7 @@ const handleAtivateSeguradora = async () => {
     await seguradoraService.ativarSeguradora(id).then(() => {
       toast.add({
         severity: "success",
-        summary: "Seguradora Ativada com sucesso",
+        summary: "Seguradora Ativada com Sucesso",
         life: 3000,
       });
     });

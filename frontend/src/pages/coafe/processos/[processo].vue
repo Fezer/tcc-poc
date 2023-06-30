@@ -63,7 +63,7 @@ export default defineComponent({
     <div>
       <h1>
         COAFE
-        <h6>COAFE</h6>
+        <h6>Coordenação de Atividades Formativas e Estágios</h6>
       </h1>
     </div>
     <div>
@@ -113,11 +113,11 @@ export default defineComponent({
             </div>
           </div>
         </template>
-        <Column field="process" header="Processo">
+        <Column field="process" header="Número do Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
 
-        <Column field="tipo" header="Tipo Estágio">
+        <Column field="tipo" header="Tipo de Estágio">
           <template #body="{ data }">
             {{ parseObrigatoriedadeEstagio(data?.estagio?.tipoEstagio) }}
           </template>
@@ -147,7 +147,7 @@ export default defineComponent({
             {{ data?.etapaFluxo }}
           </template>
         </Column>
-        <Column field="button">
+        <Column field="button" header="Ver">
           <template #body="{ data }">
             <NuxtLink :to="`/coafe/termo/${data.id}`">
               <Button

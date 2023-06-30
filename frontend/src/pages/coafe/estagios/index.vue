@@ -121,6 +121,7 @@ export default defineComponent({
   <div>
     <div>
       <h1>COAFE</h1>
+      <h6>Coordenação de Atividades Formativas e Estágios</h6>
     </div>
     <div>
       <DataTable
@@ -149,7 +150,7 @@ export default defineComponent({
                 v-model="filters.tipoEstagio"
                 optionLabel="label"
                 optionValue="value"
-                placeholder="Tipo Estágio"
+                placeholder="Tipo do Estágio"
                 @change="() => handleSearch()"
               >
               </Dropdown>
@@ -163,14 +164,14 @@ export default defineComponent({
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
                 <InputText
-                  placeholder="Nome Contratante"
+                  placeholder="Nome da Contratante"
                   v-model="filters.nomeEmpresa"
                 />
               </span>
             </div>
           </div>
         </template>
-        <Column field="process" header="Processo">
+        <Column field="process" header="Número do Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
 
@@ -190,9 +191,9 @@ export default defineComponent({
             {{ data?.contratante?.cnpj || data?.contratante?.cpf }}
           </template>
         </Column>
-        <Column field="process_type" header="Tipo Estágio">
+        <Column field="process_type" header="Tipo do Estágio">
           <template #body="{ data }">
-            {{ data?.tipoEstagio }}
+            {{ data?.tipoEstagio ? "Obrigatório" : "Não Obrigatório" }}
           </template>
         </Column>
         <Column field="process_type" header="Estágio UFPR">

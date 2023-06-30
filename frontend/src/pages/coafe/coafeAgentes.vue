@@ -71,7 +71,11 @@
             <NuxtLink
               :to="`/coafe/agentes-integracao/agenteVisualizar?id=${data.id}`"
             >
-              <Button label="Ver" icon="pi pi-search" />
+              <Button
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
+              />
             </NuxtLink>
           </template>
         </Column>

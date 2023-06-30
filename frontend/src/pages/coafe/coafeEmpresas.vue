@@ -178,9 +178,9 @@ export default defineComponent({
           <template #body="{ data }">
             <NuxtLink :to="`/coafe/empresa/${data.id}`">
               <Button
-                :label="'Ver'"
-                class="p-button-primary"
-                icon="pi pi-search"
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
               />
             </NuxtLink>
           </template>
