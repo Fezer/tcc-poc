@@ -245,18 +245,15 @@ public class GeradorDePdfService {
 		html = html.replace("{{dataInicioEstagio}}", "01/01/2022");
 		html = html.replace("{{dataFimEstagio}}", "31/03/2023");
 		
+		// Dados da Ficha: não devem ser exibidos quando o aluno gera o relatório.
 		/*html = html.replace("{{totalHoras}}", String.valueOf(ficha.getTotalHorasEstagioEfetivamenteRealizadas()));
 		html = html.replace("{{atividades}}", ficha.getAtividadesRealizadasConsideracoes());
-		html = html.replace("{{consideracoesAtividades}}", ficha.getAtividadesRealizadasConsideracoes());
-		
+		html = html.replace("{{consideracoesAtividades}}", ficha.getAtividadesRealizadasConsideracoes());		
 		html = html.replace("{{acompanhamentoOrientador}}", String.valueOf(ficha.getAcompanhamentoOrientador()));
 		html = html.replace("{{consideracoesCoord}}", ficha.getAcompanhamentoCoordenadorComentario());
 		html = html.replace("{{acompanhamentoCoord}}", String.valueOf(ficha.getAcompanhamentoCoordenador()));
 		html = html.replace("{{consideracoesOrientador}}", ficha.getAcompanhamentoOrientadorComentario());
-		
 		html = html.replace("{{contribuicao}}", ficha.getContribuicaoEstagio());*/
-		
-		
 		/*html = html.replace("{{conduta}}", String.valueOf(ficha.getAvalConduta()));
 		html = html.replace("{{criatividade}}", String.valueOf(ficha.getAvalCriatividade()));
 		html = html.replace("{{dominio}}", String.valueOf(ficha.getAvalDominioTecnico()));
@@ -630,7 +627,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// revisar TUDO!!!
+	// Ok
 	public byte[] gerarPdfCertificadosDeEstagio(List<CertificadoDeEstagio> certificados) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -1074,6 +1071,8 @@ public class GeradorDePdfService {
 			html = html.replace("{{cepContratante}}", "80213-931");
 		}
 		
+		TermoDeEstagio termoAntigo = termo.getEstagio().getTermoDeCompromisso();
+		
 		// Informacoes do aluno
 		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getEstagio().getAluno().getDataNascimento());
 
@@ -1102,8 +1101,6 @@ public class GeradorDePdfService {
 		html = html.replace("{{nivel}}", "4º Período"); // NULO!!
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
 		
-		html = html.replace("{{agente}}", termo.getAgenteIntegrador().getNome());
-		html = html.replace("{{apolice}}", String.valueOf(termo.getApolice().getNumero()));
 		html = html.replace("{{contratante}}", termo.getContratante().getNome());
 		//html = html.replace("{{coordenador}}", termo.getCoordenador().getNome());
 		html = html.replace("{{coordenador}}", "Alessandro Brawerman");
@@ -1111,20 +1108,15 @@ public class GeradorDePdfService {
 		
 		//html = html.replace("{{supervisor}}", termo.getPlanoAtividades().getNomeSupervisor());
 		html = html.replace("{{supervisor}}", "Supervisor A");
-		//html = html.replace("{{nomeSupervisor}}", termo.getPlanoAtividades().getNomeSupervisor());
-		html = html.replace("{{nomeSupervisor}}", "Supervisor A");
 		//html = html.replace("{{formacaoSupervisor}}", termo.getPlanoAtividades().getFormacaoSupervisor());
 		html = html.replace("{{formacaoSupervisor}}", "Análise e Desenvolvimento Estático");
-		//html = html.replace("{{formSupervisor}}", termo.getPlanoAtividades().getFormacaoSupervisor());
-		html = html.replace("{{formSupervisor}}", "Análise e Desenvolvimento Estático");
-		html = html.replace("{{telefoneSupervisor}}", termo.getPlanoAtividades().getTelefoneSupervisor());
-		html = html.replace("{{telefoneSupervisor}}", "41 3030-1322");
-		
+				
 		//html = html.replace("{{ajustes}}", termo.getDescricaoAjustes());
 		html = html.replace("{{ajustes}}", "Ajustando o teste");
 		
 		
 		// Informações do Termo Aditivo
+		// A partir daqui, os dados podem ser alterados pelo Termo Aditivo
 		String novoTermino = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
 		String dataInicioAditivo = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataInicio());
 		String dataTerminoAditivo = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataFimSuspensao());
@@ -1135,19 +1127,92 @@ public class GeradorDePdfService {
         String formattedDate = currentDate.format(formatter);
         
 		html = html.replace("{{novoTermino}}", novoTermino);
-		html = html.replace("{{totalHorasDiarias}}", String.valueOf(termo.getJornadaDiaria()));
-		html = html.replace("{{totalHorasSemanais}}", String.valueOf(termo.getJornadaSemanal()));
+		
+		if (termoAntigo.getJornadaDiaria() != termo.getJornadaDiaria())
+			html = html.replace("{{totalHorasDiarias}}", String.valueOf(termo.getJornadaDiaria()));
+		else
+			html = html.replace("{{totalHorasDiarias}}", "####");
+		//html = html.replace("{{totalHorasDiarias}}", String.valueOf(termo.getJornadaDiaria()));
+		
+		if (termoAntigo.getJornadaSemanal() != termo.getJornadaSemanal())
+			html = html.replace("{{totalHorasSemanais}}", String.valueOf(termo.getJornadaSemanal()));
+		else
+			html = html.replace("{{totalHorasSemanais}}", "####");
+		//html = html.replace("{{totalHorasSemanais}}", String.valueOf(termo.getJornadaSemanal()));
+		
+		if (termoAntigo.getEstagio().getTipoEstagio() != termo.getEstagio().getTipoEstagio())
+			html = html.replace("{{modalidade}}", String.valueOf(termo.getEstagio().getTipoEstagio()));
+		else
+			html = html.replace("{{novaModalidade}}", "####");
+		//html = html.replace("{{modalidade}}", String.valueOf(termo.getEstagio().getTipoEstagio()));
+		
 		html = html.replace("{{dataInicioAditivo}}", dataInicioAditivo);
 		html = html.replace("{{dataTerminoAditivo}}", dataTerminoAditivo);
 		html = html.replace("{{novoTermino}}", String.valueOf(termo.getTipoTermoDeEstagio()));
-		html = html.replace("{{seguradora}}", termo.getSeguradora().getNome());
-		html = html.replace("{{valorBolsa}}", String.valueOf(termo.getValorBolsa()));
-		html = html.replace("{{auxilioTransporte}}", String.valueOf(termo.getValorTransporte()));
+		
+		if (termoAntigo.getSeguradora().getNome() != termo.getSeguradora().getNome())
+			html = html.replace("{{seguradora}}", termo.getSeguradora().getNome());
+		else
+			html = html.replace("{{seguradora}}", "####");
+		//html = html.replace("{{seguradora}}", termo.getSeguradora().getNome());
+		
+		if (termoAntigo.getApolice().getNumero() != termo.getApolice().getNumero())
+			html = html.replace("{{apolice}}", String.valueOf(termo.getApolice().getNumero()));
+		else
+			html = html.replace("{{apolice}}", "####");
+		//html = html.replace("{{apolice}}", String.valueOf(termo.getApolice().getNumero()));
+		
+		if (termoAntigo.getValorBolsa() != termo.getValorBolsa())
+			html = html.replace("{{valorBolsa}}", String.valueOf(termo.getValorBolsa()));
+		else
+			html = html.replace("{{valorBolsa}}", "####");
+		//html = html.replace("{{valorBolsa}}", String.valueOf(termo.getValorBolsa()));
+		
+		if (termoAntigo.getValorTransporte() != termo.getValorTransporte())
+			html = html.replace("{{auxilioTransporte}}", String.valueOf(termo.getValorTransporte()));
+		else
+			html = html.replace("{{auxilioTransporte}}", "####");
+		//html = html.replace("{{auxilioTransporte}}", String.valueOf(termo.getValorTransporte()));
+		
 		html = html.replace("{{inicio}}", inicio);
 		html = html.replace("{{termino}}", termino);
-		html = html.replace("{{nomeOrientador}}", termo.getOrientador().getNome());
-		html = html.replace("{{telefoneOrientador}}", termo.getOrientador().getTelefone());
+		
+		if (termoAntigo.getPlanoAtividades().getNomeSupervisor() != termo.getPlanoAtividades().getNomeSupervisor())
+			html = html.replace("{{nomeSupervisor}}", termo.getPlanoAtividades().getNomeSupervisor());
+		else
+			html = html.replace("{{nomeSupervisor}}", "####");
+		//html = html.replace("{{nomeSupervisor}}", termo.getPlanoAtividades().getNomeSupervisor());
+		
+		if (termoAntigo.getPlanoAtividades().getFormacaoSupervisor() != termo.getPlanoAtividades().getFormacaoSupervisor())
+			html = html.replace("{{formSupervisor}}", termo.getPlanoAtividades().getFormacaoSupervisor());
+		else
+			html = html.replace("{{formSupervisor}}", "####");
+		//html = html.replace("{{formSupervisor}}", termo.getPlanoAtividades().getFormacaoSupervisor());
+
+		if (termoAntigo.getPlanoAtividades().getTelefoneSupervisor() != termo.getPlanoAtividades().getTelefoneSupervisor())
+			html = html.replace("{{telefoneSupervisor}}", termo.getPlanoAtividades().getTelefoneSupervisor());
+		else
+			html = html.replace("{{telefoneSupervisor}}", "####");
+		//html = html.replace("{{telefoneSupervisor}}", termo.getPlanoAtividades().getTelefoneSupervisor());
+				
+		if (termoAntigo.getOrientador().getNome() != termo.getOrientador().getNome())
+			html = html.replace("{{nomeOrientador}}", termo.getOrientador().getNome());
+		else
+			html = html.replace("{{nomeOrientador}}", "####");
+		//html = html.replace("{{nomeOrientador}}", termo.getOrientador().getNome());
+		
+		if (termoAntigo.getOrientador().getTelefone() != termo.getOrientador().getTelefone())
+			html = html.replace("{{telefoneOrientador}}", termo.getOrientador().getTelefone());
+		else
+			html = html.replace("{{telefoneOrientador}}", "####");
+		//html = html.replace("{{telefoneOrientador}}", termo.getOrientador().getTelefone());
+		
+		if (termoAntigo.getOrientador().getDepartamento() != termo.getOrientador().getDepartamento())
+			html = html.replace("{{departamentoOrientador}}", termo.getOrientador().getDepartamento());
+		else
+			html = html.replace("{{departamentoOrientador}}", "####");
 		html = html.replace("{{departamentoOrientador}}", termo.getOrientador().getDepartamento());
+		
 		html = html.replace("{{consideracoes}}", termo.getDescricaoAjustes());
 		html = html.replace("{{novoInicio}}", dataInicioAditivo);
 		html = html.replace("{{novoTermino}}", novoTermino);
@@ -1157,7 +1222,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 
-	// Ok (novinho em folha)
+	// Ok
 	public byte[] gerarPdfAlunoCertificadoDeEstagio(CertificadoDeEstagio certificado) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
