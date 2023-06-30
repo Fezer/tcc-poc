@@ -11,7 +11,7 @@ const { data: termos } = useFetch(`/aluno/${grr}/termoAditivo/`);
     <h1>Termos Aditivos</h1>
 
     <DataTable :value="termos" rowHover stripedRows :show-gridlines="true">
-      <Column field="termo" header="Termo">
+      <Column field="termo" header="Número do Termo">
         <template #body="{ data }"> #{{ data.id }} </template>
       </Column>
       <Column field="tipo" header="Tipo" style="min-width: 12rem">

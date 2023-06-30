@@ -56,7 +56,7 @@
             {{ data.nome }}
           </template>
         </Column>
-        <Column field="convenio" header="Número de Convênios">
+        <Column field="convenio" header="Quantidade de Convênios">
           <template #body="{ data }">
             {{ data.convenio.length }}
           </template>
