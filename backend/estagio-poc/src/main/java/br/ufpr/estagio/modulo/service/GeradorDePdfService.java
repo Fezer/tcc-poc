@@ -121,7 +121,7 @@ public class GeradorDePdfService {
 		}
 		
 		if (estagio.isEstagioUfpr()) {
-			html = html.replace("{{razaoSocial}}", "Universidade Federal do Paraná");
+			html = html.replace("{{nomeContratante}}", "Universidade Federal do Paraná");
 			html = html.replace("{{cnpj}}", "75.095.679/0001-49");
 			html = html.replace("{{representante}}", "Ricardo Marcelo Fonseca");
 			html = html.replace("{{telefoneContratante}}", "41 3310 2627");
