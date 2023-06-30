@@ -1,6 +1,7 @@
 package br.ufpr.estagio.modulo.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +46,12 @@ public class EstagioService {
 	private static final String selectEstagioWithCustomFilters = "SELECT e FROM Estagio e "
 			+ "INNER JOIN e.aluno a "
 			+ "WHERE 1=1 ";
+	
+	private static final String selectEstagioAtivoOuEmAprovacaoOuEmRevisao = "SELECT e FROM Estagio e "
+			+ "INNER JOIN e.aluno a "
+			+ "INNER JOIN e.termoDeCompromisso t "
+			+ "WHERE a.id = :idAluno "
+			+ "and e.statusEstagio IN :statusEstagio";
 
 	@Autowired
 	private EstagioRepository estagioRepo;
@@ -412,6 +419,20 @@ public class EstagioService {
         	return false;
 
         return true;
+	}
+	
+	public boolean verificarAlunoPodeCriarEstagio(Aluno aluno) {
+	    TypedQuery<Long> query = em.createQuery(selectEstagioAtivoOuEmAprovacaoOuEmRevisao, Long.class);
+	    query.setParameter("idAluno", aluno.getId());
+	    query.setParameter("statusEstagio", Arrays.asList(EnumStatusEstagio.EmPreenchimento, EnumStatusEstagio.EmAprovacao, 
+	    		EnumStatusEstagio.Aprovado, EnumStatusEstagio.Iniciado));
+		
+	    List<Long> result = query.getResultList();
+	    
+	    if (result.size() > 0)
+	    	return false;
+	    
+	    return true;
 	}
 
 }

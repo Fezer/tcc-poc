@@ -212,6 +212,10 @@ public class AlunoREST {
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
+					if (!estagioService.verificarAlunoPodeCriarEstagio(aluno)) {
+						throw new InvalidFieldException("Não é possível iniciar um novo estágio, pois foi encontrado"
+								+ " um termo de compromisso em aprovação, em revisão ou em processo de assinatura.");
+					}
 					Estagio estagio = alunoService.novoEstagio(aluno);
 					EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
 					return new ResponseEntity<>(estagioDTO, HttpStatus.CREATED);
