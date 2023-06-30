@@ -74,7 +74,7 @@ export default defineComponent({
 
 <template>
   <div class="card">
-    <h4>Andamento do processo</h4>
+    <h4>Andamento do Processo</h4>
 
     <ProgressBar
       :value="percentage"
@@ -97,18 +97,18 @@ export default defineComponent({
           <StatusTag v-else :status="termo?.statusTermo" />
         </div>
         <div class="text-box col-4 flex flex-col">
-          <strong>Data de Início do processo</strong>
+          <strong>Data de Início do Processo</strong>
           <span>{{ parseDate(termo?.dataCriacao) }}</span>
         </div>
       </div>
       <div v-if="!!termo?.descricaoAjustes">
-        <strong>Ajustes necessários</strong>
+        <strong>Ajustes Necessários</strong>
         <p>
           {{ termo?.descricaoAjustes }}
         </p>
       </div>
       <div v-if="!!termo?.motivoIndeferimento">
-        <strong>Motivo indeferimento</strong>
+        <strong>Motivo do indeferimento</strong>
         <p>
           {{ termo?.motivoIndeferimento }}
         </p>

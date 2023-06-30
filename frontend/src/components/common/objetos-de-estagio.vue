@@ -104,7 +104,7 @@ export default defineComponent({
 
       <Divider />
 
-      <h3 v-if="estagio?.termoAdivito?.length">Termos aditivos</h3>
+      <h3 v-if="estagio?.termoAdivito?.length">Termos Aditivos</h3>
 
       <div
         class="card flex items-center justify-between"

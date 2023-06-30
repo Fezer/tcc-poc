@@ -76,15 +76,15 @@ export default defineComponent({
 <template>
   <div>
     <div class="card">
-      <h5>Dados do aluno</h5>
+      <h5>Dados do Aluno</h5>
 
       <div class="grid">
         <div class="col-4">
-          <strong>Nome completo</strong>
+          <strong>Nome Completo</strong>
           <p>{{ aluno?.nome }}</p>
         </div>
         <div class="col-4">
-          <strong>PcD</strong>
+          <strong>Pessoa com Deficiência</strong>
           <p>{{ aluno?.isPcD ? "Sim" : "Não" }}</p>
         </div>
         <div class="col-4">
@@ -97,11 +97,11 @@ export default defineComponent({
           </p>
         </div>
         <div class="col-4">
-          <strong>RG</strong>
+          <strong>Registro Geral</strong>
           <p>{{ aluno?.rg }}</p>
         </div>
         <div class="col-4">
-          <strong>GRR</strong>
+          <strong>Matrícula</strong>
           <p>{{ aluno?.matricula }}</p>
         </div>
 
@@ -116,7 +116,7 @@ export default defineComponent({
         </div>
 
         <div class="col-4">
-          <strong>IRA</strong>
+          <strong>Índice de Rendimento Acadêmico</strong>
           <p>{{ aluno?.ira }}</p>
         </div>
 

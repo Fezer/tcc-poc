@@ -59,7 +59,7 @@ export default defineComponent({
       <h5>Dados Auxiliares</h5>
       <div class="grid">
         <div class="col-4">
-          <strong>Nome Pai</strong>
+          <strong>Nome do Pai</strong>
           <p>{{ dadosAuxiliares?.nomePai }}</p>
         </div>
         <div class="col-4">
@@ -67,7 +67,7 @@ export default defineComponent({
           <p>{{ dadosAuxiliares?.estadoCivil }}</p>
         </div>
         <div class="col-4">
-          <strong>Dependentes</strong>
+          <strong>Quantidade de Dependentes</strong>
           <p>{{ dadosAuxiliares?.dependentes }}</p>
         </div>
         <div class="col-4">
@@ -83,7 +83,7 @@ export default defineComponent({
           <p>{{ dadosAuxiliares?.sexo }}</p>
         </div>
         <div class="col-4">
-          <strong>Nome Mãe</strong>
+          <strong>Nome da Mãe</strong>
           <p>{{ dadosAuxiliares?.nomeMae }}</p>
         </div>
         <div class="col-4">
@@ -102,7 +102,7 @@ export default defineComponent({
           <p>{{ dadosAuxiliares?.orgaoEmissor }}</p>
         </div>
         <div class="col-4">
-          <strong>UF</strong>
+          <strong>Unidade Federativa</strong>
           <p>{{ dadosAuxiliares?.uf }}</p>
         </div>
         <div class="col-4">
@@ -128,12 +128,12 @@ export default defineComponent({
             <p>{{ dadosAuxiliares?.certificadoMilitar }}</p>
           </div>
           <div class="col-4">
-            <strong>Órgão de Expedição Cert. Militar</strong>
+            <strong>Órgão de Expedição Certificado Militar</strong>
             <p>{{ dadosAuxiliares?.orgaoDeExpedicao }}</p>
           </div>
 
           <div class="col-4">
-            <strong>Série Cert. Militar</strong>
+            <strong>Série do Certificado Militar</strong>
             <p>{{ dadosAuxiliares?.serie }}</p>
           </div>
         </template>

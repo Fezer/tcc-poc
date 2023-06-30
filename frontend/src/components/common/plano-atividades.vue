@@ -31,7 +31,7 @@ export default {
         <p>{{ planoAtividades?.formacaoSupervisor }}</p>
       </div>
       <div class="col-4">
-        <strong>Nome Professor Orientador UFPR</strong>
+        <strong>Nome do Professor Orientador UFPR</strong>
         <p>Prof. {{ termo?.orientador?.nome }}</p>
       </div>
       <div class="col-12">
