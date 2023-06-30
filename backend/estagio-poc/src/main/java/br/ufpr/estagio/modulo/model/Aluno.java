@@ -78,8 +78,8 @@ public class Aluno extends Pessoa implements Serializable {
 	@JoinColumn(name="dados_bancarios_id", referencedColumnName="id", nullable=true)
 	private DadosBancarios dadosBancarios;
 	
-	@OneToOne(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="endereco_id", referencedColumnName="id", nullable=true)
+//	@OneToOne(cascade=CascadeType.REMOVE)
+//	@JoinColumn(name="endereco_id", referencedColumnName="id", nullable=true)
 	private Endereco endereco;
 	
 //	@JsonIgnore
@@ -102,7 +102,7 @@ public class Aluno extends Pessoa implements Serializable {
 			String coordenador, String idPrograma, String ira, Long idCurso, boolean isMatriculado, Curso curso,
 			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, Endereco endereco,
 			/**List<Disciplina> disciplina,**/ List<Estagio> estagio) {
-		super(id, nome, telefone);
+		super(id, nome, telefone, endereco);
 		this.idDiscente = idDiscente;
 		this.isPcd = isPcd;
 		this.matricula = matricula;
@@ -120,7 +120,7 @@ public class Aluno extends Pessoa implements Serializable {
 		this.curso = curso;
 		this.dadosAuxiliares = dadosAuxiliares;
 		this.dadosBancarios = dadosBancarios;
-		this.endereco = endereco;
+//		this.endereco = endereco;
 //		this.disciplina = disciplina;
 		this.estagio = estagio;
 	}
@@ -235,12 +235,12 @@ public class Aluno extends Pessoa implements Serializable {
 
 
 	public Endereco getEndereco() {
-		return endereco;
+		return super.getEndereco();
 	}
 
 
 	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+		super.setEndereco(endereco);
 	}
 
 

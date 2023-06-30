@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.ufpr.estagio.modulo.dto.AlunoDTO;
+import br.ufpr.estagio.modulo.dto.DadosBancariosDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
@@ -72,6 +74,9 @@ public class AlunoService {
 
 	@Autowired
 	private ContratanteRepository contratanteRepo;
+	
+	@Autowired
+	private ModelMapper mapper;
 
 	public List<Aluno> listarTodosAlunos() {
 		return alunoRepo.findAll();
@@ -98,7 +103,7 @@ public class AlunoService {
 			// aluno = this.salvarAluno(aluno);
 		} else {
 			aluno = alunoFind.get();
-			Optional<Endereco> enderecoFind = enderecoRepo.findByAlunoId(aluno.getId());
+			Optional<Endereco> enderecoFind = enderecoRepo.findByPessoaId(aluno.getId());
 			Endereco endereco = new Endereco();
 			endereco.setCep(enderecoFind.get().getCep());
 			endereco.setCidade(enderecoFind.get().getCidade());
@@ -109,7 +114,8 @@ public class AlunoService {
 			endereco.setRua(enderecoFind.get().getRua());
 			endereco.setUf(enderecoFind.get().getUf());
 
-			endereco.setAluno(enderecoFind.get().getAluno());
+			//endereco.setAluno(enderecoFind.get().getAluno());
+			endereco.setPessoa(enderecoFind.get().getPessoa());
 
 			aluno.setEndereco(endereco);
 
@@ -359,6 +365,61 @@ public class AlunoService {
 	public Optional<Aluno> buscarAlunoPorEmail(String emailAluno, String accessToken) {
 		Optional<Aluno> alunoFind = alunoRepo.findByEmail(emailAluno);
 		return alunoFind;
+	}
+
+	public Aluno sincronizarDadosSiga(String matricula, String accessToken) {
+		if (accessToken.equals("")) {
+			throw new NotFoundException("Token não encontrado");
+		}
+		
+		Optional<Aluno> alunoFind = alunoRepo.findByMatricula(matricula);
+		if (alunoFind.isEmpty()) {
+			throw new NotFoundException("Aluno não encontrado.");
+		}
+		
+		Aluno alunoAtual = alunoFind.get();
+		Aluno alunoAtualizado = new Aluno();
+
+		Discente discente = sigaApiAlunoService.buscarAlunoPorGrr(matricula, accessToken);
+		alunoAtualizado = sigaApiModuloEstagioMapping.mapearDiscenteEmAlunoAtualizaDados(discente, accessToken);
+		
+		alunoAtual.setNome(discente.getNome());
+		alunoAtual.setIdDiscente(discente.getIdDiscente());
+		alunoAtual.setPcd(discente.isPcD());
+		alunoAtual.setCpf(discente.getDocumento());
+		alunoAtual.setMatricula(discente.getGrr());
+		alunoAtual.setPeriodoAtual(discente.getPeriodoAtual());
+		alunoAtual.setEmail(discente.getEmail());
+		alunoAtual.setRg(discente.getRg());
+		alunoAtual.setCoordenador(discente.getCoordenador());
+		alunoAtual.setDataNascimento(discente.getDataNascimento());
+		alunoAtual.setIdCurso(discente.getIdCurso());
+		alunoAtual.setIdPrograma(discente.getIdPrograma());
+		alunoAtual.setIra(discente.getIra());
+		alunoAtual.setTurno(discente.getTurno());
+		alunoAtual.setMatriculado(discente.isMatriculado());
+		alunoAtual.setTelefone(discente.getTelefone());
+				
+		Endereco enderecoAtualizado = alunoAtualizado.getEndereco();
+		Endereco enderecoAtual = alunoAtual.getEndereco();
+		if (enderecoAtual == null) {
+			enderecoAtual = new Endereco();
+			//enderecoAtual.setAluno(alunoAtual);
+			enderecoAtual.setPessoa(alunoAtual);
+			alunoAtual.setEndereco(enderecoAtual);
+		} 
+		enderecoAtual.setCep(enderecoAtualizado.getCep());
+		enderecoAtual.setCidade(enderecoAtualizado.getCep());
+		enderecoAtual.setCidade(enderecoAtualizado.getCidade());
+		enderecoAtual.setComplemento(enderecoAtualizado.getComplemento());
+		enderecoAtual.setNumero(enderecoAtualizado.getNumero());
+		enderecoAtual.setRua(enderecoAtualizado.getRua());
+		enderecoAtual.setUf(enderecoAtualizado.getUf());
+		
+		enderecoRepo.save(enderecoAtual);
+		alunoAtual = alunoRepo.save(alunoAtual);
+		
+		return alunoAtual;
 	}
 
 }

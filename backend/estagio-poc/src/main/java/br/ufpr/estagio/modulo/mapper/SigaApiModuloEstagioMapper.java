@@ -57,7 +57,6 @@ public class SigaApiModuloEstagioMapper {
 	public Aluno mapearDiscenteEmAluno (Discente discente, String accessToken) {
 		Optional<Aluno> alunoFind = alunoRepo.findByMatricula(discente.getGrr());
 		Aluno aluno;
-		//Endereco endereco;
 		
 		if(alunoFind.isEmpty()) {
 			aluno = new Aluno();
@@ -122,6 +121,57 @@ public class SigaApiModuloEstagioMapper {
 		//return null;
 	}
 	
+	public Aluno mapearDiscenteEmAlunoAtualizaDados(Discente discente, String accessToken) {
+		Aluno aluno = new Aluno();
+			
+		aluno.setNome(discente.getNome());
+		aluno.setIdDiscente(discente.getIdDiscente());
+		aluno.setPcd(discente.isPcD());
+		aluno.setCpf(discente.getDocumento());
+		aluno.setMatricula(discente.getGrr());
+		aluno.setPeriodoAtual(discente.getPeriodoAtual());
+		aluno.setEmail(discente.getEmail());
+		aluno.setRg(discente.getRg());
+		aluno.setCoordenador(discente.getCoordenador());
+		aluno.setDataNascimento(discente.getDataNascimento());
+		aluno.setIdCurso(discente.getIdCurso());
+		aluno.setIdPrograma(discente.getIdPrograma());
+		aluno.setIra(discente.getIra());
+		aluno.setTurno(discente.getTurno());
+		aluno.setMatriculado(discente.isMatriculado());
+		aluno.setTelefone(discente.getTelefone());
+		aluno.setDadosBancarios(null);
+
+		Curso curso = mapearCursoSigaEmCurso(discente, accessToken);
+		
+		Coordenador coordenador = coordenadorService.mapearCoordenadorDiscente(discente);
+		
+		Endereco endereco = mapearEnderecoAluno(discente, aluno);
+		aluno.setEndereco(endereco);
+		//endereco.setAluno(aluno);
+		endereco.setPessoa(aluno);
+		
+		DadosAuxiliares dadosAuxiliares = mapearDadosAuxiliaresAluno(discente, aluno);
+		aluno.setDadosAuxiliares(dadosAuxiliares);
+		dadosAuxiliares.setAluno(aluno);
+		
+		aluno.setCurso(curso);
+		List<Aluno> listAluno = curso.getAluno();				
+		if (!listAluno.contains(aluno)){
+			listAluno.add(aluno);
+			curso.setAluno(listAluno);
+		}
+		
+		coordenador.setCurso(curso);
+		List<Coordenador> listCoordenador = curso.getCoordenador();
+		if (!listCoordenador.contains(coordenador)) {
+			listCoordenador.add(coordenador);
+			curso.setCoordenador(listCoordenador);
+		}
+				
+		return aluno;
+	}
+	
 	public Curso mapearCursoSigaEmCurso(Discente discente, String accessToken) {
 		
 		Optional<Curso> cursoFind = cursoRepo.findByIdCurso(discente.getIdCurso());
@@ -153,7 +203,7 @@ public class SigaApiModuloEstagioMapper {
 		endereco.setNumero(discente.getEndereco().getNumero());
 		
 		endereco.setPessoa(aluno);
-		endereco.setAluno(aluno);
+		//endereco.setAluno(aluno);
 		
 		aluno.setEndereco(endereco);
 
