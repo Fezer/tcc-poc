@@ -2608,6 +2608,66 @@ public class AlunoREST {
 		}
 	}
 	
+	@GetMapping("/{grrAlunoURL}/certificado-de-estagio/{id}/gerar")
+	public ResponseEntity<Object> gerarCertificadoDeEstagioPdf(@PathVariable String grrAlunoURL, @PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
+		try {
+			long idLong = Long.parseLong(id);
+			if (idLong < 1L) {
+				throw new InvalidFieldException("Id inválido.");
+			}
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new InvalidFieldException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Optional<CertificadoDeEstagio> certificadoFind = certificadoDeEstagioService.buscarCertificadoDeEstagioPorId(idLong);
+					
+					if (certificadoFind.isEmpty()) {
+						throw new NotFoundException("Certificado de Estágio não encontrado.");
+					} else {
+						CertificadoDeEstagio certificado = certificadoFind.get();
+						byte[] pdf = geradorService.gerarPdfAlunoCertificadoDeEstagio(certificado);
+
+						HttpHeaders headers = new HttpHeaders();
+						headers.setContentType(MediaType.APPLICATION_PDF);
+						headers.setContentDisposition(ContentDisposition.builder("inline")
+								.filename(aluno.getMatricula() + "-certificado-de-estagio-" + certificado.getId() + ".pdf").build());
+
+						return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+					}
+				}
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
 	
 								/* Métodos para Aluno submeter arquivos */
 	

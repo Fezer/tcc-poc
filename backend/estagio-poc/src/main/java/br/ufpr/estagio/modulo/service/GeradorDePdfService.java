@@ -1119,5 +1119,58 @@ public class GeradorDePdfService {
 		
 		return html;
 	}
+
+	// Ok (novinho em folha)
+	public byte[] gerarPdfAlunoCertificadoDeEstagio(CertificadoDeEstagio certificado) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlAlunoCertificadoDeEstagio(certificado);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
 	
+	private String getHtmlAlunoCertificadoDeEstagio(CertificadoDeEstagio certificado) {
+	    // Carregar o HTML do arquivo
+		ClassLoader classLoader = getClass().getClassLoader();
+		
+		Path diretorioAtual = Paths.get("").toAbsolutePath();
+    	
+    	String resources = diretorioAtual + "/src/main/resources/";
+		
+		String html = "";
+		try {
+			
+			html = IOUtils.toString(classLoader.getResourceAsStream("CertificadoDeEstagioAluno.html"), StandardCharsets.UTF_8);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+		
+		String imagePath = resources + "termo/prograd.png";
+		html = html.replace("{{imagePath}}", imagePath);
+		
+		// Informacoes do aluno
+		String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataInicio());
+		String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataTermino());
+		LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+        String formattedDate = currentDate.format(formatter);
+        
+		html = html.replace("{{nome}}", certificado.getEstagio().getAluno().getNome());
+		html = html.replace("{{aluno}}", certificado.getEstagio().getAluno().getNome());
+		html = html.replace("{{empresa}}", certificado.getEstagio().getContratante().getNome());
+		html = html.replace("{{dataInicio}}", dataInicio);
+		html = html.replace("{{dataTermino}}", dataTermino);
+		html = html.replace("{{totalHoras}}", String.valueOf(certificado.getEstagio().getFichaDeAvaliacao().getTotalHorasEstagioEfetivamenteRealizadas()));
+		html = html.replace("{{data}}", formattedDate);
+		
+		return html;
+	}
 }
