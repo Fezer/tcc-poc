@@ -1,4 +1,5 @@
 <script lang="ts">
+import { useToast } from "primevue/usetoast";
 import { Estagio } from "~~/src/types/NovoEstagio";
 
 export default defineComponent({
@@ -20,6 +21,7 @@ export default defineComponent({
   }) {
     const { setTermo } = useTermo();
     const router = useRouter();
+    const toast = useToast();
 
     const { auth } = useAuth();
 
@@ -62,6 +64,7 @@ export default defineComponent({
       estagio,
       perfil,
       handleRedirectToTermoAditivo,
+      handleDownloadCertificado,
     };
   },
 });
@@ -130,7 +133,11 @@ export default defineComponent({
 
       <div class="card flex items-center justify-between">
         <h5>Certificado de Estágio</h5>
-        <Button label="Baixar certificado" class="p-button-secondary"></Button>
+        <Button
+          label="Baixar certificado"
+          class="p-button-secondary"
+          @click="handleDownloadCertificado"
+        ></Button>
       </div>
     </template>
 
