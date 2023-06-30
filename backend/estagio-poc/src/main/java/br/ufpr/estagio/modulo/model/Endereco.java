@@ -49,10 +49,10 @@ public class Endereco implements Serializable{
 	@JoinColumn(name="pessoa_id", referencedColumnName="id", nullable=true)
 	private Pessoa pessoa;
 	
-	@JsonIgnore
-	@OneToOne(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=true)
-	private Aluno aluno;
+//	@JsonIgnore
+//	@OneToOne(cascade=CascadeType.REMOVE)
+//	@JoinColumn(name="aluno_id", referencedColumnName="id", nullable=true)
+//	private Aluno aluno;
 
 	public Endereco() {
 		super();
@@ -82,7 +82,7 @@ public class Endereco implements Serializable{
 		this.cidade = cidade;
 		this.uf = uf;
 		this.cep = cep;
-		this.aluno = aluno;
+		//this.aluno = aluno;
 	}
 
 	public long getId() {
@@ -149,13 +149,13 @@ public class Endereco implements Serializable{
 		this.pessoa = pessoa;
 	}
 
-	public Aluno getAluno() {
-		return aluno;
-	}
-
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
-	}
+//	public Aluno getAluno() {
+//		return aluno;
+//	}
+//
+//	public void setAluno(Aluno aluno) {
+//		this.aluno = aluno;
+//	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

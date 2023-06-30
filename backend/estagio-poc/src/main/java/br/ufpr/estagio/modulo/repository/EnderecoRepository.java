@@ -8,7 +8,7 @@ import br.ufpr.estagio.modulo.model.Endereco;
 
 public interface EnderecoRepository extends JpaRepository<Endereco, Long>{
 
-	Optional<Endereco> findByAlunoId(long id);
+	Optional<Endereco> findByPessoaId(long id);
 	
 	
 }
