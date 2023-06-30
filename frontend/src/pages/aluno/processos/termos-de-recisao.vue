@@ -8,7 +8,7 @@ const { data: termos } = await useFetch(`/aluno/${grr}/termosAditivos/`);
 
 <template>
   <div>
-    <h1>Termos de Recisão</h1>
+    <h1>Termos de Rescisão</h1>
 
     <DataTable :value="termos">
       <Column field="termo" header="Termo">
@@ -17,10 +17,7 @@ const { data: termos } = await useFetch(`/aluno/${grr}/termosAditivos/`);
         </template>
       </Column>
       <Column field="tipo" header="Tipo" style="min-width: 12rem">
-        <template #body="{ data }">
-          <!-- {{ data.tipoTermoDeEstagio }} -->
-          Termo de Recisão
-        </template>
+        <template #body="{ data }"> Termo de Rescisão </template>
       </Column>
       <Column field="contratante" header="Contratante" style="min-width: 12rem">
         <template #body="{ data }">
