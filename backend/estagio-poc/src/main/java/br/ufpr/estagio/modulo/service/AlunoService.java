@@ -399,12 +399,27 @@ public class AlunoService {
 		alunoAtual.setTurno(discente.getTurno());
 		alunoAtual.setMatriculado(discente.isMatriculado());
 		alunoAtual.setTelefone(discente.getTelefone());
+		
+		if(alunoAtual.getDadosAuxiliares() == null) {
+			DadosAuxiliares dadosAuxiliaresNovo = new DadosAuxiliares();
+			alunoAtual.setDadosAuxiliares(dadosAuxiliaresNovo);
+			dadosAuxiliaresNovo.setAluno(alunoAtualizado);
+		}
+		alunoAtual.getDadosAuxiliares().setNomePai(discente.getDadosAuxiliares().getNomePai());
+		alunoAtual.getDadosAuxiliares().setNomeMae(discente.getDadosAuxiliares().getNomeMae());
+		alunoAtual.getDadosAuxiliares().setCorRaca(discente.getDadosAuxiliares().getCorRaca());
+		alunoAtual.getDadosAuxiliares().setSexo(discente.getDadosAuxiliares().getSexo());
+		alunoAtual.getDadosAuxiliares().setNacionalidade(discente.getDadosAuxiliares().getNacionalidade());
+		alunoAtual.getDadosAuxiliares().setCidadeNascimento(discente.getDadosAuxiliares().getCidadeNascimento());
+		alunoAtual.getDadosAuxiliares().setEstadoNascimento(discente.getDadosAuxiliares().getEstadoNascimento());
+		alunoAtual.getDadosAuxiliares().setOrientacaoSexual(discente.getDadosAuxiliares().getOrientacaoSexual());
+		alunoAtual.getDadosAuxiliares().setAutoIdentificacaoGenero(discente.getDadosAuxiliares().getAutoIdentificacaoGenero());
+		alunoAtual.getDadosAuxiliares().setExpressaoGenero(discente.getDadosAuxiliares().getExpressaoGenero());
 				
 		Endereco enderecoAtualizado = alunoAtualizado.getEndereco();
 		Endereco enderecoAtual = alunoAtual.getEndereco();
 		if (enderecoAtual == null) {
 			enderecoAtual = new Endereco();
-			//enderecoAtual.setAluno(alunoAtual);
 			enderecoAtual.setPessoa(alunoAtual);
 			alunoAtual.setEndereco(enderecoAtual);
 		} 
@@ -416,6 +431,7 @@ public class AlunoService {
 		enderecoAtual.setRua(enderecoAtualizado.getRua());
 		enderecoAtual.setUf(enderecoAtualizado.getUf());
 		
+		dadosRepo.save(alunoAtual.getDadosAuxiliares());
 		enderecoRepo.save(enderecoAtual);
 		alunoAtual = alunoRepo.save(alunoAtual);
 		
