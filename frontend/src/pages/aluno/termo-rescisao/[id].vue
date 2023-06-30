@@ -45,7 +45,7 @@ export default defineComponent({
           router.push(`/aluno/estagio/${estagioID}`);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
           toast.add({
             severity: "error",
             summary: "Erro ao solicitar aprovação",
@@ -62,7 +62,7 @@ export default defineComponent({
           router.push(`/aluno/estagio/${estagioID}`);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
           toast.add({
             severity: "error",
             summary: "Erro ao cancelar termo",
@@ -80,7 +80,6 @@ export default defineComponent({
     };
 
     const handleUploadTermoRescisao = async (event: any) => {
-      console.log("upload");
       const file = event.files[0];
 
       const formData = new FormData();

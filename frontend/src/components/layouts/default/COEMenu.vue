@@ -5,8 +5,6 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const getIsTabActive = (tab: "coe") => {
-      console.log(route.path);
-
       return route.path === tab;
     };
 

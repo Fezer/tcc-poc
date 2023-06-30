@@ -19,7 +19,6 @@ export default class NovoEstagioService extends BaseService {
   }
 
   async setTipoEstagio(id: number, tipoEstagio: TipoEstagio) {
-    console.log("setTipoEstagio", id, tipoEstagio);
     if (!id || !tipoEstagio) {
       throw new Error("Id e tipo de estágio são obrigatórios");
     }
@@ -32,7 +31,6 @@ export default class NovoEstagioService extends BaseService {
   }
 
   async setEstagioUfpr(id: number, isEstagioUfpr: boolean) {
-    console.log("updateEstagio", id, isEstagioUfpr);
     if (!id || (!isEstagioUfpr && isEstagioUfpr !== false)) {
       throw new Error("Id e dados do estágio são obrigatórios");
     }
@@ -94,7 +92,6 @@ export default class NovoEstagioService extends BaseService {
 
       body: supervisor,
     }).then(async (res) => {
-      console.log(res);
       if (!res?.id) throw new Error("Erro ao criar novo supervisor - No ID!");
       return await $fetch(
         `/termo/${id}/associarSupervisor/${res?.id}`,

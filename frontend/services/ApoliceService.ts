@@ -36,7 +36,6 @@ export default class ApoliceService extends BaseService {
     if (!response?.id) {
       throw new Error("Erro ao atualizar a Apólice");
     } else {
-      console.log(response);
       return response;
     }
   }
@@ -45,7 +44,6 @@ export default class ApoliceService extends BaseService {
       method: "DELETE",
       body: {},
     });
-    console.log("Resposta do servidor: " + response);
     if (response?.error) {
       throw new Error("Erro ao Deletar Apólice");
     } else {

@@ -4,8 +4,6 @@ export default class BaseService {
   protected async authFetch(url: string, options: any = {}) {
     const accessToken = localStorage.getItem("accessToken");
 
-    console.log(accessToken);
-
     return await $fetch(url, {
       ...options,
       headers: {

@@ -16,7 +16,7 @@
       <div class="w-full flex justify-content-around p-3">
         <Button
           @click="relatorioSeguradora = true"
-          :label="'Seguradoras'"
+          :label="'Seguradoras UFPR'"
           icon="pi pi-file"
           class="p-button-success"
         />
@@ -57,7 +57,7 @@
         :excel="() => relatorioExcelEstagios()"
         :pdf="() => relatorioPDFEstagios()"
         :cancelar="() => (relatorioEstagio = false)"
-        :description="`Gerar Relatório dos Relatório Estágios em que formato?`"
+        :description="`Gerar Relatório dos Relatório de Estágios em que formato?`"
       >
       </EscolhaRelatorio>
     </div>

@@ -21,6 +21,8 @@ export default defineComponent({
     const { setTermo } = useTermo();
     const router = useRouter();
 
+    const { auth } = useAuth();
+
     const handleRedirectToTermoAditivo = (id: string) => {
       if (perfil === "aluno") {
         setTermo(null);
@@ -28,6 +30,32 @@ export default defineComponent({
       }
 
       return router.push(`/${perfil}/termo/${id} `);
+    };
+
+    // /{idOrientador}/certificado/{idCertificado}/imprimir-certificado
+    const handleDownloadCertificado = async () => {
+      try {
+        let url = `/${auth?.value?.identifier}/certificado/${estagio?.certificadoDeEstagio}/imprimir-certificado`;
+        if (perfil === "aluno") {
+          url = `/aluno/${auth?.value?.identifier}/certificadoDeEstagio`;
+        }
+
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        toast.add({
+          severity: "error",
+          summary: "Erro ao baixar certificado",
+          detail:
+            err?.response?._data?.error ||
+            "Ocorreu um erro ao baixar o certificado, tente novamente mais tarde",
+        });
+      }
     };
 
     return {

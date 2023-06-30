@@ -245,18 +245,15 @@ public class GeradorDePdfService {
 		html = html.replace("{{dataInicioEstagio}}", "01/01/2022");
 		html = html.replace("{{dataFimEstagio}}", "31/03/2023");
 		
+		// Dados da Ficha: não devem ser exibidos quando o aluno gera o relatório.
 		/*html = html.replace("{{totalHoras}}", String.valueOf(ficha.getTotalHorasEstagioEfetivamenteRealizadas()));
 		html = html.replace("{{atividades}}", ficha.getAtividadesRealizadasConsideracoes());
-		html = html.replace("{{consideracoesAtividades}}", ficha.getAtividadesRealizadasConsideracoes());
-		
+		html = html.replace("{{consideracoesAtividades}}", ficha.getAtividadesRealizadasConsideracoes());		
 		html = html.replace("{{acompanhamentoOrientador}}", String.valueOf(ficha.getAcompanhamentoOrientador()));
 		html = html.replace("{{consideracoesCoord}}", ficha.getAcompanhamentoCoordenadorComentario());
 		html = html.replace("{{acompanhamentoCoord}}", String.valueOf(ficha.getAcompanhamentoCoordenador()));
 		html = html.replace("{{consideracoesOrientador}}", ficha.getAcompanhamentoOrientadorComentario());
-		
 		html = html.replace("{{contribuicao}}", ficha.getContribuicaoEstagio());*/
-		
-		
 		/*html = html.replace("{{conduta}}", String.valueOf(ficha.getAvalConduta()));
 		html = html.replace("{{criatividade}}", String.valueOf(ficha.getAvalCriatividade()));
 		html = html.replace("{{dominio}}", String.valueOf(ficha.getAvalDominioTecnico()));
@@ -446,7 +443,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{ufContratante}}", "Paraná");
 		html = html.replace("{{cepContratante}}", "80213-931");
 		*/
-		System.out.println(html.length());
+
 		return html;
 	}
 	
@@ -630,7 +627,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// revisar TUDO!!!
+	// Ok
 	public byte[] gerarPdfCertificadosDeEstagio(List<CertificadoDeEstagio> certificados) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -658,23 +655,53 @@ public class GeradorDePdfService {
 
 	    StringBuilder estagiosHtml = new StringBuilder();
 	    for (CertificadoDeEstagio certificado : certificados) {
-	        String estagioHtml = "<h2>Certificado de Estágio de {{nome}}</h2>\n"
-	        		+ "    <table>\n"
-	        		+ "        <caption>Somente jogando os dados</caption>\n"
-	        		+ "        <tr>\n"
-	        		+ "            <th>Etapa Fluxo</th>\n"
-	        		+ "            <th>Parecer COE</th>\n"
-	        		+ "        </tr>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <td>{{etapaFluxo}}</td>\n"
-	        		+ "            <td>{{parecerCoe}}</td>\n"
-	        		+ "        </tr>\n"
-	        		+ "        <br></br>\n"
-	        		+ "		\n"
-	        		+ "    </table>";
+	        String estagioHtml = " <div class=\"row col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"margin-bottom: 10px\">\r\n"
+	        		+ "    <fieldset style=\"padding-bottom: 1%\">\r\n"
+	        		+ "        <legend style=\"background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px; border: solid 1px; border-bottom: 0px; font-size: 1.525vw\">CERTIFICADO DE ESTÁGIO DE {{titulo}}</legend>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; padding: 0px;\">\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Estagiário:</b> {{nome}}</span>\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>Orientador:</b> {{orientador}}</span>\r\n"
+	        		+ "        </span>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "            <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Contratante:</b> {{empresa}}</span>\r\n"
+	        		+ "        </span>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Data de Início:</b> {{dataInicio}}</span>\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Data de Término:</b> {{dataTermino}}</span>\r\n"
+	        		+ "        </span>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Total de Horas:</b> {{totalHoras}}</span>\r\n"
+	        		+ "        </span>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Etapa do Fluxo:</b> {{etapaFluxo}}</span>\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Parecer COE:</b> {{parecerCoe}}</span>\r\n"
+	        		+ "        </span>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "            <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Motivo da Reprovação:</b> {{motivoReprovacao}}</span>\r\n"
+	        		+ "        </span>\r\n"
+	        		+ "    </fieldset>\r\n"
+	        		+ "    <br></br>\r\n"
+	        		+ "</div>";
 	        estagioHtml = estagioHtml.replace("{{etapaFluxo}}", String.valueOf(certificado.getEtapaFluxo()));
 	        estagioHtml = estagioHtml.replace("{{parecerCoe}}", String.valueOf(certificado.getParecerCOE()));
+
+	        String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataInicio());
+			String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataTermino());
+	        
+			estagioHtml = estagioHtml.replace("{{titulo}}", certificado.getEstagio().getAluno().getNome());
 	        estagioHtml = estagioHtml.replace("{{nome}}", certificado.getEstagio().getAluno().getNome());
+	        estagioHtml = estagioHtml.replace("{{aluno}}", certificado.getEstagio().getAluno().getNome());
+	        estagioHtml = estagioHtml.replace("{{empresa}}", certificado.getEstagio().getContratante().getNome());
+	        estagioHtml = estagioHtml.replace("{{orientador}}", certificado.getEstagio().getOrientador().getNome());
+	        estagioHtml = estagioHtml.replace("{{dataInicio}}", dataInicio);
+	        estagioHtml = estagioHtml.replace("{{dataTermino}}", dataTermino);
+	        estagioHtml = estagioHtml.replace("{{totalHoras}}", String.valueOf(certificado.getEstagio().getFichaDeAvaliacao().getTotalHorasEstagioEfetivamenteRealizadas()));
+			
+	        if (certificado.getMotivoReprovacao() == null)
+	        	estagioHtml = estagioHtml.replace("{{motivoReprovacao}}", "Não houve reprovação.");
+	        else
+	        	estagioHtml = estagioHtml.replace("{{motivoReprovacao}}", String.valueOf(certificado.getMotivoReprovacao()));
+	        
 	        // Adicionar o HTML do estágio à lista
 	        estagiosHtml.append(estagioHtml);
 	    }
@@ -685,7 +712,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// revisar TUDO!!!
+	// Ok
 	public byte[] gerarPdfCertificadoOrientador(Orientador orientador, CertificadoDeEstagio certificado) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -723,19 +750,26 @@ public class GeradorDePdfService {
 		// Informacoes do concedente
 		
 		// Informacoes da ficha
-		if (certificado.getMotivoReprovacao() == null)
+/*		if (certificado.getMotivoReprovacao() == null)
 			html = html.replace("{{reprovacao}}", "Não houve reprovação.");
 		else
 			html = html.replace("{{reprovacao}}", certificado.getMotivoReprovacao());
+*/
 		
-		html = html.replace("{{nome}}", certificado.getEstagio().getAluno().getNome());
-		html = html.replace("{{grr}}", certificado.getEstagio().getAluno().getMatricula());
-		html = html.replace("{{ira}}", certificado.getEstagio().getAluno().getIra());
+		String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataInicio());
+		String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataTermino());
+		LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+        String formattedDate = currentDate.format(formatter);
+        
+		html = html.replace("{{nome}}", certificado.getEstagio().getOrientador().getNome());
 		html = html.replace("{{orientador}}", certificado.getEstagio().getOrientador().getNome());
-		html = html.replace("{{curso}}", certificado.getEstagio().getAluno().getCurso().getNome());
-		html = html.replace("{{etapaFluxo}}", String.valueOf(certificado.getEtapaFluxo()));
-		html = html.replace("{{parecerCoe}}", String.valueOf(certificado.getParecerCOE()));
-		html = html.replace("{{statusEstagio}}", String.valueOf(certificado.getEstagio().getStatusEstagio()));
+		html = html.replace("{{aluno}}", certificado.getEstagio().getAluno().getNome());
+		html = html.replace("{{empresa}}", certificado.getEstagio().getContratante().getNome());
+		html = html.replace("{{dataInicio}}", dataInicio);
+		html = html.replace("{{dataTermino}}", dataTermino);
+		html = html.replace("{{totalHoras}}", String.valueOf(certificado.getEstagio().getFichaDeAvaliacao().getTotalHorasEstagioEfetivamenteRealizadas()));
+		html = html.replace("{{data}}", formattedDate);
 		
 		return html;
 	}
@@ -1037,6 +1071,8 @@ public class GeradorDePdfService {
 			html = html.replace("{{cepContratante}}", "80213-931");
 		}
 		
+		TermoDeEstagio termoAntigo = termo.getEstagio().getTermoDeCompromisso();
+		
 		// Informacoes do aluno
 		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getEstagio().getAluno().getDataNascimento());
 
@@ -1065,8 +1101,6 @@ public class GeradorDePdfService {
 		html = html.replace("{{nivel}}", "4º Período"); // NULO!!
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
 		
-		html = html.replace("{{agente}}", termo.getAgenteIntegrador().getNome());
-		html = html.replace("{{apolice}}", String.valueOf(termo.getApolice().getNumero()));
 		html = html.replace("{{contratante}}", termo.getContratante().getNome());
 		//html = html.replace("{{coordenador}}", termo.getCoordenador().getNome());
 		html = html.replace("{{coordenador}}", "Alessandro Brawerman");
@@ -1074,20 +1108,15 @@ public class GeradorDePdfService {
 		
 		//html = html.replace("{{supervisor}}", termo.getPlanoAtividades().getNomeSupervisor());
 		html = html.replace("{{supervisor}}", "Supervisor A");
-		//html = html.replace("{{nomeSupervisor}}", termo.getPlanoAtividades().getNomeSupervisor());
-		html = html.replace("{{nomeSupervisor}}", "Supervisor A");
 		//html = html.replace("{{formacaoSupervisor}}", termo.getPlanoAtividades().getFormacaoSupervisor());
 		html = html.replace("{{formacaoSupervisor}}", "Análise e Desenvolvimento Estático");
-		//html = html.replace("{{formSupervisor}}", termo.getPlanoAtividades().getFormacaoSupervisor());
-		html = html.replace("{{formSupervisor}}", "Análise e Desenvolvimento Estático");
-		html = html.replace("{{telefoneSupervisor}}", termo.getPlanoAtividades().getTelefoneSupervisor());
-		html = html.replace("{{telefoneSupervisor}}", "41 3030-1322");
-		
+				
 		//html = html.replace("{{ajustes}}", termo.getDescricaoAjustes());
 		html = html.replace("{{ajustes}}", "Ajustando o teste");
 		
 		
 		// Informações do Termo Aditivo
+		// A partir daqui, os dados podem ser alterados pelo Termo Aditivo
 		String novoTermino = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
 		String dataInicioAditivo = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataInicio());
 		String dataTerminoAditivo = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataFimSuspensao());
@@ -1098,19 +1127,92 @@ public class GeradorDePdfService {
         String formattedDate = currentDate.format(formatter);
         
 		html = html.replace("{{novoTermino}}", novoTermino);
-		html = html.replace("{{totalHorasDiarias}}", String.valueOf(termo.getJornadaDiaria()));
-		html = html.replace("{{totalHorasSemanais}}", String.valueOf(termo.getJornadaSemanal()));
+		
+		if (termoAntigo.getJornadaDiaria() != termo.getJornadaDiaria())
+			html = html.replace("{{totalHorasDiarias}}", String.valueOf(termo.getJornadaDiaria()));
+		else
+			html = html.replace("{{totalHorasDiarias}}", "####");
+		//html = html.replace("{{totalHorasDiarias}}", String.valueOf(termo.getJornadaDiaria()));
+		
+		if (termoAntigo.getJornadaSemanal() != termo.getJornadaSemanal())
+			html = html.replace("{{totalHorasSemanais}}", String.valueOf(termo.getJornadaSemanal()));
+		else
+			html = html.replace("{{totalHorasSemanais}}", "####");
+		//html = html.replace("{{totalHorasSemanais}}", String.valueOf(termo.getJornadaSemanal()));
+		
+		if (termoAntigo.getEstagio().getTipoEstagio() != termo.getEstagio().getTipoEstagio())
+			html = html.replace("{{modalidade}}", String.valueOf(termo.getEstagio().getTipoEstagio()));
+		else
+			html = html.replace("{{novaModalidade}}", "####");
+		//html = html.replace("{{modalidade}}", String.valueOf(termo.getEstagio().getTipoEstagio()));
+		
 		html = html.replace("{{dataInicioAditivo}}", dataInicioAditivo);
 		html = html.replace("{{dataTerminoAditivo}}", dataTerminoAditivo);
 		html = html.replace("{{novoTermino}}", String.valueOf(termo.getTipoTermoDeEstagio()));
-		html = html.replace("{{seguradora}}", termo.getSeguradora().getNome());
-		html = html.replace("{{valorBolsa}}", String.valueOf(termo.getValorBolsa()));
-		html = html.replace("{{auxilioTransporte}}", String.valueOf(termo.getValorTransporte()));
+		
+		if (termoAntigo.getSeguradora().getNome() != termo.getSeguradora().getNome())
+			html = html.replace("{{seguradora}}", termo.getSeguradora().getNome());
+		else
+			html = html.replace("{{seguradora}}", "####");
+		//html = html.replace("{{seguradora}}", termo.getSeguradora().getNome());
+		
+		if (termoAntigo.getApolice().getNumero() != termo.getApolice().getNumero())
+			html = html.replace("{{apolice}}", String.valueOf(termo.getApolice().getNumero()));
+		else
+			html = html.replace("{{apolice}}", "####");
+		//html = html.replace("{{apolice}}", String.valueOf(termo.getApolice().getNumero()));
+		
+		if (termoAntigo.getValorBolsa() != termo.getValorBolsa())
+			html = html.replace("{{valorBolsa}}", String.valueOf(termo.getValorBolsa()));
+		else
+			html = html.replace("{{valorBolsa}}", "####");
+		//html = html.replace("{{valorBolsa}}", String.valueOf(termo.getValorBolsa()));
+		
+		if (termoAntigo.getValorTransporte() != termo.getValorTransporte())
+			html = html.replace("{{auxilioTransporte}}", String.valueOf(termo.getValorTransporte()));
+		else
+			html = html.replace("{{auxilioTransporte}}", "####");
+		//html = html.replace("{{auxilioTransporte}}", String.valueOf(termo.getValorTransporte()));
+		
 		html = html.replace("{{inicio}}", inicio);
 		html = html.replace("{{termino}}", termino);
-		html = html.replace("{{nomeOrientador}}", termo.getOrientador().getNome());
-		html = html.replace("{{telefoneOrientador}}", termo.getOrientador().getTelefone());
+		
+		if (termoAntigo.getPlanoAtividades().getNomeSupervisor() != termo.getPlanoAtividades().getNomeSupervisor())
+			html = html.replace("{{nomeSupervisor}}", termo.getPlanoAtividades().getNomeSupervisor());
+		else
+			html = html.replace("{{nomeSupervisor}}", "####");
+		//html = html.replace("{{nomeSupervisor}}", termo.getPlanoAtividades().getNomeSupervisor());
+		
+		if (termoAntigo.getPlanoAtividades().getFormacaoSupervisor() != termo.getPlanoAtividades().getFormacaoSupervisor())
+			html = html.replace("{{formSupervisor}}", termo.getPlanoAtividades().getFormacaoSupervisor());
+		else
+			html = html.replace("{{formSupervisor}}", "####");
+		//html = html.replace("{{formSupervisor}}", termo.getPlanoAtividades().getFormacaoSupervisor());
+
+		if (termoAntigo.getPlanoAtividades().getTelefoneSupervisor() != termo.getPlanoAtividades().getTelefoneSupervisor())
+			html = html.replace("{{telefoneSupervisor}}", termo.getPlanoAtividades().getTelefoneSupervisor());
+		else
+			html = html.replace("{{telefoneSupervisor}}", "####");
+		//html = html.replace("{{telefoneSupervisor}}", termo.getPlanoAtividades().getTelefoneSupervisor());
+				
+		if (termoAntigo.getOrientador().getNome() != termo.getOrientador().getNome())
+			html = html.replace("{{nomeOrientador}}", termo.getOrientador().getNome());
+		else
+			html = html.replace("{{nomeOrientador}}", "####");
+		//html = html.replace("{{nomeOrientador}}", termo.getOrientador().getNome());
+		
+		if (termoAntigo.getOrientador().getTelefone() != termo.getOrientador().getTelefone())
+			html = html.replace("{{telefoneOrientador}}", termo.getOrientador().getTelefone());
+		else
+			html = html.replace("{{telefoneOrientador}}", "####");
+		//html = html.replace("{{telefoneOrientador}}", termo.getOrientador().getTelefone());
+		
+		if (termoAntigo.getOrientador().getDepartamento() != termo.getOrientador().getDepartamento())
+			html = html.replace("{{departamentoOrientador}}", termo.getOrientador().getDepartamento());
+		else
+			html = html.replace("{{departamentoOrientador}}", "####");
 		html = html.replace("{{departamentoOrientador}}", termo.getOrientador().getDepartamento());
+		
 		html = html.replace("{{consideracoes}}", termo.getDescricaoAjustes());
 		html = html.replace("{{novoInicio}}", dataInicioAditivo);
 		html = html.replace("{{novoTermino}}", novoTermino);
@@ -1119,5 +1221,59 @@ public class GeradorDePdfService {
 		
 		return html;
 	}
+
+	// Ok
+	public byte[] gerarPdfAlunoCertificadoDeEstagio(CertificadoDeEstagio certificado) throws IOException, DocumentException {
+	    ClassLoader classLoader = getClass().getClassLoader();
+	    
+	    String html = getHtmlAlunoCertificadoDeEstagio(certificado);
+	    
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    ITextRenderer renderer = new ITextRenderer();
+	    
+	    renderer.setDocumentFromString(html);
+	    renderer.layout();
+	    renderer.createPDF(outputStream);
+	    
+	    return outputStream.toByteArray();
+	}
 	
+	private String getHtmlAlunoCertificadoDeEstagio(CertificadoDeEstagio certificado) {
+	    // Carregar o HTML do arquivo
+		ClassLoader classLoader = getClass().getClassLoader();
+		
+		Path diretorioAtual = Paths.get("").toAbsolutePath();
+    	
+    	String resources = diretorioAtual + "/src/main/resources/";
+		
+		String html = "";
+		try {
+			
+			html = IOUtils.toString(classLoader.getResourceAsStream("CertificadoDeEstagioAluno.html"), StandardCharsets.UTF_8);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+		
+		String imagePath = resources + "termo/prograd.png";
+		html = html.replace("{{imagePath}}", imagePath);
+		
+		// Informacoes do aluno
+		String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataInicio());
+		String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataTermino());
+		LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+        String formattedDate = currentDate.format(formatter);
+        
+		html = html.replace("{{nome}}", certificado.getEstagio().getAluno().getNome());
+		html = html.replace("{{aluno}}", certificado.getEstagio().getAluno().getNome());
+		html = html.replace("{{empresa}}", certificado.getEstagio().getContratante().getNome());
+		html = html.replace("{{orientador}}", certificado.getEstagio().getOrientador().getNome());
+		html = html.replace("{{dataInicio}}", dataInicio);
+		html = html.replace("{{dataTermino}}", dataTermino);
+		html = html.replace("{{totalHoras}}", String.valueOf(certificado.getEstagio().getFichaDeAvaliacao().getTotalHorasEstagioEfetivamenteRealizadas()));
+		html = html.replace("{{data}}", formattedDate);
+		
+		return html;
+	}
 }

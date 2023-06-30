@@ -56,7 +56,7 @@
             {{ data.nome }}
           </template>
         </Column>
-        <Column field="convenio" header="Número de Convênios">
+        <Column field="convenio" header="Quantidade de Convênios">
           <template #body="{ data }">
             {{ data.convenio.length }}
           </template>
@@ -71,7 +71,11 @@
             <NuxtLink
               :to="`/coafe/agentes-integracao/agenteVisualizar?id=${data.id}`"
             >
-              <Button label="Ver" icon="pi pi-search" />
+              <Button
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
+              />
             </NuxtLink>
           </template>
         </Column>

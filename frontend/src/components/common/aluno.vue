@@ -28,7 +28,6 @@ export default defineComponent({
       if (aluno?.curso) return;
       const response = await alunoService.getCursoAlunoFromSiga(cursoID);
       curso.value = response;
-      console.log(curso.value);
     };
 
     const { data: dadosAluno } = useAsyncData("aluno", async () => {

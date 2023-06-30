@@ -69,9 +69,6 @@ export default defineComponent({
     const alunoToken = localStorage.getItem("accessToken");
     const atoresToken = localStorage.getItem("atoresToken");
 
-    console.log("alunoToken", alunoToken);
-    console.log("atoresToken", atoresToken);
-
     if (!alunoToken && !atoresToken) {
       return this.$router.replace("/login");
     }
@@ -88,8 +85,6 @@ export default defineComponent({
       const atoresToken = localStorage.getItem("atoresToken");
 
       if (!atoresToken) {
-        console.log("atoresToken", atoresToken);
-
         localStorage.removeItem("accessToken");
         localStorage.removeItem("atoresToken");
         return this.$router.replace("/login");

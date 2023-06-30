@@ -95,8 +95,6 @@ export default defineComponent({
 
         router.push("/aluno/termo-rescisao/" + termoID);
       } catch (err) {
-        console.log(err?.response, err?.response?.data?.error);
-
         toast.add({
           severity: "error",
           summary: "Erro ao gerar termo de rescisão",
@@ -184,7 +182,7 @@ export default defineComponent({
 </script>
 <template>
   <div>
-    <h3 class="m-0">Termo de Recisão</h3>
+    <h3 class="m-0">Termo de Rescisão</h3>
     <small>Estágio #{{ estagio }}</small>
 
     <div class="card p-fluid col-12 mt-4">
@@ -270,7 +268,7 @@ export default defineComponent({
         />
       </NuxtLink>
       <Button
-        label="Gerar termo de recisão"
+        label="Gerar termo de rescisão"
         icon="pi pi-file"
         class="p-button-success"
         @click="handleGerarTermoRescisao"

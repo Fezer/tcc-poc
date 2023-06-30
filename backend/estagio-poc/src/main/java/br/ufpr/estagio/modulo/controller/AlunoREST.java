@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -944,7 +945,7 @@ public class AlunoREST {
 	 * 
 	 * return new ResponseEntity<>(pdf, headers, HttpStatus.OK); } } } }
 	 */
-	
+
 	@ResponseBody
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/relatorioDeEstagio")
 	public ResponseEntity<Object> criarRelatorioDeEstagio(@PathVariable String grrAlunoURL,
@@ -1297,8 +1298,10 @@ public class AlunoREST {
 					} else {
 						List<CertificadoDeEstagio> listaCertificados = alunoService
 								.listarCertificadosDeEstagioAluno(aluno);
-						return ResponseEntity.status(HttpStatus.OK).body(listaCertificados.stream()
-								.map(e -> mapper.map(e, CertificadoDeEstagioDTO.class)).collect(Collectors.toList()));
+
+						return ResponseEntity.status(HttpStatus.OK)
+								.body(mapper.map(listaCertificados, new TypeToken<List<CertificadoDeEstagioDTO>>() {
+								}.getType()));
 					}
 				}
 			}
@@ -2291,9 +2294,9 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
-								/* Métodos para Aluno gerar arquivos */
-	
+
+	/* Métodos para Aluno gerar arquivos */
+
 	@GetMapping("/{grrAlunoURL}/gerar-termo")
 	public ResponseEntity<Object> gerarTermoPdf(@PathVariable String grrAlunoURL,
 			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
@@ -2320,7 +2323,7 @@ public class AlunoREST {
 					}
 				}
 			}
-		}  catch (NotFoundException ex) {
+		} catch (NotFoundException ex) {
 			ex.printStackTrace();
 			ErrorResponse response = new ErrorResponse(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -2348,7 +2351,7 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
+
 	@ResponseBody
 	@GetMapping("/{grrAlunoURL}/{id}/gerar-ficha")
 	public ResponseEntity<Object> gerarFichaPdf(@PathVariable String grrAlunoURL, @PathVariable String id,
@@ -2433,9 +2436,7 @@ public class AlunoREST {
 						throw new NotFoundException("Ficha não encontrada.");
 					} else {
 						RelatorioDeEstagio relatorio = relatorioFind.get();
-						
-						
-						
+
 						byte[] pdf = geradorService.gerarPdfAlunoRelatorioDeEstagio(aluno, relatorio);
 
 						HttpHeaders headers = new HttpHeaders();
@@ -2476,7 +2477,7 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
+
 	@GetMapping("/{grrAlunoURL}/termo-aditivo/{id}/gerar-termo-aditivo")
 	public ResponseEntity<Object> gerarTermoAditivoPdf(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
@@ -2496,8 +2497,8 @@ public class AlunoREST {
 					if (termo == null) {
 						throw new NotFoundException("Ficha não encontrada.");
 					} else {
-						//TO-DO: Revisar essa implementação.
-						if(termo.getEstagio().isEstagioUfpr()) {
+						// TO-DO: Revisar essa implementação.
+						if (termo.getEstagio().isEstagioUfpr()) {
 							Contratante contratante = new Contratante();
 							contratante.setAtivo(true);
 							contratante.setCnpj("123123123123");
@@ -2545,7 +2546,7 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
+
 	@GetMapping("/{grrAlunoURL}/termo-rescisao/{id}/gerar-termo-rescisao")
 	public ResponseEntity<Object> gerarTermoDeRescisaoPdf(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
@@ -2607,10 +2608,74 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
-	
-								/* Métodos para Aluno submeter arquivos */
-	
+
+	@GetMapping("/{grrAlunoURL}/certificado-de-estagio/{id}/gerar")
+	public ResponseEntity<Object> gerarCertificadoDeEstagioPdf(@PathVariable String grrAlunoURL,
+			@PathVariable String id,
+			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
+		try {
+			long idLong = Long.parseLong(id);
+			if (idLong < 1L) {
+				throw new InvalidFieldException("Id inválido.");
+			}
+			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
+				throw new InvalidFieldException("GRR do aluno não informado!");
+			} else {
+				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
+				if (aluno == null) {
+					throw new NotFoundException("Aluno não encontrado!");
+				} else {
+					Optional<CertificadoDeEstagio> certificadoFind = certificadoDeEstagioService
+							.buscarCertificadoDeEstagioPorId(idLong);
+
+					if (certificadoFind.isEmpty()) {
+						throw new NotFoundException("Certificado de Estágio não encontrado.");
+					} else {
+						CertificadoDeEstagio certificado = certificadoFind.get();
+						byte[] pdf = geradorService.gerarPdfAlunoCertificadoDeEstagio(certificado);
+
+						HttpHeaders headers = new HttpHeaders();
+						headers.setContentType(MediaType.APPLICATION_PDF);
+						headers.setContentDisposition(ContentDisposition.builder("inline")
+								.filename(aluno.getMatricula() + "-certificado-de-estagio-" + certificado.getId()
+										+ ".pdf")
+								.build());
+
+						return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+					}
+				}
+			}
+		} catch (NotFoundException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		} catch (BadRequestException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"O GRR informado para o aluno ID não é do tipo de dado esperado!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (InvalidFieldException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			ErrorResponse response = new ErrorResponse(
+					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	/* Métodos para Aluno submeter arquivos */
+
 	@PostMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/upload")
 	public ResponseEntity<Object> uploadTermo(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@RequestHeader("Authorization") String accessToken, @RequestParam("file") MultipartFile file) {
@@ -2625,31 +2690,33 @@ public class AlunoREST {
 					if (file.isEmpty()) {
 						throw new InvalidFieldException("Arquivo não informado!");
 					} else {
-	                    if (!file.getContentType().equals(MediaType.APPLICATION_PDF_VALUE)) {
-	                        throw new InvalidFieldException("Tipo de arquivo inválido! Apenas arquivos PDF são aceitos.");
-	                    }
-	                    
-						long idLong = Long.parseLong(id);
-				    	
-				    	if (idLong < 1L)
-			        		throw new InvalidFieldException("Id inválido.");
-				    	
-				        TermoDeEstagio termo = termoDeEstagioService.buscarPorId(idLong);
+						if (!file.getContentType().equals(MediaType.APPLICATION_PDF_VALUE)) {
+							throw new InvalidFieldException(
+									"Tipo de arquivo inválido! Apenas arquivos PDF são aceitos.");
+						}
 
-				        if (termo == null) {
-				            throw new NotFoundException("O termo de compromisso não foi encontrado.");
-				        }
+						long idLong = Long.parseLong(id);
+
+						if (idLong < 1L)
+							throw new InvalidFieldException("Id inválido.");
+
+						TermoDeEstagio termo = termoDeEstagioService.buscarPorId(idLong);
+
+						if (termo == null) {
+							throw new NotFoundException("O termo de compromisso não foi encontrado.");
+						}
 						try {
 
 							Path diretorioAtual = Paths.get("").toAbsolutePath();
 
 							String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
 
-							String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso + "-" + idLong;
+							String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso + "-"
+									+ idLong;
 							Path destino = Paths.get(diretorioDestino + nomeArquivo);
 
 							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
-							
+
 							termoDeEstagioService.uploadTermoDeEstagio(termo, nomeArquivo);
 
 							return ResponseEntity.ok("Termo de compromisso salvo com sucesso!");
@@ -2688,7 +2755,7 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
+
 	@PostMapping("/{grrAlunoURL}/ficha-de-avaliacao/{id}/upload/{tipoFicha}")
 	public ResponseEntity<Object> uploadFicha(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@PathVariable String tipoFicha, @RequestHeader("Authorization") String accessToken,
@@ -2696,24 +2763,24 @@ public class AlunoREST {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
-			} else {		        
+			} else {
 				Aluno aluno = alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken);
 				if (aluno == null) {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
 					long idLong = Long.parseLong(id);
-			    	
-			    	if (idLong < 1L)
-		        		throw new InvalidFieldException("Id inválido.");
-			    	
-			        Optional<FichaDeAvaliacao> fichaFind = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idLong);
 
-			        if (fichaFind.isEmpty() || fichaFind == null) {
-			            throw new NotFoundException("A ficha não foi encontrada.");
-			        }
-			        
-			        FichaDeAvaliacao ficha = fichaFind.get();
-			        
+					if (idLong < 1L)
+						throw new InvalidFieldException("Id inválido.");
+
+					Optional<FichaDeAvaliacao> fichaFind = fichaDeAvaliacaoService.buscarFichaDeAvaliacaoPorId(idLong);
+
+					if (fichaFind.isEmpty() || fichaFind == null) {
+						throw new NotFoundException("A ficha não foi encontrada.");
+					}
+
+					FichaDeAvaliacao ficha = fichaFind.get();
+
 					if (file.isEmpty()) {
 						throw new InvalidFieldException("Arquivo não informado!");
 					} else {
@@ -2724,7 +2791,7 @@ public class AlunoREST {
 							String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
 
 							String nomeArquivo;
-							
+
 							if (tipoFicha.equals(String.valueOf(EnumTipoDocumento.FichaDeAvaliacaoParcial))) {
 								nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.FichaDeAvaliacaoParcial;
 								Path destino = Paths.get(diretorioDestino + nomeArquivo + "-" + idLong);
@@ -2738,7 +2805,7 @@ public class AlunoREST {
 										"O tipo de documento deve ser 'FichaDeAvaliacaoParcial' ou 'FichaDeAvaliacaoFinal'.");
 							}
 							fichaDeAvaliacaoService.uploadFichaDeAvaliacao(ficha, (nomeArquivo + '-' + idLong));
-							
+
 							return ResponseEntity.ok("Ficha de avaliação salva com sucesso!");
 						} catch (NotFoundException ex) {
 							ErrorResponse response = new ErrorResponse(ex.getMessage());
@@ -2794,24 +2861,25 @@ public class AlunoREST {
 					throw new NotFoundException("Aluno não encontrado!");
 				} else {
 					long idLong = Long.parseLong(id);
-			    	
-			    	if (idLong < 1L)
-		        		throw new InvalidFieldException("Id inválido.");
-			    	
-			        Optional<RelatorioDeEstagio> relatorioFind = relatorioDeEstagioService.buscarRelatorioPorId(idLong);
 
-			        if (relatorioFind.isEmpty() || relatorioFind == null) {
-			            throw new NotFoundException("O relatório de estágio não foi encontrado.");
-			        }
-			        
-			        RelatorioDeEstagio relatorio = relatorioFind.get();
-			        
+					if (idLong < 1L)
+						throw new InvalidFieldException("Id inválido.");
+
+					Optional<RelatorioDeEstagio> relatorioFind = relatorioDeEstagioService.buscarRelatorioPorId(idLong);
+
+					if (relatorioFind.isEmpty() || relatorioFind == null) {
+						throw new NotFoundException("O relatório de estágio não foi encontrado.");
+					}
+
+					RelatorioDeEstagio relatorio = relatorioFind.get();
+
 					if (file.isEmpty()) {
 						throw new InvalidFieldException("Arquivo não informado!");
 					} else {
 						if (!file.getContentType().equals(MediaType.APPLICATION_PDF_VALUE)) {
-	                        throw new InvalidFieldException("Tipo de arquivo inválido! Apenas arquivos PDF são aceitos.");
-	                    }
+							throw new InvalidFieldException(
+									"Tipo de arquivo inválido! Apenas arquivos PDF são aceitos.");
+						}
 						try {
 
 							Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -2823,7 +2891,7 @@ public class AlunoREST {
 							Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 
 							relatorioDeEstagioService.uploadRelatorioDeEstagio(relatorio, nomeArquivo);
-							
+
 							return ResponseEntity.ok("Relatório de estágio salvo com sucesso!");
 						} catch (NotFoundException ex) {
 							ErrorResponse response = new ErrorResponse(ex.getMessage());
@@ -3037,8 +3105,8 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
-							/* Métodos para Aluno baixar documentos upados por ele mesmo */
+
+	/* Métodos para Aluno baixar documentos upados por ele mesmo */
 	// provavelmente não usado
 	@GetMapping("/{grrAlunoURL}/download-termo")
 	public ResponseEntity<Resource> downloadTermo(@PathVariable String grrAlunoURL,
@@ -3091,7 +3159,7 @@ public class AlunoREST {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/download")
 	public ResponseEntity<Object> downloadTermoDeCompromissoAluno(@PathVariable String grrAlunoURL,
 			@PathVariable String id,
@@ -3376,7 +3444,7 @@ public class AlunoREST {
 					int tamanho = ficha.getArquivos().size();
 
 					String nomeArquivo = ficha.getArquivos().get(tamanho - 1);
-					
+
 					Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
 
 					try {

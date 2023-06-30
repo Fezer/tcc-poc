@@ -256,22 +256,7 @@ public class SeguradoraREST {
 			Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(idInt);
 
 			if (seguradora.isPresent()) {
-
-				/*
-				 * if (seguradoraDTO.getNome() == null && (seguradoraDTO.isSeguradoraUfpr() !=
-				 * false && seguradoraDTO.isSeguradoraUfpr() != true)) {
-				 * Seguradora seguradoraAtualizada = mapper.map(seguradoraDTO,
-				 * Seguradora.class);
-				 * seguradoraAtualizada.setId(id);
-				 * System.out.println(seguradoraAtualizada.isAtiva());
-				 * seguradoraAtualizada =
-				 * seguradoraService.ativarDesativarSeguradora(seguradoraAtualizada);
-				 * SeguradoraDTO seguradoraDTOAtualizada = mapper.map(seguradoraAtualizada,
-				 * SeguradoraDTO.class);
-				 * return ResponseEntity.ok().body(seguradoraDTOAtualizada);
-				 * }
-				 */
-
+				
 				if (seguradoraDTO.getNome().isEmpty())
 					throw new InvalidFieldException("Nome inválido!");
 

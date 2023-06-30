@@ -96,7 +96,7 @@ export default defineComponent({
             });
           });
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
       refresh();
     };

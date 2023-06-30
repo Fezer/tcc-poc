@@ -206,7 +206,7 @@ export default defineComponent({
           @click="cancelationConfirm = false"
         />
         <Button
-          label="Inicar termo de recisão"
+          label="Inicar termo de rescisão"
           icon="pi pi-check"
           class="p-button-danger"
           autofocus

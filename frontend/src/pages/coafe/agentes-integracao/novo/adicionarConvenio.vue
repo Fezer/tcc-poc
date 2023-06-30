@@ -88,14 +88,14 @@ export default defineComponent({
 
 <template>
   <div>
-    <h2 class="mb-0 p-2 mt-4">Novo Convenio</h2>
+    <h2 class="mb-0 p-2 mt-4">Novo Convênio</h2>
 
     <div class="col-12">
       <div class="p-fluid col-12">
         <h3>Dados de Registro</h3>
         <div class="flex flex-column gap-1 formgrid grid">
           <div class="field col">
-            <label style="font-size: 20px" for="nome">Numero</label>
+            <label style="font-size: 20px" for="nome">Número</label>
             <InputNumber
               v-model="state.numero"
               inputId="numero"
@@ -107,7 +107,9 @@ export default defineComponent({
             <InputText id="cnpj" type="text" v-model="state.descricao" />
           </div>
           <div class="field col">
-            <label style="font-size: 20px" for="dataInicio">Data Inicial</label>
+            <label style="font-size: 20px" for="dataInicio"
+              >Data de Início</label
+            >
             <Calendar
               v-model="state.dataInicio"
               dateFormat="dd/mm/yy"
@@ -117,7 +119,7 @@ export default defineComponent({
             />
           </div>
           <div class="field col">
-            <label style="font-size: 20px" for="dataFim">Data Final</label>
+            <label style="font-size: 20px" for="dataFim">Data de Fim</label>
             <Calendar
               v-model="state.dataFim"
               dateFormat="dd/mm/yy"

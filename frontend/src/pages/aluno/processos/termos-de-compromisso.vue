@@ -7,19 +7,16 @@ const { data: termos } = useFetch(`/aluno/${grr}/termoDeCompromisso/`);
 
 <template>
   <div>
-    <h1>Termos de compromisso</h1>
+    <h1>Termos de Compromisso</h1>
 
     <DataTable :value="termos" rowHover stripedRows :show-gridlines="true">
-      <Column field="termo" header="Termo">
+      <Column field="termo" header="Número do Termo">
         <template #body="{ data }">
           {{ data.id }}
         </template>
       </Column>
       <Column field="tipo" header="Tipo" style="min-width: 12rem">
-        <template #body="{ data }">
-          <!-- {{ data.tipoTermoDeEstagio }} -->
-          Termo de Compromisso
-        </template>
+        <template #body="{ data }"> Termo de Compromisso </template>
       </Column>
       <Column field="contratante" header="Contratante" style="min-width: 12rem">
         <template #body="{ data }">

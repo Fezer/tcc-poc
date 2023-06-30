@@ -78,8 +78,6 @@ export default defineComponent({
         try {
           let estagioId = termo?.value?.estagio?.id;
 
-          console.log(estagioId);
-
           // se não tem id -> novo termo de compromisso
           if (!termo?.value?.estagio?.id) {
             const estagio = await novoEstagioService.criarNovoEstagio(grr);

@@ -2,7 +2,7 @@
 <html lang="pt-br">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"></meta>
-        <title>TERMO DE COMPROMISSO DE ESTÁGIO</title>
+        <title>CERTIFICADO DE ESTÁGIO</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
         
@@ -168,13 +168,13 @@
 
 .title1 {
   margin: 0rem 1rem 0rem 0rem;
-  font-size: 2.725vw;
+  font-size: 30px;
   font-weight: bold;
 }
 
 .title2 {
   margin: 0rem 1rem 0rem 0rem;
-  font-size: 1.450vw;
+  font-size: 15px;
 }
 
 #imgprograd {
@@ -486,11 +486,11 @@ b, strong {
                 }
                 
                 .title1{
-                    font-size: 230% !important;
+                    font-size: 30px !important;
                 }
                 
                 .title2{
-                    font-size: 125% !important;
+                    font-size: 15px !important;
                 }
                 
                 img{
@@ -515,6 +515,11 @@ b, strong {
 }
                 
             }
+
+            .text-center {
+    text-align: center !important;
+}
+
             
             @page {
                 size: A4;
@@ -527,44 +532,40 @@ b, strong {
     </head>
     <body>
         <div class="container container-fluid">
-            <div class="page-header col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
-                <div class="row">
-                    <div id="divcabecalho" class="col-xs-10 col-sm-10 col-md-10 col-lg-10 text-left" style="padding-right: 0;">
-                        <h1 class="title1" style="margin: 0rem 1rem 0rem 0rem; font-size:  2.725vw; font-weight: bold">TERMO DE COMPROMISSO DE ESTÁGIO</h1>
-                        <h5 class="title2" style="margin: 0rem 1rem 0rem 0rem; font-size: 1.450vw">OBRIGATÓRIO NO ÂMBITO DA UFPR – Para estudantes da UFPR</h5>
-                    </div>
-                    <div id="imgprograd" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right" style="padding-left: 0"> 
-                        <img class="img-responsive" style="padding-bottom: 4px;float: right" src="{{imagePath}}" alt="icone da prograd"></img>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 text-left">
-                        
-                    </div>
-                </div>   
-            </div>
-
+            
+            
             <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <fieldset style="padding-bottom: 1%">
-                    <legend style="background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px; border: solid 1px; border-bottom: 0px; font-size: 1.525vw">FICHA</legend>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; padding: 0px;">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Motivo Reprovação:</b> {{reprovacao}}</span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px; padding: 0% 0% 0% 1%"><b>Nome:</b> {{nome}}</span>
-                    </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>GRR:</b> {{grr}}</span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>IRA:</b> {{ira}}</span>
-                    </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0% 0% 0% 1%"><b>Orientador:</b> {{orientador}}</span>
-                        <span class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Curso:</b> {{curso}}</span>
-                    </span>
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: solid 1px; border-top: 0px; padding: 0%">
-                        <span class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0% 0% 0% 1%"><b>Etapa do Fluxo:</b> {{etapaFluxo}}</span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Parecer da COE:</b> {{parecerCoe}}</span>
-                        <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border-left: solid 1px;padding: 0% 0% 0% 1%"><b>Status do Estágio:</b> {{statusEstagio}}</span>
-                    </span>
-                </fieldset>		
+                <h1 style="text-align: center;">Certificado de Orientação de Estágio de {{nome}}</h1>
+                
+                <p style="padding-left: 3%; padding-top: 10%;">
+                    Este documento certifica que a orientação do estágio realizado pelo aluno {{aluno}}, na empresa {{empresa}}, do dia {{dataInicio}} ao dia {{dataTermino}}, totalizando {{totalHoras}} horas, foi concluída pelo orientador {{orientador}}.
+                </p>
+                
+                <p style="text-align: center; margin-top: 10%; margin-bottom: 12%">Curitiba, {{data}}.</p>
+
+                <div class="row" style="padding-bottom: 10%">
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                      <span>____________________________________</span><br></br>
+                      <span>PROFESSOR(A) ORIENTADOR(A) NA UFPR<br></br></span>
+                      <span>(assinatura)</span>
+                  </div>
+                </div>
+                <br></br>
+                <div class="row" style="padding-bottom: 10%">
+                  <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 text-center">
+                      <span>____________________________________</span><br></br>
+                      <span>SUPERVISOR(A) NO LOCAL DE ESTÁGIO<br></br></span>
+                      <span>(assinatura e carimbo)</span>
+                  </div>
+                  
+                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
+                  
+                  <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 text-center">
+                      <span>____________________________________</span><br></br>
+                      <span>ESTUDANTE<br></br></span>
+                      <span>(assinatura e carimbo)</span>
+                  </div>
+                </div>
             </div>
         </div>
     

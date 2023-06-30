@@ -35,7 +35,7 @@ export default defineComponent({
         link: "/aluno/processos/termos-aditivos",
       },
       {
-        label: "Termos de Recisão",
+        label: "Termos de Rescisão",
 
         link: "/aluno/processos/termos-de-rescisao",
       },
@@ -53,8 +53,6 @@ export default defineComponent({
     const getIsTabActive = (
       tab: "aluno" | "aluno/processos" | "aluno/certificados"
     ) => {
-      console.log(route.path);
-
       return route.path === tab;
     };
 

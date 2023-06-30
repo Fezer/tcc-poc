@@ -112,7 +112,6 @@ export default defineComponent({
     };
 
     const handleUploadTermo = async (event: any) => {
-      console.log("upload");
       const file = event.files[0];
 
       const formData = new FormData();

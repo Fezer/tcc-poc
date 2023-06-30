@@ -8,7 +8,6 @@ const useTermoRescisao = (): {
   const termoRescisao = useState<TermoRescisao>("termoRescisao");
 
   const setTermoRescisao = (termoData: Ref<TermoRescisao>) => {
-    console.log("setting termo", termoData);
     termoRescisao.value = termoData;
   };
 

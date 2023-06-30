@@ -91,7 +91,9 @@ export default defineComponent({
             />
           </div>
           <div class="field col">
-            <label style="font-size: 20px" for="dataInicio">Data Inicial</label>
+            <label style="font-size: 20px" for="dataInicio"
+              >Data de Início</label
+            >
             <Calendar
               v-model="state.dataInicio"
               dateFormat="dd/mm/yy"
@@ -101,7 +103,7 @@ export default defineComponent({
             />
           </div>
           <div class="field col">
-            <label style="font-size: 20px" for="dataFim">Data Final</label>
+            <label style="font-size: 20px" for="dataFim">Data de Fim</label>
             <Calendar
               v-model="state.dataFim"
               dateFormat="dd/mm/yy"

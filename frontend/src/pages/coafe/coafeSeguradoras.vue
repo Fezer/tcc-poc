@@ -119,7 +119,11 @@
             <NuxtLink
               :to="`/coafe/seguradora/seguradoraVisualizar?id=${data.id}`"
             >
-              <Button label="Ver" icon="pi pi-search" />
+              <Button
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
+              />
             </NuxtLink>
           </template>
         </Column>

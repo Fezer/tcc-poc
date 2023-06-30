@@ -46,7 +46,7 @@ export default defineComponent({
 
 <template>
   <div>
-    <h5 class="mb-0 p-2 mt-4">Nova seguradora</h5>
+    <h5 class="mb-0 p-2 mt-4">Nova Seguradora</h5>
 
     <div class="col-12">
       <div class="card flex-column p-fluid col-12">

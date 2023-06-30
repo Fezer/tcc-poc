@@ -4,10 +4,6 @@ const { auth } = useAuth();
 const grr = auth?.value?.identifier || "";
 
 const { data: estagios } = await useFetch(`/aluno/${grr}/estagio/`);
-
-console.log(estagios);
-
-// const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 </script>
 
 <template>
@@ -15,14 +11,11 @@ console.log(estagios);
     <h1>Estágios</h1>
 
     <DataTable :value="estagios" rowHover stripedRows :show-gridlines="true">
-      <Column field="id" header="Processo">
+      <Column field="id" header="Número do Processo">
         <template #body="{ data }"> #{{ data.id }} </template>
       </Column>
       <Column field="tipo" header="Tipo" style="min-width: 12rem">
-        <template #body="{ data }">
-          <!-- {{ data.tipoTermoDeEstagio }} -->
-          Estágio
-        </template>
+        <template #body="{ data }"> Estágio </template>
       </Column>
       <Column field="contratante" header="Contratante" style="min-width: 12rem">
         <template #body="{ data }">
@@ -30,7 +23,7 @@ console.log(estagios);
           {{ data?.contratante?.cnpj || data?.contratante?.cpf }}
         </template>
       </Column>
-      <Column field="data" header="Data criação do processo">
+      <Column field="data" header="Data de Criação do Processo">
         <template #body="{ data }">
           {{ parseDate(data.dataCriacao) }}
         </template>
@@ -47,7 +40,11 @@ console.log(estagios);
       <Column field="acoes" header="Ações" style="min-width: 12rem">
         <template #body="{ data }">
           <NuxtLink :to="`/aluno/estagio/${data.id}`">
-            <Button type="primary"> Ver </Button>
+            <Button
+              class="p-button-icon-only p-button-outlined"
+              icon="pi pi-eye"
+              type="primary"
+            />
           </NuxtLink>
         </template>
       </Column>

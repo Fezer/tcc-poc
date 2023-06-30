@@ -15,7 +15,6 @@ export default defineComponent({
       telefone: null,
     });
     onMounted(() => {
-      console.log(agente.value.nome);
       state.id = agente.value.id;
       state.nome = agente.value.nome;
       state.cnpj = agente.value.cnpj;
@@ -60,7 +59,7 @@ export default defineComponent({
             });
           });
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
       refresh();
     };

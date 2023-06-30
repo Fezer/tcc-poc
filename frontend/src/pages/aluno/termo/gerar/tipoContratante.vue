@@ -43,8 +43,6 @@ export default defineComponent({
     const selectedContratante = ref(null);
 
     onMounted(async () => {
-      console.log("mounted");
-
       if (termo) {
         const contratante = termo?.value?.contratante;
         const seguradora = termo?.value?.seguradora;
@@ -78,7 +76,7 @@ export default defineComponent({
           contratantes.value = res;
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     });
 
@@ -246,7 +244,7 @@ export default defineComponent({
 
         advanceStep();
       } catch (err) {
-        console.log(err);
+        console.error(err);
         toast.add({
           severity: "error",
           summary: "Erro ao criar contratante",

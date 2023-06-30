@@ -44,7 +44,6 @@ export default defineComponent({
 
     onMounted(() => {
       if (termo) {
-        console.log(termo.value);
         state.dataInicio = parseDateToMask(termo.value?.dataInicio);
         state.dataFinal = parseDateToMask(termo.value?.dataTermino);
         state.jornadaDiaria = termo.value?.jornadaDiaria;
@@ -69,8 +68,6 @@ export default defineComponent({
 
     const { aluno } = useAluno();
     const handleLoadDocentes = async () => {
-      console.log(aluno.value);
-
       const response = await $fetch(
         `/curso/${aluno.value?.idPrograma}/orientadores`
       );
@@ -130,7 +127,6 @@ export default defineComponent({
       const result = validator.safeParse({ ...state });
 
       if (!result.success) {
-        console.log(result.error.issues);
         toast.add({
           severity: "error",
           summary: "Erro",

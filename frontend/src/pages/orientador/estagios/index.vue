@@ -34,8 +34,6 @@ export default defineComponent({
       }
     );
 
-    console.log(estagios);
-
     return {
       estagios,
       parseTipoTermo,

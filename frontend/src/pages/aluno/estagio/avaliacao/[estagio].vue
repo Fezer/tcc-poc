@@ -40,7 +40,7 @@ export default defineComponent({
           refreshFicha();
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
 
           toast.add({
             severity: "error",
@@ -97,7 +97,6 @@ export default defineComponent({
     };
 
     const handleUploadFicha = async (event) => {
-      console.log("upload");
       const file = event.files[0];
 
       const formData = new FormData();
@@ -127,7 +126,6 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      console.log(estagio.value);
       if (estagio?.value?.fichaDeAvaliacao) {
         idFichaAvaliacao.value = estagio.value.fichaDeAvaliacao;
       }

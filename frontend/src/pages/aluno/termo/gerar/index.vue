@@ -52,7 +52,6 @@ export default defineComponent({
           state.progressValue = 40;
           break;
         case "TIPO_ESTAGIO":
-          console.log(state);
           if (termo.value.estagioUfpr) {
             state.step = "DADOS_ESTAGIO";
             state.progressValue =
@@ -73,11 +72,9 @@ export default defineComponent({
             termo.value.estagioUfpr &&
             termo.value.tipoEstagio === "NaoObrigatorio"
           ) {
-            console.log("DADOS AUXILIARES");
             state.step = "DADOS_AUXILIARES";
             state.progressValue = 100;
 
-            console.log(state.step);
             return;
           }
 

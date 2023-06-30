@@ -34,7 +34,6 @@ export default class AgenteService extends BaseService {
     if (!response?.id) {
       throw new Error("Erro ao atualizar o Agente");
     } else {
-      console.log(response);
       return response;
     }
   }
@@ -46,7 +45,6 @@ export default class AgenteService extends BaseService {
     if (!response) {
       throw new Error("Erro ao recuperar Agentes de Integração");
     } else {
-      console.log("chegou aqui! " + response);
       return response;
     }
   }
@@ -55,20 +53,18 @@ export default class AgenteService extends BaseService {
       method: "DELETE",
       body: {},
     });
-    console.log("Resposta do servidor: " + response);
     if (response?.error) {
       throw new Error("Erro ao Deletar Agente");
     } else {
-      console.log(response);
       return response;
     }
   }
-  async baixarRelatorioEstagioPdfEspecifico(id:number) {
+  async baixarRelatorioEstagioPdfEspecifico(id: number) {
     return $fetch(`/coafe/gerar-relatorio-agenteIntegrador/${id}`, {
       method: "GET",
     });
   }
-  async baixarRelatorioEstagioExcelEspecifico(id:number) {
+  async baixarRelatorioEstagioExcelEspecifico(id: number) {
     return $fetch(`/coafe/gerar-relatorio-agenteIntegrador-excel/${id}`, {
       method: "GET",
       responseType: "blob",

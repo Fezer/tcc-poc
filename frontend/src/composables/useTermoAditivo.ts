@@ -2,7 +2,7 @@ import { Ref } from "vue";
 import NovoEsatgio from "../types/NovoEstagio";
 import { BaseTermo } from "../types/Termos";
 
-const useTermo = (): {
+const useTermoAditivo = (): {
   termo: Ref<BaseTermo>;
   setTermo(termoData: Ref<BaseTermo>): void;
 } => {
@@ -18,4 +18,4 @@ const useTermo = (): {
   };
 };
 
-export default useTermo;
+export default useTermoAditivo;

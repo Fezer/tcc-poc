@@ -143,7 +143,6 @@ export default defineComponent({
     });
 
     const handleValidateAndAdvance = async () => {
-      console.log("validating..");
       const validator = z.object({
         estadoCivil: z.string().min(1),
         grupoSanguineo: z.string().min(1),
@@ -182,7 +181,6 @@ export default defineComponent({
       });
 
       if (!result.success) {
-        console.log(result.error.issues);
         toast.add({
           severity: "error",
           summary: "Erro",
@@ -237,8 +235,6 @@ export default defineComponent({
         console.error(err);
       }
     };
-
-    console.log(aluno?.dadosAuxiliares?.nacionalidade);
 
     onMounted(() => {
       const dadosAuxiliares = aluno?.value?.dadosAuxiliares;
