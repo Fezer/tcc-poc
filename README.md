@@ -39,7 +39,7 @@ Para rodar:
 ```
 cd backend/estagio-poc/src/main/resources
 
-cp application.properties.example application.properties
+cp application-example.properties application.properties
 
 ```
 
