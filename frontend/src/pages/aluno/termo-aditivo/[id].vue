@@ -239,8 +239,6 @@ export default defineComponent({
 
     <Estagio :termo="termo" />
 
-    <DadosAuxiliares :termo="termo" />
-
     <PlanoAtividades :termo="termo" :planoAtividades="termo?.planoAtividades" />
 
     <SuspensaoEstagio :termo="termo" />

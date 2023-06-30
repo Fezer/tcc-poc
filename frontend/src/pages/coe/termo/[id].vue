@@ -216,11 +216,18 @@ export default defineComponent({
       </NuxtLink>
     </div>
 
-    <Aluno :grrAluno="termo?.grrAluno" v-if="termo?.grrAluno" />
+    <Aluno
+      :grrAluno="termo?.grrAluno"
+      v-if="termo?.grrAluno"
+      :showDadosAuxiliares="
+        termo?.estagio?.estagioUfpr &&
+        termo?.estagio?.tipoEstagio === 'NaoObrigatorio'
+      "
+    />
 
     <Estagio :termo="termo" />
 
-    <DadosAuxiliares :termo="termo" />
+    <!-- <DadosAuxiliares :termo="termo" /> -->
 
     <PlanoAtividades :termo="termo" :planoAtividades="termo?.planoAtividades" />
 

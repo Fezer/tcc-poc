@@ -75,7 +75,7 @@ export default defineComponent({
     };
 
     const handleDownloadUploadedDocument = async () => {
-      const url = `/aluno/${grr}/ficha-de-avaliacao/${idFichaAvaliacao.value}/download`;
+      const url = `/aluno/${grr}/ficha-de-avaliacao/${ficha.value?.id}/download`;
 
       try {
         const file = await $fetch(url, {

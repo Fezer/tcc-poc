@@ -238,11 +238,17 @@ export default defineComponent({
       v-if="termo?.statusTermo"
     />
 
-    <Aluno />
+    <Aluno
+      v-if="!!termo"
+      :showDadosAuxiliares="
+        termo?.estagio?.estagioUfpr &&
+        termo?.estagio?.tipoEstagio === 'NaoObrigatorio'
+      "
+    />
 
     <Estagio :termo="termo" />
 
-    <DadosAuxiliares :termo="termo" />
+    <!-- <DadosAuxiliares :termo="termo" /> -->
 
     <PlanoAtividades :termo="termo" :planoAtividades="termo?.planoAtividades" />
 

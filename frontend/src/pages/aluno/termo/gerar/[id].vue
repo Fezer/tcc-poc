@@ -214,11 +214,16 @@ export default defineComponent({
       :termo="termo"
     />
 
-    <Aluno />
+    <Aluno
+      :showDadosAuxiliares="
+        termo?.estagio?.estagioUfpr &&
+        termo?.estagio?.tipoEstagio === 'NaoObrigatorio'
+      "
+    />
 
     <Estagio :termo="termo" />
 
-    <DadosAuxiliares :termo="termo" />
+    <!-- <DadosAuxiliares :termo="termo" /> -->
 
     <PlanoAtividades :termo="termo" :planoAtividades="termo?.planoAtividades" />
 

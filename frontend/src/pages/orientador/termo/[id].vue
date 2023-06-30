@@ -41,11 +41,18 @@ export default defineComponent({
     <small>Processos > Ver processo</small>
     <h2>{{ parseTipoProcesso(termo?.tipoTermoDeEstagio) }}</h2>
 
-    <Aluno :grrAluno="termo?.grrAluno" v-if="termo?.grrAluno" />
+    <Aluno
+      :grrAluno="termo?.grrAluno"
+      v-if="termo?.grrAluno"
+      :showDadosAuxiliares="
+        termo?.estagio?.estagioUfpr &&
+        termo?.estagio?.tipoEstagio === 'NaoObrigatorio'
+      "
+    />
 
     <Estagio :termo="termo" />
 
-    <DadosAuxiliares :termo="termo" />
+    <!-- <DadosAuxiliares :termo="termo" /> -->
 
     <PlanoAtividades :termo="termo" :planoAtividades="termo?.planoAtividades" />
 
