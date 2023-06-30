@@ -79,18 +79,9 @@ public class SigaApiModuloEstagioMapper {
 			aluno.setMatriculado(discente.isMatriculado());
 			aluno.setTelefone(discente.getTelefone());
 			
-			/*System.out.println(discente.getEndereco().getComplemento() + " A " + discente.getEndereco().getId());
-			
-			endereco = mapearEnderecoAluno(discente, aluno);
-			
-			System.out.println(aluno.getEndereco().getComplemento() + " B " + aluno.getEndereco().getId());
-			aluno.setEndereco(endereco);*/
-			
 			aluno.setDadosBancarios(null);
 		} else {
 			aluno = alunoFind.get();
-			/*System.out.println(aluno.getEndereco().getComplemento() + " C " + aluno.getEndereco().getId());
-			endereco = aluno.getEndereco();*/
 		}
 		
 		Curso curso = mapearCursoSigaEmCurso(discente, accessToken);
@@ -122,15 +113,6 @@ public class SigaApiModuloEstagioMapper {
 		}
 		
 		dadosAuxiliaresRepo.save(dados);
-		
-		//////////////////////////////////////////////////////////////////
-		/*Endereco enderecoSalvo = enderecoRepo.save(endereco);
-		if (enderecoSalvo != null) {
-			System.out.println("Não é nulo: " + enderecoSalvo.getId());
-			aluno.setEndereco(enderecoSalvo);
-		} else
-			System.out.println("Nulo");
-		*//////////////////////////////////////////////////////////////////
 		enderecoRepo.save(endereco);
 		alunoRepo.save(aluno);
 		coordenadorRepo.save(coordenador);
@@ -161,8 +143,6 @@ public class SigaApiModuloEstagioMapper {
 	
 	public Endereco mapearEnderecoAluno(Discente discente, Aluno aluno) {
 		Endereco endereco = new Endereco();
-		
-		System.out.println(discente.getEndereco().getId());
 		
 		endereco.setCep(discente.getEndereco().getCep());
 		endereco.setCidade(discente.getEndereco().getCidade());

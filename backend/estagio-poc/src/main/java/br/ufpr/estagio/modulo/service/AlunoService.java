@@ -138,18 +138,12 @@ public class AlunoService {
 		return alunoRepo.save(aluno);
 	}
 
-	///////////////////////////////////////////////
 	public Aluno atualizarAluno(Aluno alunoAtualizado, String accessToken) {
-
-		System.out.println(alunoAtualizado.getId());
 
 		Aluno alunoExistente = buscarAlunoGrr(alunoAtualizado.getMatricula(), accessToken)
 				.orElseThrow(() -> new NoSuchElementException("Aluno não encontrado para o ID informado"));
 
 		DadosAuxiliares dadosAuxiliaresExistente = alunoExistente.getDadosAuxiliares();
-
-		System.out.println(dadosAuxiliaresExistente.getNacionalidade());
-		System.out.println(alunoAtualizado.getDadosAuxiliares().getEstadoCivil());
 
 		DadosAuxiliares dadosAtualizado = alunoAtualizado.getDadosAuxiliares();
 
@@ -166,13 +160,6 @@ public class AlunoService {
 		dadosAuxiliaresExistente.setSerie(dadosAtualizado.getSerie());
 		dadosAuxiliaresExistente.setEmailInstitucional(dadosAtualizado.getEmailInstitucional());
 
-		/**
-		 * TO-DO:
-		 * -> Colocar os outros dados auxiliares no bloco acima.
-		 * -> Colocar os dados bancários no bloco a ser criado abaixo.
-		 */
-
-		// dados.save?
 		return alunoRepo.save(alunoExistente);
 	}
 

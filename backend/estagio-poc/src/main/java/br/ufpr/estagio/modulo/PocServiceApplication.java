@@ -40,19 +40,4 @@ public class PocServiceApplication {
 	    }
 	}
 
-	/*@PostConstruct
-	public void init() {
-		geradorDePdfService.gerarPdf();
-	}*/
-	
-	/*@PostConstruct
-	public void init() {
-		ClassLoader classLoader = getClass().getClassLoader();
-		try {
-			HtmlConverter.convertToPdf(new File(classLoader.getResource("naoObrigatorio-ufpr-externo.html").getFile()),new File("html-virou-pdf.pdf"));
-			System.out.println("Arquivo criado.");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}*/
 }

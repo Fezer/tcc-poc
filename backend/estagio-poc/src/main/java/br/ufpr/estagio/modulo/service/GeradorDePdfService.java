@@ -443,7 +443,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{ufContratante}}", "Paraná");
 		html = html.replace("{{cepContratante}}", "80213-931");
 		*/
-		System.out.println(html.length());
+
 		return html;
 	}
 	
