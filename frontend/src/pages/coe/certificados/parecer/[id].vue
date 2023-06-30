@@ -88,20 +88,20 @@ export default defineComponent({
 </script>
 <template>
   <div class="m-1">
-    <h2>Parecer certificado de estágio</h2>
+    <h2>Certificado de Estágio</h2>
     <div class="card">
       <div class="grid">
         <div class="col-4">
-          <strong>Processo certificado</strong>
+          <strong>Número do Processo de Certificado</strong>
           <p>#{{ certificado?.id }}</p>
         </div>
         <div class="col-4">
-          <strong>Processo Estágio</strong>
+          <strong>Número do Processo de Estágio</strong>
           <p>#{{ estagio?.id }}</p>
         </div>
 
         <div class="col-4">
-          <strong>Etapa fluxo</strong>
+          <strong>Etapa do Fluxo</strong>
           <p>{{ certificado?.etapaFluxo }}</p>
         </div>
       </div>

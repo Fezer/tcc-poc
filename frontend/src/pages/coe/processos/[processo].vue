@@ -118,11 +118,11 @@ export default defineComponent({
             </div>
           </div>
         </template>
-        <Column field="process" header="Processo">
+        <Column field="process" header="Número do Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
 
-        <Column field="tipo" header="Tipo Estágio">
+        <Column field="tipo" header="Tipo do Estágio">
           <template #body="{ data }">
             {{ parseObrigatoriedadeEstagio(data?.estagio?.tipoEstagio) }}
           </template>
@@ -152,7 +152,7 @@ export default defineComponent({
             {{ data?.etapaFluxo }}
           </template>
         </Column>
-        <Column field="button">
+        <Column field="button" header="Ver">
           <template #body="{ data }">
             <NuxtLink :to="`/coe/termo/${data.id}`">
               <Button
