@@ -679,6 +679,9 @@ public class GeradorDePdfService {
 	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Etapa do Fluxo:</b> {{etapaFluxo}}</span>\r\n"
 	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Parecer COE:</b> {{parecerCoe}}</span>\r\n"
 	        		+ "        </span>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "            <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Motivo da Reprovação:</b> {{motivoReprovacao}}</span>\r\n"
+	        		+ "        </span>\r\n"
 	        		+ "    </fieldset>\r\n"
 	        		+ "    <br></br>\r\n"
 	        		+ "</div>";
@@ -697,6 +700,11 @@ public class GeradorDePdfService {
 	        estagioHtml = estagioHtml.replace("{{dataTermino}}", dataTermino);
 	        estagioHtml = estagioHtml.replace("{{totalHoras}}", String.valueOf(certificado.getEstagio().getFichaDeAvaliacao().getTotalHorasEstagioEfetivamenteRealizadas()));
 			
+	        if (certificado.getMotivoReprovacao() == null)
+	        	estagioHtml = estagioHtml.replace("{{motivoReprovacao}}", "Não houve reprovação.");
+	        else
+	        	estagioHtml = estagioHtml.replace("{{motivoReprovacao}}", String.valueOf(certificado.getMotivoReprovacao()));
+	        
 	        // Adicionar o HTML do estágio à lista
 	        estagiosHtml.append(estagioHtml);
 	    }
