@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "27806178-82ae-4421-a545-a6710f2f4bc5",
+		"_postman_id": "94c7793d-892c-42b8-a9fd-6f13248ad9de",
 		"name": "TCC-Estagio",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18567474"
 	},
 	"item": [
 		{
@@ -2074,6 +2075,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "sincronizarDadosAlunoSiga",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/aluno/GRR20175486/sincronizarDadosSiga",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"aluno",
+								"GRR20175486",
+								"sincronizarDadosSiga"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -3736,7 +3758,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/endereco/3",
+							"raw": "http://localhost:5000/endereco/27",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3744,7 +3766,7 @@
 							"port": "5000",
 							"path": [
 								"endereco",
-								"3"
+								"27"
 							]
 						}
 					},
