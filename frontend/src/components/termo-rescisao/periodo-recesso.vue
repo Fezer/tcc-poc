@@ -62,12 +62,12 @@ export default defineComponent({
   <div class="card mb-2">
     <div class="grid">
       <div class="col-5">
-        <strong>Data Início</strong>
+        <strong>Data de Início</strong>
         <p>{{ parseDate(periodo?.dataInicio) }}</p>
       </div>
 
       <div class="col-5">
-        <strong>Data Fim</strong>
+        <strong>Data de Fim</strong>
         <p>{{ parseDate(periodo?.dataFim) }}</p>
       </div>
 

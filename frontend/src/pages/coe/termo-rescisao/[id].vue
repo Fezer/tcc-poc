@@ -90,10 +90,10 @@ export default defineComponent({
     </div>
 
     <div class="card">
-      <h5>Dados Termo</h5>
+      <h5>Dados do Termo</h5>
       <div class="grid">
         <div class="col-4">
-          <strong>Processo</strong>
+          <strong>Número do Processo</strong>
           <p>#{{ termo?.id }}</p>
         </div>
 
@@ -103,7 +103,7 @@ export default defineComponent({
         </div>
 
         <div class="col-4">
-          <strong>Período total de recesso</strong>
+          <strong>Período Total de Recesso</strong>
           <p>{{ termo?.periodoTotalRecesso }} dias</p>
         </div>
       </div>

@@ -88,23 +88,23 @@ export default defineComponent({
             </div>
           </div>
         </template>
-        <Column field="process" header="Processo Certificado">
+        <Column field="process" header="Número do Processo de Certificado">
           <template #body="{ data }"> #{{ data?.id }} </template>
         </Column>
-        <Column field="process" header="Processo Estágio">
+        <Column field="process" header="Número do Processo de Estágio">
           <template #body="{ data }"> #{{ data?.estagio?.id }} </template>
         </Column>
-        <Column field="process_type" header="Data Início Estágio">
+        <Column field="process_type" header="Data de Início do Estágio">
           <template #body="{ data }">
             {{ parseDate(data?.estagio?.dataInicio) }}
           </template>
         </Column>
-        <Column field="process_type" header="Data Término Estágio">
+        <Column field="process_type" header="Data de Término do Estágio">
           <template #body="{ data }">
             {{ parseDate(data?.estagio?.dataTermino) }}
           </template>
         </Column>
-        <Column field="student_name" header="Tipo Estágio">
+        <Column field="student_name" header="Tipo do Estágio">
           <template #body="{ data }">
             {{ parseObrigatoriedadeEstagio(data?.estagio?.tipoEstagio) }}
           </template>
@@ -115,10 +115,14 @@ export default defineComponent({
             {{ data.etapaFluxo }}
           </template>
         </Column>
-        <Column field="button" header="Ações">
+        <Column field="button" header="Ver">
           <template #body="{ data }">
             <NuxtLink :to="`/coe/certificados/parecer/${data?.id}`">
-              <Button label="Ver processo" icon="pi pi-arrow-right"></Button>
+              <Button
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
+              ></Button>
             </NuxtLink>
           </template>
         </Column>

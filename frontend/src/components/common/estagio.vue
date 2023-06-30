@@ -32,7 +32,7 @@ export default defineComponent({
 
 <template>
   <div class="card">
-    <h5>Dados do estágio</h5>
+    <h5>Dados do Estágio</h5>
 
     <div class="grid">
       <div class="col-4">
@@ -63,7 +63,7 @@ export default defineComponent({
       </div>
 
       <div class="col-4">
-        <strong>Data de Inicio</strong>
+        <strong>Data de Início</strong>
         <p>{{ parseDate(termo?.dataInicio) }}</p>
       </div>
       <div class="col-4" v-if="!termo?.termoDeRescisao">

@@ -91,14 +91,14 @@ export default defineComponent({
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
                 <InputText
-                  placeholder="Nome Contratante"
+                  placeholder="Nome da Contratante"
                   v-model="filters.nomeEmpresa"
                 />
               </span>
             </div>
           </div>
         </template>
-        <Column field="process" header="Processo">
+        <Column field="process" header="Número do Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
 
@@ -118,7 +118,7 @@ export default defineComponent({
             {{ data?.contratante?.cnpj || data?.contratante?.cpf }}
           </template>
         </Column>
-        <Column field="process_type" header="Tipo Estágio">
+        <Column field="process_type" header="Tipo do Estágio">
           <template #body="{ data }">
             {{ parseObrigatoriedadeEstagio(data?.tipoEstagio) }}
           </template>
@@ -133,7 +133,7 @@ export default defineComponent({
             <StatusTag :status="data?.statusEstagio" />
           </template>
         </Column>
-        <Column field="button">
+        <Column field="button" header="Ver">
           <template #body="{ data }">
             <NuxtLink :to="`/estagio/${data.id}?perfil=coe`">
               <Button
