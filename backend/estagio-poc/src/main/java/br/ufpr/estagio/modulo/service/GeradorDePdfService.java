@@ -658,23 +658,45 @@ public class GeradorDePdfService {
 
 	    StringBuilder estagiosHtml = new StringBuilder();
 	    for (CertificadoDeEstagio certificado : certificados) {
-	        String estagioHtml = "<h2>Certificado de Estágio de {{nome}}</h2>\n"
-	        		+ "    <table>\n"
-	        		+ "        <caption>Somente jogando os dados</caption>\n"
-	        		+ "        <tr>\n"
-	        		+ "            <th>Etapa Fluxo</th>\n"
-	        		+ "            <th>Parecer COE</th>\n"
-	        		+ "        </tr>\n"
-	        		+ "		<tr>\n"
-	        		+ "            <td>{{etapaFluxo}}</td>\n"
-	        		+ "            <td>{{parecerCoe}}</td>\n"
-	        		+ "        </tr>\n"
-	        		+ "        <br></br>\n"
-	        		+ "		\n"
-	        		+ "    </table>";
+	        String estagioHtml = " <div class=\"row col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"margin-bottom: 10px\">\r\n"
+	        		+ "    <fieldset style=\"padding-bottom: 1%\">\r\n"
+	        		+ "        <legend style=\"background-color: #c0c0c0 !important; text-align: center; margin-bottom: 0px; border: solid 1px; border-bottom: 0px; font-size: 1.525vw\">CERTIFICADO DE ESTÁGIO DE {{titulo}}</legend>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; padding: 0px;\">\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Estagiário:</b> {{nome}}</span>\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>Orientador:</b> {{orientador}}</span>\r\n"
+	        		+ "        </span>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "            <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Contratante:</b> {{empresa}}</span>\r\n"
+	        		+ "        </span>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Data de Início:</b> {{dataInicio}}</span>\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Data de Término:</b> {{dataTermino}}</span>\r\n"
+	        		+ "        </span>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Total de Horas:</b> {{totalHoras}}</span>\r\n"
+	        		+ "        </span>\r\n"
+	        		+ "        <span class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"background-color: white; border: solid 1px; border-top: 0px; padding: 0%\">\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; padding: 0% 0% 0% 1%\"><b>Etapa do Fluxo:</b> {{etapaFluxo}}</span>\r\n"
+	        		+ "            <span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px;padding: 0% 0% 0% 1%\"><b>Parecer COE:</b> {{parecerCoe}}</span>\r\n"
+	        		+ "        </span>\r\n"
+	        		+ "    </fieldset>\r\n"
+	        		+ "    <br></br>\r\n"
+	        		+ "</div>";
 	        estagioHtml = estagioHtml.replace("{{etapaFluxo}}", String.valueOf(certificado.getEtapaFluxo()));
 	        estagioHtml = estagioHtml.replace("{{parecerCoe}}", String.valueOf(certificado.getParecerCOE()));
+
+	        String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataInicio());
+			String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataTermino());
+	        
+			estagioHtml = estagioHtml.replace("{{titulo}}", certificado.getEstagio().getAluno().getNome());
 	        estagioHtml = estagioHtml.replace("{{nome}}", certificado.getEstagio().getAluno().getNome());
+	        estagioHtml = estagioHtml.replace("{{aluno}}", certificado.getEstagio().getAluno().getNome());
+	        estagioHtml = estagioHtml.replace("{{empresa}}", certificado.getEstagio().getContratante().getNome());
+	        estagioHtml = estagioHtml.replace("{{orientador}}", certificado.getEstagio().getOrientador().getNome());
+	        estagioHtml = estagioHtml.replace("{{dataInicio}}", dataInicio);
+	        estagioHtml = estagioHtml.replace("{{dataTermino}}", dataTermino);
+	        estagioHtml = estagioHtml.replace("{{totalHoras}}", String.valueOf(certificado.getEstagio().getFichaDeAvaliacao().getTotalHorasEstagioEfetivamenteRealizadas()));
+			
 	        // Adicionar o HTML do estágio à lista
 	        estagiosHtml.append(estagioHtml);
 	    }
@@ -685,7 +707,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// revisar TUDO!!!
+	// Ok
 	public byte[] gerarPdfCertificadoOrientador(Orientador orientador, CertificadoDeEstagio certificado) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -723,19 +745,26 @@ public class GeradorDePdfService {
 		// Informacoes do concedente
 		
 		// Informacoes da ficha
-		if (certificado.getMotivoReprovacao() == null)
+/*		if (certificado.getMotivoReprovacao() == null)
 			html = html.replace("{{reprovacao}}", "Não houve reprovação.");
 		else
 			html = html.replace("{{reprovacao}}", certificado.getMotivoReprovacao());
+*/
 		
-		html = html.replace("{{nome}}", certificado.getEstagio().getAluno().getNome());
-		html = html.replace("{{grr}}", certificado.getEstagio().getAluno().getMatricula());
-		html = html.replace("{{ira}}", certificado.getEstagio().getAluno().getIra());
+		String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataInicio());
+		String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataTermino());
+		LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+        String formattedDate = currentDate.format(formatter);
+        
+		html = html.replace("{{nome}}", certificado.getEstagio().getOrientador().getNome());
 		html = html.replace("{{orientador}}", certificado.getEstagio().getOrientador().getNome());
-		html = html.replace("{{curso}}", certificado.getEstagio().getAluno().getCurso().getNome());
-		html = html.replace("{{etapaFluxo}}", String.valueOf(certificado.getEtapaFluxo()));
-		html = html.replace("{{parecerCoe}}", String.valueOf(certificado.getParecerCOE()));
-		html = html.replace("{{statusEstagio}}", String.valueOf(certificado.getEstagio().getStatusEstagio()));
+		html = html.replace("{{aluno}}", certificado.getEstagio().getAluno().getNome());
+		html = html.replace("{{empresa}}", certificado.getEstagio().getContratante().getNome());
+		html = html.replace("{{dataInicio}}", dataInicio);
+		html = html.replace("{{dataTermino}}", dataTermino);
+		html = html.replace("{{totalHoras}}", String.valueOf(certificado.getEstagio().getFichaDeAvaliacao().getTotalHorasEstagioEfetivamenteRealizadas()));
+		html = html.replace("{{data}}", formattedDate);
 		
 		return html;
 	}
@@ -1166,6 +1195,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{nome}}", certificado.getEstagio().getAluno().getNome());
 		html = html.replace("{{aluno}}", certificado.getEstagio().getAluno().getNome());
 		html = html.replace("{{empresa}}", certificado.getEstagio().getContratante().getNome());
+		html = html.replace("{{orientador}}", certificado.getEstagio().getOrientador().getNome());
 		html = html.replace("{{dataInicio}}", dataInicio);
 		html = html.replace("{{dataTermino}}", dataTermino);
 		html = html.replace("{{totalHoras}}", String.valueOf(certificado.getEstagio().getFichaDeAvaliacao().getTotalHorasEstagioEfetivamenteRealizadas()));
