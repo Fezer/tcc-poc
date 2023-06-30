@@ -34,12 +34,11 @@ export default defineComponent({
       return router.push(`/${perfil}/termo/${id} `);
     };
 
-    // /{idOrientador}/certificado/{idCertificado}/imprimir-certificado
     const handleDownloadCertificado = async () => {
       try {
-        let url = `/${auth?.value?.identifier}/certificado/${estagio?.certificadoDeEstagio}/imprimir-certificado`;
+        let url = `/orientador/${auth?.value?.identifier}/certificado/${estagio?.certificadoDeEstagio}/imprimir-certificado`;
         if (perfil === "aluno") {
-          url = `/aluno/${auth?.value?.identifier}/certificadoDeEstagio`;
+          url = `/aluno/${auth?.value?.identifier}/certificado-de-estagio/${estagio?.certificadoDeEstagio}/gerar`;
         }
 
         const file = await $fetch(url, {

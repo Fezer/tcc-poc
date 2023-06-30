@@ -12,10 +12,28 @@ export default defineComponent({
     );
 
     const reprovacaoModalInfo = ref(null);
-    const handleDownloadCertificado = (certificadoID: string) => {
-      console.log(certificadoID);
-    };
 
+    const handleDownloadCertificado = async (certificadoID: string) => {
+      try {
+        const url = `/aluno/${grr}/certificado-de-estagio/${certificadoID}/gerar`;
+
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        toast.add({
+          severity: "error",
+          summary: "Erro ao baixar certificado",
+          detail:
+            err?.response?._data?.error ||
+            "Ocorreu um erro ao baixar o certificado, tente novamente mais tarde",
+        });
+      }
+    };
     return {
       certificados,
       parseDate,
