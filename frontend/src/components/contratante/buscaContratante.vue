@@ -18,13 +18,10 @@ export default defineComponent({
     let controller; // Declara uma variável para o controlador de cancelamento
     let timeoutId; // Declara uma variável para o ID do timeout
     onMounted(async () => {
-      console.log(props.modelValue);
       localContratante.value = props.modelValue;
 
       if (props.modelValue) {
         const url = `${config.BACKEND_URL}/contratante/${props.modelValue}`;
-
-        console.log(url);
 
         await fetch(url)
           .then((response) => response.json())
@@ -77,7 +74,6 @@ export default defineComponent({
       nome: string,
       cnpj: string
     ) => {
-      console.log("SELECTING CONTRATANTE", contratanteId);
       localContratante.value = contratanteId;
       contratantesInput.value = `${nome} - ${cnpj}`;
       emit("update:modelValue", contratanteId);

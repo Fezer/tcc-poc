@@ -46,7 +46,7 @@ export default defineComponent({
           onRemove(periodo.id, "id");
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     };
 

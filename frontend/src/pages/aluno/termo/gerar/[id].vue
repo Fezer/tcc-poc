@@ -87,7 +87,6 @@ export default defineComponent({
         },
       })
         .then(() => {
-          console.log("Aprovado com sucesso");
           toast.add({
             severity: "success",
             summary: `${respostaFormated.toUpperCase()}`,
@@ -163,7 +162,6 @@ export default defineComponent({
     };
 
     const handleUploadTermo = async (event) => {
-      console.log("upload");
       const file = event.files[0];
 
       const formData = new FormData();

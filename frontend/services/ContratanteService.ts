@@ -63,7 +63,6 @@ export default class ContratanteService extends BaseService {
     representanteEmpresa?: string,
     telefone?: string
   ) {
-    console.log(nome, tipo, cpf, cnpj, representanteEmpresa, telefone);
     const response = await $fetch(`/contratante/${id}`, {
       method: "PUT",
       body: {
@@ -88,12 +87,12 @@ export default class ContratanteService extends BaseService {
 
     return response;
   }
-  async baixarRelatorioEstagioPdfEspecifico(id:number) {
+  async baixarRelatorioEstagioPdfEspecifico(id: number) {
     return $fetch(`/coafe/gerar-relatorio-empresa/${id}`, {
       method: "GET",
     });
   }
-  async baixarRelatorioEstagioExcelEspecifico(id:number) {
+  async baixarRelatorioEstagioExcelEspecifico(id: number) {
     return $fetch(`/coafe/gerar-relatorio-empresa-excel/${id}`, {
       method: "GET",
       responseType: "blob",

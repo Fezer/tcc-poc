@@ -53,8 +53,6 @@ export default defineComponent({
     const getIsTabActive = (
       tab: "aluno" | "aluno/processos" | "aluno/certificados"
     ) => {
-      console.log(route.path);
-
       return route.path === tab;
     };
 

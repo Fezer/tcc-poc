@@ -95,8 +95,6 @@ export default defineComponent({
 
         router.push("/aluno/termo-rescisao/" + termoID);
       } catch (err) {
-        console.log(err?.response, err?.response?.data?.error);
-
         toast.add({
           severity: "error",
           summary: "Erro ao gerar termo de rescisão",

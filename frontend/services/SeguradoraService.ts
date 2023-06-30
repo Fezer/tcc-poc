@@ -60,7 +60,6 @@ export default class SeguradoraService {
     if (!response?.id) {
       throw new Error("Erro ao atualizar a Seguradora");
     } else {
-      console.log(response);
       return response;
     }
   }
@@ -72,11 +71,10 @@ export default class SeguradoraService {
     if (response?.error) {
       throw new Error("Erro ao Deletar Seguradora");
     } else {
-      console.log(response);
       return response;
     }
   }
- async baixarRelatorioPdf() {
+  async baixarRelatorioPdf() {
     return $fetch(`/coafe/gerar-relatorio-seguradora-ufpr`, {
       method: "GET",
     });

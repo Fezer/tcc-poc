@@ -163,7 +163,7 @@ const handleDeleteConvenio = async (id) => {
       detail: "Erro ao deletar o convênio",
       life: 3000,
     });
-    console.log(e);
+    console.error(e);
   }
   refresh();
   return {
@@ -202,7 +202,7 @@ const handleDeleteAgente = async (id, numeroCovenios) => {
       detail: "Erro ao deletar o Agente de Integração",
       life: 3000,
     });
-    console.log(e);
+    console.error(e);
   }
 
   return {

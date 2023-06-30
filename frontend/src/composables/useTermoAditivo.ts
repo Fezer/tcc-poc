@@ -9,7 +9,6 @@ const useTermoAditivo = (): {
   const termo = useState<BaseTermo>("termo");
 
   const setTermo = (termoData: Ref<BaseTermo>) => {
-    console.log("setting termo", termoData);
     termo.value = termoData;
   };
 

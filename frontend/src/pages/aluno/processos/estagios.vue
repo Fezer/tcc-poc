@@ -4,10 +4,6 @@ const { auth } = useAuth();
 const grr = auth?.value?.identifier || "";
 
 const { data: estagios } = await useFetch(`/aluno/${grr}/estagio/`);
-
-console.log(estagios);
-
-// const { data: dadosAluno } = await useFetch(`http://localhost:5000/aluno/${termo?.grr}`);
 </script>
 
 <template>

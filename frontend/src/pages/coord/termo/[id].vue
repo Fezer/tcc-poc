@@ -294,7 +294,6 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      console.log(termo);
       if (termo) {
         state.cienciaIRA = termo?.value?.cienciaCoordenacao?.cienciaIRA;
         state.cienciaPlanoAtividades =

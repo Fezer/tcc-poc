@@ -16,7 +16,6 @@ export default defineComponent({
       seguradoraUfpr: null,
     });
     onMounted(() => {
-      console.log(seguradora.value.nome);
       state.id = seguradora.value.id;
       state.nome = seguradora.value.nome;
       state.ativa = seguradora.value.ativa;

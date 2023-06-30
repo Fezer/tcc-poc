@@ -35,7 +35,6 @@ export default defineComponent({
       refresh();
     }
 
-    console.log(termo);
     const state = reactive({
       confirmAction: null as null | "APROVAR" | "AJUSTAR" | "INDEFERIR",
 

@@ -95,7 +95,7 @@ export default defineComponent({
 
         router.push("/aluno/relatorio/" + relatorioID);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         toast.add({
           severity: "error",
           summary: "Erro",

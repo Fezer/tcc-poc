@@ -7,9 +7,6 @@ const useAluno = (): {
   const aluno = useState<Aluno | void>("aluno", () => {});
 
   const setAluno = (alunoData: Aluno) => {
-    // console.log("SETTING ALUNO");
-    // console.log(alunoData);
-
     aluno.value = alunoData;
   };
 

@@ -10,7 +10,6 @@ export default defineComponent({
     },
   },
   setup({ termo }: { termo: BaseTermo }) {
-    console.log(termo);
     return {
       termo,
     };

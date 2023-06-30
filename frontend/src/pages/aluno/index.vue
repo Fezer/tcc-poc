@@ -44,7 +44,6 @@ export default defineComponent({
         .getEstagioEmRevisao(grr)
         .then((res) => {
           if (res && res.length > 0) {
-            console.log("AJUSTE");
             router.push({
               path: "/aluno/termo/" + res[0]?.termoDeCompromisso,
             });

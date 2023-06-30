@@ -30,16 +30,13 @@ export default defineComponent({
     const grr = auth?.value?.identifier || "";
 
     const handleFetchCurso = async (cursoID: string) => {
-      // if (aluno?.curso) return;
       const response = await alunoService.getCursoAlunoFromSiga(cursoID);
       curso.value = response;
-      // console.log(curso.value);
     };
 
     const { data: aluno } = useAsyncData("aluno", async () => {
       const response = await alunoService.getAlunoFromSiga(grr);
       setAluno(response);
-      console.log(response);
 
       await handleFetchCurso(response?.idPrograma);
       return response;

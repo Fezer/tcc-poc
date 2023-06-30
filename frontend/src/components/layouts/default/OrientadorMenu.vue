@@ -22,8 +22,6 @@ export default {
   },
   methods: {
     getIsTabActive(tab: "orientador") {
-      console.log(this.$route.path);
-
       return this.$route.path === tab;
     },
   },

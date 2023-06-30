@@ -138,7 +138,6 @@ export default defineComponent({
         : validator.safeParse({ ...state });
 
       if (!result.success) {
-        console.log(result.error.issues);
         toast.add({
           severity: "error",
           summary: "Erro",
@@ -185,7 +184,7 @@ export default defineComponent({
         await novoEstagioService
           .setDadosEstagio(termoAditivoID, dadosTermoAditivo)
           .catch((err) => {
-            console.log(err);
+            console.error(err);
             toast.add({
               severity: "error",
               summary: "Erro na etapa de atualizar dados de estágio",
@@ -222,7 +221,7 @@ export default defineComponent({
             formacaoSupervisor,
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
             toast.add({
               severity: "error",
               summary: "Erro na etapa de atualizar as atividades de estágio",
@@ -234,7 +233,7 @@ export default defineComponent({
         await novoEstagioService
           .setOrientador(termoAditivoID, state.orientador)
           .catch((err) => {
-            console.log(err);
+            console.error(err);
             toast.add({
               severity: "error",
               summary: "Erro na etapa de atualizar o orientador",
@@ -252,7 +251,7 @@ export default defineComponent({
 
         router.push(`/aluno/termo-aditivo/${termoAditivoID}`);
       } catch (err) {
-        console.log(err);
+        console.error(err);
         toast.add({
           severity: "error",
           summary: "Erro",
@@ -264,7 +263,7 @@ export default defineComponent({
 
     onMounted(() => {
       if (termo?.value) {
-        console.log("termo", termo.value);
+        console.error("termo", termo.value);
         state.dataInicio = termo.value?.dataInicio
           ? parseDateToMask(termo.value?.dataInicio)
           : state.dataInicio;

@@ -14,7 +14,6 @@ export default defineComponent({
     const agenteService = new AgenteService();
 
     const handleRegisterAgentes = async () => {
-      console.log("ofsasfa");
       if (!state.nome) {
         return toast.add({
           severity: "error",

@@ -57,8 +57,6 @@ export default defineComponent({
 
             const route = getHomeRouteByPerfil(perfil);
 
-            console.log(route);
-
             router.push(route);
           });
       } catch (err) {

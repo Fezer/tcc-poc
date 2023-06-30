@@ -65,7 +65,7 @@ export default defineComponent({
           router.push("/aluno/estagio/" + estagio);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
           toast.add({
             severity: "error",
             summary: "Erro",
@@ -83,7 +83,7 @@ export default defineComponent({
 
         return window.open(fileURL, "_blank");
       } catch (err) {
-        console.log(err);
+        console.error(err);
         toast.add({
           severity: "error",
           summary: "Erro",
@@ -94,7 +94,6 @@ export default defineComponent({
     };
 
     const handleUploadRelatorio = async (event: any) => {
-      console.log("upload");
       const file = event.files[0];
 
       const formData = new FormData();
