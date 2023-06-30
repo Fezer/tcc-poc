@@ -109,6 +109,17 @@ public class GeradorDePdfService {
 		}
 		html = html.replace("{{subtitulo}}", subtitulo);
 		
+		if (estagio.getContratante().getTipo() == EnumTipoContratante.PessoaJuridica) {
+			html = html.replace("{{razaoNome}}", "Razão Social");
+			html = html.replace("{{cpfCnpj}}", "<span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>CNPJ:</b> {{cnpj}}</span>");
+			html = html.replace("{{cnpj}}", estagio.getContratante().getCnpj());
+		}
+		else if (estagio.getContratante().getTipo() == EnumTipoContratante.PessoaFisica) {
+			html = html.replace("{{razaoNome}}", "Nome");
+			html = html.replace("{{cpfCnpj}}", "<span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>CPF:</b> {{cpf}}</span>");
+			html = html.replace("{{cpf}}", estagio.getContratante().getCpf());
+		}
+		
 		if (estagio.isEstagioUfpr()) {
 			html = html.replace("{{razaoSocial}}", "Universidade Federal do Paraná");
 			html = html.replace("{{cnpj}}", "75.095.679/0001-49");
@@ -120,8 +131,8 @@ public class GeradorDePdfService {
 			html = html.replace("{{ufContratante}}", "Paraná");
 			html = html.replace("{{cepContratante}}", "80020-300");
 		} else {
-			html = html.replace("{{razaoSocial}}", estagio.getContratante().getNome());
-			html = html.replace("{{cnpj}}", estagio.getContratante().getCnpj());
+			html = html.replace("{{nomeContratante}}", estagio.getContratante().getNome());
+			//html = html.replace("{{cnpj}}", estagio.getContratante().getCnpj());
 			html = html.replace("{{representante}}", estagio.getContratante().getRepresentanteEmpresa());
 			html = html.replace("{{telefoneContratante}}", estagio.getContratante().getTelefone());
 			/*html = html.replace("{{ruaContratante}}", estagio.getContratante().getEndereco().getRua());
