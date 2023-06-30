@@ -16,7 +16,7 @@ const parseTipoRelatorio = (tipo: "RelatorioParcial" | "RelatorioFinal") => {
     <h1>Relatórios de Estágio</h1>
 
     <DataTable :value="relatorios" rowHover stripedRows :show-gridlines="true">
-      <Column field="id" header="Processo">
+      <Column field="id" header="Número do Processo">
         <template #body="{ data }"> #{{ data.id }} </template>
       </Column>
       <Column field="tipo" header="Tipo">
@@ -24,7 +24,7 @@ const parseTipoRelatorio = (tipo: "RelatorioParcial" | "RelatorioFinal") => {
           {{ parseTipoRelatorio(data.tipoRelatorio) }}
         </template>
       </Column>
-      <Column field="estagio" header="Estágio">
+      <Column field="estagio" header="Número do Estágio">
         <template #body="{ data }"> #{{ data?.estagio?.id }} </template>
       </Column>
       <Column
