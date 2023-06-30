@@ -139,7 +139,7 @@ export default defineComponent({
         />
         <NuxtLink :to="`/aluno/relatorio/gerar/${id}`">
           <Button
-            label="Novo relatório de Estágio"
+            label="Novo Relatório de Estágio"
             class="p-button-danger self-center bg-orange-500"
             icon="pi pi-file"
           />
@@ -152,12 +152,11 @@ export default defineComponent({
           />
         </NuxtLink>
         <Button
-          label="Termo aditivo"
+          label="Termo Aditivo"
           class="p-button-success"
           icon="pi pi-plus"
           @click="handleNovoTermoAditivo"
         />
-        <!-- TODO: só poder solicitar certificado após ficha de avaliação -->
         <Button
           label="Solicitar certificado"
           class="p-button-success"
@@ -194,7 +193,7 @@ export default defineComponent({
       :modal="true"
     >
       <p>
-        Tem certeza que deseja iniciar o processo de rescisao do estágio? O
+        Tem certeza que deseja iniciar o processo de rescisão do estágio? O
         processo será cancelado e o aluno não poderá mais realizar atividades
         referentes a esse estágio.
       </p>

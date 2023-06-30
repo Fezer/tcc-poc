@@ -15,17 +15,14 @@ const { data: termos } = await useFetch(`/aluno/${grr}/termoDeRescisao/`);
         <template #body="{ data }"> #{{ data.id }} </template>
       </Column>
       <Column field="tipo" header="Tipo" style="min-width: 12rem">
-        <template #body="{ data }">
-          <!-- {{ data.tipoTermoDeEstagio }} -->
-          Termo de Rescisão
-        </template>
+        <template #body="{ data }"> Termo de Rescisão </template>
       </Column>
       <Column field="estagio" header="Número do Estágio">
         <template #body="{ data }"> #{{ data?.estagio?.id }} </template>
       </Column>
       <Column
         field="dataTermino"
-        header="Data Término"
+        header="Data de Término"
         style="min-width: 12rem"
       >
         <template #body="{ data }">
@@ -38,7 +35,7 @@ const { data: termos } = await useFetch(`/aluno/${grr}/termoDeRescisao/`);
         style="min-width: 12rem; font-weight: bold"
       >
         <template #body="{ data }">
-          {{ data.etapaFluxo }}
+          {{ data?.etapaFluxo ? "Ciência" : "Aprovado" }}
         </template>
       </Column>
       <Column field="acoes" header="Ações" style="min-width: 12rem">
