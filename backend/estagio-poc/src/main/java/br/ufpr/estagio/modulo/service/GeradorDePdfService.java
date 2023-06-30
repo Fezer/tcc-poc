@@ -167,7 +167,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	// Arrumar assinaturas e adicionar tabela com as perguntas avaliadoras
+	// Arrumar assinaturas
 	public byte[] gerarPdfFicha(Aluno aluno, FichaDeAvaliacao ficha) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
@@ -883,7 +883,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// Ajustar detalhes e adicionar tabela com as perguntas avaliadoras
+	// Descomentar dados estáticos
 	public byte[] gerarPdfAlunoRelatorioDeEstagio(Aluno aluno, RelatorioDeEstagio relatorio) throws IOException, DocumentException {
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    
