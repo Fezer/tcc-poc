@@ -63,13 +63,13 @@ public class AlunoService {
 
 	@Autowired
 	private DadosAuxiliaresRepository dadosRepo;
-	
+
 	@Autowired
 	private SigaApiAlunoService sigaApiAlunoService;
 
 	@Autowired
 	private SigaApiModuloEstagioMapper sigaApiModuloEstagioMapping;
-	
+
 	@Autowired
 	private ContratanteRepository contratanteRepo;
 
@@ -257,12 +257,12 @@ public class AlunoService {
 
 		EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
 		termoAtualizado.setStatusTermo(statusTermo);
-		
+
 		/**
 		 * Caso seja um estágio UFPR, precisa associar a contratante
 		 * como UFPR ao termo.
 		 */
-		if(termoAtualizado.getEstagio().isEstagioUfpr()) {
+		if (termoAtualizado.getEstagio().isEstagioUfpr()) {
 			String cnpjFederal = "75.095.679/0001-49";
 			Optional<Contratante> contratanteFind = contratanteRepo.findByCnpj(cnpjFederal);
 			if (contratanteFind.isEmpty()) {
@@ -338,7 +338,9 @@ public class AlunoService {
 		}
 		List<CertificadoDeEstagio> listaCertificados = new ArrayList<>();
 		for (Estagio e : listaEstagios) {
-			listaCertificados.add(e.getCertificadoDeEstagio());
+			if (e.getCertificadoDeEstagio() != null) {
+				listaCertificados.add(e.getCertificadoDeEstagio());
+			}
 		}
 		return listaCertificados;
 	}
