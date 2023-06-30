@@ -265,9 +265,11 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="flex gap-2 justify-end">
+    <div
+      class="flex gap-2 justify-end"
+      v-if="relatorio?.etapaFluxo === 'Aluno' && !relatorio?.cienciaOrientador"
+    >
       <Button
-        v-if="relatorio?.etapaFluxo === 'Aluno'"
         label="Cancelar relatório"
         icon="pi pi-times"
         class="p-button-danger"
@@ -275,7 +277,6 @@ export default defineComponent({
       ></Button>
 
       <Button
-        v-if="relatorio?.etapaFluxo === 'Aluno'"
         label="Pedir ciência orientador"
         icon="pi pi-check"
         class="p-button-success"

@@ -23,6 +23,8 @@ export default defineComponent({
     const router = useRouter();
     const toast = useToast();
 
+    const { auth } = useAuth();
+
     const handleRedirectToTermoAditivo = (id: string) => {
       if (perfil === "aluno") {
         setTermo(null);
@@ -35,7 +37,11 @@ export default defineComponent({
     // /{idOrientador}/certificado/{idCertificado}/imprimir-certificado
     const handleDownloadCertificado = async () => {
       try {
-        const url = `/${estagio?.orientador?.id}/certificado/${estagio?.certificadoDeEstagio}/imprimir-certificado`;
+        let url = `/${auth?.value?.identifier}/certificado/${estagio?.certificadoDeEstagio}/imprimir-certificado`;
+        if (perfil === "aluno") {
+          url = `/aluno/${auth?.value?.identifier}/certificadoDeEstagio`;
+        }
+
         const file = await $fetch(url, {
           method: "GET",
         });

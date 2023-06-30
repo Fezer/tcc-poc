@@ -35,7 +35,7 @@ export default defineComponent({
         link: "/aluno/processos/termos-aditivos",
       },
       {
-        label: "Termos de Recisão",
+        label: "Termos de Rescisão",
 
         link: "/aluno/processos/termos-de-rescisao",
       },

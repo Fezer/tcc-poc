@@ -8,7 +8,7 @@ const { data: termos } = await useFetch(`/aluno/${grr}/termoDeRescisao/`);
 
 <template>
   <div>
-    <h1>Termos de Recisão</h1>
+    <h1>Termos de Rescisão</h1>
 
     <DataTable :value="termos" rowHover stripedRows :show-gridlines="true">
       <Column field="termo" header="Número do Termo">
