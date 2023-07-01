@@ -1004,7 +1004,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{formacaoSupervisor}}", termo.getPlanoAtividades().getFormacaoSupervisor());
 		//html = html.replace("{{formacaoSupervisor}}", "Análise e Desenvolvimento Estático");
 				
-		html = html.replace("{{ajustes}}", termo.getDescricaoAjustes());
+		//html = html.replace("{{ajustes}}", termo.getDescricaoAjustes());
 		//html = html.replace("{{ajustes}}", "Ajustando o teste");
 		
 		
@@ -1012,8 +1012,16 @@ public class GeradorDePdfService {
 		// A partir daqui, os dados podem ser alterados pelo Termo Aditivo
 		String novoTermino = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
 		String dataInicioAditivo = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataInicio());
-		String dataTerminoAditivo = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataFimSuspensao());
-		String inicio = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataInicioRetomada());
+		String dataTerminoAditivo = "#####";
+		String inicio = "####";
+		
+		if (termo.getDataFimSuspensao() != null) {
+			dataTerminoAditivo = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataFimSuspensao());
+		}
+		if (termo.getDataInicioRetomada() != null) {
+			inicio = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataInicioRetomada());
+		}
+		
 		String termino = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
 		LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
@@ -1033,11 +1041,15 @@ public class GeradorDePdfService {
 			html = html.replace("{{totalHorasSemanais}}", "####");
 		//html = html.replace("{{totalHorasSemanais}}", String.valueOf(termo.getJornadaSemanal()));
 		
+
+		html = html.replace("{{modalidade}}", String.valueOf(termo.getEstagio().getTipoEstagio()));
+
+		//html = html.replace("{{modalidade}}", String.valueOf(termo.getEstagio().getTipoEstagio()));
 		if (termoAntigo.getEstagio().getTipoEstagio() != termo.getEstagio().getTipoEstagio())
-			html = html.replace("{{modalidade}}", String.valueOf(termo.getEstagio().getTipoEstagio()));
+			html = html.replace("{{novaModalidade}}", String.valueOf(termo.getEstagio().getTipoEstagio()));
 		else
 			html = html.replace("{{novaModalidade}}", "####");
-		//html = html.replace("{{modalidade}}", String.valueOf(termo.getEstagio().getTipoEstagio()));
+		
 		
 		html = html.replace("{{dataInicioAditivo}}", dataInicioAditivo);
 		html = html.replace("{{dataTerminoAditivo}}", dataTerminoAditivo);
@@ -1100,13 +1112,12 @@ public class GeradorDePdfService {
 			html = html.replace("{{telefoneOrientador}}", "####");
 		//html = html.replace("{{telefoneOrientador}}", termo.getOrientador().getTelefone());
 		
-		if (termoAntigo.getOrientador().getDepartamento() != termo.getOrientador().getDepartamento())
-			html = html.replace("{{departamentoOrientador}}", termo.getOrientador().getDepartamento());
-		else
-			html = html.replace("{{departamentoOrientador}}", "####");
-		html = html.replace("{{departamentoOrientador}}", termo.getOrientador().getDepartamento());
+//		if (termoAntigo.getOrientador().getDepartamento() != termo.getOrientador().getDepartamento())
+//			html = html.replace("{{departamentoOrientador}}", termo.getOrientador().getDepartamento());
+//		else
+			html = html.replace("{{departamentoOrientador}}", termo.getEstagio().getOrientador().getDepartamento());
 		
-		html = html.replace("{{consideracoes}}", termo.getDescricaoAjustes());
+		html = html.replace("{{consideracoes}}", termo.getPlanoAtividades().getDescricaoAtividades());
 		html = html.replace("{{novoInicio}}", dataInicioAditivo);
 		html = html.replace("{{novoTermino}}", novoTermino);
 		html = html.replace("{{dataRetomada}}", inicio);
