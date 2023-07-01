@@ -56,9 +56,6 @@ export default defineComponent({
         rowHover
         stripedRows
         :show-gridlines="true"
-        :paginator="true"
-        :rows="10"
-        :totalRecords="certificados?.totalElements"
       >
         <template #header>
           <div class="flex items-center justify-content-between">
@@ -127,6 +124,11 @@ export default defineComponent({
           </template>
         </Column>
       </DataTable>
+      <Paginator
+        :rows="10"
+        :totalRecords="certificados?.totalElements"
+        @page="page = $event.page"
+      ></Paginator>
     </div>
   </div>
 </template>
