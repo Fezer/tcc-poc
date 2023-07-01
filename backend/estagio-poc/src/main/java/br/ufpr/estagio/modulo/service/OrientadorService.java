@@ -59,6 +59,7 @@ public class OrientadorService {
 				} else {
 					orientador = orientadorFind.get();
 				}
+				listaOrientadores.add(orientador);
 			}
 		}
 		return listaOrientadores;

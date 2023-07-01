@@ -2287,9 +2287,6 @@ public class AlunoREST {
 					if (estagio.get(0) == null) {
 						throw new NotFoundException("Estágio não encontrado para o aluno " + aluno.getNome());
 					} else {
-						if(estagio.get(0).isEstagioUfpr()) {
-							termoDeEstagioService.associarContratanteUfprAoTermo(estagio.get(0).getTermoDeCompromisso());
-						}
 						byte[] pdf = geradorService.gerarPdf(aluno, estagio.get(0));
 
 						HttpHeaders headers = new HttpHeaders();
@@ -2537,9 +2534,6 @@ public class AlunoREST {
 					if (termo == null) {
 						throw new NotFoundException("Ficha não encontrada.");
 					} else {
-						if (termo.getEstagio().isEstagioUfpr()) {
-							termo = termoDeEstagioService.associarContratanteUfprAoTermo(termo);
-						}
 						byte[] pdf = geradorService.gerarPdfAlunoTermoAditivo(termo);
 
 						HttpHeaders headers = new HttpHeaders();
