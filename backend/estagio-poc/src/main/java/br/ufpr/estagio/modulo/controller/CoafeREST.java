@@ -1,26 +1,17 @@
 package br.ufpr.estagio.modulo.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -53,7 +44,6 @@ import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
-import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
@@ -738,7 +728,7 @@ public class CoafeREST {
 		}
 	}
 
-	// 							ARQUIVOS
+	// ARQUIVOS
 	// Não lembro como veio parar aqui e estou no meio de outra coisa.
 	// Mantido para não quebrar algo, mas acho que pode apagar.
 	@GetMapping("/{grrAlunoURL}/download-termo")
@@ -891,9 +881,7 @@ public class CoafeREST {
 					Contratante contratante = contratanteFind.get();
 	
 					byte[] pdf = geradorService.gerarPdfContratante(contratante);
-	
-					// byte[] pdf = geradorService.gerarPdfSimples();
-	
+		
 					HttpHeaders headers = new HttpHeaders();
 					headers.setContentType(MediaType.APPLICATION_PDF);
 					headers.setContentDisposition(ContentDisposition.builder("inline")
@@ -1405,7 +1393,6 @@ public class CoafeREST {
 	}
 
 	/* Métodos para COAFE baixar relatórios upados pelo Aluno */
-
 	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/download")
 	public ResponseEntity<Object> downloadTermoDeCompromissoAluno(@PathVariable String grrAlunoURL,
 			@PathVariable String id) {
@@ -1596,9 +1583,6 @@ public class CoafeREST {
 
 					Path diretorioAtual = Paths.get("").toAbsolutePath();
 					String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
-
-					// String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeRescisao;
-					// Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
 
 					int tamanho = termo.getArquivos().size();
 

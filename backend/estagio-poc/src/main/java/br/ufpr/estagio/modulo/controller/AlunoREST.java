@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lowagie.text.DocumentException;
@@ -50,16 +49,13 @@ import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
-import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Aluno;
-import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
-import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.DadosBancarios;
 import br.ufpr.estagio.modulo.model.Estagio;
@@ -924,31 +920,6 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-
-	/*
-	 * @GetMapping("/{grrAlunoURL}/gerar-termo") public ResponseEntity<byte[]>
-	 * gerarTermoPdf(@PathVariable String
-	 * grrAlunoURL, @RequestHeader("Authorization") String accessToken) throws
-	 * IOException {
-	 * 
-	 * // TO-DO: Jogar dentro de um try-catch
-	 * 
-	 * if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) { throw new
-	 * BadRequestException("GRR do aluno não informado!"); } else { Aluno aluno =
-	 * alunoService.buscarAlunoPorGrr(grrAlunoURL, accessToken); if (aluno == null)
-	 * { throw new NotFoundException("Aluno não encontrado!"); } else {
-	 * List<Estagio> estagio = estagioService.buscarEstagioPorAluno(aluno); if
-	 * (estagio.get(0) == null) { throw new
-	 * NotFoundException("Estágio não encontrado para o aluno " + aluno.getNome());
-	 * } else { byte[] pdf = geradorService.gerarPdf(aluno, estagio.get(0));
-	 * 
-	 * HttpHeaders headers = new HttpHeaders();
-	 * headers.setContentType(MediaType.APPLICATION_PDF);
-	 * headers.setContentDisposition(ContentDisposition.builder("inline").filename(
-	 * "arquivo.pdf").build());
-	 * 
-	 * return new ResponseEntity<>(pdf, headers, HttpStatus.OK); } } } }
-	 */
 
 	@ResponseBody
 	@PostMapping("/{grrAlunoURL}/estagio/{idEstagio}/relatorioDeEstagio")
@@ -2356,7 +2327,7 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
+
 	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/gerar-termo")
 	public ResponseEntity<Object> gerarTermoIdPdf(@PathVariable String grrAlunoURL, @PathVariable String id,
 			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
@@ -2372,10 +2343,9 @@ public class AlunoREST {
 
 					if (idLong < 1L)
 						throw new InvalidFieldException("Id inválido.");
-					
-					//List<Estagio> estagio = estagioService.buscarEstagioPorAluno(aluno);
+
 					Optional<Estagio> estagioFind = estagioService.buscarEstagioPorId(idLong);
-					
+
 					if (estagioFind.isEmpty()) {
 						throw new NotFoundException("Estágio não encontrado para o aluno " + aluno.getNome());
 					} else {
@@ -2565,15 +2535,8 @@ public class AlunoREST {
 					if (termo == null) {
 						throw new NotFoundException("Ficha não encontrada.");
 					} else {
-						// TO-DO: Revisar essa implementação.
 						if (termo.getEstagio().isEstagioUfpr()) {
-							Contratante contratante = new Contratante();
-							contratante.setAtivo(true);
-							contratante.setCnpj("123123123123");
-							contratante.setNome("UFPR");
-							contratante.setRepresentanteEmpresa("UFPR");
-							contratante.setTipo(EnumTipoContratante.PessoaJuridica);
-							termo.setContratante(contratante);
+							termo = termoDeEstagioService.associarContratanteUfprAoTermo(termo);
 						}
 						byte[] pdf = geradorService.gerarPdfAlunoTermoAditivo(termo);
 
@@ -2679,8 +2642,8 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/certificado-de-estagio/{id}/gerar")
 	public ResponseEntity<Object> gerarCertificadoDeEstagioPdf(@PathVariable String grrAlunoURL,
-			@PathVariable String id,
-			@RequestHeader("Authorization") String accessToken) throws IOException, DocumentException {
+			@PathVariable String id, @RequestHeader("Authorization") String accessToken)
+			throws IOException, DocumentException {
 		try {
 			long idLong = Long.parseLong(id);
 			if (idLong < 1L) {
@@ -2704,9 +2667,8 @@ public class AlunoREST {
 
 						HttpHeaders headers = new HttpHeaders();
 						headers.setContentType(MediaType.APPLICATION_PDF);
-						headers.setContentDisposition(ContentDisposition.builder("inline")
-								.filename(aluno.getMatricula() + "-certificado-de-estagio-" + certificado.getId()
-										+ ".pdf")
+						headers.setContentDisposition(ContentDisposition.builder("inline").filename(
+								aluno.getMatricula() + "-certificado-de-estagio-" + certificado.getId() + ".pdf")
 								.build());
 
 						return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
@@ -3230,8 +3192,7 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/download")
 	public ResponseEntity<Object> downloadTermoDeCompromissoAluno(@PathVariable String grrAlunoURL,
-			@PathVariable String id,
-			@RequestHeader("Authorization") String accessToken) {
+			@PathVariable String id, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -3267,8 +3228,7 @@ public class AlunoREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -3348,8 +3308,7 @@ public class AlunoREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -3393,8 +3352,7 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/termo-de-rescisao/{id}/download")
 	public ResponseEntity<Object> downloadTermoDeRescisaoAluno(@PathVariable String grrAlunoURL,
-			@PathVariable String id,
-			@RequestHeader("Authorization") String accessToken) {
+			@PathVariable String id, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -3435,8 +3393,7 @@ public class AlunoREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -3480,8 +3437,7 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/ficha-de-avaliacao/{id}/download")
 	public ResponseEntity<Object> downloadFichaDeAvaliacaoAluno(@PathVariable String grrAlunoURL,
-			@PathVariable String id,
-			@RequestHeader("Authorization") String accessToken) {
+			@PathVariable String id, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -3519,8 +3475,7 @@ public class AlunoREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -3564,8 +3519,7 @@ public class AlunoREST {
 
 	@GetMapping("/{grrAlunoURL}/relatorio-de-estagio/{id}/download")
 	public ResponseEntity<Object> downloadRelatorioDeEstagioAluno(@PathVariable String grrAlunoURL,
-			@PathVariable String id,
-			@RequestHeader("Authorization") String accessToken) {
+			@PathVariable String id, @RequestHeader("Authorization") String accessToken) {
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -3603,8 +3557,7 @@ public class AlunoREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -3645,7 +3598,7 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
+
 	@ResponseBody
 	@PutMapping("/{grrAlunoURL}/sincronizarDadosSiga")
 	public ResponseEntity<Object> sincronizarDadosSiga(@PathVariable String grrAlunoURL,
@@ -3684,5 +3637,4 @@ public class AlunoREST {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
-	
 }
