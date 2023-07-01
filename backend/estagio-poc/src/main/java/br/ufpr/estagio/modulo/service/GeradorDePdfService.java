@@ -332,11 +332,11 @@ public class GeradorDePdfService {
         String formattedDate = currentDate.format(formatter);
         
         String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(aluno.getDataNascimento());
-       /* String dataRescisaoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
+        String dataRescisaoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
         
         String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(0));
         String dataTerminoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(1));
-*/
+
 		html = html.replace("{{nome}}", aluno.getNome());
 		html = html.replace("{{rg}}", aluno.getRg());
 		html = html.replace("{{cpf}}", aluno.getCpf());
@@ -365,11 +365,11 @@ public class GeradorDePdfService {
 		html = html.replace("{{cep}}", "81810-481");*/
 		
 		
-		/*html = html.replace("{{dataRescisao}}", dataRescisaoFormatada);
+		html = html.replace("{{dataRescisao}}", dataRescisaoFormatada);
 		
 		html = html.replace("{{dataInicioRecesso}}", dataInicioFormatada);
 		html = html.replace("{{dataTerminoRecesso}}", dataTerminoFormatada);
-		*/
+		
 		html = html.replace("{{data}}", formattedDate);
 		return html;
 	}
