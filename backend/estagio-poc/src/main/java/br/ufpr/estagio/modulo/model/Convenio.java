@@ -130,5 +130,4 @@ public class Convenio implements Serializable{
 		this.ativo = ativo;
 	}
 	
-	
 }

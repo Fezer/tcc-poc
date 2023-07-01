@@ -12,12 +12,10 @@ public class EnderecoDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private long id;
-	//private String logradouro;
 	private String rua;
 	private int numero;
 	private String complemento;
 	private String cidade;
-	//private String estado;
 	private String uf;
 	private String cep;
 	private Pessoa pessoa;
@@ -27,20 +25,6 @@ public class EnderecoDTO implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-
-	/*public EnderecoDTO(long id, String logradouro, int numero, String complemento, String cidade, String estado,
-			String cep, Pessoa pessoa) {
-		super();
-		this.id = id;
-		this.logradouro = logradouro;
-		this.numero = numero;
-		this.complemento = complemento;
-		this.cidade = cidade;
-		this.estado = estado;
-		this.cep = cep;
-		this.pessoa = pessoa;
-	}*/
 
 	public EnderecoDTO(long id, String rua, int numero, String complemento, String cidade, String uf, String cep,
 			Pessoa pessoa) {

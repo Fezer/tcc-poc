@@ -94,14 +94,6 @@ public class Coordenador extends Pessoa implements Serializable{
 		return termoDeEstagio;
 	}
 
-	/*public Long getIdCurso() {
-		return idCurso;
-	}
-
-	public void setIdCurso(Long idCurso) {
-		this.idCurso = idCurso;
-	}*/
-
 	public void setTermoDeEstagio(List<TermoDeEstagio> termoDeEstagio) {
 		this.termoDeEstagio = termoDeEstagio;
 	}	

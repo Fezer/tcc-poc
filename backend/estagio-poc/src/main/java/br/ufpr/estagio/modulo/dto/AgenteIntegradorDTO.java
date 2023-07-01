@@ -18,8 +18,6 @@ public class AgenteIntegradorDTO implements Serializable {
 
 	private String telefone;
 
-	// TODO: remover lists
-
 	private List<Convenio> convenio;
 
 	private List<TermoDeEstagio> termoDeEstagio;
