@@ -114,8 +114,7 @@ public class GeradorDePdfService {
 			html = html.replace("{{razaoNome}}", "Razão Social");
 			html = html.replace("{{cpfCnpj}}", "<span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>CNPJ:</b> {{cnpj}}</span>");
 			html = html.replace("{{cnpj}}", estagio.getContratante().getCnpj());
-		}
-		else if (estagio.getContratante().getTipo() == EnumTipoContratante.PessoaFisica) {
+		} else if (estagio.getContratante().getTipo() == EnumTipoContratante.PessoaFisica) {
 			html = html.replace("{{razaoNome}}", "Nome");
 			html = html.replace("{{cpfCnpj}}", "<span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>CPF:</b> {{cpf}}</span>");
 			html = html.replace("{{cpf}}", estagio.getContratante().getCpf());
@@ -267,7 +266,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{cpf}}", aluno.getCpf());
 		html = html.replace("{{email}}", aluno.getEmail());
 		html = html.replace("{{curso}}", aluno.getCurso().getNome());
-		html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
+		html = html.replace("{{grr}}", aluno.getMatricula());
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
 		html = html.replace("{{orientador}}", ficha.getEstagio().getOrientador().getNome());
 		//html = html.replace("{{orientador}}", "ORIENTADOR");
@@ -333,11 +332,11 @@ public class GeradorDePdfService {
         String formattedDate = currentDate.format(formatter);
         
         String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(aluno.getDataNascimento());
-        String dataRescisaoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
+       /* String dataRescisaoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
         
         String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(0));
         String dataTerminoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(1));
-
+*/
 		html = html.replace("{{nome}}", aluno.getNome());
 		html = html.replace("{{rg}}", aluno.getRg());
 		html = html.replace("{{cpf}}", aluno.getCpf());
@@ -345,7 +344,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{dataNascimento}}", dataFormatada);
 		html = html.replace("{{telefone}}", aluno.getTelefone());
 		html = html.replace("{{curso}}", aluno.getCurso().getNome());
-		html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
+		html = html.replace("{{matricula}}", aluno.getMatricula());
 		//html = html.replace("{{grr}}", "GRR20204481");
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
 		html = html.replace("{{orientador}}", termo.getEstagio().getOrientador().getNome());
@@ -366,11 +365,11 @@ public class GeradorDePdfService {
 		html = html.replace("{{cep}}", "81810-481");*/
 		
 		
-		html = html.replace("{{dataRescisao}}", dataRescisaoFormatada);
+		/*html = html.replace("{{dataRescisao}}", dataRescisaoFormatada);
 		
 		html = html.replace("{{dataInicioRecesso}}", dataInicioFormatada);
 		html = html.replace("{{dataTerminoRecesso}}", dataTerminoFormatada);
-		
+		*/
 		html = html.replace("{{data}}", formattedDate);
 		return html;
 	}
@@ -946,7 +945,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{cpf}}", aluno.getCpf());
 		html = html.replace("{{email}}", aluno.getEmail());
 		html = html.replace("{{curso}}", aluno.getCurso().getNome());
-		html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
+		html = html.replace("{{grr}}", aluno.getMatricula());
 		//html = html.replace("{{grr}}", "GRR20204481");
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
 		html = html.replace("{{orientador}}", relatorio.getEstagio().getOrientador().getNome());
