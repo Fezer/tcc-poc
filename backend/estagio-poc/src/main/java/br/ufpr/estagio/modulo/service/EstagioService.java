@@ -213,11 +213,11 @@ public class EstagioService {
 		return estagio;
 	}
 
-	/** 
+	/**
 	 * Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não
 	 * iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em
 	 * andamento.
-	**/
+	 **/
 	public List<Estagio> buscarEstagioEmProgressoPorAluno(Aluno aluno) {
 		// Primeiro busca por estágio aprovado.
 		EnumStatusEstagio statusEstagio = EnumStatusEstagio.Aprovado;
@@ -333,7 +333,7 @@ public class EstagioService {
 			queryString.append(" AND e.statusEstagio = :statusEstagio");
 		}
 
-		queryString.append(" ORDER BY e.id DESC");
+		queryString.append(" ORDER BY e.id DESC ");
 
 		TypedQuery<Estagio> query = em.createQuery(queryString.toString(), Estagio.class);
 
@@ -347,7 +347,18 @@ public class EstagioService {
 			query.setParameter("statusEstagio", statusEstagio.get());
 		}
 
-		return new PageImpl<>(query.getResultList(), PageRequest.of(page, 10), query.getResultList().size());
+		// Configurar a paginação
+		int totalRegistros = query.getResultList().size();
+		PageRequest pageRequest = PageRequest.of(page, 10);
+
+		// Executar a consulta paginada
+		List<Estagio> termosPaginados = query
+				.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize())
+				.setMaxResults(pageRequest.getPageSize())
+				.getResultList();
+
+		return new PageImpl<>(termosPaginados, pageRequest, totalRegistros);
+
 	}
 
 	public List<Estagio> listarEstagiosPendenteAprovacaoPorIdOrientador(long idOrientador) {
