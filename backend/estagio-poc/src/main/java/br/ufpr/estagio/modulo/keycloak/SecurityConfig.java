@@ -12,8 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -26,7 +24,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        // http.oauth2Login(withDefaults());
         http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
 
         // disable csrf for /auth/login para permitir acesso a rota sem token de
@@ -41,18 +38,6 @@ public class SecurityConfig {
                         .authenticated()
                         .anyRequest()
                         .permitAll());
-
-        // http.authorizeHttpRequests(requests -> requests
-        // .requestMatchers("/siga*")
-        // .hasRole("USER")
-        // .anyRequest()
-        // .permitAll());
-
-        // http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
-
-        // http.authorizeRequests(requests -> requests
-        // .antMatchers("/aluno/**").authenticated()
-        // .anyRequest().permitAll());
 
         return http.build();
     }

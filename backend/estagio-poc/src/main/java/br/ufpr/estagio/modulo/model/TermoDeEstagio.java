@@ -45,7 +45,6 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 	@JoinColumn(name="apolice_id", referencedColumnName="id",nullable=true)
 	private Apolice apolice;
 	
-	// adicionado para concluir a task de associar contratante ao termo
 	@JsonIgnore
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="contratante_id", referencedColumnName="id",nullable=true)
@@ -182,7 +181,6 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 		this.uploadAditivo = false;
 	}
 	
-	// adicionado para concluir a task de associar contratante ao termo
 	public TermoDeEstagio(long id, EnumTipoTermoDeEstagio tipoTermoDeEstagio, Estagio estagio, Seguradora seguradora,
 			Apolice apolice, Contratante contratante, AgenteIntegrador agenteIntegrador, Orientador orientador,
 			Coordenador coordenador, PlanoDeAtividades planoAtividades, Date dataInicio,
@@ -344,12 +342,10 @@ public class TermoDeEstagio extends RepresentationModel<TermoDeEstagio> implemen
 		this.apolice = apolice;
 	}
 	
-	// adicionado para concluir a task de associar contratante ao termo
 	public Contratante getContratante() {
 		return contratante;
 	}
 
-	// adicionado para concluir a task de associar contratante ao termo
 	public void setContratante(Contratante contratante) {
 		this.contratante = contratante;
 	}
