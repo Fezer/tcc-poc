@@ -17,6 +17,7 @@ import br.ufpr.estagio.modulo.dto.PlanoDeAtividadesDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
+import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
@@ -28,6 +29,7 @@ import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Convenio;
+import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
@@ -39,6 +41,7 @@ import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
 import br.ufpr.estagio.modulo.repository.ApoliceRepository;
 import br.ufpr.estagio.modulo.repository.CienciaCoordenacaoRepository;
 import br.ufpr.estagio.modulo.repository.ContratanteRepository;
+import br.ufpr.estagio.modulo.repository.EnderecoRepository;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
 import br.ufpr.estagio.modulo.repository.OrientadorRepository;
 import br.ufpr.estagio.modulo.repository.PlanoDeAtividadesRepository;
@@ -122,6 +125,9 @@ public class TermoDeEstagioService {
 
 	@Autowired
 	private CienciaCoordenacaoRepository cienciaRepo;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepo;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -1480,6 +1486,42 @@ public class TermoDeEstagioService {
 			return false;
 
 		return true;
+	}
+	
+	
+	public TermoDeEstagio associarContratanteUfprAoTermo(TermoDeEstagio termo) {
+	/**
+	 * Caso seja um estágio UFPR, precisa associar a contratante
+	 * como UFPR ao termo.
+	 */
+		if (termo.getEstagio().isEstagioUfpr()) {
+			String cnpjFederal = "75.095.679/0001-49";
+			Optional<Contratante> contratanteFind = contratanteRepo.findByCnpj(cnpjFederal);
+			if (contratanteFind.isEmpty()) {
+				Contratante contratante = new Contratante();
+				contratante.setAtivo(true);
+				contratante.setCnpj(cnpjFederal);
+				contratante.setNome("Universidade Federal do Paraná");
+				contratante.setRepresentanteEmpresa("Ricardo Marcelo Fonseca");
+				contratante.setTelefone("4133102627");
+				contratante.setTipo(EnumTipoContratante.PessoaJuridica);
+				Endereco endereco = new Endereco();
+				endereco.setCidade("Curitiba");
+				endereco.setUf("PR");
+				endereco.setRua("Rua XV de Novembro");
+				endereco.setNumero(1299);
+				endereco.setCep("80020-300");
+				endereco = enderecoRepo.save(endereco);
+				contratante.setEndereco(endereco);
+				contratante = contratanteRepo.save(contratante);
+				termo.setContratante(contratante);
+			} else {
+				termo.setContratante(contratanteFind.get());
+			}
+			termo.getEstagio().setContratante(termo.getContratante());
+			termo = termoRepo.save(termo);
+		}
+		return termo;
 	}
 
 }
