@@ -155,7 +155,7 @@ export default defineComponent({
 
     <div class="col-12">
       <div class="card p-fluid col-12">
-        <h5>Obrigatoriedade do estágio</h5>
+        <h5>Obrigatoriedade do Estágio</h5>
         <SelectButton
           v-model="dadosTipoEstagio.tipoEstagio"
           :options="tiposEstagio"

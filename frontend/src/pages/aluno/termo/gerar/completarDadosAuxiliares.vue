@@ -283,7 +283,7 @@ export default defineComponent({
 
     <div class="col-12">
       <div class="card p-fluid col-12">
-        <h5>Dados da vaga</h5>
+        <h5>Dados da Vaga</h5>
         <div class="formgrid grid">
           <div class="field col">
             <label for="tipoVaga">Tipo de Vaga</label>
@@ -293,7 +293,7 @@ export default defineComponent({
               :options="tiposDeVaga"
               optionLabel="name"
               optionValue="code"
-              placeholder="Selecione o tipo da vaga"
+              placeholder="Selecione o Tipo da Vaga"
               v-model="state.tipoVaga"
               :class="{ 'p-invalid': errors['tipoVaga'] }"
             />
@@ -309,11 +309,13 @@ export default defineComponent({
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="rg">RG</label>
+            <label for="rg">Registro Geral (RG)</label>
             <InputText id="rg" type="text" disabled :value="aluno?.rg" />
           </div>
           <div class="field col">
-            <label for="orgaoEmissor">Órgão Emissor RG</label>
+            <label for="orgaoEmissor"
+              >Órgão Emissor do Registro Geral (RG)</label
+            >
             <InputText
               v-model="state.orgaoEmissor"
               :disabled="!!alunoSiga?.dadosAuxiliares?.orgaoEmissor"
@@ -325,14 +327,16 @@ export default defineComponent({
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="uf">UF RG</label>
+            <label for="uf">Unidade Federativa do Registro Geral (RG)</label>
             <InputText
               v-model="state.uf"
               :disabled="!!alunoSiga?.dadosAuxiliares?.uf"
             />
           </div>
           <div class="field col">
-            <label for="dataExpedicaoRG">Data de expedição RG</label>
+            <label for="dataExpedicaoRG"
+              >Data de Expedição do Registro Geral (RG)</label
+            >
 
             <Calendar
               showIcon
@@ -347,7 +351,7 @@ export default defineComponent({
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="tituloEleitoral">Título eleitoral</label>
+            <label for="tituloEleitoral">Título Eleitoral</label>
             <InputText
               v-model="state.tituloEleitoral"
               :disabled="!!alunoSiga?.dadosAuxiliares?.tituloEleitoral"
@@ -356,7 +360,7 @@ export default defineComponent({
             <small class="text-rose-600">{{ errors["tituloEleitoral"] }}</small>
           </div>
           <div class="field col">
-            <label for="dataEmissaoTitulo">Data de emissão</label>
+            <label for="dataEmissaoTitulo">Data de Emissão do Titulo</label>
 
             <Calendar
               showIcon
@@ -403,7 +407,7 @@ export default defineComponent({
             <small class="text-rose-600">{{ errors["estadoCivil"] }}</small>
           </div>
           <div class="field col">
-            <label for="dependentes">Dependentes</label>
+            <label for="dependentes">Quantidade de Dependentes</label>
             <InputNumber
               v-model="state.dependentes"
               :disabled="!!alunoSiga?.dadosAuxiliares?.dependentes"
@@ -467,7 +471,7 @@ export default defineComponent({
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="nomeDoPai">Nome do pai</label>
+            <label for="nomeDoPai">Nome do Pai</label>
             <InputText
               id="nomeDoPai"
               type="text"
@@ -478,7 +482,7 @@ export default defineComponent({
             <small class="text-rose-600">{{ errors["nomePai"] }}</small>
           </div>
           <div class="field col">
-            <label for="nomeDaMae">Nome da mãe</label>
+            <label for="nomeDaMae">Nome da Mãe</label>
             <InputText
               id="nomeDaMae"
               type="text"
@@ -506,7 +510,7 @@ export default defineComponent({
               aluno?.dadosAuxiliares?.nacionalidade?.trim() !== 'BRASILEIRO'
             "
           >
-            <label for="dataChegadaPais">Data de chegada no pais</label>
+            <label for="dataChegadaPais">Data de Chegada no Pais</label>
 
             <Calendar
               showIcon
@@ -522,7 +526,7 @@ export default defineComponent({
     </div>
     <div class="col-12">
       <div class="card p-fluid col-12">
-        <h5>Dados bancários</h5>
+        <h5>Dados Bancários</h5>
         <div class="formgrid grid">
           <div class="field col">
             <label for="banco">Banco</label>
@@ -562,7 +566,7 @@ export default defineComponent({
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="nomeDaAgencia">Nome da agência</label>
+            <label for="nomeDaAgencia">Nome da Agência</label>
             <InputText
               id="nomeDaAgencia"
               type="text"
@@ -573,7 +577,7 @@ export default defineComponent({
           </div>
 
           <div class="field col">
-            <label for="cidadeDaAgencia">Cidade da agência</label>
+            <label for="cidadeDaAgencia">Cidade da Agência</label>
             <InputText
               id="cidadeDaAgencia"
               type="text"
@@ -586,7 +590,7 @@ export default defineComponent({
 
         <div class="formgrid grid">
           <div class="field col">
-            <label for="enderecoDaAgencia">Endereço da agência</label>
+            <label for="enderecoDaAgencia">Endereço da Agência</label>
             <InputText
               id="enderecoDaAgencia"
               type="text"
@@ -599,7 +603,7 @@ export default defineComponent({
           </div>
 
           <div class="field col">
-            <label for="bairroDaAgencia">Bairro da agência</label>
+            <label for="bairroDaAgencia">Bairro da Agência</label>
             <InputText
               id="bairroDaAgencia"
               type="text"

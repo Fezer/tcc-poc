@@ -126,8 +126,8 @@ export default defineComponent({
 
 <template>
   <div>
-    <small>Processos > Iniciar novo estágio</small>
-    <h3>Novo termo de compromisso</h3>
+    <small>Processos > Iniciar Novo Estágio</small>
+    <h3>Novo Termo de Compromisso</h3>
     <ProgressBar
       :value="state.progressValue"
       style="height: 10px"

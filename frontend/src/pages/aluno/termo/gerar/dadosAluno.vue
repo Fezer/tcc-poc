@@ -57,7 +57,7 @@ export default defineComponent({
 <template>
   <div class="grid mt-2">
     <div class="p-2 mt-4">
-      <h5 class="mb-0">Dados do aluno</h5>
+      <h5 class="mb-0">Dados do Aluno</h5>
       <small class="text-sm"
         >Em caso de necessidade de alteração dos dados do aluno, por favor
         acessar a plataforma SIGA</small
@@ -78,11 +78,11 @@ export default defineComponent({
         </div>
         <div class="formgrid grid">
           <div class="field col">
-            <label for="name2">RG</label>
+            <label for="name2">Registro Geral (RG)</label>
             <InputText disabled id="name2" type="text" :value="aluno?.rg" />
           </div>
           <div class="field col">
-            <label for="email2">CPF</label>
+            <label for="email2"> Cadastro de Pessoas Físicas (CPF)</label>
             <InputText disabled type="text" :value="aluno?.cpf" />
           </div>
         </div>
@@ -97,7 +97,7 @@ export default defineComponent({
             />
           </div>
           <div class="field col">
-            <label for="email2">PcD</label>
+            <label for="email2">Pessoa com Deficiência</label>
             <InputText
               disabled
               id="email2"

@@ -223,7 +223,7 @@ export default defineComponent({
             <small class="text-rose-500">{{ errors["dataInicio"] }}</small>
           </div>
           <div class="field col">
-            <label for="dataFinal">Data de Termino</label>
+            <label for="dataFinal">Data de Término</label>
             <Calendar
               dateFormat="dd/mm/yy"
               showIcon
@@ -266,7 +266,7 @@ export default defineComponent({
         <h5>Valores da Bolsa Auxílio</h5>
         <div class="formgrid grid">
           <div class="field col">
-            <label for="bolsaAuxilio">Valor bolsa auxílio </label>
+            <label for="bolsaAuxilio">Valor da bolsa auxílio </label>
             <InputNumber
               mode="currency"
               v-tooltip.top="
@@ -299,17 +299,6 @@ export default defineComponent({
       </div>
       <div class="card p-fluid col-12">
         <h5>Plano de Atividades</h5>
-        <!-- <div class="formgrid grid">
-          <div class="field col">
-            <label for="coordenador">Coordenador do curso</label>
-            <InputText
-              id="coordenador"
-              type="text"
-              disabled
-              :value="aluno?.coordenador"
-            />
-          </div>
-        </div> -->
         <div class="formgrid grid">
           <div class="field col">
             <label for="orientador">Professor Orientador na UFPR</label>
@@ -354,7 +343,8 @@ export default defineComponent({
         <div class="formgrid grid">
           <div class="field col">
             <label for="nomeSupervisor"
-              >CPF do Supervisor no Local de Estágio</label
+              >Cadastro de Pessoas Físicas (CPF) do Supervisor no Local de
+              Estágio</label
             >
             <InputMask
               mask="999.999.999-99"
