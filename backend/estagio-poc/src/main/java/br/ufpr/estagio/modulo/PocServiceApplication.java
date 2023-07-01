@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import com.itextpdf.html2pdf.HtmlConverter;
 
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
+import br.ufpr.estagio.modulo.service.MariaDBInitializerService;
 import jakarta.annotation.PostConstruct;
 
 @SpringBootApplication
@@ -19,6 +20,9 @@ public class PocServiceApplication {
 	
 	@Autowired
 	private GeradorDePdfService geradorDePdfService;
+	
+    @Autowired
+    private MariaDBInitializerService mariaDBInitializer;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(PocServiceApplication.class, args);
@@ -38,6 +42,10 @@ public class PocServiceApplication {
 	    if (!diretorio.exists()) {
 	        diretorio.mkdirs();
 	    }
+	    
+	    mariaDBInitializer.createProcedureUpdateStatusEstagioIniciado();
+	    mariaDBInitializer.createProcedureUpdateStatusConcluido();
+	    mariaDBInitializer.createEventUpdateStatusEstagio();
 	}
 
 }
