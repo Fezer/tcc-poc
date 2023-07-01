@@ -11,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Convenio;
-import br.ufpr.estagio.modulo.model.Estagio;
-import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
 import br.ufpr.estagio.modulo.repository.ConvenioRepository;
 
@@ -22,13 +20,7 @@ public class ConvenioService {
 	
 	@Autowired
 	private ConvenioRepository convenioRepository;
-	
-	@Autowired
-	private EstagioService estagioService;
-	
-	@Autowired
-	private TermoDeEstagioService termoDeEstagioService;
-	
+		
 	@Autowired
 	private AgenteIntegradorRepository agenteIntegradorRepository;
 	
@@ -55,23 +47,6 @@ public class ConvenioService {
 
         return convenioRepository.save(convenioExistente);
 	}
-
-	/*public boolean verificarTermoConvenio(Convenio c) {
-		Optional<Convenio> convenioOptional = convenioRepository.findById(c.getId());
-        if (convenioOptional.isPresent()) {
-        	Convenio convenio = convenioOptional.get();
-        	AgenteIntegrador agente = convenio.getAgenteIntegrador();
-        	
-        	boolean termos = estagioService.listarEstagiosPorAgenteIntegrador(agente);
-        	boolean estagios = termoDeEstagioService.listarTermosDeEstagioPorAgenteIntegrador(agente);
-        	
-        	if (!termos || !estagios)
-        		return false;
-        	
-        	return true;
-        }
-		return false;
-	}*/
 	
 	public void excluirConvenio(Convenio c) {
 		Optional<Convenio> convenioOptional = convenioRepository.findById(c.getId());
@@ -92,23 +67,6 @@ public class ConvenioService {
 		
 	}
 	
-	/*public boolean verificarTermoConvenio(Convenio c) {
-	Optional<Convenio> convenioOptional = convenioRepository.findById(c.getId());
-    if (convenioOptional.isPresent()) {
-    	Convenio convenio = convenioOptional.get();
-    	AgenteIntegrador agente = convenio.getAgenteIntegrador();
-    	
-    	boolean termos = estagioService.listarEstagiosPorAgenteIntegrador(agente);
-    	boolean estagios = termoDeEstagioService.listarTermosDeEstagioPorAgenteIntegrador(agente);
-    	
-    	if (!termos || !estagios)
-    		return false;
-    	
-    	return true;
-    }
-	return false;
-}*/
-
 	public Convenio associarAgenteAoConvenio(Convenio convenio, AgenteIntegrador agente) {
 		convenio.setAgenteIntegrador(agente);
 		List<Convenio> listConvenio = agente.getConvenio();

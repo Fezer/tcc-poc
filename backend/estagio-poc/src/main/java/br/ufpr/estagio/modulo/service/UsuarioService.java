@@ -1,16 +1,12 @@
 package br.ufpr.estagio.modulo.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.ufpr.estagio.modulo.dto.EnderecoDTO;
-import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.model.Usuario;
-import br.ufpr.estagio.modulo.repository.EnderecoRepository;
 import br.ufpr.estagio.modulo.repository.UsuarioRepository;
 
 @Service

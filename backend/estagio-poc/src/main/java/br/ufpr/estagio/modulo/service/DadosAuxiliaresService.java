@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
-import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.repository.DadosAuxiliaresRepository;
 
 @Service

@@ -55,21 +55,6 @@ public class CursoService {
     }
 
 	public Curso mapearCursoDiscente(Discente discente) {
-		
-		/*Optional<Curso> cursoFind = cursoRepo.findById(discente.getIdCurso());
-		Curso curso = new Curso();
-
-		Optional<CursoSiga> cursoSiga = cursoSigaRepo.findById(discente.getIdCurso());
-
-		if(cursoFind.isEmpty()) {
-			curso = mapper.map(cursoSiga, Curso.class);
-			curso.setIdPrograma(discente.getIdPrograma());
-			curso = this.salvarCurso(curso);
-		} else {
-			curso = cursoFind.get();
-		}
-
-		return curso;*/
 		return null;
 	}
 
@@ -81,7 +66,6 @@ public class CursoService {
 			if(listaOrientador != null && listaOrientador.isEmpty()) {
 				List<String> docentes = sigaApiDiscentesService.buscarDiscentesPorIdPrograma(idPrograma, accessToken).getDocentes();
 				orientadores = orientadorService.salvarListaDocentes(docentes, cursoFind);
-				//this.salvarCurso(cursoFind);
 			}
 		}
 		return orientadores;
