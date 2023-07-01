@@ -55,10 +55,6 @@ export default defineComponent({
     <div>
       <DataTable
         :value="processes?.content"
-        :paginator="true"
-        :rows="10"
-        @page="page = $event.page"
-        :totalRecords="processes?.totalElements"
         rowHover
         stripedRows
         :show-gridlines="true"
@@ -125,6 +121,11 @@ export default defineComponent({
           </template>
         </Column>
       </DataTable>
+      <Paginator
+        :rows="10"
+        :totalRecords="processes?.totalElements"
+        @page="page = $event.page"
+      ></Paginator>
     </div>
   </div>
 </template>
