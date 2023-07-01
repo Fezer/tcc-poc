@@ -120,13 +120,8 @@ export default defineComponent({
       <DataTable
         v-model:filters="filtros"
         :value="contratantes?.content"
-        paginator
-        :globalFilterFields="['Empresas']"
         rowHover
         stripedRows
-        :rows="10"
-        :totalRecords="contratantes?.totalElements"
-        @page="page = $event.page"
         :show-gridlines="true"
       >
         <template #header>
@@ -205,6 +200,11 @@ export default defineComponent({
           </template>
         </Column>
       </DataTable>
+      <Paginator
+        :rows="10"
+        :totalRecords="contratantes?.totalElements"
+        @page="page = $event.page"
+      ></Paginator>
     </div>
   </div>
 </template>

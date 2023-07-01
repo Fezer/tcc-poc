@@ -20,10 +20,7 @@
         :value="seguradoras?.content"
         rowHover
         stripedRows
-        paginator
         :show-gridlines="true"
-        :rows="10"
-        @page="page = $event.page"
       >
         <template #header>
           <div class="flex justify-content-between">
@@ -128,6 +125,11 @@
           </template>
         </Column>
       </DataTable>
+      <Paginator
+        :rows="10"
+        :totalRecords="seguradoras?.totalElements"
+        @page="page = $event.page"
+      ></Paginator>
     </div>
   </div>
 </template>

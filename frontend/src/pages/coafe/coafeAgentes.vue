@@ -18,10 +18,6 @@
     <div>
       <DataTable
         :value="agentes?.content"
-        paginator
-        :rows="10"
-        @page="page = $event.page"
-        :totalRecords="agentes?.totalElements"
         rowHover
         stripedRows
         :show-gridlines="true"
@@ -99,6 +95,11 @@
           </template>
         </Column>
       </DataTable>
+      <Paginator
+        :rows="10"
+        :totalRecords="agentes?.totalElements"
+        @page="page = $event.page"
+      ></Paginator>
     </div>
   </div>
 </template>
