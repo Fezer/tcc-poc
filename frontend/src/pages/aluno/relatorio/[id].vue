@@ -4,7 +4,8 @@ import { defineComponent } from "vue";
 import AlunoService from "~~/services/AlunoService";
 import RelatorioEstagioService from "~~/services/RelatorioEstagioService";
 import RelatorioEstagio from "~~/src/types/RelatorioEstagio";
-
+import parseCompletionOptions from "~~/src/utils/parseCompletionOptions";
+import parseEvaluateOptions from "~~/src/utils/parseEvaluateOptions";
 export default defineComponent({
   setup() {
     const route = useRoute();
@@ -159,6 +160,8 @@ export default defineComponent({
       handleUploadRelatorio,
       cancelVisible,
       handleDownloadRelatorioAssinado,
+      parseCompletionOptions,
+      parseEvaluateOptions,
     };
   },
 });
@@ -207,7 +210,7 @@ export default defineComponent({
           realizadas:</strong
         >
         <p class="text-md m-0 mb-2">
-          {{ relatorio?.avalAtividades }}
+          {{ parseCompletionOptions(relatorio?.avalAtividades) }}
         </p>
       </div>
 
@@ -217,7 +220,7 @@ export default defineComponent({
           para sua formação profissional?
         </strong>
         <p class="text-md m-0 mb-2">
-          {{ relatorio?.avalFormacaoProfissional }}
+          {{ parseEvaluateOptions(relatorio?.avalFormacaoProfissional) }}
         </p>
       </div>
 
@@ -228,7 +231,7 @@ export default defineComponent({
         </strong>
 
         <p class="text-md m-0 mb-2">
-          {{ relatorio?.avalRelacoesInterpessoais }}
+          {{ parseEvaluateOptions(relatorio?.avalRelacoesInterpessoais) }}
         </p>
       </div>
       <div class="col-6">
@@ -238,7 +241,7 @@ export default defineComponent({
         </strong>
 
         <p class="text-md m-0 mb-2">
-          {{ relatorio?.avalDesenvolvimentoAtividades }}
+          {{ parseEvaluateOptions(relatorio?.avalDesenvolvimentoAtividades) }}
         </p>
       </div>
       <div class="col-6">
@@ -247,7 +250,9 @@ export default defineComponent({
           concedente?
         </strong>
 
-        <p class="text-md m-0 mb-2">{{ relatorio?.avalContribuicaoEstagio }}</p>
+        <p class="text-md m-0 mb-2">
+          {{ parseEvaluateOptions(relatorio?.avalContribuicaoEstagio) }}
+        </p>
       </div>
 
       <div class="col-6">
@@ -256,7 +261,9 @@ export default defineComponent({
           estágio?
         </strong>
 
-        <p class="text-md m-0 mb-2">{{ relatorio?.avalEfetivacao }}</p>
+        <p class="text-md m-0 mb-2">
+          {{ parseEvaluateOptions(relatorio?.avalEfetivacao) }}
+        </p>
       </div>
 
       <div class="col-12">

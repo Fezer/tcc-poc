@@ -6,7 +6,6 @@ import { ref } from "vue";
 import AlunoService from "~~/services/AlunoService";
 import RelatorioEstagioService from "~~/services/RelatorioEstagioService";
 import RelatorioEstagio from "~~/src/types/RelatorioEstagio";
-
 export default defineComponent({
   setup() {
     const route = useRoute();
