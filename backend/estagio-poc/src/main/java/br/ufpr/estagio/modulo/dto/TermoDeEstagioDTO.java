@@ -23,13 +23,9 @@ public class TermoDeEstagioDTO {
 	private String grrAluno;
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
 	private Estagio estagio;
-
 	private Seguradora seguradora;
 	private Apolice apolice;
-	
-	// adicionado para concluir a task de associar contratante ao termo
 	private Contratante contratante;
-	
 	private AgenteIntegrador agenteIntegrador;
 	private Orientador orientador;
 	private Coordenador coordenador;
