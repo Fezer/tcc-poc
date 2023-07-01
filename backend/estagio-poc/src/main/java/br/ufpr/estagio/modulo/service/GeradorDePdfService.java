@@ -348,7 +348,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
 		//html = html.replace("{{grr}}", "GRR20204481");
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
-		html = html.replace("{{orientador}}", ficha.getEstagio().getOrientador().getNome());
+		html = html.replace("{{orientador}}", termo.getEstagio().getOrientador().getNome());
 		//html = html.replace("{{orientador}}", "ORIENTADOR");
 		html = html.replace("{{nivel}}", aluno.getCurso().getNivel());
 		
