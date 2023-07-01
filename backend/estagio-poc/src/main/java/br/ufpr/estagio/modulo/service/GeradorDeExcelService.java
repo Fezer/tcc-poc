@@ -27,7 +27,7 @@ public class GeradorDeExcelService {
 	public ByteArrayOutputStream gerarExcelEstagioSeguradoraUfpr(List<Estagio> estagios) throws IOException {
 		
 	    try (Workbook workbook = new XSSFWorkbook()) {
-			Sheet sheet = workbook.createSheet("Relatório Estágios");
+			Sheet sheet = workbook.createSheet("Relatório de Estágios com Seguradora UFPR");
 			
 			String[] headersTitle = {"Id do Estágio", "Nome Aluno", "GRR", "IRA", "Curso", "Status do Estágio", "Contratante", 
 					"Seguradora", "Apólice", "Orientador", "Agente Integrador", "Supervisor", "Data de Início", "Data de Término",
@@ -245,12 +245,11 @@ public class GeradorDeExcelService {
 	public ByteArrayOutputStream gerarExcelRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) throws IOException {
 		
 	    try (Workbook workbook = new XSSFWorkbook()) {
-			Sheet sheet = workbook.createSheet("Certificados de Estágio");
-
-			String[] headersTitle = {"Id do Estágio", "Nome Aluno", "GRR", "Curso", "Desempenho nas Atividades",
-					"Contribuição no Estágio", "Desenvolvimento de Atividades", "Efetivação", "Formação Profissional",
-					"Relações Interpessoais", "Considerações", "Seguradora", "Apólice", "Orientador", "Agente Integrador", 
-					"Supervisor", "Data de Início", "Data de Término", "Rua do Estágio", "Número", "Cidade", "Estado", "CEP"};
+			Sheet sheet = workbook.createSheet("Relatórios de Estágio");
+	        
+			String[] headersTitle = {"Id do Relatório", "Nome do Aluno", "Ciência do Orientador", "Tipo do Relatório", 
+					"Etapa do Fluxo", "Aval. Atividades", "Aval. Contribuição", "Aval. Desenvolvimento",
+					"Aval. Efetivação", "Aval. Formação", "Aval. Relações", "Considerações"};
 			Row titleRow = sheet.createRow(0);
 			Cell titleCell = titleRow.createCell(0);
 			titleCell.setCellValue("Relatório de Relatórios de Estágio");
@@ -273,33 +272,20 @@ public class GeradorDeExcelService {
 			int rowNum = 2;
 			for (RelatorioDeEstagio relatorio : relatorios) {
 			    Row row = sheet.createRow(rowNum++);
-			    
-			    String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataInicio());
-			    String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataTermino());
-			    
+		        
 			    row.createCell(0).setCellValue(relatorio.getEstagio().getId());
 			    row.createCell(1).setCellValue(relatorio.getEstagio().getAluno().getNome());
-			    row.createCell(2).setCellValue(relatorio.getEstagio().getAluno().getMatricula());
-			    row.createCell(3).setCellValue(relatorio.getEstagio().getAluno().getCurso().getNome());
-			    row.createCell(4).setCellValue(String.valueOf(relatorio.getAvalAtividades()));
-			    row.createCell(5).setCellValue(String.valueOf(relatorio.getAvalContribuicaoEstagio()));
-			    row.createCell(6).setCellValue(String.valueOf(relatorio.getAvalDesenvolvimentoAtividades()));
-			    row.createCell(7).setCellValue(String.valueOf(relatorio.getAvalEfetivacao()));
-			    row.createCell(8).setCellValue(String.valueOf(relatorio.getAvalFormacaoProfissional()));
-			    row.createCell(9).setCellValue(String.valueOf(relatorio.getAvalRelacoesInterpessoais()));
-			    row.createCell(10).setCellValue(relatorio.getConsideracoes());
-			    row.createCell(11).setCellValue(relatorio.getEstagio().getSeguradora().getNome());
-			    row.createCell(12).setCellValue(relatorio.getEstagio().getApolice().getNumero());
-			    row.createCell(13).setCellValue(relatorio.getEstagio().getOrientador().getNome());
-			    row.createCell(14).setCellValue(relatorio.getEstagio().getAgenteIntegrador().getNome());
-			    row.createCell(15).setCellValue(relatorio.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
-			    row.createCell(16).setCellValue(dataInicio);
-			    row.createCell(17).setCellValue(dataTermino);
-			    row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
-			    row.createCell(19).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getNumero());
-			    row.createCell(20).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCidade());
-			    row.createCell(21).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getUf());
-			    row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());
+			    row.createCell(2).setCellValue(String.valueOf(relatorio.isCienciaOrientador()));
+			    row.createCell(3).setCellValue(String.valueOf(relatorio.getTipoRelatorio()));
+			    row.createCell(4).setCellValue(String.valueOf(relatorio.getEtapaFluxo()));
+			    row.createCell(5).setCellValue(String.valueOf(relatorio.getAvalAtividades()));
+			    row.createCell(6).setCellValue(String.valueOf(relatorio.getAvalContribuicaoEstagio()));
+			    row.createCell(7).setCellValue(String.valueOf(relatorio.getAvalDesenvolvimentoAtividades()));
+			    row.createCell(8).setCellValue(String.valueOf(relatorio.getAvalEfetivacao()));
+			    row.createCell(9).setCellValue(String.valueOf(relatorio.getAvalFormacaoProfissional()));
+			    row.createCell(10).setCellValue(String.valueOf(relatorio.getAvalRelacoesInterpessoais()));
+			    row.createCell(11).setCellValue(relatorio.getConsideracoes());
+			    
 			}
 
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -314,15 +300,14 @@ public class GeradorDeExcelService {
 	    try (Workbook workbook = new XSSFWorkbook()) {
 	    	//Workbook workbook = new XSSFWorkbook();
 
-			Sheet sheet = workbook.createSheet("Certificados de Estágio");
+			Sheet sheet = workbook.createSheet("Relatório de Estágio");
 
-			String[] headersTitle = {"Id do Estágio", "Nome Aluno", "GRR", "Curso", "Desempenho nas Atividades",
-					"Contribuição no Estágio", "Desenvolvimento de Atividades", "Efetivação", "Formação Profissional",
-					"Relações Interpessoais", "Considerações", "Seguradora", "Apólice", "Orientador", "Agente Integrador", 
-					"Supervisor", "Data de Início", "Data de Término", "Rua do Estágio", "Número", "Cidade", "Estado", "CEP"};
+			String[] headersTitle = {"Id do Relatório", "Nome do Aluno", "Ciência do Orientador", "Tipo do Relatório", 
+					"Etapa do Fluxo", "Aval. Atividades", "Aval. Contribuição", "Aval. Desenvolvimento",
+					"Aval. Efetivação", "Aval. Formação", "Aval. Relações", "Considerações"};
 			Row titleRow = sheet.createRow(0);
 			Cell titleCell = titleRow.createCell(0);
-			titleCell.setCellValue("Relatório de Estágios com Seguradora UFPR");
+			titleCell.setCellValue("Relatório de Relatório de Estágio");
 
 			int numColumns = headersTitle.length;
 
@@ -342,32 +327,18 @@ public class GeradorDeExcelService {
 			int rowNum = 2;
 			Row row = sheet.createRow(rowNum++);
 			
-			String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataInicio());
-			String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataTermino());
-			
 			row.createCell(0).setCellValue(relatorio.getEstagio().getId());
-			row.createCell(1).setCellValue(relatorio.getEstagio().getAluno().getNome());
-			row.createCell(2).setCellValue(relatorio.getEstagio().getAluno().getMatricula());
-			row.createCell(3).setCellValue(relatorio.getEstagio().getAluno().getCurso().getNome());
-			row.createCell(4).setCellValue(String.valueOf(relatorio.getAvalAtividades()));
-			row.createCell(5).setCellValue(String.valueOf(relatorio.getAvalContribuicaoEstagio()));
-			row.createCell(6).setCellValue(String.valueOf(relatorio.getAvalDesenvolvimentoAtividades()));
-			row.createCell(7).setCellValue(String.valueOf(relatorio.getAvalEfetivacao()));
-			row.createCell(8).setCellValue(String.valueOf(relatorio.getAvalFormacaoProfissional()));
-			row.createCell(9).setCellValue(String.valueOf(relatorio.getAvalRelacoesInterpessoais()));
-			row.createCell(10).setCellValue(relatorio.getConsideracoes());
-			row.createCell(11).setCellValue(relatorio.getEstagio().getSeguradora().getNome());
-			row.createCell(12).setCellValue(relatorio.getEstagio().getApolice().getNumero());
-			row.createCell(13).setCellValue(relatorio.getEstagio().getOrientador().getNome());
-			row.createCell(14).setCellValue(relatorio.getEstagio().getAgenteIntegrador().getNome());
-			row.createCell(15).setCellValue(relatorio.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
-			row.createCell(16).setCellValue(dataInicio);
-			row.createCell(17).setCellValue(dataTermino);
-			row.createCell(18).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getRua());
-			row.createCell(19).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getNumero());
-			row.createCell(20).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCidade());
-			row.createCell(21).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getUf());
-			row.createCell(22).setCellValue(relatorio.getEstagio().getContratante().getEndereco().getCep());
+		    row.createCell(1).setCellValue(relatorio.getEstagio().getAluno().getNome());
+		    row.createCell(2).setCellValue(String.valueOf(relatorio.isCienciaOrientador()));
+		    row.createCell(3).setCellValue(String.valueOf(relatorio.getTipoRelatorio()));
+		    row.createCell(4).setCellValue(String.valueOf(relatorio.getEtapaFluxo()));
+		    row.createCell(5).setCellValue(String.valueOf(relatorio.getAvalAtividades()));
+		    row.createCell(6).setCellValue(String.valueOf(relatorio.getAvalContribuicaoEstagio()));
+		    row.createCell(7).setCellValue(String.valueOf(relatorio.getAvalDesenvolvimentoAtividades()));
+		    row.createCell(8).setCellValue(String.valueOf(relatorio.getAvalEfetivacao()));
+		    row.createCell(9).setCellValue(String.valueOf(relatorio.getAvalFormacaoProfissional()));
+		    row.createCell(10).setCellValue(String.valueOf(relatorio.getAvalRelacoesInterpessoais()));
+		    row.createCell(11).setCellValue(relatorio.getConsideracoes());
 
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			workbook.write(outputStream);
