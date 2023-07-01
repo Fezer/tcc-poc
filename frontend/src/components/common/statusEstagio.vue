@@ -10,6 +10,8 @@ export default defineComponent({
   setup({ estagio }: { estagio: Estagio }) {
     return {
       parseDate,
+      estagio,
+      dayjs,
     };
   },
 });
@@ -29,7 +31,7 @@ export default defineComponent({
           <strong>Data de Início do Estágio</strong>
           <span>{{ parseDate(estagio?.dataInicio) }}</span>
         </div>
-        <div class="col-4" v-if="!!estagio?.termoDeRescisao">
+        <div class="col-4" v-if="!!estagio?.dataTermino">
           <strong>Data de Término do Estágio</strong>
           <p>{{ parseDate(estagio?.dataTermino) }}</p>
         </div>

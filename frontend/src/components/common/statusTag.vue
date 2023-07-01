@@ -22,6 +22,8 @@ export default defineComponent({
       Reprovado: "danger",
       Rescindido: "danger",
       Cancelado: "danger",
+      Iniciado: "success",
+      Concluido: "info",
     };
 
     const tagColor = colors[status] || "info";

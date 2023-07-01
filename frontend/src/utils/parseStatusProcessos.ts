@@ -7,6 +7,8 @@ export default function parseStatusProcessos(
     | "EmAprovacao"
     | "EmPreenchimento"
     | "Rescindido"
+    | "Iniciado"
+    | "Concluido"
 ): string {
   const parsedStatus = {
     Aprovado: "Aprovado",
@@ -16,6 +18,8 @@ export default function parseStatusProcessos(
     EmAprovacao: "Em Aprovação",
     EmPreenchimento: "Em Preenchimento",
     Rescindido: "Rescindido",
+    Iniciado: "Iniciado",
+    Concluido: "Concluído",
   };
 
   return parsedStatus[status] || "Status não rechonhecido";

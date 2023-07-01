@@ -12,7 +12,9 @@ type StatusTermo =
   | "EmRevisao"
   | "EmPreenchimento"
   | "Rescindido"
-  | "Cancelado";
+  | "Cancelado"
+  | "Iniciado"
+  | "Concluido";
 
 interface BaseTermo {
   id: number;
