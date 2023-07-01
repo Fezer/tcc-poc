@@ -25,6 +25,7 @@ import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
 @RestController
@@ -33,6 +34,9 @@ public class EstagioREST {
 
 	@Autowired
 	private EstagioService estagioService;
+	
+	@Autowired
+	private TermoDeEstagioService termoService;
 
 	@GetMapping("/")
 	public ResponseEntity<Object> listarTodos(@RequestParam(defaultValue = "0") int page,
@@ -190,6 +194,7 @@ public class EstagioREST {
 				boolean booleanEstagioUfpr = Boolean.valueOf(estagioUfpr);
 
 				Estagio estagio = estagioFind.get();
+				termoService.associarContratanteUfprAoTermo(estagioFind.get().getTermoDeCompromisso());
 				estagio = estagioService.definirEstagioUfpr(estagio, booleanEstagioUfpr);
 				EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
 				return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
