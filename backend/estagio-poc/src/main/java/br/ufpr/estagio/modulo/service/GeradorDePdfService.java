@@ -37,9 +37,7 @@ import java.util.Optional;
 @Service
 public class GeradorDePdfService {
 	
-	// Arrumar assinaturas
 	public byte[] gerarPdf(Aluno aluno, Estagio estagio) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlTermoAluno(aluno, estagio);
 	    
@@ -54,7 +52,6 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlTermoAluno(Aluno aluno, Estagio estagio) {
-		// carregar o HTML do arquivo
 		ClassLoader classLoader = getClass().getClassLoader();
 		
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -65,7 +62,7 @@ public class GeradorDePdfService {
 		try {
 			
 			html = IOUtils.toString(classLoader.getResourceAsStream("TermoCompromisso-Obrigatorio-Ufpr-EstudanteUfpr.html"), StandardCharsets.UTF_8);
-			//html = IOUtils.toString(classLoader.getResourceAsStream("termo.html"), StandardCharsets.UTF_8);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -141,9 +138,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	// Arrumar assinaturas
 	public byte[] gerarPdfFicha(Aluno aluno, FichaDeAvaliacao ficha) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlFichaAluno(aluno, ficha);
 	    
@@ -158,7 +153,6 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlFichaAluno(Aluno aluno, FichaDeAvaliacao ficha) {
-		// carregar o HTML do arquivo
 		ClassLoader classLoader = getClass().getClassLoader();
 		
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -208,8 +202,7 @@ public class GeradorDePdfService {
 		//html = html.replace("{{supervisor}}", "SUPERVISOR");
 		html = html.replace("{{formacao}}", ficha.getEstagio().getPlanoDeAtividades().getFormacaoSupervisor());
 		//html = html.replace("{{formacao}}", "TADS");
-		
-		// Informacoes da ficha		
+
 		String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(ficha.getEstagio().getDataInicio());
 		String dataFimFormatada = new SimpleDateFormat("dd/MM/yyyy").format(ficha.getEstagio().getDataTermino());
 		
@@ -256,9 +249,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 
-	// Arrumar assinaturas
 	public byte[] gerarPdfRescisao(Aluno aluno, TermoDeRescisao termo) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlTermoDeRescisao(aluno, termo);
 	    
@@ -273,7 +264,6 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlTermoDeRescisao(Aluno aluno, TermoDeRescisao termo) {
-		// carregar o HTML do arquivo
 		ClassLoader classLoader = getClass().getClassLoader();
 		
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -306,8 +296,7 @@ public class GeradorDePdfService {
 		//html = html.replace("{{supervisor}}", "SUPERVISOR");
 		html = html.replace("{{formacao}}", termo.getEstagio().getPlanoDeAtividades().getFormacaoSupervisor());
 		//html = html.replace("{{formacao}}", "TADS");
-		
-		// Informacoes do aluno
+
 		LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
         String formattedDate = currentDate.format(formatter);
@@ -355,9 +344,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 
-	// Ok
 	public byte[] gerarPdfContratante(Contratante contratante) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlRelatorioContratante(contratante);
 	    
@@ -412,9 +399,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	// Ok
 	public byte[] gerarPdfAgenteIntegrador(AgenteIntegrador agenteIntegrador) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlRelatorioAgenteIntegrador(agenteIntegrador);
 	    
@@ -429,7 +414,7 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlRelatorioAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
-		// carregar o HTML do arquivo
+
 		ClassLoader classLoader = getClass().getClassLoader();
 		
 		String html = "";
@@ -453,9 +438,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	// Descomentar dados estáticos
 	public byte[] gerarPdfEstagioSeguradoraUfpr(List<Estagio> estagios) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlEstagioSeguradoraUfpr(estagios);
 	    
@@ -470,7 +453,6 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlEstagioSeguradoraUfpr(List<Estagio> estagios) {
-	    // Carregar o HTML do arquivo
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    String html = "";
 	    try {
@@ -590,9 +572,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// Ok
 	public byte[] gerarPdfCertificadosDeEstagio(List<CertificadoDeEstagio> certificados) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlCertificadosDeEstagio(certificados);
 	    
@@ -607,7 +587,7 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlCertificadosDeEstagio(List<CertificadoDeEstagio> certificados) {
-	    // Carregar o HTML do arquivo
+
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    String html = "";
 	    try {
@@ -673,9 +653,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// Ok
 	public byte[] gerarPdfCertificadoOrientador(Orientador orientador, CertificadoDeEstagio certificado) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlCertificadoOrientador(orientador, certificado);
 	    
@@ -727,9 +705,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	// Ok
 	public byte[] gerarPdfRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlRelatoriosDeEstagio(relatorios);
 	    
@@ -814,9 +790,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// Ok
 	public byte[] gerarPdfRelatorioDeEstagio(Optional<RelatorioDeEstagio> relatorio) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlRelatorioDeEstagio(relatorio);
 	    
@@ -868,9 +842,7 @@ public class GeradorDePdfService {
 	    return html;
 	}
 	
-	// Descomentar dados estáticos
 	public byte[] gerarPdfAlunoRelatorioDeEstagio(Aluno aluno, RelatorioDeEstagio relatorio) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlAlunoRelatorioDeEstagio(aluno, relatorio);
 	    
@@ -904,7 +876,6 @@ public class GeradorDePdfService {
 		String imagePath = resources + "termo/prograd.png";
 		html = html.replace("{{imagePath}}", imagePath);
 		
-		// Informacoes do relatório
 		html = html.replace("{{razaoSocial}}", relatorio.getEstagio().getContratante().getNome());
 		html = html.replace("{{cnpj}}", relatorio.getEstagio().getContratante().getCnpj());
 		html = html.replace("{{representante}}", relatorio.getEstagio().getContratante().getRepresentanteEmpresa());
@@ -915,8 +886,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{cidadeContratante}}", relatorio.getEstagio().getContratante().getEndereco().getCidade());
 		html = html.replace("{{ufContratante}}", relatorio.getEstagio().getContratante().getEndereco().getUf());
 		html = html.replace("{{cepContratante}}", relatorio.getEstagio().getContratante().getEndereco().getCep());
-		
-		// Informacoes do aluno
+
 		LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
         String formattedDate = currentDate.format(formatter);
@@ -957,9 +927,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 	
-	// Ajustar detalhes e descomentar dados estáticos
 	public byte[] gerarPdfAlunoTermoAditivo(TermoDeEstagio termo) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlAlunoTermoAditivo(termo);
 	    
@@ -974,7 +942,7 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlAlunoTermoAditivo(TermoDeEstagio termo) {
-	    // Carregar o HTML do arquivo
+
 		ClassLoader classLoader = getClass().getClassLoader();
 		
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -1003,10 +971,8 @@ public class GeradorDePdfService {
 		html = html.replace("{{ufContratante}}", termo.getEstagio().getContratante().getEndereco().getUf());
 		html = html.replace("{{cepContratante}}", termo.getEstagio().getContratante().getEndereco().getCep());
 
-		
 		TermoDeEstagio termoAntigo = termo.getEstagio().getTermoDeCompromisso();
-		
-		// Informacoes do aluno
+
 		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getEstagio().getAluno().getDataNascimento());
 
 		html = html.replace("{{nome}}", termo.getEstagio().getAluno().getNome());
@@ -1149,9 +1115,7 @@ public class GeradorDePdfService {
 		return html;
 	}
 
-	// Ok
 	public byte[] gerarPdfAlunoCertificadoDeEstagio(CertificadoDeEstagio certificado) throws IOException, DocumentException {
-	    ClassLoader classLoader = getClass().getClassLoader();
 	    
 	    String html = getHtmlAlunoCertificadoDeEstagio(certificado);
 	    
@@ -1166,7 +1130,7 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlAlunoCertificadoDeEstagio(CertificadoDeEstagio certificado) {
-	    // Carregar o HTML do arquivo
+		
 		ClassLoader classLoader = getClass().getClassLoader();
 		
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -1185,7 +1149,6 @@ public class GeradorDePdfService {
 		String imagePath = resources + "termo/prograd.png";
 		html = html.replace("{{imagePath}}", imagePath);
 		
-		// Informacoes do aluno
 		String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataInicio());
 		String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataTermino());
 		LocalDate currentDate = LocalDate.now();
