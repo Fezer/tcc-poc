@@ -27,6 +27,20 @@ Criando imagem do banco em docker:
 docker run --name tcc -e MYSQL_ROOT_PASSWORD=poc -e MYSQL_DATABASE=poc -e MYSQL_USER=poc -e MYSQL_PASSWORD=poc -p 3306:3306 -d mariadb:latest
 ```
 
+### Configurações do Banco
+
+O usuário que aplicação utilizar para acessar o banco precisa ter os seguintes privilégios:
+- Usage
+- Event
+
+O privilégio Event é necessário pois a aplicação irá criar procedures no banco quando for inicializada e além das procedures também irá criar um scheduler event para executar as procedures de tempo em tempo.
+
+Além disto, também é necessário que o parâmetro global event_scheduler esteja habilitado no banco para que o scheduler execute. Para habilitar o event_scheduler no banco a seguinte query SQL deve ser executada no banco:
+
+```
+SET GLOBAL event_scheduler = ON;
+```
+
 ## Backend
 
 Necessita:
