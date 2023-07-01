@@ -6,7 +6,7 @@ public enum EnumStatusEstagio {
 	Aprovado,
 	Iniciado,
 	Concluido,
-	Cancelado,
+	Cancelado,	
 	Rescindido,
 	Reprovado
 
