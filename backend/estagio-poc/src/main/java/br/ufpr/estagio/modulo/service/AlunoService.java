@@ -252,37 +252,6 @@ public class AlunoService {
 		termoAtualizado.setStatusTermo(statusTermo);
 
 		/**
-		 * Caso seja um estágio UFPR, precisa associar a contratante
-		 * como UFPR ao termo.
-		 */
-		if (termoAtualizado.getEstagio().isEstagioUfpr()) {
-			String cnpjFederal = "75.095.679/0001-49";
-			Optional<Contratante> contratanteFind = contratanteRepo.findByCnpj(cnpjFederal);
-			if (contratanteFind.isEmpty()) {
-				Contratante contratante = new Contratante();
-				contratante.setAtivo(true);
-				contratante.setCnpj(cnpjFederal);
-				contratante.setNome("Universidade Federal do Paraná");
-				contratante.setRepresentanteEmpresa("Ricardo Marcelo Fonseca");
-				contratante.setTelefone("4133102627");
-				contratante.setTipo(EnumTipoContratante.PessoaJuridica);
-				Endereco endereco = new Endereco();
-				endereco.setCidade("Curitiba");
-				endereco.setUf("PR");
-				endereco.setRua("Rua XV de Novembro");
-				endereco.setNumero(1299);
-				endereco.setCep("80020-300");
-				endereco = enderecoRepo.save(endereco);
-				contratante.setEndereco(endereco);
-				contratante = contratanteRepo.save(contratante);
-				termoAtualizado.setContratante(contratante);
-			} else {
-				termoAtualizado.setContratante(contratanteFind.get());
-			}
-			termoAtualizado.getEstagio().setContratante(termoAtualizado.getContratante());
-		}
-
-		/**
 		 * Pode se estar solicitando uma reaprovação de um termo que o Aluno ajustou,
 		 * pelo motivo de algum dos atores terem solicitado ajuste. Desta forma,
 		 * é importante zerar todos os pareceres e ciências, bem como a descrição
