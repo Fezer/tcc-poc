@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +34,6 @@ import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoDocumento;
-import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
@@ -76,27 +74,26 @@ public class CoordenacaoREST {
 	private ModelMapper mapper;
 
 	@GetMapping("/termo/pendenteAprovacaoCoordenacao")
-	public ResponseEntity<Object> listarTermosPendenteAprovacao(
-			@RequestParam(defaultValue = "0") int page) {
+	public ResponseEntity<Object> listarTermosPendenteAprovacao(@RequestParam(defaultValue = "0") int page) {
 		try {
-			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermoCompromissoPaginated(
-					page,
-					Optional.of(EnumStatusTermo.EmAprovacao),
-					Optional.of(EnumEtapaFluxo.Coordenacao),
-					Optional.empty(), // Envolve the null value in an Optional
-					Optional.of(EnumTipoTermoDeEstagio.TermoDeCompromisso),
-					Optional.empty());
+			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermoCompromissoPaginated(page,
+					Optional.of(EnumStatusTermo.EmAprovacao), Optional.of(EnumEtapaFluxo.Coordenacao), Optional.empty(), // Envolve
+																															// the
+																															// null
+																															// value
+																															// in
+																															// an
+																															// Optional
+					Optional.of(EnumTipoTermoDeEstagio.TermoDeCompromisso), Optional.empty());
 
 			if (listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
 				List<TermoDeEstagioDTO> listaTermosDTO = listaTermos.getContent().stream()
-						.map(e -> mapper.map(e, TermoDeEstagioDTO.class))
-						.collect(Collectors.toList());
+						.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList());
 
 				return ResponseEntity.status(HttpStatus.OK).body(
-						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(),
-								listaTermos.getTotalElements()));
+						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(), listaTermos.getTotalElements()));
 			}
 		} catch (NotFoundException ex) {
 			ex.printStackTrace();
@@ -127,8 +124,7 @@ public class CoordenacaoREST {
 	}
 
 	@GetMapping("/termo/pendenteAprovacaoCoordenacaoFiltro")
-	public ResponseEntity<Object> listarTermosPendenteAprovacaoPorTipoEstagio(
-			@RequestParam String tipoEstagio) {
+	public ResponseEntity<Object> listarTermosPendenteAprovacaoPorTipoEstagio(@RequestParam String tipoEstagio) {
 		try {
 			List<TermoDeEstagio> listaTermos = termoDeEstagioService
 					.listarTermosDeCompromissoPendenteAprovacaoCoordenacaoPorTipoEstagio(tipoEstagio);
@@ -167,21 +163,17 @@ public class CoordenacaoREST {
 	}
 
 	@GetMapping("/termo/indeferido")
-	public ResponseEntity<Object> listarTermosIndeferidos(
-			@RequestParam(defaultValue = "0") int page) {
+	public ResponseEntity<Object> listarTermosIndeferidos(@RequestParam(defaultValue = "0") int page) {
 		try {
-			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidos(
-					page);
+			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidos(page);
 			if (listaTermos.isEmpty()) {
 				return null;
 			} else {
 				List<TermoDeEstagioDTO> listaTermosDTO = listaTermos.getContent().stream()
-						.map(e -> mapper.map(e, TermoDeEstagioDTO.class))
-						.collect(Collectors.toList());
+						.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList());
 
 				return ResponseEntity.status(HttpStatus.OK).body(
-						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(),
-								listaTermos.getTotalElements()));
+						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(), listaTermos.getTotalElements()));
 			}
 		} catch (NotFoundException ex) {
 			ex.printStackTrace();
@@ -329,20 +321,17 @@ public class CoordenacaoREST {
 	}
 
 	@GetMapping("/termoAditivo/indeferido")
-	public ResponseEntity<Object> listarTermosAditivosIndeferidos(
-			@RequestParam(defaultValue = "0") int page) {
+	public ResponseEntity<Object> listarTermosAditivosIndeferidos(@RequestParam(defaultValue = "0") int page) {
 		try {
 			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosIndeferidos(page);
 			if (listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
 				List<TermoDeEstagioDTO> listaTermosDTO = listaTermos.getContent().stream()
-						.map(e -> mapper.map(e, TermoDeEstagioDTO.class))
-						.collect(Collectors.toList());
+						.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList());
 
 				return ResponseEntity.status(HttpStatus.OK).body(
-						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(),
-								listaTermos.getTotalElements()));
+						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(), listaTermos.getTotalElements()));
 			}
 		} catch (NotFoundException ex) {
 			ex.printStackTrace();
@@ -419,9 +408,9 @@ public class CoordenacaoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
-			
+
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -466,9 +455,9 @@ public class CoordenacaoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
-			
+
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			} else {
@@ -512,7 +501,7 @@ public class CoordenacaoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
@@ -557,7 +546,7 @@ public class CoordenacaoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
@@ -602,7 +591,7 @@ public class CoordenacaoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
@@ -647,7 +636,7 @@ public class CoordenacaoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
@@ -692,7 +681,7 @@ public class CoordenacaoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
@@ -776,7 +765,7 @@ public class CoordenacaoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeRescisao> termoOptional = termoDeRescisaoService.buscarPorId(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
@@ -816,7 +805,7 @@ public class CoordenacaoREST {
 
 	@GetMapping("/{grrAlunoURL}/download-termo")
 	public ResponseEntity<Object> downloadTermo(@PathVariable String grrAlunoURL) {
-		
+
 		try {
 			if (grrAlunoURL.isBlank() || grrAlunoURL.isEmpty()) {
 				throw new BadRequestException("GRR do aluno não informado!");
@@ -827,16 +816,15 @@ public class CoordenacaoREST {
 				} else {
 					Path diretorioAtual = Paths.get("").toAbsolutePath();
 					String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
-	
+
 					String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
 					Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
-	
+
 					try {
 						Resource resource = new UrlResource(arquivo.toUri());
-	
+
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -878,7 +866,6 @@ public class CoordenacaoREST {
 	}
 
 	/* Métodos para Coordenacao baixar documentos upados pelo Aluno */
-
 	@GetMapping("/{grrAlunoURL}/termo-de-compromisso/{id}/download")
 	public ResponseEntity<Object> downloadTermoDeCompromissoAluno(@PathVariable String grrAlunoURL,
 			@PathVariable String id) {
@@ -917,8 +904,7 @@ public class CoordenacaoREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -997,8 +983,7 @@ public class CoordenacaoREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -1070,9 +1055,6 @@ public class CoordenacaoREST {
 					Path diretorioAtual = Paths.get("").toAbsolutePath();
 					String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
 
-					// String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeRescisao;
-					// Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
-
 					int tamanho = termo.getArquivos().size();
 
 					String nomeArquivo = termo.getArquivos().get(tamanho - 1);
@@ -1083,8 +1065,7 @@ public class CoordenacaoREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -1166,8 +1147,7 @@ public class CoordenacaoREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -1249,8 +1229,7 @@ public class CoordenacaoREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);

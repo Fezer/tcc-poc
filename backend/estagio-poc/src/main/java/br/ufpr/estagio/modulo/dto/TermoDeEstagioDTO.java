@@ -16,7 +16,6 @@ import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.Seguradora;
-import jakarta.persistence.Column;
 
 public class TermoDeEstagioDTO {
 	private long id;
@@ -24,13 +23,9 @@ public class TermoDeEstagioDTO {
 	private String grrAluno;
 	private EnumTipoTermoDeEstagio tipoTermoDeEstagio;
 	private Estagio estagio;
-
 	private Seguradora seguradora;
 	private Apolice apolice;
-	
-	// adicionado para concluir a task de associar contratante ao termo
 	private Contratante contratante;
-	
 	private AgenteIntegrador agenteIntegrador;
 	private Orientador orientador;
 	private Coordenador coordenador;

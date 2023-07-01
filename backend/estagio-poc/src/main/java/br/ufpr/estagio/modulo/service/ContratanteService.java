@@ -113,12 +113,6 @@ public class ContratanteService {
 
 	}
 
-	/*
-	 * public Optional<Contratante> buscarPorNome(String nomeContratante) {
-	 * return contratanteRepo.findByNome(nomeContratante);
-	 * }
-	 */
-
 	public List<Contratante> buscarPorNome(String nomeContratante) {
 		return contratanteRepo.findByNome(nomeContratante);
 	}
@@ -126,7 +120,6 @@ public class ContratanteService {
 	public List<Contratante> buscarPorNomeContendo(String nomeContratante) {
 		EnumTipoContratante tipoContratante = EnumTipoContratante.PessoaJuridica;
 		return contratanteRepo.findByNomeContainingIgnoreCaseAndTipo(nomeContratante, tipoContratante);
-		// return contratanteRepo.findByNomeContainingIgnoreCase(nomeContratante);
 	}
 
 	public List<Contratante> buscarContratantePorNomeComecandoPor(String nomeContratante) {

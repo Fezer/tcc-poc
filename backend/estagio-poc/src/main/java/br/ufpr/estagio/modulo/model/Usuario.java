@@ -2,19 +2,12 @@ package br.ufpr.estagio.modulo.model;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.ufpr.estagio.modulo.enums.EnumTipoUsuario;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -38,8 +31,6 @@ public class Usuario implements Serializable {
 	@Column(name = "tipoUsuario")
 	private EnumTipoUsuario tipoUsuario;
 
-	// leva informação sobre o usuário
-	// exemplo: id do orientador para consultas do frontend
 	@Column(name = "identifier")
 	private String identifier;
 

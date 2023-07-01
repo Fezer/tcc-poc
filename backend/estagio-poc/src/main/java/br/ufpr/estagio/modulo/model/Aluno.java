@@ -11,7 +11,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -78,14 +77,8 @@ public class Aluno extends Pessoa implements Serializable {
 	@JoinColumn(name="dados_bancarios_id", referencedColumnName="id", nullable=true)
 	private DadosBancarios dadosBancarios;
 	
-//	@OneToOne(cascade=CascadeType.REMOVE)
-//	@JoinColumn(name="endereco_id", referencedColumnName="id", nullable=true)
 	private Endereco endereco;
-	
-//	@JsonIgnore
-//	@ManyToMany(mappedBy = "aluno", cascade=CascadeType.REMOVE)
-//	private List<Disciplina> disciplina;
-	
+		
 	@JsonIgnore
 	@OneToMany(mappedBy="aluno", cascade=CascadeType.REMOVE)
 	private List<Estagio> estagio;
@@ -100,8 +93,7 @@ public class Aluno extends Pessoa implements Serializable {
 	public Aluno(long id, String nome, String telefone, long idDiscente, boolean isPcd, String matricula,
 			int periodoAtual, String rg, String cpf, String email, Date dataNascimento, String turno,
 			String coordenador, String idPrograma, String ira, Long idCurso, boolean isMatriculado, Curso curso,
-			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, Endereco endereco,
-			/**List<Disciplina> disciplina,**/ List<Estagio> estagio) {
+			DadosAuxiliares dadosAuxiliares, DadosBancarios dadosBancarios, Endereco endereco, List<Estagio> estagio) {
 		super(id, nome, telefone, endereco);
 		this.idDiscente = idDiscente;
 		this.isPcd = isPcd;
@@ -120,11 +112,8 @@ public class Aluno extends Pessoa implements Serializable {
 		this.curso = curso;
 		this.dadosAuxiliares = dadosAuxiliares;
 		this.dadosBancarios = dadosBancarios;
-//		this.endereco = endereco;
-//		this.disciplina = disciplina;
 		this.estagio = estagio;
 	}
-
 
 	public long getId() {
 		return super.getId();
@@ -218,56 +207,45 @@ public class Aluno extends Pessoa implements Serializable {
 		return turno;
 	}
 
-
 	public void setTurno(String turno) {
 		this.turno = turno;
 	}
-
 
 	public String getCoordenador() {
 		return coordenador;
 	}
 
-
 	public void setCoordenador(String coordenador) {
 		this.coordenador = coordenador;
 	}
-
 
 	public Endereco getEndereco() {
 		return super.getEndereco();
 	}
 
-
 	public void setEndereco(Endereco endereco) {
 		super.setEndereco(endereco);
 	}
-
 
 	public String getIdPrograma() {
 		return idPrograma;
 	}
 
-
 	public void setIdPrograma(String idPrograma) {
 		this.idPrograma = idPrograma;
 	}
-
 
 	public String getIra() {
 		return ira;
 	}
 
-
 	public void setIra(String ira) {
 		this.ira = ira;
 	}
 
-
 	public Long getIdCurso() {
 		return idCurso;
 	}
-
 
 	public void setIdCurso(Long idCurso) {
 		this.idCurso = idCurso;
@@ -278,11 +256,9 @@ public class Aluno extends Pessoa implements Serializable {
 		return isMatriculado;
 	}
 
-
 	public void setMatriculado(boolean isMatriculado) {
 		this.isMatriculado = isMatriculado;
 	}
-
 
 	public DadosAuxiliares getDadosAuxiliares() {
 		return dadosAuxiliares;
@@ -300,14 +276,6 @@ public class Aluno extends Pessoa implements Serializable {
 		this.dadosBancarios = dadosBancarios;
 	}
 
-//	public List<Disciplina> getDisciplina() {
-//		return disciplina;
-//	}
-//
-//	public void setDisciplina(List<Disciplina> disciplina) {
-//		this.disciplina = disciplina;
-//	}
-
 	public List<Estagio> getEstagio() {
 		return estagio;
 	}
@@ -324,11 +292,9 @@ public class Aluno extends Pessoa implements Serializable {
 		return curso;
 	}
 
-
 	public void setCurso(Curso curso) {
 		this.curso = curso;
 	}
-
 
 	public Estagio novoEstagio() {
 		Estagio estagio = new Estagio();

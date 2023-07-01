@@ -35,17 +35,13 @@ import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
-import br.ufpr.estagio.modulo.exception.PocException;
-import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Estagio;
-import br.ufpr.estagio.modulo.model.FichaDeAvaliacao;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 import br.ufpr.estagio.modulo.service.CertificadoDeEstagioService;
 import br.ufpr.estagio.modulo.service.EstagioService;
-import br.ufpr.estagio.modulo.service.GeradorDeExcelService;
 import br.ufpr.estagio.modulo.service.GeradorDePdfService;
 import br.ufpr.estagio.modulo.service.OrientadorService;
 import br.ufpr.estagio.modulo.service.RelatorioDeEstagioService;
@@ -77,13 +73,9 @@ public class OrientadorREST {
 	@Autowired
 	private GeradorDePdfService geradorService;
 
-	@Autowired
-	private GeradorDeExcelService geradorExcelService;
-
 	@GetMapping("/{idOrientador}/estagio")
 	public ResponseEntity<?> listarEstagiosDeOrientandos(@PathVariable String idOrientador,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(required = false) Optional<String> grrAluno,
+			@RequestParam(defaultValue = "0") int page, @RequestParam(required = false) Optional<String> grrAluno,
 			@RequestParam(required = false) Optional<EnumStatusEstagio> statusEstagio) {
 		try {
 			long idLongOrientador = Long.parseLong(idOrientador);
@@ -103,10 +95,8 @@ public class OrientadorREST {
 
 				Orientador orientador = orientadorFind.get();
 
-				Page<Estagio> listaEstagios = estagioService.listarEstagiosPorIdOrientador(orientador.getId(),
-						page,
-						grrOptional,
-						statusEstagioOptional);
+				Page<Estagio> listaEstagios = estagioService.listarEstagiosPorIdOrientador(orientador.getId(), page,
+						grrOptional, statusEstagioOptional);
 
 				List<EstagioDTO> listaDTO = new ArrayList<EstagioDTO>();
 				for (Estagio l : listaEstagios) {
@@ -144,8 +134,7 @@ public class OrientadorREST {
 	}
 
 	@GetMapping("/{idOrientador}/estagio/pendenteAprovacao")
-	public ResponseEntity<?> listarEstagiosDeOrientandosPendenteAprovacao(
-			@PathVariable String idOrientador) {
+	public ResponseEntity<?> listarEstagiosDeOrientandosPendenteAprovacao(@PathVariable String idOrientador) {
 		try {
 			long idLongOrientador = Long.parseLong(idOrientador);
 
@@ -239,8 +228,7 @@ public class OrientadorREST {
 	}
 
 	@GetMapping("/{idOrientador}/relatorioDeEstagio/")
-	public ResponseEntity<?> listarRelatoriosDeEstagioDeOrientandos(
-			@PathVariable String idOrientador) {
+	public ResponseEntity<?> listarRelatoriosDeEstagioDeOrientandos(@PathVariable String idOrientador) {
 		try {
 			long idLongOrientador = Long.parseLong(idOrientador);
 
@@ -285,8 +273,7 @@ public class OrientadorREST {
 	}
 
 	@GetMapping("/{idOrientador}/relatorioDeEstagio/pendenteCiencia")
-	public ResponseEntity<?> listarRelatoriosDeEstagioDeOrientandosPendenteCiencia(
-			@PathVariable String idOrientador) {
+	public ResponseEntity<?> listarRelatoriosDeEstagioDeOrientandosPendenteCiencia(@PathVariable String idOrientador) {
 		try {
 			long idLongOrientador = Long.parseLong(idOrientador);
 
@@ -432,8 +419,7 @@ public class OrientadorREST {
 	}
 
 	@GetMapping("/{idOrientador}/termoDeRescisao/pendenteCiencia")
-	public ResponseEntity<?> listarTermosDeRescisaoPendenteCienciaOrientador(
-			@PathVariable String idOrientador) {
+	public ResponseEntity<?> listarTermosDeRescisaoPendenteCienciaOrientador(@PathVariable String idOrientador) {
 		try {
 			long idLongOrientador = Long.parseLong(idOrientador);
 

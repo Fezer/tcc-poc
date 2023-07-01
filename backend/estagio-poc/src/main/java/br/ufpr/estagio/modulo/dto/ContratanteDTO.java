@@ -23,7 +23,6 @@ public class ContratanteDTO implements Serializable {
 	private Endereco endereco;
 	private List<Estagio> estagio;
 	
-	// adicionado para concluir a task de associar contratante ao termo
 	private List<TermoDeEstagio> termoDeEstagio;
 	
 	private boolean ativo;
@@ -46,7 +45,6 @@ public class ContratanteDTO implements Serializable {
 
 	}
 
-	// adicionado para concluir a task de associar contratante ao termo
 	public ContratanteDTO(long id, EnumTipoContratante tipo, String cnpj, String cpf, String representanteEmpresa) {
 		super();
 		this.id = id;

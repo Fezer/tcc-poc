@@ -21,15 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufpr.estagio.modulo.dto.AgenteIntegradorDTO;
 import br.ufpr.estagio.modulo.dto.ContratanteDTO;
 import br.ufpr.estagio.modulo.dto.EnderecoDTO;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
-import br.ufpr.estagio.modulo.exception.PocException;
-import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.service.ContratanteService;
@@ -64,20 +61,6 @@ public class ContratanteREST {
 			if (contratante.getTelefone() == null || contratante.getTelefone().isEmpty())
 				throw new InvalidFieldException("Preencha o telefone.");
 
-			/*
-			 * if ((contratante.getCnpj() == null || contratante.getCnpj().isEmpty()) &&
-			 * (contratante.getCpf() == null || contratante.getCpf().isEmpty())) {
-			 * throw new InvalidFieldException("Preencha o CNPJ ou o CPF.");
-			 * }
-			 */
-
-			/*
-			 * if (contratante.getCnpj() != null && contratante.getCpf() != null) {
-			 * if (!contratante.getCnpj().isEmpty() && !contratante.getCpf().isEmpty())
-			 * throw new InvalidFieldException("Contratante só pode ter CNPJ ou CPF.");
-			 * }
-			 */
-
 			if (contratante.getTipo() == EnumTipoContratante.PessoaFisica && contratante.getCpf() == null)
 				throw new InvalidFieldException("Contratante do tipo Pessoa Física deve possuir CPF.");
 
@@ -98,6 +81,8 @@ public class ContratanteREST {
 
 			if (contratante.getRepresentanteEmpresa() == null || contratante.getRepresentanteEmpresa().isEmpty())
 				throw new InvalidFieldException("Preencha o nome do representante da empresa.");
+
+			contratante.setAtivo(true);
 
 			contratante = contratanteService.criarContratante(contratante);
 
@@ -165,18 +150,13 @@ public class ContratanteREST {
 	@GetMapping("/nome/{nomeContratante}")
 	public ResponseEntity<Object> buscarContratanteNome(@PathVariable String nomeContratante) {
 		try {
-			// Optional<Contratante> contratanteFind =
-			// contratanteService.buscarPorNome(nomeContratante);
 			List<Contratante> contratantesFind = contratanteService.buscarPorNome(nomeContratante);
 
 			if (contratantesFind.isEmpty()) {
 				throw new NotFoundException("Contratante não encontrado!");
 			} else {
-				// ContratanteDTO contratanteDTO = mapper.map(contratanteFind.get(),
-				// ContratanteDTO.class);
 				List<ContratanteDTO> contratantesDTO = contratantesFind.stream()
-						.map(ap -> mapper.map(ap, ContratanteDTO.class))
-						.collect(Collectors.toList());
+						.map(ap -> mapper.map(ap, ContratanteDTO.class)).collect(Collectors.toList());
 				return ResponseEntity.status(HttpStatus.OK).body(contratantesDTO);
 			}
 		} catch (NotFoundException ex) {
@@ -207,8 +187,7 @@ public class ContratanteREST {
 				throw new NotFoundException("Contratante não encontrado!");
 			} else {
 				List<ContratanteDTO> contratantesDTO = contratantesFind.stream()
-						.map(ap -> mapper.map(ap, ContratanteDTO.class))
-						.collect(Collectors.toList());
+						.map(ap -> mapper.map(ap, ContratanteDTO.class)).collect(Collectors.toList());
 				return ResponseEntity.ok().body(contratantesDTO);
 			}
 		} catch (NotFoundException ex) {
@@ -240,8 +219,7 @@ public class ContratanteREST {
 				throw new NotFoundException("Contratante não encontrado!");
 			} else {
 				List<ContratanteDTO> contratantesDTO = contratantesFind.stream()
-						.map(ap -> mapper.map(ap, ContratanteDTO.class))
-						.collect(Collectors.toList());
+						.map(ap -> mapper.map(ap, ContratanteDTO.class)).collect(Collectors.toList());
 				return ResponseEntity.ok().body(contratantesDTO);
 			}
 		} catch (NotFoundException ex) {
@@ -265,30 +243,24 @@ public class ContratanteREST {
 	}
 
 	@GetMapping("/")
-	public ResponseEntity<Object> listarContratantes(
-			@RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(required = false) String nome,
-			@RequestParam(required = false) String cnpj) {
+	public ResponseEntity<Object> listarContratantes(@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(required = false) String nome, @RequestParam(required = false) String cnpj) {
 		try {
 			Optional<String> nomeOptional = nome == null ? Optional.empty() : Optional.of(nome);
 			Optional<String> cnpjOptional = cnpj == null ? Optional.empty() : Optional.of(cnpj);
 
-			Page<Contratante> contratantes = contratanteService.listarContratantesPaginated(
-					page,
-					nomeOptional,
+			Page<Contratante> contratantes = contratanteService.listarContratantesPaginated(page, nomeOptional,
 					cnpjOptional);
 
 			if (contratantes.isEmpty()) {
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(contratantes);
 			}
 
-			List<ContratanteDTO> contratantesDTO = contratantes.stream()
-					.map(ap -> mapper.map(ap, ContratanteDTO.class))
+			List<ContratanteDTO> contratantesDTO = contratantes.stream().map(ap -> mapper.map(ap, ContratanteDTO.class))
 					.collect(Collectors.toList());
 
-			return ResponseEntity.status(HttpStatus.OK).body(
-					new PageImpl<>(contratantesDTO, contratantes.getPageable(),
-							contratantes.getTotalElements()));
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new PageImpl<>(contratantesDTO, contratantes.getPageable(), contratantes.getTotalElements()));
 
 		} catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -321,22 +293,6 @@ public class ContratanteREST {
 
 				if (contratanteDTO.getTelefone() == null || contratanteDTO.getTelefone().isEmpty())
 					throw new InvalidFieldException("Preencha o telefone.");
-
-				/*
-				 * if ((contratanteDTO.getCnpj() == null || contratanteDTO.getCnpj().isEmpty())
-				 * &&
-				 * (contratanteDTO.getCpf() == null || contratanteDTO.getCpf().isEmpty())) {
-				 * throw new InvalidFieldException("Preencha o CNPJ ou o CPF.");
-				 * }
-				 */
-
-				/*
-				 * if (contratanteDTO.getCnpj() != null && contratanteDTO.getCpf() != null) {
-				 * if (!contratanteDTO.getCnpj().isEmpty() &&
-				 * !contratanteDTO.getCpf().isEmpty())
-				 * throw new InvalidFieldException("Contratante só pode ter CNPJ ou CPF.");
-				 * }
-				 */
 
 				if (contratanteDTO.getTipo() == EnumTipoContratante.PessoaFisica && contratanteDTO.getCpf() == null)
 					throw new InvalidFieldException("Contratante do tipo Pessoa Física deve possuir CPF.");
@@ -469,10 +425,6 @@ public class ContratanteREST {
 				if (enderecoDTO.getNumero() < 1)
 					throw new InvalidFieldException("Número inválido.");
 
-				// if (enderecoDTO.getComplemento() == null ||
-				// enderecoDTO.getComplemento().isEmpty())
-				// throw new InvalidFieldException("Complemento inválido.");
-
 				if (enderecoDTO.getCidade() == null || enderecoDTO.getCidade().isEmpty())
 					throw new InvalidFieldException("Cidade inválida.");
 
@@ -532,11 +484,9 @@ public class ContratanteREST {
 					contratante.setAtivo(true);
 
 				contratante.setId(idLong);
-				contratante = contratanteService
-						.atualizarContratante(contratante);
+				contratante = contratanteService.atualizarContratante(contratante);
 
-				ContratanteDTO contratanteDTOAtualizado = mapper.map(contratante,
-						ContratanteDTO.class);
+				ContratanteDTO contratanteDTOAtualizado = mapper.map(contratante, ContratanteDTO.class);
 				return ResponseEntity.ok().body(contratanteDTOAtualizado);
 			} else {
 				throw new NotFoundException("Contratante não encontrado!");

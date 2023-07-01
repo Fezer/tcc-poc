@@ -124,10 +124,10 @@ public class AgenteIntegradorREST {
 
 			AgenteIntegrador agente = agenteFind.get();
 			Convenio convenioNovo = mapper.map(convenio, Convenio.class);
+			convenioNovo.setAtivo(true);
 			convenioNovo = convenioService.criarConvenio(convenioNovo);
 			convenioNovo = convenioService.associarAgenteAoConvenio(convenioNovo, agente);
 			convenio = mapper.map(convenioNovo, ConvenioDTO.class);
-			// return new ResponseEntity<>(convenio, HttpStatus.CREATED);
 			return ResponseEntity.status(HttpStatus.CREATED).body(convenio);
 
 		} catch (NotFoundException ex) {

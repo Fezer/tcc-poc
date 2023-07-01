@@ -26,7 +26,6 @@ import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.SeguradoraDTO;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
-import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.service.ApoliceService;
@@ -85,23 +84,6 @@ public class SeguradoraREST {
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
-
-		/**
-		 * catch (InvalidFieldException ex) {
-		 * throw new InvalidFieldException("Nome inválido.");
-		 * }
-		 * Caso o front não queira verificar o tipo de objeto retornado, a exceção
-		 * deverá ser lançada da maneira acima
-		 */
-
-		/**
-		 * catch (Exception ex) {
-		 * ErrorResponse response = new ErrorResponse("Erro interno no servidor.");
-		 * return
-		 * ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response); //
-		 * Resposta de erro interno do servidor com a mensagem de erro no corpo
-		 * }
-		 */
 	}
 
 	@PostMapping("/{idSeguradora}/apolice")
@@ -129,6 +111,7 @@ public class SeguradoraREST {
 				throw new InvalidFieldException("Data de início não pode ser superior à data de fim");
 
 			Apolice apoliceNovo = mapper.map(apolice, Apolice.class);
+			apoliceNovo.setAtivo(true);
 			apoliceNovo = apoliceService.criarApolice(apoliceNovo);
 			apoliceNovo = apoliceService.associarSeguradoraApolice(apoliceNovo, seguradora);
 			apolice = mapper.map(apoliceNovo, ApoliceDTO.class);
@@ -200,8 +183,7 @@ public class SeguradoraREST {
 	}
 
 	@GetMapping("/")
-	public ResponseEntity<Object> listarSeguradoras(
-			@RequestParam(defaultValue = "0") int page,
+	public ResponseEntity<Object> listarSeguradoras(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(required = false) Optional<String> nome,
 			@RequestParam(required = false) Optional<Boolean> ativo,
 			@RequestParam(required = false) Optional<Boolean> seguradoraUFPR
@@ -212,23 +194,18 @@ public class SeguradoraREST {
 		Optional<Boolean> ufprOptional = seguradoraUFPR == null ? Optional.empty() : seguradoraUFPR;
 
 		try {
-			Page<Seguradora> seguradoras = seguradoraService.listarSeguradorasPaginated(
-					page,
-					nomeOptional,
-					ativoOptional,
-					ufprOptional);
+			Page<Seguradora> seguradoras = seguradoraService.listarSeguradorasPaginated(page, nomeOptional,
+					ativoOptional, ufprOptional);
 
 			if (seguradoras.isEmpty()) {
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(seguradoras);
 			}
 
-			List<SeguradoraDTO> seguradoraDTOs = seguradoras.stream()
-					.map(ap -> mapper.map(ap, SeguradoraDTO.class))
+			List<SeguradoraDTO> seguradoraDTOs = seguradoras.stream().map(ap -> mapper.map(ap, SeguradoraDTO.class))
 					.collect(Collectors.toList());
 
-			return ResponseEntity.status(HttpStatus.OK).body(
-					new PageImpl<>(seguradoraDTOs, seguradoras.getPageable(),
-							seguradoras.getTotalElements()));
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new PageImpl<>(seguradoraDTOs, seguradoras.getPageable(), seguradoras.getTotalElements()));
 
 		} catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -256,7 +233,7 @@ public class SeguradoraREST {
 			Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(idInt);
 
 			if (seguradora.isPresent()) {
-				
+
 				if (seguradoraDTO.getNome().isEmpty())
 					throw new InvalidFieldException("Nome inválido!");
 

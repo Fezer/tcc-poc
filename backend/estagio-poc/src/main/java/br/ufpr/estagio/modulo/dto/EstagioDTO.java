@@ -34,7 +34,6 @@ public class EstagioDTO extends RepresentationModel<EstagioDTO> implements Seria
 	private Apolice apolice;
 	private AgenteIntegrador agenteIntegrador;
 	private Orientador orientador;
-//	private Supervisor supervisor;
 	private PlanoDeAtividades planoDeAtividades;
 	private Date dataInicio;
 	private Date dataTermino;

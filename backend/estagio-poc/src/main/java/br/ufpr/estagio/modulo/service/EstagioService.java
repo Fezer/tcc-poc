@@ -46,7 +46,7 @@ public class EstagioService {
 	private static final String selectEstagioWithCustomFilters = "SELECT e FROM Estagio e "
 			+ "INNER JOIN e.aluno a "
 			+ "WHERE 1=1 ";
-	
+
 	private static final String selectEstagioAtivoOuEmAprovacaoOuEmRevisao = "SELECT e FROM Estagio e "
 			+ "INNER JOIN e.aluno a "
 			+ "INNER JOIN e.termoDeCompromisso t "
@@ -213,9 +213,11 @@ public class EstagioService {
 		return estagio;
 	}
 
-	// Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não
-	// iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em
-	// andamento.
+	/** 
+	 * Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não
+	 * iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em
+	 * andamento.
+	**/
 	public List<Estagio> buscarEstagioEmProgressoPorAluno(Aluno aluno) {
 		// Primeiro busca por estágio aprovado.
 		EnumStatusEstagio statusEstagio = EnumStatusEstagio.Aprovado;
@@ -331,6 +333,8 @@ public class EstagioService {
 			queryString.append(" AND e.statusEstagio = :statusEstagio");
 		}
 
+		queryString.append(" ORDER BY e.id DESC");
+
 		TypedQuery<Estagio> query = em.createQuery(queryString.toString(), Estagio.class);
 
 		query.setParameter("idOrientador", idOrientador);
@@ -377,62 +381,63 @@ public class EstagioService {
 
 	public List<Estagio> buscarEstagioPorSeguradoraUfpr() {
 		List<Estagio> estagio = estagioRepo.findBySeguradoraSeguradoraUfprIsTrue();
-		
+
 		return estagio;
 	}
-	
+
 	public boolean listarEstagiosPorAgenteIntegrador(AgenteIntegrador agenteIntegrador) {
 
 		List<Estagio> estagios = estagioRepo.findByAgenteIntegrador(agenteIntegrador);
-		
-        if (estagios.size() == 0)
-        	return false;
 
-        return true;
+		if (estagios.size() == 0)
+			return false;
+
+		return true;
 	}
-	
+
 	public boolean listarEstagiosPorApolice(Apolice apolice) {
 
 		List<Estagio> estagios = estagioRepo.findByApolice(apolice);
-		
-        if (estagios.size() == 0)
-        	return false;
 
-        return true;
+		if (estagios.size() == 0)
+			return false;
+
+		return true;
 	}
-	
+
 	public boolean listarEstagiosPorContratante(Contratante contratante) {
 
 		List<Estagio> estagios = estagioRepo.findByContratante(contratante);
-		
-        if (estagios.size() == 0)
-        	return false;
 
-        return true;
+		if (estagios.size() == 0)
+			return false;
+
+		return true;
 	}
-	
+
 	public boolean listarEstagiosPorSeguradora(Seguradora seguradora) {
 
 		List<Estagio> estagios = estagioRepo.findBySeguradora(seguradora);
-		
-        if (estagios.size() == 0)
-        	return false;
 
-        return true;
+		if (estagios.size() == 0)
+			return false;
+
+		return true;
 	}
-	
+
 	public boolean verificarAlunoPodeCriarEstagio(Aluno aluno) {
-	    TypedQuery<Long> query = em.createQuery(selectEstagioAtivoOuEmAprovacaoOuEmRevisao, Long.class);
-	    query.setParameter("idAluno", aluno.getId());
-	    query.setParameter("statusEstagio", Arrays.asList(EnumStatusEstagio.EmPreenchimento, EnumStatusEstagio.EmAprovacao, 
-	    		EnumStatusEstagio.Aprovado, EnumStatusEstagio.Iniciado));
-		
-	    List<Long> result = query.getResultList();
-	    
-	    if (result.size() > 0)
-	    	return false;
-	    
-	    return true;
+		TypedQuery<Long> query = em.createQuery(selectEstagioAtivoOuEmAprovacaoOuEmRevisao, Long.class);
+		query.setParameter("idAluno", aluno.getId());
+		query.setParameter("statusEstagio",
+				Arrays.asList(EnumStatusEstagio.EmPreenchimento, EnumStatusEstagio.EmAprovacao,
+						EnumStatusEstagio.Aprovado, EnumStatusEstagio.Iniciado));
+
+		List<Long> result = query.getResultList();
+
+		if (result.size() > 0)
+			return false;
+
+		return true;
 	}
 
 }

@@ -62,10 +62,6 @@ public class Curso implements Serializable{
 	    joinColumns = {@JoinColumn(name="orientador_id")},
 	    inverseJoinColumns = {@JoinColumn(name="curso_id")})
 	private List<Orientador> orientador;
-
-//	@JsonIgnore
-//	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
-//	private List<Disciplina> disciplina;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
@@ -73,7 +69,6 @@ public class Curso implements Serializable{
 
 	public Curso() {
 		super();
-//		this.disciplina = new ArrayList<Disciplina>();
 		this.coordenador = new ArrayList<Coordenador>();
 		this.aluno = new ArrayList<Aluno>();
 		this.orientador = new ArrayList<Orientador>();
@@ -82,8 +77,7 @@ public class Curso implements Serializable{
 
 
 	public Curso(long id, long idCurso, String nome, String matricula, String idPrograma, String nivel,
-			int peridiocidade, String turno, List<Coordenador> coordenador, List<Orientador> orientador,
-			/**List<Disciplina> disciplina,**/ List<Aluno> aluno) {
+			int peridiocidade, String turno, List<Coordenador> coordenador, List<Orientador> orientador, List<Aluno> aluno) {
 		super();
 		this.id = id;
 		this.idCurso = idCurso;
@@ -95,10 +89,8 @@ public class Curso implements Serializable{
 		this.turno = turno;
 		this.coordenador = coordenador;
 		this.orientador = orientador;
-//		this.disciplina = disciplina;
 		this.aluno = aluno;
 	}
-
 
 
 	public long getId() {
@@ -112,7 +104,6 @@ public class Curso implements Serializable{
 	public long getIdCurso() {
 		return idCurso;
 	}
-
 
 	public void setIdCurso(long idCurso) {
 		this.idCurso = idCurso;
@@ -181,14 +172,6 @@ public class Curso implements Serializable{
 	public void setOrientador(List<Orientador> orientador) {
 		this.orientador = orientador;
 	}
-
-//	public List<Disciplina> getDisciplina() {
-//		return disciplina;
-//	}
-//
-//	public void setDisciplina(List<Disciplina> disciplina) {
-//		this.disciplina = disciplina;
-//	}
 
 	public List<Aluno> getAluno() {
 		return aluno;

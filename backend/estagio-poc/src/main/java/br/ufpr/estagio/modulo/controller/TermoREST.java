@@ -1,11 +1,8 @@
 package br.ufpr.estagio.modulo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
-import br.ufpr.estagio.modulo.dto.JustificativaDTO;
 import br.ufpr.estagio.modulo.dto.PlanoDeAtividadesDTO;
 import br.ufpr.estagio.modulo.dto.TermoDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
@@ -35,7 +31,6 @@ import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.exception.BadRequestException;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
-import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Contratante;
@@ -88,8 +83,7 @@ public class TermoREST {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<Object> listarTermoDeCompromissoFiltro(
-			@RequestParam(defaultValue = "0") int page,
+	public ResponseEntity<Object> listarTermoDeCompromissoFiltro(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(required = false) Optional<EnumStatusTermo> status,
 			@RequestParam(required = false) Optional<EnumEtapaFluxo> etapa,
 			@RequestParam(required = false) Optional<EnumTipoEstagio> tipoEstagio,
@@ -102,20 +96,14 @@ public class TermoREST {
 			Optional<EnumTipoTermoDeEstagio> tipoTermoEstagio = tipoTermo == null ? Optional.empty() : tipoTermo;
 			Optional<String> grrTermo = grr == null ? Optional.empty() : grr;
 
-			Page<TermoDeEstagio> paginaTermos = termoDeEstagioService
-					.listarTermoCompromissoPaginated(page,
-							statusTermo,
-							etapaTermo,
-							tipoEstagioTermo,
-							tipoTermoEstagio,
-							grrTermo);
+			Page<TermoDeEstagio> paginaTermos = termoDeEstagioService.listarTermoCompromissoPaginated(page, statusTermo,
+					etapaTermo, tipoEstagioTermo, tipoTermoEstagio, grrTermo);
 
 			if (paginaTermos.isEmpty()) {
 				return ResponseEntity.noContent().build();
 			} else {
 				List<TermoDeEstagioDTO> listaTermosDTO = paginaTermos.getContent().stream()
-						.map(e -> mapper.map(e, TermoDeEstagioDTO.class))
-						.collect(Collectors.toList());
+						.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList());
 
 				return ResponseEntity.status(HttpStatus.OK).body(
 						new PageImpl<>(listaTermosDTO, paginaTermos.getPageable(), paginaTermos.getTotalElements()));
@@ -139,7 +127,7 @@ public class TermoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termoOptional = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termoOptional.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
@@ -160,8 +148,7 @@ public class TermoREST {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(
-					"O ID não é do tipo de dado esperado!");
+			ErrorResponse response = new ErrorResponse("O ID não é do tipo de dado esperado!");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 			ex.printStackTrace();
@@ -186,7 +173,7 @@ public class TermoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
@@ -204,8 +191,7 @@ public class TermoREST {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(
-					"O ID não é do tipo de dado esperado!");
+			ErrorResponse response = new ErrorResponse("O ID não é do tipo de dado esperado!");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 			ex.printStackTrace();
@@ -231,7 +217,7 @@ public class TermoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
@@ -250,8 +236,7 @@ public class TermoREST {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(
-					"O ID não é do tipo de dado esperado!");
+			ErrorResponse response = new ErrorResponse("O ID não é do tipo de dado esperado!");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 			ex.printStackTrace();
@@ -276,12 +261,12 @@ public class TermoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id do termo inválido.");
-			
+
 			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
-			
+
 			long idOrientadorLong = Long.parseLong(orientadorId);
 
 			if (idOrientadorLong < 1L)
@@ -304,8 +289,7 @@ public class TermoREST {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(
-					"O ID não é do tipo de dado esperado!");
+			ErrorResponse response = new ErrorResponse("O ID não é do tipo de dado esperado!");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 			ex.printStackTrace();
@@ -324,23 +308,24 @@ public class TermoREST {
 	}
 
 	@PutMapping("/{termoId}/associarAgenteIntegrador/{agenteId}")
-	public ResponseEntity<Object> associarAgenteIntegrador(@PathVariable String termoId, @PathVariable String agenteId) {
+	public ResponseEntity<Object> associarAgenteIntegrador(@PathVariable String termoId,
+			@PathVariable String agenteId) {
 		try {
 			long idLong = Long.parseLong(termoId);
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id do termo inválido.");
-			
+
 			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
-			
+
 			long idAgenteLong = Long.parseLong(agenteId);
 
 			if (idAgenteLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<AgenteIntegrador> agenteFind = agenteIntegradorService.buscarPorId(idAgenteLong);
 			if (agenteFind.isEmpty()) {
 				throw new NotFoundException("Agente integrador não encontrado!");
@@ -359,8 +344,7 @@ public class TermoREST {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(
-					"O ID não é do tipo de dado esperado!");
+			ErrorResponse response = new ErrorResponse("O ID não é do tipo de dado esperado!");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 			ex.printStackTrace();
@@ -385,7 +369,7 @@ public class TermoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
@@ -394,7 +378,7 @@ public class TermoREST {
 
 			if (idApoliceLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<Apolice> apoliceFind = apoliceService.buscarPorId(idApoliceLong);
 			if (apoliceFind.isEmpty()) {
 				throw new NotFoundException("Apolice não encontrada!");
@@ -413,8 +397,7 @@ public class TermoREST {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(
-					"O ID não é do tipo de dado esperado!");
+			ErrorResponse response = new ErrorResponse("O ID não é do tipo de dado esperado!");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 			ex.printStackTrace();
@@ -433,23 +416,24 @@ public class TermoREST {
 	}
 
 	@PutMapping("/{termoId}/associarContratante/{contratanteId}")
-	public ResponseEntity<Object> associarContratante(@PathVariable String termoId, @PathVariable String contratanteId) {
+	public ResponseEntity<Object> associarContratante(@PathVariable String termoId,
+			@PathVariable String contratanteId) {
 		try {
 			long idLong = Long.parseLong(termoId);
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id do termo inválido.");
-			
+
 			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
 			}
-			
+
 			long idContratanteLong = Long.parseLong(contratanteId);
 
 			if (idContratanteLong < 1L)
 				throw new InvalidFieldException("Id do contratante inválido.");
-			
+
 			Optional<Contratante> contratanteFind = contratanteService.buscarPorId(idContratanteLong);
 			if (contratanteFind.isEmpty()) {
 				throw new NotFoundException("Contratante não encontrado!");
@@ -468,8 +452,7 @@ public class TermoREST {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(
-					"O ID não é do tipo de dado esperado!");
+			ErrorResponse response = new ErrorResponse("O ID não é do tipo de dado esperado!");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 			ex.printStackTrace();
@@ -494,7 +477,7 @@ public class TermoREST {
 
 			if (idLong < 1L)
 				throw new InvalidFieldException("Id inválido.");
-			
+
 			Optional<TermoDeEstagio> termofind = termoDeEstagioService.buscarPorIdOptional(idLong);
 			if (termofind.isEmpty()) {
 				throw new NotFoundException("Termo não encontrado!");
@@ -512,8 +495,7 @@ public class TermoREST {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			ErrorResponse response = new ErrorResponse(
-					"O ID não é do tipo de dado esperado!");
+			ErrorResponse response = new ErrorResponse("O ID não é do tipo de dado esperado!");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (InvalidFieldException ex) {
 			ex.printStackTrace();

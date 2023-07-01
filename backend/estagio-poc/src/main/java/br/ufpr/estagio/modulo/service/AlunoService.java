@@ -5,17 +5,14 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.ufpr.estagio.modulo.dto.AlunoDTO;
-import br.ufpr.estagio.modulo.dto.DadosBancariosDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
-import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
@@ -23,7 +20,6 @@ import br.ufpr.estagio.modulo.mapper.SigaApiModuloEstagioMapper;
 import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
-import br.ufpr.estagio.modulo.model.Contratante;
 import br.ufpr.estagio.modulo.model.DadosAuxiliares;
 import br.ufpr.estagio.modulo.model.Discente;
 import br.ufpr.estagio.modulo.model.Endereco;
@@ -33,7 +29,6 @@ import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.repository.AlunoRepository;
 import br.ufpr.estagio.modulo.repository.CienciaCoordenacaoRepository;
-import br.ufpr.estagio.modulo.repository.ContratanteRepository;
 import br.ufpr.estagio.modulo.repository.DadosAuxiliaresRepository;
 import br.ufpr.estagio.modulo.repository.EnderecoRepository;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;
@@ -71,12 +66,6 @@ public class AlunoService {
 
 	@Autowired
 	private SigaApiModuloEstagioMapper sigaApiModuloEstagioMapping;
-
-	@Autowired
-	private ContratanteRepository contratanteRepo;
-	
-	@Autowired
-	private ModelMapper mapper;
 
 	public List<Aluno> listarTodosAlunos() {
 		return alunoRepo.findAll();
@@ -205,9 +194,6 @@ public class AlunoService {
 		termoDeCompromisso.setCienciaCoordenacao(cienciaCoordenacao);
 		termoDeCompromisso.setCoordenador(aluno.getCurso().getCoordenador().get(0));
 
-		// termoDeCompromisso.setCoordenador(new Coordenador(1, aluno.getCoordenador(),
-		// null, null));
-
 		// Bloco de criação do Plano De Atividades com as devidas associações entre
 		// Termo De Estágio e Estagio.
 		PlanoDeAtividades planoDeAtividades = new PlanoDeAtividades();
@@ -250,37 +236,6 @@ public class AlunoService {
 
 		EnumStatusTermo statusTermo = EnumStatusTermo.EmAprovacao;
 		termoAtualizado.setStatusTermo(statusTermo);
-
-		/**
-		 * Caso seja um estágio UFPR, precisa associar a contratante
-		 * como UFPR ao termo.
-		 */
-		if (termoAtualizado.getEstagio().isEstagioUfpr()) {
-			String cnpjFederal = "75.095.679/0001-49";
-			Optional<Contratante> contratanteFind = contratanteRepo.findByCnpj(cnpjFederal);
-			if (contratanteFind.isEmpty()) {
-				Contratante contratante = new Contratante();
-				contratante.setAtivo(true);
-				contratante.setCnpj(cnpjFederal);
-				contratante.setNome("Universidade Federal do Paraná");
-				contratante.setRepresentanteEmpresa("Ricardo Marcelo Fonseca");
-				contratante.setTelefone("4133102627");
-				contratante.setTipo(EnumTipoContratante.PessoaJuridica);
-				Endereco endereco = new Endereco();
-				endereco.setCidade("Curitiba");
-				endereco.setUf("PR");
-				endereco.setRua("Rua XV de Novembro");
-				endereco.setNumero(1299);
-				endereco.setCep("80020-300");
-				endereco = enderecoRepo.save(endereco);
-				contratante.setEndereco(endereco);
-				contratante = contratanteRepo.save(contratante);
-				termoAtualizado.setContratante(contratante);
-			} else {
-				termoAtualizado.setContratante(contratanteFind.get());
-			}
-			termoAtualizado.getEstagio().setContratante(termoAtualizado.getContratante());
-		}
 
 		/**
 		 * Pode se estar solicitando uma reaprovação de um termo que o Aluno ajustou,

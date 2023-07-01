@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -85,20 +84,16 @@ public class CoeREST {
 	public ResponseEntity<Object> listarTermosDeCompromissoPendenteAprovacaoCoe(
 			@RequestParam(defaultValue = "0") int page) {
 		try {
-			Page<TermoDeEstagio> paginaTermos = termoDeEstagioService
-					.listarTermoCompromissoPaginated(page,
-							Optional.of(EnumStatusTermo.EmAprovacao),
-							Optional.of(EnumEtapaFluxo.COE),
-							Optional.of(EnumTipoEstagio.NaoObrigatorio),
-							Optional.of(EnumTipoTermoDeEstagio.TermoDeCompromisso),
-							Optional.empty());
+			Page<TermoDeEstagio> paginaTermos = termoDeEstagioService.listarTermoCompromissoPaginated(page,
+					Optional.of(EnumStatusTermo.EmAprovacao), Optional.of(EnumEtapaFluxo.COE),
+					Optional.of(EnumTipoEstagio.NaoObrigatorio), Optional.of(EnumTipoTermoDeEstagio.TermoDeCompromisso),
+					Optional.empty());
 
 			if (paginaTermos.isEmpty()) {
 				return ResponseEntity.noContent().build();
 			} else {
 				List<TermoDeEstagioDTO> listaTermosDTO = paginaTermos.getContent().stream()
-						.map(e -> mapper.map(e, TermoDeEstagioDTO.class))
-						.collect(Collectors.toList());
+						.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList());
 
 				return ResponseEntity.status(HttpStatus.OK).body(
 						new PageImpl<>(listaTermosDTO, paginaTermos.getPageable(), paginaTermos.getTotalElements()));
@@ -132,16 +127,14 @@ public class CoeREST {
 	}
 
 	@GetMapping("/termo/indeferido")
-	public ResponseEntity<Object> listarTermosDeCompromissoIndeferidos(
-			@RequestParam(defaultValue = "0") int page) {
+	public ResponseEntity<Object> listarTermosDeCompromissoIndeferidos(@RequestParam(defaultValue = "0") int page) {
 		try {
 			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosDeCompromissoIndeferidos(page);
 			if (listaTermos.isEmpty()) {
 				return null;
 			} else {
 				List<TermoDeEstagioDTO> listaTermosDTO = listaTermos.getContent().stream()
-						.map(e -> mapper.map(e, TermoDeEstagioDTO.class))
-						.collect(Collectors.toList());
+						.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList());
 
 				return ResponseEntity.status(HttpStatus.OK).body(
 						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(), listaTermos.getTotalElements()));
@@ -175,8 +168,7 @@ public class CoeREST {
 	}
 
 	@GetMapping("/termoAditivo/pendenteAprovacaoCoe")
-	public ResponseEntity<Object> listarTermosAditivoPendenteAprovacaoCoe(
-			@RequestParam(defaultValue = "0") int page) {
+	public ResponseEntity<Object> listarTermosAditivoPendenteAprovacaoCoe(@RequestParam(defaultValue = "0") int page) {
 		try {
 			Page<TermoDeEstagio> listaTermosPaginated = termoDeEstagioService
 					.listarTermosAditivoPendenteAprovacaoCoe(page);
@@ -185,12 +177,10 @@ public class CoeREST {
 				return ResponseEntity.noContent().build();
 			} else {
 				List<TermoDeEstagioDTO> listaTermosDTO = listaTermosPaginated.getContent().stream()
-						.map(e -> mapper.map(e, TermoDeEstagioDTO.class))
-						.collect(Collectors.toList());
+						.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList());
 
-				return ResponseEntity.status(HttpStatus.OK).body(
-						new PageImpl<>(listaTermosDTO, listaTermosPaginated.getPageable(),
-								listaTermosPaginated.getTotalElements()));
+				return ResponseEntity.status(HttpStatus.OK).body(new PageImpl<>(listaTermosDTO,
+						listaTermosPaginated.getPageable(), listaTermosPaginated.getTotalElements()));
 			}
 		} catch (NotFoundException ex) {
 			ex.printStackTrace();
@@ -221,21 +211,17 @@ public class CoeREST {
 	}
 
 	@GetMapping("/termoAditivo/indeferido")
-	public ResponseEntity<Object> listarTermosAditivoIndeferidos(
-			@RequestParam(defaultValue = "0") int page) {
+	public ResponseEntity<Object> listarTermosAditivoIndeferidos(@RequestParam(defaultValue = "0") int page) {
 		try {
-			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosIndeferidos(
-					page);
+			Page<TermoDeEstagio> listaTermos = termoDeEstagioService.listarTermosAditivosIndeferidos(page);
 			if (listaTermos == null || listaTermos.isEmpty()) {
 				return null;
 			} else {
 				List<TermoDeEstagioDTO> listaTermosDTO = listaTermos.getContent().stream()
-						.map(e -> mapper.map(e, TermoDeEstagioDTO.class))
-						.collect(Collectors.toList());
+						.map(e -> mapper.map(e, TermoDeEstagioDTO.class)).collect(Collectors.toList());
 
 				return ResponseEntity.status(HttpStatus.OK).body(
-						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(),
-								listaTermos.getTotalElements()));
+						new PageImpl<>(listaTermosDTO, listaTermos.getPageable(), listaTermos.getTotalElements()));
 			}
 		} catch (NotFoundException ex) {
 			ex.printStackTrace();
@@ -588,9 +574,7 @@ public class CoeREST {
 		}
 	}
 
-
 	/* Métodos para Coe baixar documentos upados pelo Aluno */
-	
 	@GetMapping("/{grrAlunoURL}/download-termo")
 	public ResponseEntity<Object> downloadTermo(@PathVariable String grrAlunoURL) {
 		try {
@@ -603,16 +587,15 @@ public class CoeREST {
 				} else {
 					Path diretorioAtual = Paths.get("").toAbsolutePath();
 					String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
-	
+
 					String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeCompromisso;
 					Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
-	
+
 					try {
 						Resource resource = new UrlResource(arquivo.toUri());
-	
+
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -691,8 +674,7 @@ public class CoeREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -771,8 +753,7 @@ public class CoeREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -844,9 +825,6 @@ public class CoeREST {
 					Path diretorioAtual = Paths.get("").toAbsolutePath();
 					String diretorioDestino = diretorioAtual + "/src/main/resources/arquivos/";
 
-					// String nomeArquivo = grrAlunoURL + "-" + EnumTipoDocumento.TermoDeRescisao;
-					// Path arquivo = Paths.get(diretorioDestino + nomeArquivo);
-
 					int tamanho = termo.getArquivos().size();
 
 					String nomeArquivo = termo.getArquivos().get(tamanho - 1);
@@ -857,8 +835,7 @@ public class CoeREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -940,8 +917,7 @@ public class CoeREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
@@ -1023,8 +999,7 @@ public class CoeREST {
 						Resource resource = new UrlResource(arquivo.toUri());
 
 						if (resource.exists()) {
-							return ResponseEntity.ok()
-									.contentType(MediaType.APPLICATION_PDF)
+							return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 									.header(HttpHeaders.CONTENT_DISPOSITION,
 											"attachment; filename=\"" + resource.getFilename() + "\"")
 									.body(resource);
