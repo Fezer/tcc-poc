@@ -59,11 +59,37 @@ export default defineComponent({
       }
     };
 
+    const handleDownloadFicha = async () => {
+      try {
+        let url = `/coafe/${estagio?.aluno?.matricula}/ficha-de-avaliacao-parcial/${estagio?.fichaDeAvaliacao}/download`;
+        if (perfil === "aluno") {
+          return router.push(`/aluno/estagio/avaliacao/${estagio?.id}`);
+        }
+
+        const file = await $fetch(url, {
+          method: "GET",
+        });
+
+        const fileURL = URL.createObjectURL(file);
+
+        return window.open(fileURL, "_blank");
+      } catch (err) {
+        toast.add({
+          severity: "error",
+          summary: "Erro ao baixar certificado",
+          detail:
+            err?.response?._data?.error ||
+            "Ocorreu um erro ao baixar o certificado, tente novamente mais tarde",
+        });
+      }
+    };
+
     return {
       estagio,
       perfil,
       handleRedirectToTermoAditivo,
       handleDownloadCertificado,
+      handleDownloadFicha,
     };
   },
 });
@@ -89,16 +115,11 @@ export default defineComponent({
 
         <div class="card flex items-center justify-between">
           <h5>Ficha de Avaliação</h5>
-          <NuxtLink
-            :to="`${perfil === 'aluno' ? '/aluno' : ''}/estagio/avaliacao/${
-              estagio?.id
-            }`"
-          >
-            <Button
-              label="Ver ficha de avaliação"
-              class="p-button-secondary"
-            ></Button>
-          </NuxtLink>
+          <Button
+            label="Ver ficha de avaliação"
+            class="p-button-secondary"
+            @click="handleDownloadFicha"
+          ></Button>
         </div>
       </template>
 
