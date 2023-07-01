@@ -2287,7 +2287,9 @@ public class AlunoREST {
 					if (estagio.get(0) == null) {
 						throw new NotFoundException("Estágio não encontrado para o aluno " + aluno.getNome());
 					} else {
-						termoDeEstagioService.associarContratanteUfprAoTermo(estagio.get(0).getTermoDeCompromisso());
+						if(estagio.get(0).isEstagioUfpr()) {
+							termoDeEstagioService.associarContratanteUfprAoTermo(estagio.get(0).getTermoDeCompromisso());
+						}
 						byte[] pdf = geradorService.gerarPdf(aluno, estagio.get(0));
 
 						HttpHeaders headers = new HttpHeaders();
