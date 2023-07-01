@@ -128,7 +128,10 @@ export default defineComponent({
     <small class="m-0">Estágios > Ver estágio</small>
     <h2 class="m-0 mb-4">Estágio</h2>
 
-    <div class="card" v-if="estagio?.statusEstagio === 'Aprovado'">
+    <div
+      class="card"
+      v-if="['Aprovado', 'Iniciado'].includes(estagio?.statusEstagio)"
+    >
       <h4>Ações</h4>
       <div class="flex gap-2">
         <Button
