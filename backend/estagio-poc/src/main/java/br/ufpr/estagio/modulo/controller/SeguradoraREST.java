@@ -26,7 +26,6 @@ import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.dto.SeguradoraDTO;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
-import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.service.ApoliceService;
@@ -85,23 +84,6 @@ public class SeguradoraREST {
 					"Desculpe, mas um erro inesperado ocorreu e não possível processar sua requisição.");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
-
-		/**
-		 * catch (InvalidFieldException ex) {
-		 * throw new InvalidFieldException("Nome inválido.");
-		 * }
-		 * Caso o front não queira verificar o tipo de objeto retornado, a exceção
-		 * deverá ser lançada da maneira acima
-		 */
-
-		/**
-		 * catch (Exception ex) {
-		 * ErrorResponse response = new ErrorResponse("Erro interno no servidor.");
-		 * return
-		 * ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response); //
-		 * Resposta de erro interno do servidor com a mensagem de erro no corpo
-		 * }
-		 */
 	}
 
 	@PostMapping("/{idSeguradora}/apolice")
@@ -129,6 +111,7 @@ public class SeguradoraREST {
 				throw new InvalidFieldException("Data de início não pode ser superior à data de fim");
 
 			Apolice apoliceNovo = mapper.map(apolice, Apolice.class);
+			apoliceNovo.setAtivo(true);
 			apoliceNovo = apoliceService.criarApolice(apoliceNovo);
 			apoliceNovo = apoliceService.associarSeguradoraApolice(apoliceNovo, seguradora);
 			apolice = mapper.map(apoliceNovo, ApoliceDTO.class);
