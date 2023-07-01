@@ -133,7 +133,7 @@ export default defineComponent({
       <div class="card flex items-center justify-between">
         <h5>Certificado de Estágio</h5>
         <Button
-          label="Baixar certificado"
+          label="Baixar Certificado"
           class="p-button-secondary"
           @click="handleDownloadCertificado"
         ></Button>
@@ -153,7 +153,7 @@ export default defineComponent({
       <NuxtLink
         :to="`${perfil === 'aluno' ? '/aluno' : ''}/relatorio/${idRelatorio}`"
       >
-        <Button label="Ver relatório" class="p-button-secondary"></Button>
+        <Button label="Ver Relatório" class="p-button-secondary"></Button>
       </NuxtLink>
     </div>
 
@@ -166,7 +166,7 @@ export default defineComponent({
         <h5>Termo de Rescisão</h5>
         <NuxtLink :to="`/${perfil}/termo-rescisao/${estagio?.termoDeRescisao}`">
           <Button
-            label="Ver termo de rescisao"
+            label="Ver Termo de Rescisao"
             class="p-button-secondary"
           ></Button>
         </NuxtLink>

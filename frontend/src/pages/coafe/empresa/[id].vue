@@ -38,7 +38,9 @@
             />
           </div>
           <div class="field col">
-            <label for="representanteEmpresa">Representante da Empresa</label>
+            <label for="representanteEmpresa"
+              >Representante da Contratante</label
+            >
             <InputText
               :disabled="!edicao.ativa"
               id="representanteEmpresa"

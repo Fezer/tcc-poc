@@ -25,17 +25,17 @@ export default defineComponent({
     <h5>Suspensão de Estágio</h5>
     <div class="grid">
       <div class="col-4">
-        <strong>Suspensão de estágio</strong>
+        <strong>Suspensão de Estágio</strong>
         <p>Sim</p>
       </div>
 
       <div class="col-4">
-        <strong>Data de suspensão</strong>
+        <strong>Data de Suspensão</strong>
         <p>{{ parseDate(termo?.dataFimSuspensao) }}</p>
       </div>
 
       <div class="col-4">
-        <strong>Data retomada</strong>
+        <strong>Data de Retomada</strong>
         <p>{{ parseDate(termo?.dataInicioRetomada) }}</p>
       </div>
     </div>

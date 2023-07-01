@@ -93,7 +93,7 @@ export default defineComponent({
       <h5>Dados Termo</h5>
       <div class="grid">
         <div class="col-4">
-          <strong>Processo</strong>
+          <strong>Número do Processo</strong>
           <p>#{{ termo?.id }}</p>
         </div>
 
@@ -103,7 +103,7 @@ export default defineComponent({
         </div>
 
         <div class="col-4">
-          <strong>Período total de recesso</strong>
+          <strong>Período Total de Recesso</strong>
           <p>{{ termo?.periodoTotalRecesso }} dias</p>
         </div>
       </div>
@@ -128,7 +128,7 @@ export default defineComponent({
       </NuxtLink>
       <Button
         label="Ciência de Termo de Rescisão"
-        class="p-button-primary"
+        class="p-button-success"
         icon="pi pi-check"
         @click="handleDarCiencia"
       />

@@ -35,7 +35,7 @@ export default {
         <p>Prof. {{ termo?.orientador?.nome }}</p>
       </div>
       <div class="col-12">
-        <strong>Atividades a serem desenvolvidas</strong>
+        <strong>Atividades a Serem Desenvolvidas</strong>
         <p>{{ planoAtividades?.descricaoAtividades }}</p>
       </div>
     </div>

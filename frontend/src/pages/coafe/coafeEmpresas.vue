@@ -132,7 +132,7 @@ export default defineComponent({
         <template #header>
           <div class="flex justify-content-between">
             <span class="p-input-icon-left">
-              <h4><b>Empresas</b></h4>
+              <h4><b>Contratantes</b></h4>
             </span>
 
             <div class="flex gap-2">
@@ -154,12 +154,12 @@ export default defineComponent({
             </div>
           </div>
         </template>
-        <template #empty> Nenhuma Empresa encontrada. </template>
+        <template #empty> Nenhuma Contratante encontrada. </template>
         <template #loading> Carregando dados. Por favor espere. </template>
         <Column field="Id" header="Identificador">
           <template #body="{ data }"> #{{ data?.id }} </template>
         </Column>
-        <Column field="Empresas" header="Nome da Empresa">
+        <Column field="Empresas" header="Nome da Contratante">
           <template #body="{ data }">
             {{ data?.nome }}
           </template>

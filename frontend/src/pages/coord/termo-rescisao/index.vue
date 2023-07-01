@@ -78,27 +78,27 @@ export default defineComponent({
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
                 <InputText
-                  placeholder="Buscar por matrícula (GRRXXXXXXXX)"
+                  placeholder="Matrícula (GRRXXXXXXXX)"
                   v-model="filters.grrAluno"
                 />
               </span>
             </div>
           </div>
         </template>
-        <Column field="process" header="Processo">
+        <Column field="process" header="Número do Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
 
-        <Column field="estagio" header="Estágio">
+        <Column field="estagio" header="Número do Estágio">
           <template #body="{ data }"> #{{ data?.estagio?.id }} </template>
         </Column>
 
-        <Column field="dataInicio" header="Data de Início Estágio">
+        <Column field="dataInicio" header="Data de Início do Estágio">
           <template #body="{ data }">
             {{ parseDate(data?.estagio?.dataInicio) }}
           </template>
         </Column>
-        <Column field="process_type" header="Data Término Estágio">
+        <Column field="process_type" header="Data de Término do Estágio">
           <template #body="{ data }">
             {{ parseDate(data?.dataTermino) }}
           </template>
@@ -110,10 +110,14 @@ export default defineComponent({
           </template>
         </Column>
 
-        <Column field="button">
+        <Column field="button" header="Ver">
           <template #body="{ data }">
             <NuxtLink :to="`/coord/termo-rescisao/${data.id}`">
-              <Button label="Ver Termo"></Button>
+              <Button
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
+              ></Button>
             </NuxtLink>
           </template>
         </Column>

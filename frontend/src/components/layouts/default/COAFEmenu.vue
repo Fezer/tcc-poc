@@ -10,7 +10,7 @@ export default defineComponent({
     };
     const gerenciamentos = [
       {
-        label: "Empresas",
+        label: "Contratantes",
         link: "/coafe/coafeEmpresas",
       },
       {

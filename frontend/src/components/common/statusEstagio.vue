@@ -30,7 +30,7 @@ export default defineComponent({
           <span>{{ parseDate(estagio?.dataInicio) }}</span>
         </div>
         <div class="col-4" v-if="!!estagio?.termoDeRescisao">
-          <strong>Data de Término</strong>
+          <strong>Data de Término do Estágio</strong>
           <p>{{ parseDate(estagio?.dataTermino) }}</p>
         </div>
         <div class="col-3" v-else></div>

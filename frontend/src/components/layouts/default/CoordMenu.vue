@@ -35,7 +35,7 @@ export default defineComponent({
   <div>
     <div class="h-full w-full flex items-center justify-center flex-col">
       <strong class=" ">Coordenação</strong>
-      <p class=" ">Curso X</p>
+      <p class="text-center">Análise e Desenvolvimento de Sistemas</p>
     </div>
     <div v-for="item in menu" :key="item.label">
       <div

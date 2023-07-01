@@ -64,7 +64,7 @@ export default defineComponent({
     <div>
       <h1>
         Coordenação
-        <h6>Análise e desenvolvimento de sistemas</h6>
+        <h6>Análise e Desenvolvimento de Sistemas</h6>
       </h1>
     </div>
     <div>
@@ -114,11 +114,11 @@ export default defineComponent({
             </div>
           </div>
         </template>
-        <Column field="process" header="Processo">
+        <Column field="process" header="Número do Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
 
-        <Column field="tipo" header="Tipo Estágio">
+        <Column field="tipo" header="Tipo do Estágio">
           <template #body="{ data }">
             {{ parseObrigatoriedadeEstagio(data?.estagio?.tipoEstagio) }}
           </template>
@@ -148,7 +148,7 @@ export default defineComponent({
             {{ data?.etapaFluxo }}
           </template>
         </Column>
-        <Column field="button">
+        <Column field="button" header="Ver">
           <template #body="{ data }">
             <NuxtLink :to="`/coord/termo/${data.id}`">
               <Button

@@ -40,7 +40,7 @@ export default {
           <p>{{ termo?.contratante?.cnpj }}</p>
         </div>
         <div class="col-4" v-else>
-          <strong>CPF</strong>
+          <strong>Cadastro de Pessoa Física (CPF)</strong>
           <p>{{ termo?.contratante?.cpf }}</p>
         </div>
         <div class="col-4">

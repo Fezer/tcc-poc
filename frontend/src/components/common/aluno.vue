@@ -97,7 +97,7 @@ export default defineComponent({
           </p>
         </div>
         <div class="col-4">
-          <strong>Registro Geral</strong>
+          <strong>Registro Geral (RG)</strong>
           <p>{{ aluno?.rg }}</p>
         </div>
         <div class="col-4">
