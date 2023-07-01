@@ -21,6 +21,7 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.lowagie.text.DocumentException;
 
+import br.ufpr.estagio.modulo.dto.AlunoDTO;
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
@@ -119,34 +120,16 @@ public class GeradorDePdfService {
 			html = html.replace("{{cpfCnpj}}", "<span class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\" style=\"background-color: white; border-left: solid 1px; padding: 0% 0% 0% 1%\"><b>CPF:</b> {{cpf}}</span>");
 			html = html.replace("{{cpf}}", estagio.getContratante().getCpf());
 		}
-		
-		if (estagio.isEstagioUfpr()) {
-			html = html.replace("{{nomeContratante}}", "Universidade Federal do Paraná");
-			html = html.replace("{{cnpj}}", "75.095.679/0001-49");
-			html = html.replace("{{representante}}", "Ricardo Marcelo Fonseca");
-			html = html.replace("{{telefoneContratante}}", "41 3310 2627");
-			html = html.replace("{{ruaContratante}}", "Rua XV de Novembro");
-			html = html.replace("{{numeroContratante}}", "1299");
-			html = html.replace("{{cidadeContratante}}", "Curitiba");
-			html = html.replace("{{ufContratante}}", "Paraná");
-			html = html.replace("{{cepContratante}}", "80020-300");
-		} else {
-			html = html.replace("{{nomeContratante}}", estagio.getContratante().getNome());
-			//html = html.replace("{{cnpj}}", estagio.getContratante().getCnpj());
-			html = html.replace("{{representante}}", estagio.getContratante().getRepresentanteEmpresa());
-			html = html.replace("{{telefoneContratante}}", estagio.getContratante().getTelefone());
-			/*html = html.replace("{{ruaContratante}}", estagio.getContratante().getEndereco().getRua());
-			html = html.replace("{{numeroContratante}}", String.valueOf(estagio.getContratante().getEndereco().getNumero()));
-			html = html.replace("{{cidadeContratante}}", estagio.getContratante().getEndereco().getCidade());
-			html = html.replace("{{ufContratante}}", estagio.getContratante().getEndereco().getUf());
-			html = html.replace("{{cepContratante}}", estagio.getContratante().getEndereco().getCep());
-			*/
-			html = html.replace("{{ruaContratante}}", "Rua");
-			html = html.replace("{{numeroContratante}}", "5");
-			html = html.replace("{{cidadeContratante}}", "Curitiba");
-			html = html.replace("{{ufContratante}}", "Paraná");
-			html = html.replace("{{cepContratante}}", "80213-931");
-		}
+
+		html = html.replace("{{nomeContratante}}", estagio.getContratante().getNome());
+		//html = html.replace("{{cnpj}}", estagio.getContratante().getCnpj());
+		html = html.replace("{{representante}}", estagio.getContratante().getRepresentanteEmpresa());
+		html = html.replace("{{telefoneContratante}}", estagio.getContratante().getTelefone());
+		html = html.replace("{{ruaContratante}}", estagio.getContratante().getEndereco().getRua());
+		html = html.replace("{{numeroContratante}}", String.valueOf(estagio.getContratante().getEndereco().getNumero()));
+		html = html.replace("{{cidadeContratante}}", estagio.getContratante().getEndereco().getCidade());
+		html = html.replace("{{ufContratante}}", estagio.getContratante().getEndereco().getUf());
+		html = html.replace("{{cepContratante}}", estagio.getContratante().getEndereco().getCep());
 		
 		// Informacoes do aluno
 		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(aluno.getDataNascimento());
@@ -156,23 +139,23 @@ public class GeradorDePdfService {
 		html = html.replace("{{dataNascimento}}", dataFormatada);
 		html = html.replace("{{telefone}}", aluno.getTelefone());
 		html = html.replace("{{email}}", aluno.getEmail());
-		/*html = html.replace("{{rua}}", aluno.getEndereco().getRua());
+		html = html.replace("{{rua}}", aluno.getEndereco().getRua());
 		html = html.replace("{{numeroEndereco}}", String.valueOf(aluno.getEndereco().getNumero()));
 		html = html.replace("{{complemento}}", aluno.getEndereco().getComplemento());
 		html = html.replace("{{cidade}}", aluno.getEndereco().getCidade());
 		html = html.replace("{{uf}}", aluno.getEndereco().getUf());
-		html = html.replace("{{cep}}", aluno.getEndereco().getCep());*/
-		html = html.replace("{{rua}}", "Rua X");
+		html = html.replace("{{cep}}", aluno.getEndereco().getCep());
+		/*html = html.replace("{{rua}}", "Rua X");
 		html = html.replace("{{numeroEndereco}}", "0");
 		html = html.replace("{{complemento}}", "Casa 2");
 		html = html.replace("{{cidade}}", "Curitiba");
 		html = html.replace("{{uf}}", "Paraná");
-		html = html.replace("{{cep}}", "81810-481");
+		html = html.replace("{{cep}}", "81810-481");*/
 		
 		html = html.replace("{{curso}}", aluno.getCurso().getNome());
 		
 		html = html.replace("{{matricula}}", aluno.getMatricula());
-		html = html.replace("{{nivel}}", "4º Período"); // NULO!!
+		html = html.replace("{{nivel}}", aluno.getCurso().getNivel());
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
 		
 		return html;
@@ -241,20 +224,20 @@ public class GeradorDePdfService {
 		html = html.replace("{{cidadeContratante}}", ficha.getEstagio().getContratante().getEndereco().getCidade());
 		html = html.replace("{{ufContratante}}", ficha.getEstagio().getContratante().getEndereco().getUf());
 		html = html.replace("{{cepContratante}}", ficha.getEstagio().getContratante().getEndereco().getCep());
-		//html = html.replace("{{supervisor}}", ficha.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
-		html = html.replace("{{supervisor}}", "SUPERVISOR");
-		//html = html.replace("{{formacao}}", ficha.getEstagio().getPlanoDeAtividades().getFormacaoSupervisor());
-		html = html.replace("{{formacao}}", "TADS");
+		html = html.replace("{{supervisor}}", ficha.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
+		//html = html.replace("{{supervisor}}", "SUPERVISOR");
+		html = html.replace("{{formacao}}", ficha.getEstagio().getPlanoDeAtividades().getFormacaoSupervisor());
+		//html = html.replace("{{formacao}}", "TADS");
 		
 		// Informacoes da ficha		
-		/*String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(ficha.getEstagio().getDataInicio());
+		String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(ficha.getEstagio().getDataInicio());
 		String dataFimFormatada = new SimpleDateFormat("dd/MM/yyyy").format(ficha.getEstagio().getDataTermino());
 		
 		html = html.replace("{{dataInicioEstagio}}", dataInicioFormatada);
 		html = html.replace("{{dataFimEstagio}}", dataFimFormatada);
-		*/
-		html = html.replace("{{dataInicioEstagio}}", "01/01/2022");
-		html = html.replace("{{dataFimEstagio}}", "31/03/2023");
+		
+		/*html = html.replace("{{dataInicioEstagio}}", "01/01/2022");
+		html = html.replace("{{dataFimEstagio}}", "31/03/2023");*/
 		
 		// Dados da Ficha: não devem ser exibidos quando o aluno gera o relatório.
 		/*html = html.replace("{{totalHoras}}", String.valueOf(ficha.getTotalHorasEstagioEfetivamenteRealizadas()));
@@ -284,11 +267,10 @@ public class GeradorDePdfService {
 		html = html.replace("{{cpf}}", aluno.getCpf());
 		html = html.replace("{{email}}", aluno.getEmail());
 		html = html.replace("{{curso}}", aluno.getCurso().getNome());
-		//html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
-		html = html.replace("{{grr}}", "GRR20204481");
+		html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
-		//html = html.replace("{{orientador}}", ficha.getEstagio().getOrientador().getNome());
-		html = html.replace("{{orientador}}", "ORIENTADOR");
+		html = html.replace("{{orientador}}", ficha.getEstagio().getOrientador().getNome());
+		//html = html.replace("{{orientador}}", "ORIENTADOR");
 		
 		html = html.replace("{{data}}", formattedDate);
 		return html;
@@ -340,10 +322,10 @@ public class GeradorDePdfService {
 		html = html.replace("{{cidadeContratante}}", termo.getEstagio().getContratante().getEndereco().getCidade());
 		html = html.replace("{{ufContratante}}", termo.getEstagio().getContratante().getEndereco().getUf());
 		html = html.replace("{{cepContratante}}", termo.getEstagio().getContratante().getEndereco().getCep());
-		//html = html.replace("{{supervisor}}", termo.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
-		html = html.replace("{{supervisor}}", "SUPERVISOR");
-		//html = html.replace("{{formacao}}", termo.getEstagio().getPlanoDeAtividades().getFormacaoSupervisor());
-		html = html.replace("{{formacao}}", "TADS");
+		html = html.replace("{{supervisor}}", termo.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
+		//html = html.replace("{{supervisor}}", "SUPERVISOR");
+		html = html.replace("{{formacao}}", termo.getEstagio().getPlanoDeAtividades().getFormacaoSupervisor());
+		//html = html.replace("{{formacao}}", "TADS");
 		
 		// Informacoes do aluno
 		LocalDate currentDate = LocalDate.now();
@@ -353,8 +335,8 @@ public class GeradorDePdfService {
         String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(aluno.getDataNascimento());
         String dataRescisaoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
         
-        //String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(0));
-        //String dataTerminoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(1));
+        String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(0));
+        String dataTerminoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(1));
 
 		html = html.replace("{{nome}}", aluno.getNome());
 		html = html.replace("{{rg}}", aluno.getRg());
@@ -363,31 +345,31 @@ public class GeradorDePdfService {
 		html = html.replace("{{dataNascimento}}", dataFormatada);
 		html = html.replace("{{telefone}}", aluno.getTelefone());
 		html = html.replace("{{curso}}", aluno.getCurso().getNome());
-		//html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
-		html = html.replace("{{grr}}", "GRR20204481");
+		html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
+		//html = html.replace("{{grr}}", "GRR20204481");
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
-		//html = html.replace("{{orientador}}", ficha.getEstagio().getOrientador().getNome());
-		html = html.replace("{{orientador}}", "ORIENTADOR");
-		html = html.replace("{{nivel}}", "4º Período"); // NULO!!
+		html = html.replace("{{orientador}}", ficha.getEstagio().getOrientador().getNome());
+		//html = html.replace("{{orientador}}", "ORIENTADOR");
+		html = html.replace("{{nivel}}", aluno.getCurso().getNivel());
 		
-		/*html = html.replace("{{rua}}", aluno.getEndereco().getRua());
+		html = html.replace("{{rua}}", aluno.getEndereco().getRua());
 		html = html.replace("{{numeroEndereco}}", String.valueOf(aluno.getEndereco().getNumero()));
 		html = html.replace("{{complemento}}", aluno.getEndereco().getComplemento());
 		html = html.replace("{{cidade}}", aluno.getEndereco().getCidade());
 		html = html.replace("{{uf}}", aluno.getEndereco().getUf());
-		html = html.replace("{{cep}}", aluno.getEndereco().getCep());*/
-		html = html.replace("{{rua}}", "Rua X");
+		html = html.replace("{{cep}}", aluno.getEndereco().getCep());
+		/*html = html.replace("{{rua}}", "Rua X");
 		html = html.replace("{{numeroEndereco}}", "0");
 		html = html.replace("{{complemento}}", "Casa 2");
 		html = html.replace("{{cidade}}", "Curitiba");
 		html = html.replace("{{uf}}", "Paraná");
-		html = html.replace("{{cep}}", "81810-481");
+		html = html.replace("{{cep}}", "81810-481");*/
 		
 		
 		html = html.replace("{{dataRescisao}}", dataRescisaoFormatada);
 		
-		//html = html.replace("{{dataInicioRecesso}}", dataInicioFormatada);
-		//html = html.replace("{{dataTerminoRecesso}}", dataTerminoFormatada);
+		html = html.replace("{{dataInicioRecesso}}", dataInicioFormatada);
+		html = html.replace("{{dataTerminoRecesso}}", dataTerminoFormatada);
 		
 		html = html.replace("{{data}}", formattedDate);
 		return html;
@@ -410,12 +392,10 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlRelatorioContratante(Contratante contratante) {
-		// carregar o HTML do arquivo
 		ClassLoader classLoader = getClass().getClassLoader();
 		
 		String html = "";
 		try {
-			//html = IOUtils.toString(classLoader.getResourceAsStream("copy.html"), StandardCharsets.UTF_8);
 			html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-contratante.html"), StandardCharsets.UTF_8);
 			
 			if (contratante.getTipo() == EnumTipoContratante.PessoaJuridica) {
@@ -448,12 +428,6 @@ public class GeradorDePdfService {
 		html = html.replace("{{cepContratante}}", contratante.getEndereco().getCep());
 		
 		html = html.replace("{{qtdEstagios}}", String.valueOf(contratante.getEstagio().size()));
-		/*html = html.replace("{{ruaContratante}}", "Rua");
-		html = html.replace("{{numeroContratante}}", "5");
-		html = html.replace("{{cidadeContratante}}", "Curitiba");
-		html = html.replace("{{ufContratante}}", "Paraná");
-		html = html.replace("{{cepContratante}}", "80213-931");
-		*/
 
 		return html;
 	}
@@ -480,7 +454,6 @@ public class GeradorDePdfService {
 		
 		String html = "";
 		try {
-			//html = IOUtils.toString(classLoader.getResourceAsStream("copy.html"), StandardCharsets.UTF_8);
 			
 			html = IOUtils.toString(classLoader.getResourceAsStream("relatorio-agente-integrador.html"), StandardCharsets.UTF_8);
 			
@@ -585,26 +558,26 @@ public class GeradorDePdfService {
 	        estagioHtml = estagioHtml.replace("{{grr}}", estagio.getAluno().getMatricula());
 	        estagioHtml = estagioHtml.replace("{{ira}}", estagio.getAluno().getIra());
 	        estagioHtml = estagioHtml.replace("{{curso}}", estagio.getAluno().getCurso().getNome());
-	        //estagioHtml = estagioHtml.replace("{{contratante}}", estagio.getContratante().getNome());
-	        estagioHtml = estagioHtml.replace("{{contratante}}", "Contratante Estático");
-	        //estagioHtml = estagioHtml.replace("{{apolice}}", String.valueOf(estagio.getApolice().getNumero()));
-	        estagioHtml = estagioHtml.replace("{{apolice}}", "static");
-	        //estagioHtml = estagioHtml.replace("{{agenteIntegrador}}", estagio.getAgenteIntegrador().getNome());
-	        estagioHtml = estagioHtml.replace("{{agenteIntegrador}}", "static");
+	        estagioHtml = estagioHtml.replace("{{contratante}}", estagio.getContratante().getNome());
+	        //estagioHtml = estagioHtml.replace("{{contratante}}", "Contratante Estático");
+	        estagioHtml = estagioHtml.replace("{{apolice}}", String.valueOf(estagio.getApolice().getNumero()));
+	        //estagioHtml = estagioHtml.replace("{{apolice}}", "static");
+	        estagioHtml = estagioHtml.replace("{{agenteIntegrador}}", estagio.getAgenteIntegrador().getNome());
+	        //estagioHtml = estagioHtml.replace("{{agenteIntegrador}}", "static");
 	        
-//	        estagioHtml = estagioHtml.replace("{{orientador}}", estagio.getOrientador().getNome());
-	        estagioHtml = estagioHtml.replace("{{orientador}}", "Orientador Estático");
+	        estagioHtml = estagioHtml.replace("{{orientador}}", estagio.getOrientador().getNome());
+	        //estagioHtml = estagioHtml.replace("{{orientador}}", "Orientador Estático");
 	        
-	        //estagioHtml = estagioHtml.replace("{{supervisor}}", estagio.getPlanoDeAtividades().getNomeSupervisor());
-	        estagioHtml = estagioHtml.replace("{{supervisor}}", "static");
+	        estagioHtml = estagioHtml.replace("{{supervisor}}", estagio.getPlanoDeAtividades().getNomeSupervisor());
+	        //estagioHtml = estagioHtml.replace("{{supervisor}}", "static");
 	        
-	        //String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(estagio.getDataInicio());
-	        //estagioHtml = estagioHtml.replace("{{dataInicio}}", dataInicioFormatada);
-	        estagioHtml = estagioHtml.replace("{{dataInicio}}", "01/01/2022");
+	        String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(estagio.getDataInicio());
+	        estagioHtml = estagioHtml.replace("{{dataInicio}}", dataInicioFormatada);
+	        //estagioHtml = estagioHtml.replace("{{dataInicio}}", "01/01/2022");
 	        
-	        //String dataTerminoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(estagio.getDataTermino());
-	        //estagioHtml = estagioHtml.replace("{{dataTermino}}", dataTerminoFormatada);
-	        estagioHtml = estagioHtml.replace("{{dataTermino}}", "01/01/2023");
+	        String dataTerminoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(estagio.getDataTermino());
+	        estagioHtml = estagioHtml.replace("{{dataTermino}}", dataTerminoFormatada);
+	        //estagioHtml = estagioHtml.replace("{{dataTermino}}", "01/01/2023");
 	        
 	        estagioHtml = estagioHtml.replace("{{jornadaDiaria}}", String.valueOf(estagio.getJornadaDiaria()));
 	        estagioHtml = estagioHtml.replace("{{jornadaSemanal}}", String.valueOf(estagio.getJornadaSemanal()));
@@ -615,24 +588,23 @@ public class GeradorDePdfService {
 	        estagioHtml = estagioHtml.replace("{{id}}", String.valueOf(estagio.getId()));
 	        estagioHtml = estagioHtml.replace("{{status}}", String.valueOf(estagio.getStatusEstagio()));
 
-/*	        estagioHtml = estagioHtml.replace("{{rua}}", estagio.getContratante().getEndereco().getRua());
+	        estagioHtml = estagioHtml.replace("{{rua}}", estagio.getContratante().getEndereco().getRua());
 
-	        estagioHtml = estagioHtml.replace("{{numero}}", estagio.getContratante().getEndereco().getNumero());
+	        estagioHtml = estagioHtml.replace("{{numero}}", String.valueOf(estagio.getContratante().getEndereco().getNumero()));
 	        estagioHtml = estagioHtml.replace("{{cidade}}", estagio.getContratante().getEndereco().getCidade());
 	        estagioHtml = estagioHtml.replace("{{estado}}", estagio.getContratante().getEndereco().getUf());
 	        estagioHtml = estagioHtml.replace("{{cep}}", estagio.getContratante().getEndereco().getCep());
-*/
-	        estagioHtml = estagioHtml.replace("{{rua}}", "Rua A");
+
+/*	        estagioHtml = estagioHtml.replace("{{rua}}", "Rua A");
 	        estagioHtml = estagioHtml.replace("{{numero}}", "42");
 	        estagioHtml = estagioHtml.replace("{{cidade}}", "Curitiba");
 	        estagioHtml = estagioHtml.replace("{{estado}}", "Paraná");
 	        estagioHtml = estagioHtml.replace("{{cep}}", "74329-214");
+*/	        
 	        
-	        // Adicionar o HTML do estágio à lista
 	        estagiosHtml.append(estagioHtml);
 	    }
 
-	    // Substituir a tag no HTML principal com os estágios
 	    html = html.replace("{{estagios}}", estagiosHtml.toString());
 
 	    return html;
@@ -713,11 +685,9 @@ public class GeradorDePdfService {
 	        else
 	        	estagioHtml = estagioHtml.replace("{{motivoReprovacao}}", String.valueOf(certificado.getMotivoReprovacao()));
 	        
-	        // Adicionar o HTML do estágio à lista
 	        estagiosHtml.append(estagioHtml);
 	    }
 
-	    // Substituir a tag no HTML principal com os estágios
 	    html = html.replace("{{certificados}}", estagiosHtml.toString());
 
 	    return html;
@@ -740,7 +710,7 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlCertificadoOrientador(Orientador orientador, CertificadoDeEstagio certificado) {
-	    // Carregar o HTML do arquivo
+	   
 		ClassLoader classLoader = getClass().getClassLoader();
 		
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -758,14 +728,6 @@ public class GeradorDePdfService {
 		
 		String imagePath = resources + "termo/prograd.png";
 		html = html.replace("{{imagePath}}", imagePath);
-		// Informacoes do concedente
-		
-		// Informacoes da ficha
-/*		if (certificado.getMotivoReprovacao() == null)
-			html = html.replace("{{reprovacao}}", "Não houve reprovação.");
-		else
-			html = html.replace("{{reprovacao}}", certificado.getMotivoReprovacao());
-*/
 		
 		String dataInicio = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataInicio());
 		String dataTermino = new SimpleDateFormat("dd/MM/yyyy").format(certificado.getEstagio().getDataTermino());
@@ -802,7 +764,7 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) {
-	    // Carregar o HTML do arquivo
+
 	    ClassLoader classLoader = getClass().getClassLoader();
 	    String html = "";
 	    try {
@@ -864,11 +826,9 @@ public class GeradorDePdfService {
 	        estagioHtml = estagioHtml.replace("{{tipo}}", String.valueOf(relatorio.getTipoRelatorio()));
 	        estagioHtml = estagioHtml.replace("{{etapa}}", String.valueOf(relatorio.getEtapaFluxo()));
 
-	        // Adicionar o HTML do estágio à lista
 	        estagiosHtml.append(estagioHtml);
 	    }
 
-	    // Substituir a tag no HTML principal com os estágios
 	    html = html.replace("{{relatorios}}", estagiosHtml.toString());
 
 	    return html;
@@ -891,7 +851,7 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlRelatorioDeEstagio(Optional<RelatorioDeEstagio> relatorioFind) {
-	    // Carregar o HTML do arquivo
+
 		RelatorioDeEstagio relatorio = relatorioFind.get();
 		
 		ClassLoader classLoader = getClass().getClassLoader();
@@ -945,7 +905,7 @@ public class GeradorDePdfService {
 	}
 	
 	private String getHtmlAlunoRelatorioDeEstagio(Aluno aluno, RelatorioDeEstagio relatorio) {
-	    // Carregar o HTML do arquivo
+
 		ClassLoader classLoader = getClass().getClassLoader();
 		
 		Path diretorioAtual = Paths.get("").toAbsolutePath();
@@ -986,25 +946,25 @@ public class GeradorDePdfService {
 		html = html.replace("{{cpf}}", aluno.getCpf());
 		html = html.replace("{{email}}", aluno.getEmail());
 		html = html.replace("{{curso}}", aluno.getCurso().getNome());
-		//html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
-		html = html.replace("{{grr}}", "GRR20204481");
+		html = html.replace("{{grr}}", aluno.getCurso().getMatricula());
+		//html = html.replace("{{grr}}", "GRR20204481");
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
-		//html = html.replace("{{orientador}}", ficha.getEstagio().getOrientador().getNome());
-		html = html.replace("{{orientador}}", "ORIENTADOR");
+		html = html.replace("{{orientador}}", relatorio.getEstagio().getOrientador().getNome());
+		//html = html.replace("{{orientador}}", "ORIENTADOR");
 		html = html.replace("{{coordenador}}", aluno.getCoordenador());
 		
-		//html = html.replace("{{supervisor}}", relatorio.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
-		html = html.replace("{{supervisor}}", "SUPERVISOR");
+		html = html.replace("{{supervisor}}", relatorio.getEstagio().getPlanoDeAtividades().getNomeSupervisor());
+		//html = html.replace("{{supervisor}}", "SUPERVISOR");
 		
 		html = html.replace("{{tipoRelatorio}}", String.valueOf(relatorio.getTipoRelatorio()));
 		html = html.replace("{{modalidade}}", String.valueOf(relatorio.getEstagio().getTipoEstagio()));
 		
-		/*String inicioRelatorio = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataInicio());
+		String inicioRelatorio = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataInicio());
 		String finalRelatorio = new SimpleDateFormat("dd/MM/yyyy").format(relatorio.getEstagio().getDataTermino());
 		
 		html = html.replace("{{inicioRelatorio}}", inicioRelatorio);
 		html = html.replace("{{finalRelatorio}}", finalRelatorio);
-		*/
+		
 		/*
 		html = html.replace("{{consideracoes}}", relatorio.getConsideracoes());
 		html = html.replace("{{avalAtividades}}", String.valueOf(relatorio.getAvalAtividades()));
@@ -1052,35 +1012,17 @@ public class GeradorDePdfService {
 		
 		String imagePath = resources + "termo/prograd.png";
 		html = html.replace("{{imagePath}}", imagePath);
-		
-		// Informacoes do relatório
-		if (termo.getEstagio().isEstagioUfpr()) {
-			html = html.replace("{{razaoSocial}}", termo.getEstagio().getContratante().getNome());
-			html = html.replace("{{cnpj}}", termo.getEstagio().getContratante().getCnpj());
-			html = html.replace("{{representante}}", termo.getEstagio().getContratante().getRepresentanteEmpresa());
-			html = html.replace("{{telefoneContratante}}", termo.getEstagio().getContratante().getTelefone());
-			html = html.replace("{{ruaContratante}}", termo.getEstagio().getContratante().getEndereco().getRua());
-			html = html.replace("{{numeroContratante}}", String.valueOf(termo.getEstagio().getContratante().getEndereco().getNumero()));
-			html = html.replace("{{cidadeContratante}}", termo.getEstagio().getContratante().getEndereco().getCidade());
-			html = html.replace("{{ufContratante}}", termo.getEstagio().getContratante().getEndereco().getUf());
-			html = html.replace("{{cepContratante}}", termo.getEstagio().getContratante().getEndereco().getCep());
-		} else {
-			html = html.replace("{{razaoSocial}}", termo.getEstagio().getContratante().getNome());
-			html = html.replace("{{cnpj}}", termo.getEstagio().getContratante().getCnpj());
-			html = html.replace("{{representante}}", termo.getEstagio().getContratante().getRepresentanteEmpresa());
-			html = html.replace("{{telefoneContratante}}", termo.getEstagio().getContratante().getTelefone());
-			/*html = html.replace("{{ruaContratante}}", termo.getEstagio().getContratante().getEndereco().getRua());
-			html = html.replace("{{numeroContratante}}", String.valueOf(termo.getEstagio().getContratante().getEndereco().getNumero()));
-			html = html.replace("{{cidadeContratante}}", termo.getEstagio().getContratante().getEndereco().getCidade());
-			html = html.replace("{{ufContratante}}", termo.getEstagio().getContratante().getEndereco().getUf());
-			html = html.replace("{{cepContratante}}", termo.getEstagio().getContratante().getEndereco().getCep());
-			*/
-			html = html.replace("{{ruaContratante}}", "Rua");
-			html = html.replace("{{numeroContratante}}", "5");
-			html = html.replace("{{cidadeContratante}}", "Curitiba");
-			html = html.replace("{{ufContratante}}", "Paraná");
-			html = html.replace("{{cepContratante}}", "80213-931");
-		}
+
+		html = html.replace("{{razaoSocial}}", termo.getEstagio().getContratante().getNome());
+		html = html.replace("{{cnpj}}", termo.getEstagio().getContratante().getCnpj());
+		html = html.replace("{{representante}}", termo.getEstagio().getContratante().getRepresentanteEmpresa());
+		html = html.replace("{{telefoneContratante}}", termo.getEstagio().getContratante().getTelefone());
+		html = html.replace("{{ruaContratante}}", termo.getEstagio().getContratante().getEndereco().getRua());
+		html = html.replace("{{numeroContratante}}", String.valueOf(termo.getEstagio().getContratante().getEndereco().getNumero()));
+		html = html.replace("{{cidadeContratante}}", termo.getEstagio().getContratante().getEndereco().getCidade());
+		html = html.replace("{{ufContratante}}", termo.getEstagio().getContratante().getEndereco().getUf());
+		html = html.replace("{{cepContratante}}", termo.getEstagio().getContratante().getEndereco().getCep());
+
 		
 		TermoDeEstagio termoAntigo = termo.getEstagio().getTermoDeCompromisso();
 		
@@ -1093,37 +1035,31 @@ public class GeradorDePdfService {
 		html = html.replace("{{dataNascimento}}", dataFormatada);
 		html = html.replace("{{telefone}}", termo.getEstagio().getAluno().getTelefone());
 		html = html.replace("{{email}}", termo.getEstagio().getAluno().getEmail());
-		/*html = html.replace("{{rua}}", termo.getEstagio().getAluno().getEndereco().getRua());
+		html = html.replace("{{rua}}", termo.getEstagio().getAluno().getEndereco().getRua());
 		html = html.replace("{{numeroEndereco}}", String.valueOf(termo.getEstagio().getAluno().getEndereco().getNumero()));
 		html = html.replace("{{complemento}}", termo.getEstagio().getAluno().getEndereco().getComplemento());
 		html = html.replace("{{cidade}}", termo.getEstagio().getAluno().getEndereco().getCidade());
 		html = html.replace("{{uf}}", termo.getEstagio().getAluno().getEndereco().getUf());
-		html = html.replace("{{cep}}", termo.getEstagio().getAluno().getEndereco().getCep());*/
-		html = html.replace("{{rua}}", "Rua X");
-		html = html.replace("{{numeroEndereco}}", "0");
-		html = html.replace("{{complemento}}", "Casa 2");
-		html = html.replace("{{cidade}}", "Curitiba");
-		html = html.replace("{{uf}}", "Paraná");
-		html = html.replace("{{cep}}", "81810-481");
+		html = html.replace("{{cep}}", termo.getEstagio().getAluno().getEndereco().getCep());
 		
 		html = html.replace("{{curso}}", termo.getEstagio().getAluno().getCurso().getNome());
 		
 		html = html.replace("{{matricula}}", termo.getEstagio().getAluno().getMatricula());
-		html = html.replace("{{nivel}}", "4º Período"); // NULO!!
+		html = html.replace("{{nivel}}", termo.getEstagio().getAluno().getCurso().getNivel());
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
 		
 		html = html.replace("{{contratante}}", termo.getContratante().getNome());
-		//html = html.replace("{{coordenador}}", termo.getCoordenador().getNome());
-		html = html.replace("{{coordenador}}", "Alessandro Brawerman");
+		html = html.replace("{{coordenador}}", termo.getCoordenador().getNome());
+		//html = html.replace("{{coordenador}}", "Alessandro Brawerman");
 		html = html.replace("{{orientador}}", termo.getOrientador().getNome());
 		
-		//html = html.replace("{{supervisor}}", termo.getPlanoAtividades().getNomeSupervisor());
-		html = html.replace("{{supervisor}}", "Supervisor A");
-		//html = html.replace("{{formacaoSupervisor}}", termo.getPlanoAtividades().getFormacaoSupervisor());
-		html = html.replace("{{formacaoSupervisor}}", "Análise e Desenvolvimento Estático");
+		html = html.replace("{{supervisor}}", termo.getPlanoAtividades().getNomeSupervisor());
+		//html = html.replace("{{supervisor}}", "Supervisor A");
+		html = html.replace("{{formacaoSupervisor}}", termo.getPlanoAtividades().getFormacaoSupervisor());
+		//html = html.replace("{{formacaoSupervisor}}", "Análise e Desenvolvimento Estático");
 				
-		//html = html.replace("{{ajustes}}", termo.getDescricaoAjustes());
-		html = html.replace("{{ajustes}}", "Ajustando o teste");
+		html = html.replace("{{ajustes}}", termo.getDescricaoAjustes());
+		//html = html.replace("{{ajustes}}", "Ajustando o teste");
 		
 		
 		// Informações do Termo Aditivo
