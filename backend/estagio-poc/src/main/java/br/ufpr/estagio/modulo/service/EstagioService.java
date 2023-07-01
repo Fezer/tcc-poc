@@ -213,9 +213,11 @@ public class EstagioService {
 		return estagio;
 	}
 
-	// Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não
-	// iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em
-	// andamento.
+	/** 
+	 * Neste caso, estágio em progresso é um estágio já aprovado, mas ainda não
+	 * iniciado ou um estágio já aprovado e já iniciado ou seja, um estágio em
+	 * andamento.
+	**/
 	public List<Estagio> buscarEstagioEmProgressoPorAluno(Aluno aluno) {
 		// Primeiro busca por estágio aprovado.
 		EnumStatusEstagio statusEstagio = EnumStatusEstagio.Aprovado;

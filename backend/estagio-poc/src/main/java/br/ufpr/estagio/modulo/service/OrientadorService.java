@@ -50,7 +50,6 @@ public class OrientadorService {
 	public List<Orientador> salvarListaDocentes(List<String> docentes, Curso curso) {
 		List<Orientador> listaOrientadores = new ArrayList<>();
 		if (docentes != null) {
-			List<Curso> listaCursos = null;
 			for (String nome : docentes) {
 				Orientador orientador = new Orientador();
 				Optional<Orientador> orientadorFind = orientadorRepo.findByNome(nome);
@@ -60,26 +59,6 @@ public class OrientadorService {
 				} else {
 					orientador = orientadorFind.get();
 				}
-//				if (orientador.getCurso() == null) {
-//					listaCursos = new ArrayList<Curso>();
-//					listaCursos.add(curso);
-//				}else {
-//					listaCursos = orientador.getCurso();
-//					if(!listaCursos.contains(curso)) {
-//						listaCursos.add(curso);
-//					}
-//				}
-//				orientador.setCurso(listaCursos);
-//				this.salvarOrientador(orientador);
-				listaOrientadores.add(orientador);
-//				List<Orientador> listaOrientadoresCurso = null;
-//				listaOrientadoresCurso = curso.getOrientador();
-//				if(listaOrientadoresCurso == null) {
-//					listaOrientadoresCurso = new ArrayList<Orientador>();
-//				}
-//				if(!listaOrientadoresCurso.contains(orientador)) {
-//					listaOrientadoresCurso.add(orientador);
-//				}
 			}
 		}
 		return listaOrientadores;

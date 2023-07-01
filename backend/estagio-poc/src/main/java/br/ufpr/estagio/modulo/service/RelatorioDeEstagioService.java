@@ -12,7 +12,6 @@ import br.ufpr.estagio.modulo.dto.RelatorioDeEstagioDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
 import br.ufpr.estagio.modulo.model.Aluno;
-import br.ufpr.estagio.modulo.model.CertificadoDeEstagio;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.repository.EstagioRepository;

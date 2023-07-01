@@ -1,27 +1,14 @@
 package br.ufpr.estagio.modulo.service;
 
-import java.io.FileOutputStream;
 
 import org.springframework.stereotype.Service;
 
-import com.itextpdf.html2pdf.HtmlConverter;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.lowagie.text.DocumentException;
-import org.springframework.core.io.ClassPathResource;
 import org.xhtmlrenderer.pdf.ITextRenderer;
-import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.lowagie.text.DocumentException;
 
-import br.ufpr.estagio.modulo.dto.AlunoDTO;
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
 import br.ufpr.estagio.modulo.model.AgenteIntegrador;
@@ -36,19 +23,13 @@ import br.ufpr.estagio.modulo.model.TermoDeEstagio;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;

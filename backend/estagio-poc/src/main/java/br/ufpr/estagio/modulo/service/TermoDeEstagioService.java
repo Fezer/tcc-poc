@@ -19,7 +19,6 @@ import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumStatusTermo;
 import br.ufpr.estagio.modulo.enums.EnumTipoContratante;
 import br.ufpr.estagio.modulo.enums.EnumTipoEstagio;
-import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
 import br.ufpr.estagio.modulo.enums.EnumTipoTermoDeEstagio;
 import br.ufpr.estagio.modulo.enums.EnumParecerAprovadores;
 import br.ufpr.estagio.modulo.enums.EnumStatusEstagio;
@@ -28,15 +27,12 @@ import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
 import br.ufpr.estagio.modulo.model.Contratante;
-import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
-import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 import br.ufpr.estagio.modulo.model.Seguradora;
 import br.ufpr.estagio.modulo.model.TermoDeEstagio;
-import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 import br.ufpr.estagio.modulo.repository.AgenteIntegradorRepository;
 import br.ufpr.estagio.modulo.repository.ApoliceRepository;
 import br.ufpr.estagio.modulo.repository.CienciaCoordenacaoRepository;
@@ -1455,18 +1451,6 @@ public class TermoDeEstagioService {
 
 		return true;
 	}
-
-	/*
-	 * public boolean listarTermosDeEstagioPorConvenio(Convenio convenio) {
-	 * 
-	 * List<TermoDeEstagio> termos = termoRepo.findByConvenio(convenio);
-	 * 
-	 * if (termos.size() == 0)
-	 * return false;
-	 * 
-	 * return true;
-	 * }
-	 */
 
 	public boolean listarTermosDeEstagioPorContratante(Contratante contratante) {
 
