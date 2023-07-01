@@ -21,7 +21,6 @@ import br.ufpr.estagio.modulo.model.RelatorioDeEstagio;
 @Service
 public class GeradorDeExcelService {
 	
-	// Ok
 	public ByteArrayOutputStream gerarExcelEstagioSeguradoraUfpr(List<Estagio> estagios) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -78,7 +77,6 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 	
-	// Ok
 	public ByteArrayOutputStream gerarExcelContratante(Contratante contratante) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -115,7 +113,6 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 	
-	// Ok
 	public ByteArrayOutputStream gerarExcelAgenteIntegrador(AgenteIntegrador agenteIntegrador) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -190,7 +187,6 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 	
-	//Ok
 	public ByteArrayOutputStream gerarExcelRelatoriosDeEstagio(List<RelatorioDeEstagio> relatorios) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
@@ -245,7 +241,6 @@ public class GeradorDeExcelService {
 	    return outputStream;
 	}
 
-	// Ok
 	public ByteArrayOutputStream gerarExcelRelatorioDeEstagio(RelatorioDeEstagio relatorio) throws IOException {
 		
 	    Workbook workbook = new XSSFWorkbook();
