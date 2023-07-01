@@ -194,8 +194,8 @@ public class EstagioREST {
 				boolean booleanEstagioUfpr = Boolean.valueOf(estagioUfpr);
 
 				Estagio estagio = estagioFind.get();
-				termoService.associarContratanteUfprAoTermo(estagioFind.get().getTermoDeCompromisso());
 				estagio = estagioService.definirEstagioUfpr(estagio, booleanEstagioUfpr);
+				termoService.associarContratanteUfprAoTermo(estagioFind.get().getTermoDeCompromisso());
 				EstagioDTO estagioDTO = estagioService.toEstagioDTO(estagio);
 				return new ResponseEntity<>(estagioDTO, HttpStatus.OK);
 			}
