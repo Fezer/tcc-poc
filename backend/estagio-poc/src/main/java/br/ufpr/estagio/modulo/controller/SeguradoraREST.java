@@ -183,8 +183,7 @@ public class SeguradoraREST {
 	}
 
 	@GetMapping("/")
-	public ResponseEntity<Object> listarSeguradoras(
-			@RequestParam(defaultValue = "0") int page,
+	public ResponseEntity<Object> listarSeguradoras(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(required = false) Optional<String> nome,
 			@RequestParam(required = false) Optional<Boolean> ativo,
 			@RequestParam(required = false) Optional<Boolean> seguradoraUFPR
@@ -195,23 +194,18 @@ public class SeguradoraREST {
 		Optional<Boolean> ufprOptional = seguradoraUFPR == null ? Optional.empty() : seguradoraUFPR;
 
 		try {
-			Page<Seguradora> seguradoras = seguradoraService.listarSeguradorasPaginated(
-					page,
-					nomeOptional,
-					ativoOptional,
-					ufprOptional);
+			Page<Seguradora> seguradoras = seguradoraService.listarSeguradorasPaginated(page, nomeOptional,
+					ativoOptional, ufprOptional);
 
 			if (seguradoras.isEmpty()) {
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(seguradoras);
 			}
 
-			List<SeguradoraDTO> seguradoraDTOs = seguradoras.stream()
-					.map(ap -> mapper.map(ap, SeguradoraDTO.class))
+			List<SeguradoraDTO> seguradoraDTOs = seguradoras.stream().map(ap -> mapper.map(ap, SeguradoraDTO.class))
 					.collect(Collectors.toList());
 
-			return ResponseEntity.status(HttpStatus.OK).body(
-					new PageImpl<>(seguradoraDTOs, seguradoras.getPageable(),
-							seguradoras.getTotalElements()));
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new PageImpl<>(seguradoraDTOs, seguradoras.getPageable(), seguradoras.getTotalElements()));
 
 		} catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -239,7 +233,7 @@ public class SeguradoraREST {
 			Optional<Seguradora> seguradora = seguradoraService.buscarSeguradoraPorId(idInt);
 
 			if (seguradora.isPresent()) {
-				
+
 				if (seguradoraDTO.getNome().isEmpty())
 					throw new InvalidFieldException("Nome inválido!");
 

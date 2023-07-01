@@ -241,12 +241,7 @@ public class ConvenioREST {
 			Optional<Convenio> convenioFind = convenioService.buscarPorId(idLong);
 			
 		    if(convenioFind.isPresent()) {
-		    	Convenio convenio = convenioFind.get();
-		    	//boolean presenteEmDocumento = convenioService.verificarTermoConvenio(convenio);
-				
-		    	//if (presenteEmDocumento)
-					//throw new InvalidFieldException("Não é possível excluir um convênio presente em termo de estágio ou estágio.");
-				
+		    	Convenio convenio = convenioFind.get();				
 		    	convenioService.excluirConvenio(convenio);
 		        return ResponseEntity.noContent().build();
 		    } else {

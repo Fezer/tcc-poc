@@ -28,7 +28,6 @@ import br.ufpr.estagio.modulo.dto.TermoDeRescisaoDTO;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
-import br.ufpr.estagio.modulo.exception.PocException;
 import br.ufpr.estagio.modulo.model.TermoDeRescisao;
 import br.ufpr.estagio.modulo.service.TermoDeRescisaoService;
 
@@ -60,8 +59,7 @@ public class TermoDeRescisaoREST {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<Object> listarTodos(
-			@RequestParam(defaultValue = "0") Integer page,
+	public ResponseEntity<Object> listarTodos(@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(required = false) Optional<String> grrAluno,
 			@RequestParam(required = false) Optional<EnumEtapaFluxo> etapaFluxo,
 			@RequestParam(required = false) Optional<Boolean> cienciaCOAFE,
@@ -78,24 +76,18 @@ public class TermoDeRescisaoREST {
 			Optional<Boolean> cienciaCoordenacaoOptional = cienciaCoordenacao == null ? Optional.empty()
 					: cienciaCoordenacao;
 
-			Page<TermoDeRescisao> lista = termoDeRescisaoService.listarTodosPaginated(
-					page,
-					grrOptional,
-					etapaFluxoOptional,
-					cienciaCOAFEOptional,
-					cienciaCoordenacaoOptional,
-					cienciaOrientadorOptional,
+			Page<TermoDeRescisao> lista = termoDeRescisaoService.listarTodosPaginated(page, grrOptional,
+					etapaFluxoOptional, cienciaCOAFEOptional, cienciaCoordenacaoOptional, cienciaOrientadorOptional,
 					cienciaCOEOptional);
 			if (lista.isEmpty()) {
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ArrayList<>());
 			} else {
 
 				List<TermoDeRescisaoDTO> listaDTO = lista.stream()
-						.map(termo -> mapper.map(termo, TermoDeRescisaoDTO.class))
-						.collect(Collectors.toList());
+						.map(termo -> mapper.map(termo, TermoDeRescisaoDTO.class)).collect(Collectors.toList());
 
-				return ResponseEntity.status(HttpStatus.OK).body(
-						new PageImpl<>(listaDTO, lista.getPageable(), lista.getTotalElements()));
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(new PageImpl<>(listaDTO, lista.getPageable(), lista.getTotalElements()));
 
 			}
 		} catch (NotFoundException ex) {

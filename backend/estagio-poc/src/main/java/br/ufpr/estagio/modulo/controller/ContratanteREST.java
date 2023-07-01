@@ -83,7 +83,7 @@ public class ContratanteREST {
 				throw new InvalidFieldException("Preencha o nome do representante da empresa.");
 
 			contratante.setAtivo(true);
-			
+
 			contratante = contratanteService.criarContratante(contratante);
 
 			contratanteDTO = mapper.map(contratante, ContratanteDTO.class);
@@ -150,16 +150,13 @@ public class ContratanteREST {
 	@GetMapping("/nome/{nomeContratante}")
 	public ResponseEntity<Object> buscarContratanteNome(@PathVariable String nomeContratante) {
 		try {
-			// Optional<Contratante> contratanteFind =
-			// contratanteService.buscarPorNome(nomeContratante);
 			List<Contratante> contratantesFind = contratanteService.buscarPorNome(nomeContratante);
 
 			if (contratantesFind.isEmpty()) {
 				throw new NotFoundException("Contratante não encontrado!");
 			} else {
 				List<ContratanteDTO> contratantesDTO = contratantesFind.stream()
-						.map(ap -> mapper.map(ap, ContratanteDTO.class))
-						.collect(Collectors.toList());
+						.map(ap -> mapper.map(ap, ContratanteDTO.class)).collect(Collectors.toList());
 				return ResponseEntity.status(HttpStatus.OK).body(contratantesDTO);
 			}
 		} catch (NotFoundException ex) {
@@ -190,8 +187,7 @@ public class ContratanteREST {
 				throw new NotFoundException("Contratante não encontrado!");
 			} else {
 				List<ContratanteDTO> contratantesDTO = contratantesFind.stream()
-						.map(ap -> mapper.map(ap, ContratanteDTO.class))
-						.collect(Collectors.toList());
+						.map(ap -> mapper.map(ap, ContratanteDTO.class)).collect(Collectors.toList());
 				return ResponseEntity.ok().body(contratantesDTO);
 			}
 		} catch (NotFoundException ex) {
@@ -223,8 +219,7 @@ public class ContratanteREST {
 				throw new NotFoundException("Contratante não encontrado!");
 			} else {
 				List<ContratanteDTO> contratantesDTO = contratantesFind.stream()
-						.map(ap -> mapper.map(ap, ContratanteDTO.class))
-						.collect(Collectors.toList());
+						.map(ap -> mapper.map(ap, ContratanteDTO.class)).collect(Collectors.toList());
 				return ResponseEntity.ok().body(contratantesDTO);
 			}
 		} catch (NotFoundException ex) {
@@ -248,30 +243,24 @@ public class ContratanteREST {
 	}
 
 	@GetMapping("/")
-	public ResponseEntity<Object> listarContratantes(
-			@RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(required = false) String nome,
-			@RequestParam(required = false) String cnpj) {
+	public ResponseEntity<Object> listarContratantes(@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(required = false) String nome, @RequestParam(required = false) String cnpj) {
 		try {
 			Optional<String> nomeOptional = nome == null ? Optional.empty() : Optional.of(nome);
 			Optional<String> cnpjOptional = cnpj == null ? Optional.empty() : Optional.of(cnpj);
 
-			Page<Contratante> contratantes = contratanteService.listarContratantesPaginated(
-					page,
-					nomeOptional,
+			Page<Contratante> contratantes = contratanteService.listarContratantesPaginated(page, nomeOptional,
 					cnpjOptional);
 
 			if (contratantes.isEmpty()) {
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(contratantes);
 			}
 
-			List<ContratanteDTO> contratantesDTO = contratantes.stream()
-					.map(ap -> mapper.map(ap, ContratanteDTO.class))
+			List<ContratanteDTO> contratantesDTO = contratantes.stream().map(ap -> mapper.map(ap, ContratanteDTO.class))
 					.collect(Collectors.toList());
 
-			return ResponseEntity.status(HttpStatus.OK).body(
-					new PageImpl<>(contratantesDTO, contratantes.getPageable(),
-							contratantes.getTotalElements()));
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new PageImpl<>(contratantesDTO, contratantes.getPageable(), contratantes.getTotalElements()));
 
 		} catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -495,11 +484,9 @@ public class ContratanteREST {
 					contratante.setAtivo(true);
 
 				contratante.setId(idLong);
-				contratante = contratanteService
-						.atualizarContratante(contratante);
+				contratante = contratanteService.atualizarContratante(contratante);
 
-				ContratanteDTO contratanteDTOAtualizado = mapper.map(contratante,
-						ContratanteDTO.class);
+				ContratanteDTO contratanteDTOAtualizado = mapper.map(contratante, ContratanteDTO.class);
 				return ResponseEntity.ok().body(contratanteDTOAtualizado);
 			} else {
 				throw new NotFoundException("Contratante não encontrado!");
