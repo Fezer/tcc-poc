@@ -3,9 +3,6 @@ package br.ufpr.estagio.modulo.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-import br.ufpr.estagio.modulo.model.Aluno;
-import jakarta.persistence.Column;
-
 public class DadosAuxiliaresDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -67,8 +64,6 @@ public class DadosAuxiliaresDTO implements Serializable{
 	
 	private String dataEmissaoTitulo;
 	
-	//private Aluno aluno;
-
 	public DadosAuxiliaresDTO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -108,7 +103,6 @@ public class DadosAuxiliaresDTO implements Serializable{
 		this.autoIdentificacaoGenero = autoIdentificacaoGenero;
 		this.orientacaoSexual = orientacaoSexual;
 		this.emailInstitucional = emailInstitucional;
-		//this.aluno = aluno;
 	}
 
 	public DadosAuxiliaresDTO(long id, String nomePai, String estadoCivil, int dependentes, String grupoSanguineo,
@@ -365,14 +359,6 @@ public class DadosAuxiliaresDTO implements Serializable{
 	public void setEmailInstitucional(String emailInstitucional) {
 		this.emailInstitucional = emailInstitucional;
 	}
-
-	/*public Aluno getAluno() {
-		return aluno;
-	}
-
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
-	}*/
 
 	public String getTipoVaga() {
 		return tipoVaga;

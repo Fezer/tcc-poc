@@ -8,7 +8,6 @@ import br.ufpr.estagio.modulo.enums.EnumAvaliacaoAtividades;
 import br.ufpr.estagio.modulo.enums.EnumEtapaFluxo;
 import br.ufpr.estagio.modulo.enums.EnumTipoRelatorio;
 import br.ufpr.estagio.modulo.model.Estagio;
-import jakarta.persistence.Column;
 
 public class RelatorioDeEstagioDTO implements Serializable{
 	

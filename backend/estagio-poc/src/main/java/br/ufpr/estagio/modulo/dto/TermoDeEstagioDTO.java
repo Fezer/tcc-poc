@@ -16,7 +16,6 @@ import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
 import br.ufpr.estagio.modulo.model.PlanoDeAtividades;
 import br.ufpr.estagio.modulo.model.Seguradora;
-import jakarta.persistence.Column;
 
 public class TermoDeEstagioDTO {
 	private long id;
