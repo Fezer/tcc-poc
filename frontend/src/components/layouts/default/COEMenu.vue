@@ -43,7 +43,7 @@ export default defineComponent({
   <div>
     <div class="h-full w-full flex items-center justify-center flex-col mb-4">
       <strong class=" ">Administrador</strong>
-      <p class=" ">COE</p>
+      <p class="text-center">COE</p>
     </div>
 
     <span>

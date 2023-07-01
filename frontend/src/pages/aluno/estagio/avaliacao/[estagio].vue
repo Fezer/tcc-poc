@@ -171,7 +171,7 @@ export default defineComponent({
       </div>
     </div>
     <div v-else>
-      <h1>Preenchimento ficha de avaliação</h1>
+      <h1>Preenchimento da Ficha de Avaliação</h1>
       <div class="card">
         <p class="text-lg" v-if="!ficha?.upload">
           Por favor, baixe o documento base da ficha de avaliação, e peça para

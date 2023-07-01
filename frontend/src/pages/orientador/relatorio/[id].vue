@@ -47,13 +47,13 @@ export default defineComponent({
 </script>
 <template>
   <div>
-    <h1>Relatório de estágio</h1>
-    <h4>Dados do relatório</h4>
+    <h1>Relatório de Estágio</h1>
+    <h4>Dados do Relatório</h4>
 
     <div class="absolute right-8 top-32">
       <NuxtLink :to="`/estagio/${relatorio?.estagio?.id}?perfil=orientador`">
         <Button
-          label="Visualizar estágio"
+          label="Visualizar Estágio"
           class="p-button-info"
           icon="pi pi-eye"
         />
@@ -62,12 +62,12 @@ export default defineComponent({
 
     <div class="card grid">
       <div class="col-6">
-        <strong class="text-md mb-2">Tipo do relatório</strong>
+        <strong class="text-md mb-2">Tipo do Relatório</strong>
         <p>{{ relatorio?.tipoRelatorio }}</p>
       </div>
 
       <div class="col-6">
-        <strong class="text-md mb-2"> Ciência orientador </strong>
+        <strong class="text-md mb-2"> Ciência Orientador </strong>
 
         <p class="font-md">
           {{ relatorio?.cienciaOrientador ? "Sim" : "Não" }}
@@ -139,7 +139,7 @@ export default defineComponent({
 
     <div class="flex justify-end w-full">
       <Button
-        label="Ciência relatório"
+        label="Ciência Relatório"
         icon="pi pi-check"
         class="p-button-success"
         @click="handleCienciaRelatorio"

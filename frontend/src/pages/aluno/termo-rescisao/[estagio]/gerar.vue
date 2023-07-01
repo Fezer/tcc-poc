@@ -44,12 +44,12 @@ export default defineComponent({
 
     const handleGerarTermoRescisao = async () => {
       if (!state.dataTermino) {
-        errors.value["dataTermino"] = "Data de encerramento é obrigatória";
+        errors.value["dataTermino"] = "Data de Encerramento é Obrigatória";
       }
 
       if (!state.periodoTotalRecesso) {
         errors.value["periodoTotalRecesso"] =
-          "Período total de recesso é obrigatório";
+          "Período Total de Recesso é Obrigatório";
       }
 
       if (Object.keys(errors.value).length > 0) {
@@ -88,7 +88,7 @@ export default defineComponent({
 
         toast.add({
           severity: "success",
-          summary: "Termo de rescisão gerado com sucesso",
+          summary: "Termo de Rescisão Gerado com Sucesso",
           detail: "Aguarde a aprovação do termo",
           life: 3000,
         });
@@ -97,9 +97,9 @@ export default defineComponent({
       } catch (err) {
         toast.add({
           severity: "error",
-          summary: "Erro ao gerar termo de rescisão",
+          summary: "Erro ao Gerar o Termo de Rescisão",
           detail:
-            err?.response?._data?.error || "Não foi possível gerar o termo",
+            err?.response?._data?.error || "Não foi possível Gerar o Termo",
           life: 3000,
         });
       }
@@ -112,8 +112,8 @@ export default defineComponent({
         );
         toast.add({
           severity: "success",
-          summary: "Período de recesso removido com sucesso",
-          detail: "O período de recesso foi removido com sucesso",
+          summary: "Período de Recesso Removido com Sucesso",
+          detail: "O Período de Recesso Foi Removido com Sucesso",
           life: 3000,
         });
         return;
@@ -124,8 +124,8 @@ export default defineComponent({
 
       toast.add({
         severity: "success",
-        summary: "Período de recesso removido com sucesso",
-        detail: "O período de recesso foi removido com sucesso",
+        summary: "Período de Recesso Removido com Sucesso",
+        detail: "O período de Recesso foi Removido com Sucesso",
         life: 3000,
       });
     };
@@ -134,11 +134,11 @@ export default defineComponent({
       const { dataFim, dataInicio } = editingRecessPeriod;
 
       if (!dataFim) {
-        errors.value["dataFim"] = "Data de fim é obrigatória";
+        errors.value["dataFim"] = "Data de Fim é Obrigatória";
       }
 
       if (!dataInicio) {
-        errors.value["dataInicio"] = "Data de início é obrigatória";
+        errors.value["dataInicio"] = "Data de Início é Obrigatória";
       }
 
       if (Object.keys(errors.value).length > 0) {
@@ -188,7 +188,7 @@ export default defineComponent({
     <div class="card p-fluid col-12 mt-4">
       <div class="grid formgrid">
         <div class="field col">
-          <label for="dataTermino">Data encerramento estágio</label>
+          <label for="dataTermino">Data de Encerramento do Estágio</label>
           <Calendar
             v-model="state.dataTermino"
             :showIcon="true"
@@ -199,7 +199,7 @@ export default defineComponent({
           <small class="text-rose-500">{{ errors["dataTermino"] }}</small>
         </div>
         <div class="field col">
-          <label for="periodoTotalRecesso">Período total de recesso</label>
+          <label for="periodoTotalRecesso">Período Total de Recesso</label>
           <InputNumber
             suffix=" dias"
             max="999"
@@ -213,7 +213,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <h4>Períodos de recesso</h4>
+    <h4>Períodos de Recesso</h4>
 
     <div v-for="item in periodosDeRecesso" :key="item.dataInicio">
       <periodo-recesso
@@ -224,11 +224,11 @@ export default defineComponent({
       />
     </div>
 
-    <h4>Adicionar período de recesso</h4>
+    <h4>Adicionar Período de Recesso</h4>
     <div class="card p-fluid col-12">
       <div class="grid formgrid">
         <div class="field col-5">
-          <label for="dataInicio">Data Inicio</label>
+          <label for="dataInicio">Data de Inicio</label>
           <Calendar
             :showIcon="true"
             dateFormat="dd/mm/yy"
@@ -239,7 +239,7 @@ export default defineComponent({
           <small class="text-rose-500">{{ errors["dataInicio"] }}</small>
         </div>
         <div class="field col-5">
-          <label for="dataFim">Data Fim</label>
+          <label for="dataFim">Data de Fim</label>
           <Calendar
             :showIcon="true"
             dateFormat="dd/mm/yy"
@@ -268,7 +268,7 @@ export default defineComponent({
         />
       </NuxtLink>
       <Button
-        label="Gerar termo de rescisão"
+        label="Gerar Termo de Rescisão"
         icon="pi pi-file"
         class="p-button-success"
         @click="handleGerarTermoRescisao"

@@ -158,7 +158,7 @@ export default defineComponent({
           @click="handleNovoTermoAditivo"
         />
         <Button
-          label="Solicitar certificado"
+          label="Solicitar Certificado"
           class="p-button-success"
           icon="pi pi-file"
           @click="handleSolicitarCertificado"
@@ -211,7 +211,7 @@ export default defineComponent({
           @click="cancelationConfirm = false"
         />
         <Button
-          label="Inicar termo de rescisão"
+          label="Inicar Termo de Rescisão"
           icon="pi pi-check"
           class="p-button-danger"
           autofocus

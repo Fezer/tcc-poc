@@ -31,8 +31,8 @@ export default {
 <template>
   <div>
     <div class="h-full w-full flex items-center justify-center flex-col mb-4">
-      <strong class=" ">Prof. Orientador Orientador</strong>
-      <p class=" ">Orientador</p>
+      <strong class=" ">Prof. Orientador</strong>
+      <p class="text-center">Orientador</p>
     </div>
 
     <span>

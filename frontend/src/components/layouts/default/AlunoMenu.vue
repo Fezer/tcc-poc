@@ -111,7 +111,7 @@ export default defineComponent({
 <template>
   <div>
     <div class="h-full w-full flex items-center justify-center flex-col mb-4">
-      <strong>{{ aluno?.nome }}</strong>
+      <strong class="text-center">{{ aluno?.nome }}</strong>
       <p>Discente</p>
     </div>
 

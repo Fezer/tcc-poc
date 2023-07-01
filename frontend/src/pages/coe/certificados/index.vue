@@ -50,7 +50,10 @@ export default defineComponent({
 <template>
   <div>
     <div>
-      <h2>COE</h2>
+      <h1>
+        COE
+        <h6>Comissão Orientadora de Estágio</h6>
+      </h1>
       <DataTable
         :value="certificados?.content"
         rowHover

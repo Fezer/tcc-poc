@@ -2,6 +2,7 @@
 import { useToast } from "primevue/usetoast";
 import { defineComponent, reactive } from "vue";
 import { z } from "zod";
+import { ref } from "vue";
 import AlunoService from "~~/services/AlunoService";
 import RelatorioEstagioService from "~~/services/RelatorioEstagioService";
 import RelatorioEstagio from "~~/src/types/RelatorioEstagio";
@@ -10,8 +11,18 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const completionOptions = ["Nao", "Parcialmente", "Integralmente"];
-    const evaluateOptions = ["Pessimo", "Ruim", "Razoavel", "Bom", "Excelente"];
+    const completionOptions = ref([
+      { label: "Não", value: "Nao" },
+      { label: "Parcialmente", value: "Parcialmente" },
+      { label: "Integralmente", value: "Integralmente" },
+    ]);
+    const evaluateOptions = ref([
+      { label: "Péssimo", value: "Pessimo" },
+      { label: "Ruim", value: "Ruim" },
+      { label: "Razoável", value: "Razoavel" },
+      { label: "Bom", value: "Bom" },
+      { label: "Excelente", value: "Excelente" },
+    ]);
 
     const { estagioID } = route.params;
     const { auth } = useAuth();
@@ -133,6 +144,8 @@ export default defineComponent({
           <SelectButton
             v-model="state.avalAtividades"
             :options="completionOptions"
+            optionLabel="label"
+            optionValue="value"
             class="mt-2 mb-4"
           />
 
@@ -143,6 +156,8 @@ export default defineComponent({
           <SelectButton
             v-model="state.avalFormacaoProfissional"
             :options="evaluateOptions"
+            optionLabel="label"
+            optionValue="value"
             class="mt-2 mb-4"
           />
 
@@ -154,6 +169,8 @@ export default defineComponent({
           <SelectButton
             v-model="state.avalRelacoesInterpessoais"
             :options="evaluateOptions"
+            optionLabel="label"
+            optionValue="value"
             class="mt-2 mb-4"
           />
 
@@ -165,6 +182,8 @@ export default defineComponent({
           <SelectButton
             v-model="state.avalDesenvolvimentoAtividades"
             :options="evaluateOptions"
+            optionLabel="label"
+            optionValue="value"
             class="mt-2 mb-4"
           />
 
@@ -175,6 +194,8 @@ export default defineComponent({
           <SelectButton
             v-model="state.avalContribuicaoEstagio"
             :options="evaluateOptions"
+            optionLabel="label"
+            optionValue="value"
             class="mt-2 mb-4"
           />
 
@@ -185,6 +206,8 @@ export default defineComponent({
           <SelectButton
             v-model="state.avalEfetivacao"
             :options="evaluateOptions"
+            optionLabel="label"
+            optionValue="value"
             class="mt-2 mb-4"
           />
           <div class="formgrid grid">

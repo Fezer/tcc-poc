@@ -29,8 +29,8 @@ export default defineComponent({
         .then(() => {
           toast.add({
             severity: "success",
-            summary: "Ciência dada com sucesso",
-            detail: "Ciência dada com sucesso",
+            summary: "Ciência Dada com Sucesso",
+            detail: "Ciência Dada com Sucesso",
           });
           router.push("/orientador/termo-rescisao");
         })
@@ -38,7 +38,7 @@ export default defineComponent({
           console.error(err);
           toast.add({
             severity: "error",
-            summary: "Erro ao dar ciência",
+            summary: "Erro ao dar Ciência",
             detail: "Não foi possível dar ciência ao termo de rescisão",
           });
         });
@@ -56,10 +56,10 @@ export default defineComponent({
     <h3>Termo de Rescisão</h3>
 
     <div class="card">
-      <h5>Dados Termo</h5>
+      <h5>Dados do Termo</h5>
       <div class="grid">
         <div class="col-4">
-          <strong>Processo</strong>
+          <strong>Número do Processo</strong>
           <p>#{{ termo?.id }}</p>
         </div>
 
@@ -69,7 +69,7 @@ export default defineComponent({
         </div>
 
         <div class="col-4">
-          <strong>Período total de recesso</strong>
+          <strong>Período Total de Recesso</strong>
           <p>{{ termo?.periodoTotalRecesso }} dias</p>
         </div>
       </div>
@@ -87,7 +87,7 @@ export default defineComponent({
         :to="`/estagio/${termo?.estagio?.id}?perfil=orientador&termoDeRescisao=5`"
       >
         <Button
-          label="Ver estágio"
+          label="Ver Estágio"
           class="p-button-secondary"
           icon="pi pi-eye"
         />

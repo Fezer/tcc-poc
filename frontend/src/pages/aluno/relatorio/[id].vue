@@ -165,12 +165,12 @@ export default defineComponent({
 </script>
 <template>
   <div class="relative">
-    <h2 class="m-0">Relatório de estágio</h2>
-    <h4 class="m-0 mt-2 mb-2">Dados do relatório</h4>
+    <h2 class="m-0">Relatório de Estágio</h2>
+    <h4 class="m-0 mt-2 mb-2">Dados do Relatório</h4>
 
     <div class="absolute right-0 top-4 gap-2 flex">
       <Button
-        label="Baixar relatório base"
+        label="Baixar o Relatório Base"
         class="p-button-secondary"
         icon="pi pi-file"
         v-if="
@@ -189,12 +189,12 @@ export default defineComponent({
 
     <div class="card grid mt-2">
       <div class="col-6">
-        <strong class="text-md mb-2">Tipo do relatório</strong>
+        <strong class="text-md mb-2">Tipo do Relatório</strong>
         <p>{{ parseTipoRelatorio(relatorio?.tipoRelatorio) }}</p>
       </div>
 
       <div class="col-6">
-        <strong class="text-md mb-2"> Ciência orientador </strong>
+        <strong class="text-md mb-2"> Ciência do Orientador </strong>
 
         <p class="font-md">
           {{ relatorio?.cienciaOrientador ? "Sim" : "Não" }}
@@ -206,7 +206,9 @@ export default defineComponent({
           >As atividades programadas que constam no termo de compromisso foram
           realizadas:</strong
         >
-        <p class="text-md m-0 mb-2">{{ relatorio?.avalAtividades }}</p>
+        <p class="text-md m-0 mb-2">
+          {{ relatorio?.avalAtividades }}
+        </p>
       </div>
 
       <div class="col-6">
@@ -269,14 +271,14 @@ export default defineComponent({
       v-if="relatorio?.etapaFluxo === 'Aluno' && !relatorio?.cienciaOrientador"
     >
       <Button
-        label="Cancelar relatório"
+        label="Cancelar Relatório"
         icon="pi pi-times"
         class="p-button-danger"
         @click="cancelVisible = true"
       ></Button>
 
       <Button
-        label="Pedir ciência orientador"
+        label="Pedir Ciência do Orientador"
         icon="pi pi-check"
         class="p-button-success"
         @click="uploadVisible = true"

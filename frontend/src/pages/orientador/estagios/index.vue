@@ -48,7 +48,10 @@ export default defineComponent({
 <template>
   <div>
     <div>
-      <h1>Estágios de Orientados</h1>
+      <h1>
+        Prof. Professor Orientador
+        <h6>Orientador</h6>
+      </h1>
     </div>
     <div>
       <DataTable
@@ -86,7 +89,7 @@ export default defineComponent({
             </div>
           </div>
         </template>
-        <Column field="process" header="Processo">
+        <Column field="process" header="Número do Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
 
@@ -106,7 +109,7 @@ export default defineComponent({
             {{ data?.contratante?.cnpj }}
           </template>
         </Column>
-        <Column field="process_type" header="Tipo Estágio">
+        <Column field="process_type" header="Tipo de Estágio">
           <template #body="{ data }">
             {{ parseObrigatoriedadeEstagio(data?.tipoEstagio) }}
           </template>
@@ -121,10 +124,14 @@ export default defineComponent({
             <StatusTag :status="data?.statusEstagio" />
           </template>
         </Column>
-        <Column field="button">
+        <Column field="button" header="Ver">
           <template #body="{ data }">
             <NuxtLink :to="`/estagio/${data.id}?perfil=orientador`">
-              <Button label="Ver Estágio"></Button>
+              <Button
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
+              ></Button>
             </NuxtLink>
           </template>
         </Column>

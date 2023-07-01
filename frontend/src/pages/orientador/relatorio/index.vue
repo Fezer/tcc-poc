@@ -38,14 +38,16 @@ export default {
         <template #header>
           <div class="flex items-center justify-content-between">
             <span class="p-input-icon-left">
-              <h4 class="font-bold">Relatórios de Estágio pendentes ciência</h4>
+              <h4 class="font-bold">
+                Relatórios de Estágios Pendentes de Ciência
+              </h4>
             </span>
           </div>
         </template>
-        <Column field="process" header="Processo">
+        <Column field="process" header="Número do Processo">
           <template #body="{ data }"> #{{ data.id }} </template>
         </Column>
-        <Column field="process" header="Estágio">
+        <Column field="process" header="Número do Estágio">
           <template #body="{ data }"> #{{ data.estagio?.id }} </template>
         </Column>
         <Column field="process_type" header="Tipo de Processo">
@@ -56,10 +58,14 @@ export default {
         <Column field="action" header="Etapa" bodyStyle="color:orange;">
           <template #body="{ data }">{{ data?.etapaFluxo }}</template>
         </Column>
-        <Column field="button">
+        <Column field="button" header="Ver">
           <template #body="{ data }">
             <NuxtLink :to="`/orientador/relatorio/${data.id}`">
-              <Button label="Ver Relatório"></Button>
+              <Button
+                class="p-button-icon-only p-button-outlined"
+                icon="pi pi-eye"
+                type="primary"
+              />
             </NuxtLink>
           </template>
         </Column>

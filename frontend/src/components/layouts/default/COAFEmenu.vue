@@ -58,7 +58,7 @@ export default defineComponent({
   <div>
     <div class="h-full w-full flex items-center justify-center flex-col mb-4">
       <strong class=" ">Administrador</strong>
-      <p class=" ">COAFE</p>
+      <p class="text-center">COAFE</p>
     </div>
 
     <span>
