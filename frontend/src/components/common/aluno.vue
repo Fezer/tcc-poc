@@ -1,5 +1,6 @@
 <script lang="ts">
 import dayjs from "dayjs";
+import { useToast } from "primevue/usetoast";
 import { defineComponent, onMounted, reactive } from "vue";
 import AlunoService from "~~/services/AlunoService";
 import { Aluno } from "../../types/Aluno";
@@ -23,6 +24,7 @@ export default defineComponent({
     grrAluno: string;
     showDadosAuxiliares: boolean;
   }) {
+    const toast = useToast();
     const { aluno, setAluno } = useAluno();
     const route = useRoute();
 
@@ -42,24 +44,51 @@ export default defineComponent({
       curso.value = response;
     };
 
-    const { data: dadosAluno } = useAsyncData<Aluno>("aluno", async () => {
-      const response: Aluno = await alunoService.getAlunoFromSiga(grr);
-      setAluno(response);
+    const { data: dadosAluno, refresh } = useAsyncData<Aluno>(
+      "aluno",
+      async () => {
+        const response: Aluno = await alunoService.getAlunoFromSiga(grr);
+        setAluno(response);
 
-      await handleFetchCurso(response?.idPrograma);
-      return response;
-    });
+        await handleFetchCurso(response?.idPrograma);
+        return response;
+      }
+    );
 
-    // parse da data para o formato dd/mm/yyyy e adiciona 3 horas devido ao fuso
     const parseDataNascimento = (data: string) => {
       if (!data) return "--/--/----";
-      return dayjs(data).add(3, "hour").format("DD/MM/YYYY");
+      const [ano, mes, dia] = data.split("-");
+      return `${dia.substring(0, 2)}/${mes}/${ano}`;
     };
 
     const getAge = (data: string) => {
       if (!data) return "--";
       return dayjs(new Date()).diff(new Date(data), "year");
     };
+
+    const handleSyncData = async () => {
+      try {
+        await $fetch(`/aluno/${grr}/sincronizarDadosSiga`, {
+          method: "PUT",
+        }).then(() => {
+          refresh();
+          toast.add({
+            severity: "success",
+            summary: "Dados sincronizados com sucesso",
+            detail: "Os dados do SIGA foram sincronizados com sucesso",
+          });
+        });
+      } catch (err) {
+        console.log(err);
+        toast.add({
+          severity: "error",
+          summary: "Erro ao sincronizar dados",
+          detail: "Não foi possível sincronizar os dados do SIGA",
+        });
+      }
+    };
+
+    const getIsAluno = () => !!localStorage?.getItem("accessToken");
 
     return {
       aluno: dadosAluno,
@@ -68,6 +97,8 @@ export default defineComponent({
       parseDataNascimento,
       getAge,
       showDadosAuxiliares,
+      getIsAluno,
+      handleSyncData,
     };
   },
 });
@@ -75,8 +106,16 @@ export default defineComponent({
 
 <template>
   <div>
-    <div class="card">
+    <div class="card relative">
       <h5>Dados do Aluno</h5>
+
+      <Button
+        v-if="getIsAluno()"
+        label="Sincronizar dados do SIGA"
+        icon="pi pi-sync"
+        class="p-button-primary absolute right-4 top-4"
+        @click="handleSyncData"
+      ></Button>
 
       <div class="grid">
         <div class="col-4">
