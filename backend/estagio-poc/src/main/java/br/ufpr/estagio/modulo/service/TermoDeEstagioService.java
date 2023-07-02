@@ -27,6 +27,7 @@ import br.ufpr.estagio.modulo.model.Aluno;
 import br.ufpr.estagio.modulo.model.Apolice;
 import br.ufpr.estagio.modulo.model.CienciaCoordenacao;
 import br.ufpr.estagio.modulo.model.Contratante;
+import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.model.Endereco;
 import br.ufpr.estagio.modulo.model.Estagio;
 import br.ufpr.estagio.modulo.model.Orientador;
@@ -1482,6 +1483,15 @@ public class TermoDeEstagioService {
 		return true;
 	}
 	
+	public boolean listarTermosDeEstagioPorConvenio(Convenio convenio) {
+
+		List<TermoDeEstagio> termos = termoRepo.findByConvenio(convenio);
+
+		if (termos.size() == 0)
+			return false;
+
+		return true;
+	}
 	
 	public TermoDeEstagio associarContratanteUfprAoTermo(TermoDeEstagio termo) {
 	/**
