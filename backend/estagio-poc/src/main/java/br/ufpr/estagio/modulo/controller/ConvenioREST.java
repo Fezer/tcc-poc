@@ -22,6 +22,7 @@ import br.ufpr.estagio.modulo.dto.ConvenioDTO;
 import br.ufpr.estagio.modulo.dto.ErrorResponse;
 import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
+import br.ufpr.estagio.modulo.model.AgenteIntegrador;
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.service.ConvenioService;
 import br.ufpr.estagio.modulo.service.EstagioService;
@@ -251,14 +252,16 @@ public class ConvenioREST {
 		    if(convenioFind.isPresent()) {
 		    	Convenio convenio = convenioFind.get();
 		    	
-		    	boolean presenteEmTermosDeEstagio = termoDeEstagioService.listarTermosDeEstagioPorConvenio(convenio);
-				boolean presenteEmEstagios = estagioService.listarEstagiosPorConvenio(convenio);
+		    	AgenteIntegrador agente = convenio.getAgenteIntegrador();
+		    	
+		    	boolean presenteEmTermosDeEstagio = termoDeEstagioService.listarTermosDeEstagioPorAgenteIntegrador(agente);
+				boolean presenteEmEstagios = estagioService.listarEstagiosPorAgenteIntegrador(agente);
 
 				if (presenteEmTermosDeEstagio)
-					throw new InvalidFieldException("Não é possível excluir um convênio presente em termo de estágio.");
+					throw new InvalidFieldException("Não é possível excluir um convênio com agente integrador presente em termo de estágio.");
 
 				if (presenteEmEstagios)
-					throw new InvalidFieldException("Não é possível excluir um convênio presente em estágio.");
+					throw new InvalidFieldException("Não é possível excluir um convênio com agente integrador presente em estágio.");
 				
 		    	convenioService.excluirConvenio(convenio);
 		        return ResponseEntity.noContent().build();

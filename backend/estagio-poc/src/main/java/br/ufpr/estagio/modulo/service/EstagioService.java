@@ -426,16 +426,6 @@ public class EstagioService {
 
 		return true;
 	}
-	
-	public boolean listarEstagiosPorConvenio(Convenio convenio) {
-
-		List<Estagio> estagios = estagioRepo.findByConvenio(convenio);
-
-		if (estagios.size() == 0)
-			return false;
-
-		return true;
-	}
 
 	public boolean listarEstagiosPorSeguradora(Seguradora seguradora) {
 

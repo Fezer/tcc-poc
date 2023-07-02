@@ -1483,16 +1483,6 @@ public class TermoDeEstagioService {
 		return true;
 	}
 	
-	public boolean listarTermosDeEstagioPorConvenio(Convenio convenio) {
-
-		List<TermoDeEstagio> termos = termoRepo.findByConvenio(convenio);
-
-		if (termos.size() == 0)
-			return false;
-
-		return true;
-	}
-	
 	public TermoDeEstagio associarContratanteUfprAoTermo(TermoDeEstagio termo) {
 	/**
 	 * Caso seja um estágio UFPR, precisa associar a contratante
