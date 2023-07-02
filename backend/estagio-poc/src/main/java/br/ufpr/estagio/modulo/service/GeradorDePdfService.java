@@ -304,8 +304,8 @@ public class GeradorDePdfService {
         String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(aluno.getDataNascimento());
         String dataRescisaoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getDataTermino());
         
-        String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(0));
-        String dataTerminoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(1));
+        String dataInicioFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(0).getDataInicio());
+        String dataTerminoFormatada = new SimpleDateFormat("dd/MM/yyyy").format(termo.getPeriodoRecesso().get(0).getDataFim());
 
 		html = html.replace("{{nome}}", aluno.getNome());
 		html = html.replace("{{rg}}", aluno.getRg());
@@ -337,8 +337,8 @@ public class GeradorDePdfService {
 		
 		html = html.replace("{{dataRescisao}}", dataRescisaoFormatada);
 		
-		html = html.replace("{{dataInicioRecesso}}", dataInicioFormatada);
-		html = html.replace("{{dataTerminoRecesso}}", dataTerminoFormatada);
+		html = html.replace("{{inicioPrimeiroPeriodo}}", dataInicioFormatada);
+		html = html.replace("{{finalSegundoPeriodo}}", dataTerminoFormatada);
 		
 		html = html.replace("{{data}}", formattedDate);
 		return html;
@@ -915,7 +915,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{inicioRelatorio}}", inicioRelatorio);
 		html = html.replace("{{finalRelatorio}}", finalRelatorio);
 		
-		/*
+		
 		html = html.replace("{{consideracoes}}", relatorio.getConsideracoes());
 		html = html.replace("{{avalAtividades}}", String.valueOf(relatorio.getAvalAtividades()));
 		html = html.replace("{{contribuicao}}", String.valueOf(relatorio.getAvalContribuicaoEstagio()));
@@ -923,7 +923,7 @@ public class GeradorDePdfService {
 		html = html.replace("{{efetivacao}}", String.valueOf(relatorio.getAvalEfetivacao()));
 		html = html.replace("{{formacao}}", String.valueOf(relatorio.getAvalFormacaoProfissional()));
 		html = html.replace("{{relacoesInterpessoais}}", String.valueOf(relatorio.getAvalRelacoesInterpessoais()));
-		*/
+		
 		return html;
 	}
 	
