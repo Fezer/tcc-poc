@@ -135,6 +135,11 @@ public class GeradorDePdfService {
 		html = html.replace("{{nivel}}", aluno.getCurso().getNivel());
 		html = html.replace("{{instituicao}}", "Universidade Federal do Paraná");
 		
+		LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+        String formattedDate = currentDate.format(formatter);
+		html = html.replace("{{data}}", formattedDate);
+		
 		return html;
 	}
 	
