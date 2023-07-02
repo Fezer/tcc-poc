@@ -24,6 +24,8 @@ import br.ufpr.estagio.modulo.exception.InvalidFieldException;
 import br.ufpr.estagio.modulo.exception.NotFoundException;
 import br.ufpr.estagio.modulo.model.Convenio;
 import br.ufpr.estagio.modulo.service.ConvenioService;
+import br.ufpr.estagio.modulo.service.EstagioService;
+import br.ufpr.estagio.modulo.service.TermoDeEstagioService;
 
 @CrossOrigin
 @RestController
@@ -32,6 +34,12 @@ public class ConvenioREST {
     
     @Autowired
     private ConvenioService convenioService;
+    
+    @Autowired
+	private EstagioService estagioService;
+
+	@Autowired
+	private TermoDeEstagioService termoDeEstagioService;
         
     @Autowired
 	private ModelMapper mapper;
@@ -241,7 +249,17 @@ public class ConvenioREST {
 			Optional<Convenio> convenioFind = convenioService.buscarPorId(idLong);
 			
 		    if(convenioFind.isPresent()) {
-		    	Convenio convenio = convenioFind.get();				
+		    	Convenio convenio = convenioFind.get();
+		    	
+		    	boolean presenteEmTermosDeEstagio = termoDeEstagioService.listarTermosDeEstagioPorConvenio(convenio);
+				boolean presenteEmEstagios = estagioService.listarEstagiosPorConvenio(convenio);
+
+				if (presenteEmTermosDeEstagio)
+					throw new InvalidFieldException("Não é possível excluir um convênio presente em termo de estágio.");
+
+				if (presenteEmEstagios)
+					throw new InvalidFieldException("Não é possível excluir um convênio presente em estágio.");
+				
 		    	convenioService.excluirConvenio(convenio);
 		        return ResponseEntity.noContent().build();
 		    } else {

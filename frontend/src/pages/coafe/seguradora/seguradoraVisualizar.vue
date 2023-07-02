@@ -244,13 +244,22 @@ const handleDeleteApolice = async (id) => {
         life: 3000,
       });
     });
-  } catch (e) {
-    return toast.add({
-      severity: "error",
-      summary: "Erro",
-      detail: "Erro ao deletar a apólice",
-      life: 3000,
-    });
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    } else {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "Erro ao deletar a apólice",
+        life: 3000,
+      });
+    }
   }
   refresh();
   return {
