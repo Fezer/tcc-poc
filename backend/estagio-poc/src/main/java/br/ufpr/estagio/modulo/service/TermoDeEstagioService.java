@@ -474,11 +474,11 @@ public class TermoDeEstagioService {
 
 		// Após ter um termo indeferido, o Aluno terá que enviar um novo, então o
 		// atributo upload volta a ser false
-		if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoDeCompromisso)) {
-			termo.setUploadCompromisso(false);
-		} else if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoAditivo)) {
-			termo.setUploadAditivo(false);
-		}
+//		if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoDeCompromisso)) {
+//			termo.setUploadCompromisso(false);
+//		} else if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoAditivo)) {
+//			termo.setUploadAditivo(false);
+//		}
 
 		// Uma vez que a COE reprove o termo de compromisso, deve ser encaminhado para
 		// ciencia da coordenação
@@ -781,6 +781,14 @@ public class TermoDeEstagioService {
 		// Uma vez que a Coordenação da ciencia no indeferimento da COE ou COAFE, o
 		// fluxo se encerra e o termo deve ser encaminhado ao Aluno.
 		termo.setEtapaFluxo(etapaFluxo);
+		
+		// Após ter um termo indeferido, o Aluno terá que enviar um novo, então o
+		// atributo upload volta a ser false quando a coordenação da ciencia no indeferimento.
+		if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoDeCompromisso)) {
+			termo.setUploadCompromisso(false);
+		} else if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoAditivo)) {
+			termo.setUploadAditivo(false);
+		}
 
 		/**
 		 * Só podemos considerar um estágio como reprovado nessa etapa caso seja termo
@@ -875,11 +883,11 @@ public class TermoDeEstagioService {
 
 		// Após ter um termo indeferido, o Aluno terá que enviar um novo, então o
 		// atributo upload volta a ser false
-		if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoDeCompromisso)) {
-			termo.setUploadCompromisso(false);
-		} else if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoAditivo)) {
-			termo.setUploadAditivo(false);
-		}
+//		if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoDeCompromisso)) {
+//			termo.setUploadCompromisso(false);
+//		} else if (termo.getTipoTermoDeEstagio().equals(EnumTipoTermoDeEstagio.TermoAditivo)) {
+//			termo.setUploadAditivo(false);
+//		}
 
 		// Uma vez que a COAFE reprove o termo de compromisso, deve ser encaminhado para
 		// ciencia da coordenação
@@ -1088,6 +1096,8 @@ public class TermoDeEstagioService {
 		CienciaCoordenacao cienciaCoordenacao = new CienciaCoordenacao();
 
 		cienciaCoordenacao = cienciaRepo.save(cienciaCoordenacao);
+		
+		termoAditivo.setCoordenador(estagio.getAluno().getCurso().getCoordenador().get(0));
 
 		termoAditivo.setCienciaCoordenacao(cienciaCoordenacao);
 

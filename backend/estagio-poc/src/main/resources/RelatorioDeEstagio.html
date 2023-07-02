@@ -614,29 +614,29 @@ consonância com a Resolução nº 46/10-CEPE/UFPR e demais normativas regulador
 de estágio (FINAL).
                 </p>
                 <p style="padding-left: 3%">
-                    <b>TIPO DE RELATÓRIO:</b>
+                    <b>TIPO DE RELATÓRIO:</b>_______________
                     <!--{{tipoRelatorio}}-->
                 </p>
                 <p style="padding-left: 3%">
-                    <b>MODALIDADE DO ESTÁGIO:</b> <!--{{modalidade}}-->
+                    <b>MODALIDADE DO ESTÁGIO:</b> {{modalidade}}
                 </p>
                 <p style="padding-left: 3%">
                     <b>PERÍODO DO ESTÁGIO A QUE SE REFERE O RELATÓRIO:</b> 
                     <!--{{inicioRelatorio}}-->
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                     <b>até</b> <!--{{finalRelatorio}}-->
+                    <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+                     __________<b>até</b>__________<!--{{finalRelatorio}}-->
                 </p>
                 <p style="padding-left: 3%">
                     <b>NOME DO SUPERVISOR NO LOCAL DE ESTÁGIO</b> 
-                    <!--{{supervisor}}-->
+                    {{supervisor}}
                 </p>
                 <p style="padding-left: 3%">
                     <b>NOME DO ORIENTADOR NA IES:</b> 
-                    <!--{{orientador}}-->
+                    {{orientador}}
                 </p>
                 <p style="padding-left: 3%">
                     <b>AS ATIVIDADES QUE CONSTAM NO TERMO DE COMPROMISSO FORAM REALIZADAS?</b> 
-                    <!--{{atividades}}-->
+                    {{avalAtividades}}
                 </p>
 
                 <p style="padding-left: 3%">
@@ -646,6 +646,7 @@ de estágio (FINAL).
                 <p style="padding-left: 3%">
                   <b>1. De que forma você considera que a realização deste estágio
                   contribuiu para sua formação profissional?</b>
+                  {{formacao}}
                 </p>
 
                 <br></br>
@@ -653,6 +654,7 @@ de estágio (FINAL).
                 <p style="padding-left: 3%">
                   <b>2. Como foram as relações interpessoais no local de estágio
                   e o convívio no ambiente de trabalho?</b>
+                  {{relacoesInterpessoais}}
                 </p>
 
                 <br></br>
@@ -660,6 +662,7 @@ de estágio (FINAL).
                 <p style="padding-left: 3%">
                   <b>3. De que forma foram desenvolvidas as atividades em equipe
                   e/ou reuniões de planejamento?</b>
+                  {{desenvolvimento}}
                 </p>
 
                 <br></br>
@@ -667,6 +670,7 @@ de estágio (FINAL).
                 <p style="padding-left: 3%">
                   <b>4. Como você considera suas contribuições como estagiário
                   para a unidade concedente?</b>
+                  {{contribuicao}}
                 </p>
 
                 <br></br>
@@ -674,12 +678,13 @@ de estágio (FINAL).
                 <p style="padding-left: 3%">
                   <b>5. Qual a possibilidade da sua efetivação junto à
                   unidade concedente do estágio?</b>
+                  {{efetivacao}}
                 </p>
 
                 <br></br>
                 <br></br>
 
-                <p><b>CONSIDERAÇÕES:</b></p>
+                <p><b>CONSIDERAÇÕES:</b> {{consideracoes}}</p>
                 
                 <br></br>
 
