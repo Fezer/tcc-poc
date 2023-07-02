@@ -21,6 +21,4 @@ public interface TermoDeEstagioRepository extends JpaRepository<TermoDeEstagio, 
 	
 	List<TermoDeEstagio> findBySeguradora(Seguradora seguradora);
 
-	List<TermoDeEstagio> findByConvenio(Convenio convenio);
-
 }
