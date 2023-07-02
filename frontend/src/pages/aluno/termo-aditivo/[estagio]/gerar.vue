@@ -126,6 +126,7 @@ export default defineComponent({
         formacaoSupervisor: z.string().min(2),
         cpfSupervisor: z.string().min(2),
         atividades: z.string().min(50).max(700),
+        tipoEstagio: z.string().min(1),
       });
 
       const suspensaoValidator = z.object({
@@ -135,7 +136,10 @@ export default defineComponent({
 
       const result = suspensaoEstagio?.isSuspensao
         ? suspensaoValidator.safeParse({ ...suspensaoEstagio })
-        : validator.safeParse({ ...state });
+        : validator.safeParse({
+            ...state,
+            tipoEstagio: tipoEstagio.tipoEstagio,
+          });
 
       if (!result.success) {
         toast.add({
@@ -148,6 +152,18 @@ export default defineComponent({
           acc[issue.path[0]] = zodErrors[issue.code] || issue.message;
           return acc;
         }, {} as Record<string, string>);
+        return;
+      }
+
+      if (tipoEstagio.tipoEstagio === "Obrigatorio" && !aluno?.matriculado) {
+        toast.add({
+          severity: "error",
+          summary: "Aluno não está matriculado!",
+          detail:
+            "Você precisa estar matriculado na disciplina de Estágio Obrigatório no SIGA para poder realizar um estágio obrigatório",
+          life: 3000,
+        });
+
         return;
       }
 
@@ -386,10 +402,10 @@ export default defineComponent({
             :options="tiposEstagio"
             optionLabel="label"
             optionValue="value"
-            :class="{ 'p-invalid': error }"
+            :class="{ 'p-invalid': errors['tipoEstagio'] }"
           />
 
-          <small class="text-rose-600">{{ error }}</small>
+          <small class="text-rose-600">{{ errors["tipoEstagio"] }}</small>
         </div>
       </div>
 
