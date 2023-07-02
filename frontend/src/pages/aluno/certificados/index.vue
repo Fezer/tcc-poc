@@ -1,10 +1,12 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import parseDate from "../../../utils/parseDate";
+import { useToast } from "primevue/usetoast";
 
 export default defineComponent({
   setup() {
     const { auth } = useAuth();
+    const toast = useToast();
 
     const grr = auth?.value?.identifier || "";
     const { data: certificados } = useFetch(

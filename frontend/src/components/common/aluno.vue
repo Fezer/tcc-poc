@@ -88,7 +88,8 @@ export default defineComponent({
       }
     };
 
-    const getIsAluno = () => !!localStorage?.getItem("accessToken");
+    const getIsAluno = () =>
+      !!process?.client && !!localStorage?.getItem("accessToken");
 
     return {
       aluno: dadosAluno,

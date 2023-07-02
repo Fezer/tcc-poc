@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 import AlunoService from "~~/services/AlunoService";
+import { useToast } from "primevue/usetoast";
 
 export default defineComponent({
   props: {
@@ -24,6 +25,7 @@ export default defineComponent({
     const alunoService = new AlunoService();
 
     const curso = reactive({});
+    const toast = useToast();
 
     const { auth } = useAuth();
 
@@ -34,7 +36,7 @@ export default defineComponent({
       curso.value = response;
     };
 
-    const { data: aluno } = useAsyncData("aluno", async () => {
+    const { data: aluno, refresh } = useAsyncData("aluno", async () => {
       const response = await alunoService.getAlunoFromSiga(grr);
       setAluno(response);
 
@@ -42,11 +44,34 @@ export default defineComponent({
       return response;
     });
 
+    const handleSyncData = async () => {
+      try {
+        await $fetch(`/aluno/${grr}/sincronizarDadosSiga`, {
+          method: "PUT",
+        }).then(() => {
+          refresh();
+          toast.add({
+            severity: "success",
+            summary: "Dados sincronizados com sucesso",
+            detail: "Os dados do SIGA foram sincronizados com sucesso",
+          });
+        });
+      } catch (err) {
+        console.log(err);
+        toast.add({
+          severity: "error",
+          summary: "Erro ao sincronizar dados",
+          detail: "Não foi possível sincronizar os dados do SIGA",
+        });
+      }
+    };
+
     return {
       advanceStep,
       backStep,
       aluno,
       curso,
+      handleSyncData,
     };
   },
 });
@@ -182,6 +207,13 @@ export default defineComponent({
           icon="pi pi-external-link"
         />
       </a>
+      <Button
+        label="Sincronizar dados do SIGA"
+        icon="pi pi-sync"
+        class="p-button-primary"
+        @click="handleSyncData"
+      ></Button>
+
       <Button
         @click="advanceStep"
         label="Avançar"
