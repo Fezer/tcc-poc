@@ -195,14 +195,23 @@ export default defineComponent({
                 });
               });
             } catch (err) {
-              toast.add({
-                severity: "error",
-                summary: "Erro",
-                detail: "Erro ao associar agente de integração ao estágio.",
-                life: 3000,
-              });
+              if (err?.response?._data?.error) {
+                return toast.add({
+                  severity: "error",
+                  summary: "Erro",
+                  detail: "" + err?.response?._data?.error,
+                  life: 3000,
+                });
+              } else {
+                toast.add({
+                  severity: "error",
+                  summary: "Erro",
+                  detail: "Erro ao associar agente de integração ao estágio.",
+                  life: 3000,
+                });
 
-              console.error(err);
+                console.error(err);
+              }
             }
 
             break;

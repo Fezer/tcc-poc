@@ -152,17 +152,26 @@ const handleDeleteConvenio = async (id) => {
     const response = await convenioService.deletaConvenio(id).then(() => {
       return toast.add({
         severity: "success",
-        summary: "Convênio deletado com sucesso",
+        summary: "Convênio Deletado com Sucesso",
         life: 3000,
       });
     });
-  } catch (e) {
-    return toast.add({
-      severity: "error",
-      summary: "Erro",
-      detail: "Erro ao deletar o convênio",
-      life: 3000,
-    });
+  } catch (Error) {
+    if (Error?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + Error?.response?._data?.error,
+        life: 3000,
+      });
+    } else {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "Erro ao Deletar o Convênio",
+        life: 3000,
+      });
+    }
     console.error(e);
   }
   refresh();
@@ -196,12 +205,21 @@ const handleDeleteAgente = async (id, numeroCovenios) => {
       );
     });
   } catch (e) {
-    return toast.add({
-      severity: "error",
-      summary: "Erro",
-      detail: "Erro ao deletar o Agente de Integração",
-      life: 3000,
-    });
+    if (e?.response?._data?.error) {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "" + e?.response?._data?.error,
+        life: 3000,
+      });
+    } else {
+      return toast.add({
+        severity: "error",
+        summary: "Erro",
+        detail: "Erro ao Deletar o Agente de Integração",
+        life: 3000,
+      });
+    }
     console.error(e);
   }
 
