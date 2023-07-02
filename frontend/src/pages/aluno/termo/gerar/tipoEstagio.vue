@@ -118,6 +118,7 @@ export default defineComponent({
           ...termo.value,
           tipoEstagio,
           estagioUfpr: localEstagio === "UFPR",
+          id: termo?.value?.termoDeCompromisso || termo?.value?.id,
         });
 
         advanceStep();

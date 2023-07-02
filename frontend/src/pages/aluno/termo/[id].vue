@@ -80,6 +80,8 @@ export default defineComponent({
         });
         state.cancelationConfirm = false;
 
+        setTermo(null);
+
         router.push({
           path: "/aluno",
         });

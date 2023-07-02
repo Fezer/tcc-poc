@@ -41,7 +41,7 @@ export default defineComponent({
         life: 3000,
       });
       router.push({
-        path: "/aluno/termo/" + termo.value.id,
+        path: "/aluno",
       });
     };
 
