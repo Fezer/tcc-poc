@@ -1,0 +1,57 @@
+<template>
+  <div>
+    <div>
+      <h1>
+        Coordenação
+        <h6>Economia - UFPR</h6>
+      </h1>
+    </div>
+    <div>
+      <DataTable :value="processes" rowHover stripedRows :show-gridlines="true">
+        <template #header>
+          <div class="flex justify-content-between">
+            <span class="p-input-icon-left">
+              <h4><b>Procesos</b></h4>
+            </span>
+            <span class="p-input-icon-left">
+              <i class="pi pi-search" />
+              <InputText placeholder="Keyword Search" />
+            </span>
+          </div>
+        </template>
+        <template #empty> No customers found. </template>
+        <template #loading> Loading customers data. Please wait. </template>
+        <Column field="process" header="Processo">
+          <template #body="{ data }">
+            {{ data.process }}
+          </template>
+        </Column>
+        <Column field="process_type" header="Tipo de Processo">
+          <template #body="{ data }">
+            {{ data.process_type }}
+          </template>
+        </Column>
+        <Column field="student_name" header="Nome do Aluno">
+          <template #body="{ data }">
+            {{ data.student_name }}
+          </template>
+        </Column>
+        <Column field="curse" header="Curso">
+          <template #body="{ data }">
+            {{ data.curse }}
+          </template>
+        </Column>
+        <Column field="last_update" header="Última Atualização">
+          <template #body="{ data }">
+            {{ data.last_update }}
+          </template>
+        </Column>
+        <Column field="button">
+          <template #body>
+            <Button label="Ver contato"></Button>
+          </template>
+        </Column>
+      </DataTable>
+    </div>
+  </div>
+</template>

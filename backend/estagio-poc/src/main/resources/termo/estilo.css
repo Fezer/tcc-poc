@@ -1,0 +1,87 @@
+* {
+    font-family: Times New Roman, Times, Arial;
+    
+}
+
+.modal-header {
+    padding:9px 15px;
+    border-bottom:1px solid #eee;
+    background-color: rgba(10, 86, 201, 0.7);
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+     border-top-left-radius: 5px;
+     border-top-right-radius: 5px;
+ }
+
+.modal-backdrop {
+   background-color: rgb(10, 86, 201);
+}
+
+.telas-iniciais{
+    font-size: 9vmin;
+    font-weight: normal;
+    text-align: center;
+    
+}
+
+
+.btn { white-space: pre-line; }
+
+.sim-ou-nao{
+    padding-right: 0px;
+    font-size: 3vw;
+    
+    
+}
+
+#div_header{
+    
+    padding: 3em;
+}
+
+.panel-body{
+    text-align: center;
+}
+
+.panel-footer {
+    text-align: right;
+    
+    
+    
+}
+
+.font_maior{
+    
+    font-size: 1.7vw;
+}
+
+.btn-maior {
+    padding:7px 15px; 
+    background:#ccc; 
+    border-radius: 8px;
+    cursor:pointer;
+}
+
+/*.radio-bigger {
+    border: 0px;
+    width: 2em;
+    height: 2em;
+}*/
+
+
+fieldset{
+    padding-bottom: 3%;
+}
+
+
+textarea{
+    word-break: break-all;
+}
+
+
+/*body {
+    -webkit-print-color-adjust: exact;
+}*/
+
